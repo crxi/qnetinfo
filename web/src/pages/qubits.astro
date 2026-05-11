@@ -41,8 +41,10 @@ const sections = [
   references={[
     "divincenzo-2000",
     "ezratty-uqt-2025-p2",
+    "knaut-nature-2024",
     "kozlowski-rfc9340",
     "kumar-ijndc-2025",
+    "meddeb-comnet-2025",
     "sangouard-rmp-83",
   ]}
 >
@@ -308,13 +310,13 @@ const sections = [
             <EncodingDiagram kind="transmon" />
             <h3>Superconducting transmon</h3>
             <p>
-              A small electrical circuit on a chip, cooled to ~15 mK so it behaves as a
-              quantum object. Two superconducting pads form a capacitor; a thin insulating
-              gap between superconductors — the <strong>Josephson junction</strong> (×) — gives
-              the circuit a non-linear response. The result is an oscillator whose energy
-              levels are unevenly spaced, so microwaves at ~5 GHz drive the
-              <Math tex="|0\\rangle\\!\\to\\!|1\\rangle" /> transition without disturbing
-              higher levels. Used by Google, IBM, IQM, Rigetti, USTC.
+              A small superconducting electrical circuit on a chip, cooled to about 15 mK
+              so it behaves as a quantum object. The qubit's <Math tex="|0\\rangle" /> and
+              <Math tex="|1\\rangle" /> are the circuit's ground and excited states,
+              separated by ~5 GHz, and are manipulated by microwave pulses. Their short
+              operation times (~20 ns) make them the leading platform for quantum
+              processors <SourceNote id="meddeb-comnet-2025" />. Used by Google, IBM,
+              IQM, Rigetti, USTC.
             </p>
           </article>
 
@@ -322,12 +324,14 @@ const sections = [
             <EncodingDiagram kind="ion" />
             <h3>Trapped ion (Yb⁺-171)</h3>
             <p>
-              Two hyperfine ground states of a single ion held in a vacuum trap.
-              <Math tex="|0\\rangle" /> and <Math tex="|1\\rangle" /> are the
-              <Math tex="F\\!=\\!0" /> and <Math tex="F\\!=\\!1" /> sub-levels of the
-              <Math tex="^2\\!S_{1/2}" /> ground manifold, separated by ~12.6 GHz. Driven by
-              microwave or stimulated-Raman transitions. Coherence can exceed an hour
-              because the qubit lives in the lowest electronic state.
+              A single ytterbium ion confined in a vacuum chamber by electromagnetic
+              fields. The qubit is encoded in two of the ion's internal energy levels
+              (here the hyperfine sub-levels of the ground state), controlled by microwave
+              and laser pulses. Trapped ions exhibit the longest coherence times of any
+              platform — over an hour for Yb⁺-171 — making them strong candidates for
+              quantum memories as well as computing
+              <SourceNote id="meddeb-comnet-2025" />. Used by Quantinuum, IonQ, Oxford
+              Ionics, Universal Quantum.
             </p>
           </article>
 
@@ -335,10 +339,12 @@ const sections = [
             <EncodingDiagram kind="atom" />
             <h3>Neutral atom (Rb-87)</h3>
             <p>
-              Single Rb-87 atoms held in optical-tweezer arrays. Storage uses two hyperfine
-              clock states for <Math tex="|0\\rangle" /> and <Math tex="|1\\rangle" />;
-              two-qubit gates briefly excite the atom to a Rydberg state (~70 S), where the
-              Rydberg blockade prevents simultaneous excitation of nearby atoms.
+              A single rubidium atom held in place by a tightly focused laser beam — an
+              optical tweezer. The qubit is encoded in two of the atom's hyperfine ground
+              states, manipulated by microwave and laser pulses. Two-qubit gates briefly
+              excite the atoms to a Rydberg state, where the Rydberg blockade prevents
+              simultaneous excitation of nearby atoms and creates the entanglement. Used
+              by Pasqal, QuEra, Atom Computing, Infleqtion.
             </p>
           </article>
 
@@ -346,13 +352,13 @@ const sections = [
             <EncodingDiagram kind="nv" />
             <h3>NV centre (diamond)</h3>
             <p>
-              Electron spin of a nitrogen-vacancy defect in diamond.
-              <Math tex="|0\\rangle" /> is <Math tex="m_s\\!=\\!0" />,
-              <Math tex="|1\\rangle" /> is one of the
-              <Math tex="m_s\\!=\\!\\pm1" /> sub-levels in the <Math tex="^3\\!A_2" /> ground
-              triplet (zero-field split ~2.87 GHz). Optically polarised at 532 nm, read out
-              via spin-dependent fluorescence at 637 nm, with millisecond coherence at room
-              temperature in isotopically purified ¹²C diamond.
+              A nitrogen atom adjacent to a missing carbon in a diamond lattice — a point
+              defect that traps an electron. The qubit is the electron's spin, polarised
+              and read out optically by green and red laser pulses, and manipulated by
+              microwaves. NV centres work at room temperature with millisecond coherence
+              in isotopically purified diamond, but their optical line is too broad and at
+              the wrong wavelength (637 nm) for direct telecom use — quantum-network
+              applications need wavelength conversion.
             </p>
           </article>
 
@@ -360,12 +366,14 @@ const sections = [
             <EncodingDiagram kind="siv" />
             <h3>SiV centre (diamond)</h3>
             <p>
-              A silicon atom sitting at the bond centre between two adjacent vacancies — a
-              split-vacancy defect with inversion symmetry (<Math tex="D_{3d}" />). The
-              inversion symmetry kills first-order coupling to electric-field noise, which
-              gives the SiV a strong, narrow optical line at 738 nm and makes it a leading
-              candidate for a photonic quantum-network interface. Operates at ~4 K rather
-              than NV's room temperature.
+              A silicon atom sitting at the bond centre between two adjacent vacancies in
+              the diamond lattice — a colour-centre defect with a strong, narrow optical
+              line at 738 nm. The qubit is the electron spin of the defect, controlled by
+              microwaves and read out by spin-dependent fluorescence. Operates at ~4 K.
+              The SiV's clean optical interface makes it the leading solid-state platform
+              for quantum-network nodes — Knaut et al. demonstrated SiV-based entanglement
+              between two nodes over a 35 km fibre loop
+              <SourceNote id="knaut-nature-2024" />.
             </p>
           </article>
 
@@ -373,11 +381,13 @@ const sections = [
             <EncodingDiagram kind="si-spin" />
             <h3>Silicon spin</h3>
             <p>
-              Single electron spin confined in a silicon quantum dot.
-              <Math tex="|0\\rangle" /> and <Math tex="|1\\rangle" /> are the Zeeman-split
-              spin-down and spin-up states. Coherence is exceptional in isotopically
-              purified <Math tex="{}^{28}\\!\\text{Si}" /> because there are no nuclear
-              spins to dephase the electron. Gates driven by electron-spin resonance.
+              A single electron confined in a silicon quantum dot, formed by patterning
+              gate electrodes on a silicon chip <SourceNote id="meddeb-comnet-2025" />. The
+              qubit is the electron's spin (spin-up vs spin-down in an applied magnetic
+              field), driven by microwave pulses. Coherence is exceptional in isotopically
+              purified silicon-28 because the nuclear-spin background that normally
+              dephases the electron is absent. Built on CMOS manufacturing, so potentially
+              scalable to industrial densities.
             </p>
           </article>
 
@@ -386,10 +396,12 @@ const sections = [
             <h3>Topological (Majorana)</h3>
             <p>
               A pair of Majorana zero modes at the ends of a topological superconducting
-              wire. <Math tex="|0\\rangle" /> and <Math tex="|1\\rangle" /> are the even and
-              odd fermion-parity states of the pair. The qubit is a property of the wire as
-              a whole — not localised to any single particle — which is the source of the
-              platform's theoretical noise protection.
+              nanowire — bound states with no individual location, only a shared fermion
+              parity. The qubit is that parity (even or odd), and gates are performed by
+              braiding the modes around each other rather than driving energy transitions.
+              The non-local encoding gives theoretical protection against local noise.
+              Pursued primarily by Microsoft; the least mature of the listed platforms,
+              with the first plausible Majorana-mode demonstrations published in 2023–25.
             </p>
           </article>
 
@@ -397,13 +409,15 @@ const sections = [
             <EncodingDiagram kind="ensemble" />
             <h3>Atomic ensemble</h3>
             <p>
-              A cloud of <Math tex="N" /> atoms — a warm vapour cell, a cold atomic gas, or a
-              rare-earth-ion-doped crystal — used as a quantum memory.
-              <Math tex="|0\\rangle" /> is all atoms in their ground state;
-              <Math tex="|1\\rangle" /> is a single delocalised spin-wave excitation shared
-              symmetrically across the ensemble. Used by DLCZ-style memories and the Atomic
-              Frequency Comb protocol; the qubit is a collective excitation rather than a
-              property of any single particle <SourceNote id="sangouard-rmp-83" />.
+              A cloud of <Math tex="N" /> atoms — a warm vapour cell, a cold atomic gas, or
+              a rare-earth-ion-doped crystal — operated as a single collective qubit. The
+              qubit is encoded in a delocalised spin-wave excitation shared symmetrically
+              across the ensemble: <Math tex="|0\\rangle" /> is all atoms in their ground
+              state, <Math tex="|1\\rangle" /> is a single quantum of excitation
+              distributed across them. Used primarily as a quantum memory in DLCZ-style
+              repeater protocols and Atomic-Frequency-Comb schemes; the collective
+              enhancement gives strong coupling to single photons
+              <SourceNote id="sangouard-rmp-83" />.
             </p>
           </article>
         </Grid>
