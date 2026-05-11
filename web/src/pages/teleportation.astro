@@ -258,14 +258,14 @@ const sections = [
           </ol>
 
           <figcaption>
-            The bar at Alice's <Math tex="|\\psi\\rangle" /> slot is set to a random
-            orientation each cycle (representing an arbitrary unknown state). After Alice's
-            BSM, two random bits travel along the classical channel; Bob applies the
-            corresponding Pauli correction and ends up with a bar at the same orientation
-            as Alice's original. Alice's bars fade to indicate that her BSM projects
-            <Math tex="C" /> and <Math tex="A" /> jointly onto a Bell state — neither qubit
-            carries <Math tex="|\\psi\\rangle" /> any more. The Bell-pair line is drawn
-            dashed to mark it as a quantum resource that gets consumed each cycle.
+            Alice's input qubit <Math tex="|\\psi\\rangle" /> holds an arbitrary unknown
+            state — a different one each cycle. Her BSM consumes both
+            <Math tex="|\\psi\\rangle" /> and her half of the shared Bell pair, projecting
+            them jointly onto a Bell state and producing two classical bits. The bits
+            travel to Bob over a classical channel; he applies the matching Pauli
+            correction and his Bell-half ends up in <Math tex="|\\psi\\rangle" />. The
+            Bell pair is consumed in the process — a fresh one is required for the next
+            teleportation.
           </figcaption>
         </figure>
       </section>
@@ -273,12 +273,11 @@ const sections = [
       <section id="circuit" data-nav-section>
         <h2>Circuit diagram</h2>
         <p>
-          The same protocol drawn as a quantum circuit. Three horizontal wires — Alice's
-          input qubit <Math tex="C" /> on top, Alice's half of the Bell pair
-          <Math tex="A" /> in the middle, Bob's half <Math tex="B" /> on the bottom —
-          time flows left to right. Three dashed-bordered blocks identify the three
-          conceptual stages: Bell-pair creation, the Bell-state measurement, and the
-          Pauli correction <SourceNote id="cacciapuoti-ieeetc-2020" />.
+          As a quantum circuit, the protocol runs on three wires — Alice's input qubit
+          <Math tex="C" />, Alice's half of the Bell pair <Math tex="A" />, and Bob's
+          half <Math tex="B" /> — with time flowing left to right. The three conceptual
+          stages are Bell-pair creation, the Bell-state measurement, and the Pauli
+          correction <SourceNote id="cacciapuoti-ieeetc-2020" />.
         </p>
 
         <figure class="tp-circuit">
@@ -385,21 +384,20 @@ const sections = [
             <text x="50" y="266" class="tp-c-time">time →</text>
           </svg>
           <figcaption>
-            Standard teleportation circuit, after Cacciapuoti et al.
-            <em>IEEE Trans. Comm.</em> 68 (2020), Fig. 3. Three quantum wires; time
-            flows left to right. <strong>Bell-pair creation</strong> (left dashed
-            block): Hadamard on Alice's <Math tex="|0\\rangle" /> followed by a CNOT
-            onto Bob's <Math tex="|0\\rangle" /> produces the Bell pair
-            <Math tex="|\\Phi^+\\rangle_{AB}" />. <strong>Bell-state measurement</strong>
-            (middle dashed block): a CNOT then a Hadamard then two single-qubit
-            measurements project Alice's two qubits jointly onto a Bell state, yielding
-            two classical bits — <em>a</em> from the <Math tex="|\\psi\\rangle" />
-            measurement, <em>b</em> from the EPR-half measurement. The double lines are
-            classical wires carrying those bits to Bob.
-            <strong>Pauli correction</strong> (right dashed block): Bob applies
-            <Math tex="X^b" /> followed by <Math tex="Z^a" /> to undo the Pauli
-            operation that the BSM outcome left on his qubit. After the correction,
-            <Math tex="B" /> is in state <Math tex="|\\psi\\rangle" />.
+            <strong>Bell-pair creation:</strong> a Hadamard on Alice's
+            <Math tex="|0\\rangle" /> followed by a CNOT onto Bob's
+            <Math tex="|0\\rangle" /> produces the Bell pair
+            <Math tex="|\\Phi^+\\rangle_{AB}" />.
+            <strong>Bell-state measurement:</strong> a CNOT, a Hadamard, and two
+            single-qubit measurements project Alice's <Math tex="C" /> and
+            <Math tex="A" /> jointly onto a Bell state, yielding two classical bits —
+            <em>a</em> from the <Math tex="|\\psi\\rangle" /> measurement, <em>b</em>
+            from the Bell-half measurement. Double lines are the classical wires
+            carrying those bits to Bob.
+            <strong>Pauli correction:</strong> Bob applies <Math tex="X^b" /> followed
+            by <Math tex="Z^a" /> to undo the Pauli operator the BSM outcome left on his
+            qubit, completing the transfer of <Math tex="|\\psi\\rangle" /> onto
+            <Math tex="B" />.
           </figcaption>
         </figure>
       </section>
@@ -432,7 +430,7 @@ const sections = [
             statistics are independent of Alice's outcome, so he learns nothing about
             <Math tex="|\\psi\\rangle" /> from his half alone. Only when he receives the
             two bits and applies the matching correction does the qubit become useful.
-            This is what makes teleportation compatible with relativity — no information
+            Teleportation is therefore compatible with relativity — no information
             crosses faster than the classical bits do.
           </p>
         </Callout>
@@ -465,13 +463,13 @@ const sections = [
           </li>
         </ul>
         <p>
-          Two consequences worth flagging. First, teleportation degrades with the fidelity
-          of the Bell pair: a noisy pair gives Bob a noisy copy of
-          <Math tex="|\\psi\\rangle" />. The cleaner the pair, the cleaner the teleported
-          state. This is why distillation matters — it takes noisy pairs and produces
-          cleaner ones. Second, the protocol is one-shot per Bell pair; teleporting many
-          qubits requires many Bell pairs, which is what makes entanglement-distribution
-          rate (Bell pairs per second) a headline network metric.
+          Two consequences. First, teleportation degrades with the fidelity of the Bell
+          pair: a noisy pair gives Bob a noisy copy of <Math tex="|\\psi\\rangle" />.
+          The cleaner the pair, the cleaner the teleported state. Distillation takes
+          noisy pairs and produces cleaner ones. Second, the protocol is one-shot per
+          Bell pair; teleporting many qubits requires many Bell pairs, which is why
+          entanglement-distribution rate (Bell pairs per second) is a headline network
+          metric.
         </p>
       </section>
 
@@ -483,8 +481,8 @@ const sections = [
           and reach. The application's "send a qubit" operation is implemented by
           teleportation on top of that promise. Other applications — entanglement-based
           QKD, blind quantum computing, distributed quantum computing — also consume
-          delivered Bell pairs, but teleportation is the most direct illustration of
-          what those Bell pairs are <em>for</em> <SourceNote id="kumar-ijndc-2025" />.
+          delivered Bell pairs; teleportation is the simplest case of using
+          one <SourceNote id="kumar-ijndc-2025" />.
         </p>
         <p>
           Two related primitives, covered in their own subjects, share teleportation's
