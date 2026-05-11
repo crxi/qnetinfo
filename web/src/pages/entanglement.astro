@@ -304,10 +304,10 @@ const sections = [
               </li>
               <li>
                 <strong>Polarisation is one encoding among many.</strong> A photon can
-                carry a qubit in polarisation, time-bin, frequency, dual-rail, or
-                hyperentangled form — the qubits subject covers the menu. The
-                entanglement physics is the same in any encoding; polarisation is the
-                most familiar and the easiest to picture.
+                carry a qubit in polarisation, time-bin, phase, frequency-bin, or
+                dual-rail form — the qubits subject covers the menu. The entanglement
+                physics is the same in any encoding; polarisation is the most familiar
+                and the easiest to picture.
               </li>
               <li>
                 <strong>Apparatus.</strong> Each station is a polarising beam splitter
@@ -315,6 +315,17 @@ const sections = [
                 detectors. The outer-up detector D₀ clicks on the H component, the
                 outer-down D₁ on V — so a single measurement always yields one click,
                 and the slot that lit up identifies the outcome.
+              </li>
+              <li>
+                <strong>Both stations measure in the same basis.</strong> The PBSes here
+                are both oriented H/V. The
+                <Math tex="|\\Phi^+\\rangle" /> correlation holds only when Alice and
+                Bob's measurement axes match — both could have chosen diagonal or any
+                other axis and still seen perfect agreement, but a mismatch makes the
+                outcomes follow Malus's law,
+                <Math tex="P(\\text{agree}) = \\cos^2(\\theta_A - \\theta_B)" />, instead
+                of locking step. The choice of basis matters; the choice of <em>which</em>
+                basis (so long as both pick the same one) doesn't.
               </li>
               <li>
                 <strong>Inward leg, then split.</strong> On the inward leg each photon
