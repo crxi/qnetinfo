@@ -24,6 +24,7 @@ import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
 import Callout from "../components/Callout.astro";
 import Math from "../components/Math.astro";
+import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",     label: "Overview" },
@@ -193,7 +194,7 @@ const sections = [
                 a filled dark backdrop sits behind the icon, and the
                 icon's black strokes are inverted to white. */}
             <circle cx="300" cy="80" r="24" fill="var(--color-text)"/>
-            <image href="/icons/quisp/EPPS.svg" x="276" y="56" width="48" height="48" style="filter: invert(1);"/>
+            <image href={url("/icons/quisp/EPPS.svg")} x="276" y="56" width="48" height="48" style="filter: invert(1);"/>
             <text x="300" y="128" text-anchor="middle" class="epr-caption">entangled-photon source</text>
 
             {/* Alice apparatus. A polarising beam splitter (PBS, the

@@ -17,6 +17,7 @@ import {
   PLANNED_SUBJECTS,
   TIER_LABEL,
 } from "../lib/subjects";
+import { url } from "../lib/url";
 ---
 
 <Infographic
@@ -43,7 +44,7 @@ import {
           <h2 id="available-heading" class="group-heading">Available now</h2>
           <Grid min="22rem" gap="var(--space-3)">
             {SHIPPED_SUBJECTS.map((s) => (
-              <a class="subject-card" href={`/${s.slug}`}>
+              <a class="subject-card" href={url(`/${s.slug}`)}>
                 <p class="subject-card__tier">{TIER_LABEL[s.tier]}</p>
                 <h3>{s.title}</h3>
                 <p>{s.blurb}</p>

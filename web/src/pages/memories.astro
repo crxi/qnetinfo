@@ -26,6 +26,7 @@ import Stack from "../components/Stack.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
 import Math from "../components/Math.astro";
+import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",  label: "Overview" },
@@ -315,9 +316,9 @@ const platforms = [
           travel along deployed fibre, the photon those memories absorb or emit has to
           first be converted to the C-band by a quantum frequency converter (QFC); for
           superconducting memories the conversion is microwave-to-optical and is the
-          field's hardest open transducer. The <a href="/spectrum">spectrum</a> page
+          field's hardest open transducer. The <a href={url("/spectrum")}>spectrum</a> page
           places all of these on a common log-frequency axis with the C-band marked as
-          the convergence target; the <a href="/transduction">transduction</a> page covers
+          the convergence target; the <a href={url("/transduction")}>transduction</a> page covers
           the conversion devices themselves.
         </p>
       </section>
@@ -400,7 +401,7 @@ const platforms = [
           quantum network.
         </p>
         <p>
-          The <a href="/maturity">maturity</a> page sets these per-memory TRLs against the
+          The <a href={url("/maturity")}>maturity</a> page sets these per-memory TRLs against the
           per-capability QTRL framework Purohit et al. propose, so a single platform's
           TRL for "memory" can differ from its TRL for "compute" or "source".
         </p>

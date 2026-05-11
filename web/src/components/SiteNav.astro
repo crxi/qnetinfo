@@ -23,6 +23,7 @@
  */
 
 import { SUBJECTS, TIER_LABEL, type SubjectTier } from "../lib/subjects";
+import { url } from "../lib/url";
 
 interface Section {
   id: string;
@@ -55,7 +56,7 @@ const groupedTiers = TIER_ORDER
 
   <ul class="site-nav__list site-nav__list--home">
     <li>
-      <a href="/" class:list={{ "is-current": !currentSubject }}>Home</a>
+      <a href={url("/")} class:list={{ "is-current": !currentSubject }}>Home</a>
     </li>
   </ul>
 
@@ -67,7 +68,7 @@ const groupedTiers = TIER_ORDER
           <li>
             {s.status === "shipped" ? (
               <a
-                href={`/${s.slug}`}
+                href={url(`/${s.slug}`)}
                 class:list={{ "is-current": currentSubject === s.slug }}
               >{s.navLabel ?? s.title}</a>
             ) : (
