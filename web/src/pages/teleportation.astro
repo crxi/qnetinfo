@@ -112,11 +112,12 @@ const sections = [
       <section id="protocol" data-nav-section>
         <h2>The protocol</h2>
         <p>
-          Four steps. The starting resource is a Bell pair
+          The starting resource is a Bell pair
           <Math tex="|\\Phi^+\\rangle_{AB} = (|00\\rangle + |11\\rangle)/\\sqrt{2}" />
           shared between Alice and Bob — Alice holds qubit <Math tex="A" />, Bob holds
           qubit <Math tex="B" />. Alice additionally holds the qubit
-          <Math tex="C" /> in the state <Math tex="|\\psi\\rangle" /> she wants to teleport.
+          <Math tex="C" /> in the state <Math tex="|\\psi\\rangle" /> she wants to
+          teleport. The protocol then proceeds in four steps:
         </p>
 
         <ol class="tp-steps">
@@ -463,11 +464,12 @@ const sections = [
           </li>
         </ul>
         <p>
-          Two consequences. First, teleportation degrades with the fidelity of the Bell
-          pair: a noisy pair gives Bob a noisy copy of <Math tex="|\\psi\\rangle" />.
-          The cleaner the pair, the cleaner the teleported state. Distillation takes
-          noisy pairs and produces cleaner ones. Second, the protocol is one-shot per
-          Bell pair; teleporting many qubits requires many Bell pairs, which is why
+          Two consequences follow from this resource ledger. First, teleportation
+          degrades with the fidelity of the Bell pair: a noisy pair gives Bob a noisy
+          copy of <Math tex="|\\psi\\rangle" />, and the cleaner the pair, the cleaner
+          the teleported state — which is why distillation exists, to take noisy pairs
+          and produce cleaner ones. Second, the protocol is one-shot per Bell pair;
+          teleporting many qubits requires many Bell pairs, which is why
           entanglement-distribution rate (Bell pairs per second) is a headline network
           metric.
         </p>
