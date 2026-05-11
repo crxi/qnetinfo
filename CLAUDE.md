@@ -114,6 +114,58 @@ Concrete signal: if you find yourself thinking through three or more independent
 - **Capability chips on chart boxes** (spectrum specifically): three small letter chips at top-right of each box — `C` (compute), `M` (memory), `S` (source). Filled with the platform colour when supported, outlined-only when not. Replaces the older dashed-vs-solid border distinction.
 - **Build-time SVG**: every chart is static SVG produced at build time. Client JS is reserved for interactions (hover, click-to-scroll, deep-links via `#platform-<id>`), not for measurement or geometry.
 
+### Shared design concepts — reuse, don't reinvent
+
+When the same physical thing or the same animation behaviour appears in more than one page, **draw it the same way every time and reuse the same JS recipe**. A reader who sees a PBS on the entanglement page should recognise the same glyph on the BSM page, the teleportation page, the repeaters page, etc. Inconsistent glyphs or inconsistent animation behaviour make the reader work harder for no reason, and they make it look like you didn't bother to check the existing pages. Look first; copy the existing approach; only invent when nothing fits.
+
+**Container — every animated demo lives in a "demo card"**:
+
+Every animated set-piece on a subject page is wrapped in a card with the same padding, background, border, and gap rhythm as the entanglement page's `.epr` figure. This makes the demos read as the same *kind* of element across the workspace, and stops them from floating loose against the surrounding prose. Recipe:
+
+```css
+.demo-card {  /* whatever class you use for your figure */
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  display: grid;
+  gap: var(--space-3);
+}
+.demo-card svg { width: 100%; height: auto; display: block; margin: 0 auto; }
+.demo-card figcaption {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-text-mute);
+}
+.demo-card figcaption strong { color: var(--color-text); }
+```
+
+First example: `.epr` on the entanglement page (the EPS demo). Every subsequent animated figure on the workspace must use the same wrapper styling — copy the class block above and rename the selector if needed. Do *not* leave an SVG demo floating directly in the prose without the card.
+
+**Glyphs** — visual elements that must look the same everywhere:
+
+- **PBS (polarising beam splitter)**: a small axis-aligned square with a single `\` diagonal line inside (top-left to bottom-right). Stroke = `var(--color-text)`, fill = `var(--color-bg)`, ~16–24 px on a side. First example: entanglement page `data-eps-pbs`.
+- **BS (50:50 beam splitter)**: a thin filled plate (rectangle a few px thick × ~28 long), accent-coloured, oriented perpendicular to the bisector of the incoming beams. The plate convention follows the optics literature (Bouwmeester, Azuma RMP, Pan reviews). Distinct from the PBS shape on purpose.
+- **Photon detector**: solid black D-shape with the **flat side facing the incoming beam**. Rotate the D so the flat edge is normal to the beam direction. Bouwmeester / Pan / Azuma figures all use this convention.
+- **Photon glyph during travel**: fuzzy radial-gradient cloud (`radialGradient` with accent colour) for the *travelling, undefined-state* photon. A sharp horizontal/vertical bar (line element with `rotate(0)` for H, `rotate(90)` for V) replaces the cloud once the polarisation has been resolved (i.e., immediately after the PBS). The bar is **not** rotated to match the beam direction — the bar's own angle encodes the polarisation, full stop.
+
+**Animation behaviours** — recipes to reuse verbatim:
+
+- **Photons disappear at the detector + detector pulses**: when a photon glyph reaches a detector, *hide the photon entirely* and trigger a brief stroke-width pulse on the detector D (or its bounding rect). The first reference implementation lives in entanglement-page `pulse(side, outcome, now)` + `updateBorders(now)`: each fired detector gets `pulseEnd[key] = now + PULSE_DUR` (≈280–320 ms); the per-frame loop interpolates `stroke-width` from `1.5 + 3·t` back to `1.5` as the remaining time `t` decays. Never let the photon glyph "park" on top of the detector glyph after arrival — that reads as lazy and overlaps two design elements instead of handing off cleanly.
+- **White-on-black trick for "current state-change"**: when an animation needs to point out the *latest* discrete event (active ket, active history digit, active outcome bit, …), invert it to white text on a black backdrop rect. Implementation pattern: a `<rect fill="var(--color-text)" opacity="0">` behind the text plus a CSS class (`.X-text--active { fill: var(--color-bg); font-weight: 700; }`); toggle the rect opacity and the class together. First example: entanglement-page `eps-ket--active` plus its `data-eps-ket-bg` backdrop rect. Reuse the exact same recipe wherever a similar "what just changed" callout is needed.
+- **Reduced-motion fallback**: every animation honours `@media (prefers-reduced-motion: reduce)` (read via `matchMedia("(prefers-reduced-motion: reduce)").matches` in JS) and renders a meaningful end-state still frame plus a pre-populated history if applicable.
+
+**Layout discipline**:
+
+- **All beams at 90° wherever the layout allows**: animation diagrams read better when every intersection is orthogonal (or a clean 45° on a rotated diagram). If beams need to converge or split, do it at a single optical element, not at an arbitrary angle in empty space.
+- **Place elements on a grid before drawing beams.** Pick a grid unit (e.g. 70 px) and assign every optical element to an integer grid point. Beam lines are drawn between grid centres; the element glyphs (BS plate, PBS square, detector D) are drawn axis-aligned on top, so the line passes through the element centre without bending or being shifted around the glyph. If your beam appears to dodge an element's bounding box, you placed the element off-grid.
+
+**Process rule (zeroth, applies before any of the above)**: *before* coding a new animated figure, open the most-recently-shipped animated figure in the same workspace, scan its SVG + JS, and explicitly note which patterns you'll reuse. If the new figure needs a new pattern, justify in a comment why the existing recipe didn't fit. The cost of looking is minutes; the cost of shipping an inconsistent recipe is rework after the user notices.
+
+If a future page needs a new shared glyph (mirror, wave plate, modulator, …) or a new animation pattern (sweep, fade-in chain, multi-photon coincidence flash, …), add it to this list with a screenshot or a code reference so the next page can copy it verbatim.
+
 ### Standardised network icons — QuISP icon library
 
 For diagrams that depict quantum network *topologies* (nodes + links rather than per-platform anatomy), use the standardised icon set from the QuISP project at <https://github.com/sfc-aqua/quisp/tree/master/Network%20icons>. The library defines 12 node types with a consistent visual grammar — square borders for end nodes, distinct shapes for repeaters and support nodes — and ships SVG, PNG, and diagrams.net library formats. Free to use; derives from Van Meter et al.

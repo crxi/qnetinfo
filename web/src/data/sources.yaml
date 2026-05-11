@@ -101,6 +101,23 @@
   type: paper
   doi: "10.1126/sciadv.adf4080"
 
+- id: calsamiglia-aphysb-2001
+  title: "Maximum efficiency of a linear-optical Bell-state analyzer"
+  authors: ["Jordi Calsamiglia", "Norbert Lütkenhaus"]
+  publisher: "Applied Physics B"
+  year: 2001
+  type: paper
+  doi: "10.1007/s003400100712"
+  note: "Established the 50 % upper bound for linear-optics polarisation BSM without ancillas."
+
+- id: nielsen-chuang-qcqi
+  title: "Quantum Computation and Quantum Information"
+  authors: ["Michael A. Nielsen", "Isaac L. Chuang"]
+  publisher: "Cambridge University Press"
+  year: 2010
+  type: book
+  note: "10th anniversary edition. §1.3.7 / Box 1.6 gives the standard CNOT + Hadamard + computational-basis-readout circuit for a deterministic Bell-basis projection on matter qubits."
+
 - id: bennett-pra-1996
   title: "Mixed-state entanglement and quantum error correction"
   authors: ["Charles H. Bennett", "David P. DiVincenzo", "John A. Smolin", "William K. Wootters"]

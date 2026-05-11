@@ -59,7 +59,7 @@ export const SUBJECTS: Subject[] = [
     slug: "entanglement",
     title: "Entanglement and Bell pairs",
     navLabel: "Entanglement",
-    blurb: "What makes the network-relevant correlations stronger than classical correlation, and why Bell pairs are the unit of currency.",
+    blurb: "What makes the network-relevant correlations stronger than classical correlation, and why Bell pairs are the resource quantum networks deliver.",
     status: "shipped",
     tier: "A",
   },

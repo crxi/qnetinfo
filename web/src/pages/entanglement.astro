@@ -31,26 +31,33 @@ const sections = [
   { id: "definition",   label: "What entanglement is" },
   { id: "bell-pairs",   label: "The four Bell pairs" },
   { id: "why-deliver",  label: "Why deliver Bell pairs" },
-  { id: "uses",         label: "What a Bell pair lets you do" },
   { id: "generation",   label: "How Bell pairs are made" },
+  { id: "uses",         label: "What a Bell pair lets you do" },
+  { id: "bsm",          label: "Bell-state measurement" },
   { id: "requirements", label: "What it takes to deliver" },
 ];
 ---
 
 <Infographic
   title="Entanglement and Bell pairs"
-  description="Entanglement is the multi-qubit phenomenon that makes quantum networking a separate discipline. Bell pairs are the unit of currency in every quantum-network protocol. This page covers the definition of entanglement, the four Bell pairs, what a delivered Bell pair lets you do (teleportation, swapping, distillation), how Bell pairs are generated, and what a Bell-pair delivery network needs to operate."
+  description="Entanglement is the multi-qubit phenomenon that makes quantum networking a separate discipline. Bell pairs are the shared resource every quantum-network protocol consumes. This page covers the definition of entanglement, the four Bell pairs, what a delivered Bell pair lets you do (teleportation, swapping, distillation), how Bell pairs are generated, and what a Bell-pair delivery network needs to operate."
   references={[
+    "azuma-rmp-95",
+    "bayerbach-sciadv-2023",
     "bell-1964",
     "bennett-pra-1996",
     "bennett-prl-1993",
+    "calsamiglia-aphysb-2001",
     "duan-nature-414",
     "forbes-rpp-2025",
     "knaut-nature-2024",
     "kozlowski-rfc9340",
     "kumar-ijndc-2025",
     "kwiat-prl-1995",
+    "lo-prl-mdi-2012",
+    "meddeb-comnet-2025",
     "muralidharan-scirep-2016",
+    "nielsen-chuang-qcqi",
     "sangouard-rmp-83",
     "wootters-nature-1982",
     "yin-science-2017",
@@ -71,8 +78,10 @@ const sections = [
           networking" but a different category of service.
         </p>
         <p>
-          The unit of currency is the <strong>Bell pair</strong>: a single pair of qubits in
-          a specific maximally entangled state, with one qubit at each of two endpoints.
+          The shared resource a quantum network delivers is the <strong>Bell pair</strong>
+          — also called an <strong>EPR pair</strong>, after the 1935 Einstein-Podolsky-Rosen
+          paper that first discussed states of this form. A Bell pair is two qubits in a
+          specific maximally entangled state, with one qubit at each of two endpoints.
           Once a Bell pair is delivered between two distant nodes, users can teleport
           arbitrary qubits through it, extract a cryptographic key, or run a distributed
           protocol. The whole of quantum networking reduces to one goal: deliver Bell pairs
@@ -206,14 +215,14 @@ const sections = [
                 of measurement, so the eye sees which way it went.
                 Border thickens briefly when a detector fires. */}
             <text x="50" y="22" text-anchor="middle" class="epr-label">Alice</text>
-            <g data-eps-det="A0">
-              <rect x="20" y="36" width="24" height="18" rx="3"
-                    fill="var(--color-surface-2)" stroke="var(--color-text)" stroke-width="1.5"/>
-              <line data-eps-result="A0" x1="26" y1="45" x2="38" y2="45"
-                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round" opacity="0.18"/>
+            <g data-eps-det="A0" transform="translate(32 45) rotate(135)">
+              <path data-eps-result="A0"
+                    d="M -6.5,0 L 6.5,0 A 6.5,6.5 0 0 1 -6.5,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.18"/>
             </g>
             <text x="12" y="48" text-anchor="end" class="epr-out" dominant-baseline="middle">0</text>
-            <line x1="62" y1="72" x2="44" y2="54"
+            <line x1="62" y1="72" x2="32" y2="45"
                   stroke="var(--color-text-soft)" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
             <g data-eps-pbs>
               <rect x="62" y="72" width="16" height="16"
@@ -221,26 +230,26 @@ const sections = [
               <line x1="62" y1="72" x2="78" y2="88"
                     stroke="var(--color-text)" stroke-width="1.5"/>
             </g>
-            <line x1="62" y1="88" x2="44" y2="106"
+            <line x1="62" y1="88" x2="32" y2="115"
                   stroke="var(--color-text-soft)" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
-            <g data-eps-det="A1">
-              <rect x="20" y="106" width="24" height="18" rx="3"
-                    fill="var(--color-surface-2)" stroke="var(--color-text)" stroke-width="1.5"/>
-              <line data-eps-result="A1" x1="32" y1="109" x2="32" y2="121"
-                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round" opacity="0.18"/>
+            <g data-eps-det="A1" transform="translate(32 115) rotate(45)">
+              <path data-eps-result="A1"
+                    d="M -6.5,0 L 6.5,0 A 6.5,6.5 0 0 1 -6.5,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.18"/>
             </g>
             <text x="12" y="116" text-anchor="end" class="epr-out" dominant-baseline="middle">1</text>
 
             {/* Bob apparatus (mirror image of Alice). */}
             <text x="550" y="22" text-anchor="middle" class="epr-label">Bob</text>
-            <g data-eps-det="B0">
-              <rect x="556" y="36" width="24" height="18" rx="3"
-                    fill="var(--color-surface-2)" stroke="var(--color-text)" stroke-width="1.5"/>
-              <line data-eps-result="B0" x1="562" y1="45" x2="574" y2="45"
-                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round" opacity="0.18"/>
+            <g data-eps-det="B0" transform="translate(568 45) rotate(225)">
+              <path data-eps-result="B0"
+                    d="M -6.5,0 L 6.5,0 A 6.5,6.5 0 0 1 -6.5,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.18"/>
             </g>
             <text x="588" y="48" text-anchor="start" class="epr-out" dominant-baseline="middle">0</text>
-            <line x1="538" y1="72" x2="556" y2="54"
+            <line x1="538" y1="72" x2="568" y2="45"
                   stroke="var(--color-text-soft)" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
             <g data-eps-pbs>
               <rect x="522" y="72" width="16" height="16"
@@ -248,13 +257,13 @@ const sections = [
               <line x1="522" y1="72" x2="538" y2="88"
                     stroke="var(--color-text)" stroke-width="1.5"/>
             </g>
-            <line x1="538" y1="88" x2="556" y2="106"
+            <line x1="538" y1="88" x2="568" y2="115"
                   stroke="var(--color-text-soft)" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
-            <g data-eps-det="B1">
-              <rect x="556" y="106" width="24" height="18" rx="3"
-                    fill="var(--color-surface-2)" stroke="var(--color-text)" stroke-width="1.5"/>
-              <line data-eps-result="B1" x1="568" y1="109" x2="568" y2="121"
-                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round" opacity="0.18"/>
+            <g data-eps-det="B1" transform="translate(568 115) rotate(315)">
+              <path data-eps-result="B1"
+                    d="M -6.5,0 L 6.5,0 A 6.5,6.5 0 0 1 -6.5,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.18"/>
             </g>
             <text x="588" y="116" text-anchor="start" class="epr-out" dominant-baseline="middle">1</text>
 
@@ -383,10 +392,10 @@ const sections = [
             // Detector groups (rect + slot indicator). The rect inside
             // each group is what we thicken on pulse.
             const detRect = {
-              A0: eps.querySelector('[data-eps-det="A0"] rect'),
-              A1: eps.querySelector('[data-eps-det="A1"] rect'),
-              B0: eps.querySelector('[data-eps-det="B0"] rect'),
-              B1: eps.querySelector('[data-eps-det="B1"] rect'),
+              A0: eps.querySelector('[data-eps-det="A0"] path'),
+              A1: eps.querySelector('[data-eps-det="A1"] path'),
+              B0: eps.querySelector('[data-eps-det="B0"] path'),
+              B1: eps.querySelector('[data-eps-det="B1"] path'),
             };
             const aHist = eps.querySelector('[data-eps-history="A"]');
             const bHist = eps.querySelector('[data-eps-history="B"]');
@@ -811,6 +820,25 @@ const sections = [
             local action.
           </p>
         </Callout>
+
+        <Callout label="Beyond two qubits — GHZ states">
+          <p>
+            Entanglement is not limited to pairs. The
+            <strong>Greenberger-Horne-Zeilinger</strong> state generalises the
+            <Math tex="|\\Phi^+\\rangle" /> Bell state to <Math tex="n \\geq 3" /> qubits:
+          </p>
+          <Math display tex="|\\mathrm{GHZ}_n\\rangle = \\tfrac{1}{\\sqrt{2}}\\bigl(|0\\rangle^{\\otimes n} + |1\\rangle^{\\otimes n}\\bigr)" />
+          <p>
+            For <Math tex="n = 3" />, that is
+            <Math tex="\\tfrac{1}{\\sqrt{2}}(|000\\rangle + |111\\rangle)" />. GHZ states and
+            other multipartite resources (W states, cluster states, graph states) underpin
+            anonymous transmission, conference-key agreement, and measurement-based
+            distributed computing. This page sticks to the bipartite Bell pair — it is the
+            primitive every fielded quantum-network architecture builds on, and the
+            multipartite resources can themselves be assembled from Bell pairs and local
+            operations. Multipartite entanglement is out of scope for this series.
+          </p>
+        </Callout>
       </section>
 
       <section id="why-deliver" data-nav-section>
@@ -852,73 +880,15 @@ const sections = [
         </p>
       </section>
 
-      <section id="uses" data-nav-section>
-        <h2>What a Bell pair lets you do</h2>
-        <p>
-          A single qubit's state cannot be copied. The <strong>no-cloning theorem</strong>
-          says there is no unitary <Math tex="U" /> for which
-          <Math tex="U(|\\psi\\rangle|0\\rangle) = |\\psi\\rangle|\\psi\\rangle" /> for an
-          arbitrary unknown <Math tex="|\\psi\\rangle" />; copying would violate the
-          linearity of quantum mechanics <SourceNote id="wootters-nature-1982" />. A signal
-          photon cannot be passed through an amplifier and faithfully reproduced either —
-          any phase-insensitive amplifier must add at least one quantum of noise per mode,
-          which destroys the qubit's state. The consequence is that quantum networks cannot
-          reuse the engineering that makes long-distance classical optical fibre work; the
-          three primitives below replace it.
-        </p>
-        <p>
-          Each consumes the shared Bell pair (one-shot resource) and uses a classical
-          side-channel for the corrections that complete the protocol.
-        </p>
-
-        <Grid min="18rem" gap="var(--space-3)">
-          <article class="use-card">
-            <h3>Teleportation</h3>
-            <p>
-              Alice has an unknown qubit <Math tex="|\\psi\\rangle" /> she wants to transmit
-              to Bob. She performs a Bell-state measurement on
-              <Math tex="|\\psi\\rangle" /> together with her half of the shared Bell pair,
-              then sends the 2-bit outcome to Bob over a classical channel. Bob applies the
-              corresponding Pauli correction to his half — which is now in state
-              <Math tex="|\\psi\\rangle" />. The original at Alice is destroyed in the
-              measurement, consistent with no-cloning <SourceNote id="bennett-prl-1993" />.
-            </p>
-          </article>
-
-          <article class="use-card">
-            <h3>Entanglement swapping</h3>
-            <p>
-              Alice and a relay station share a Bell pair; the relay and Bob share another.
-              The relay performs a Bell-state measurement on its two qubits and sends the
-              2-bit result to one of the endpoints, who applies a Pauli correction. Alice
-              and Bob now share a Bell pair, even though their qubits never interacted. The
-              primitive every memory-based quantum repeater is built
-              on <SourceNote id="zukowski-prl-1993" />.
-            </p>
-          </article>
-
-          <article class="use-card">
-            <h3>Distillation</h3>
-            <p>
-              Bell pairs delivered through a noisy channel are mixed states with reduced
-              fidelity. Distillation protocols consume two (or more) low-fidelity pairs and
-              produce one higher-fidelity pair, trading throughput for quality. Together
-              with swapping, distillation makes long-distance entanglement distribution
-              feasible without per-photon error correction
-              <SourceNote id="bennett-pra-1996" />.
-            </p>
-          </article>
-        </Grid>
-      </section>
-
       <section id="generation" data-nav-section>
         <h2>How Bell pairs are made</h2>
         <p>
-          The three primitives above all <em>consume</em> Bell pairs. This section covers
-          how a pair is <em>generated</em> — what physical device produces the entangled
-          state in the first place. How a generated pair is then <em>distributed</em>
-          (one half placed at each of two distant nodes) is a separate engineering
-          subject covered later in the series <SourceNote id="kumar-ijndc-2025" />.
+          A Bell pair has to exist before anything else in this series matters. This
+          section covers how a pair is <em>generated</em> — what physical device produces
+          the entangled state in the first place. How a generated pair is then
+          <em>distributed</em> (one half placed at each of two distant nodes) is a separate
+          engineering subject covered later in the series
+          <SourceNote id="kumar-ijndc-2025" />.
         </p>
 
         <Callout label="Postselection vs heralding">
@@ -1132,6 +1102,743 @@ const sections = [
 
       </section>
 
+      <section id="uses" data-nav-section>
+        <h2>What a Bell pair lets you do</h2>
+        <p>
+          A single qubit's state cannot be copied. The <strong>no-cloning theorem</strong>
+          says there is no unitary <Math tex="U" /> for which
+          <Math tex="U(|\\psi\\rangle|0\\rangle) = |\\psi\\rangle|\\psi\\rangle" /> for an
+          arbitrary unknown <Math tex="|\\psi\\rangle" />; copying would violate the
+          linearity of quantum mechanics <SourceNote id="wootters-nature-1982" />. A signal
+          photon cannot be passed through an amplifier and faithfully reproduced either —
+          any phase-insensitive amplifier must add at least one quantum of noise per mode,
+          which destroys the qubit's state. The consequence is that quantum networks cannot
+          reuse the engineering that makes long-distance classical optical fibre work; the
+          three primitives below replace it.
+        </p>
+        <p>
+          Each consumes the shared Bell pair (one-shot resource) and uses a classical
+          side-channel for the corrections that complete the protocol. The first two —
+          teleportation and entanglement swapping — invoke a
+          <strong>Bell-state measurement</strong>; the next section unpacks what that
+          measurement is and how it is built.
+        </p>
+
+        <Grid min="18rem" gap="var(--space-3)">
+          <article class="use-card">
+            <h3>Teleportation</h3>
+            <p>
+              Alice has an unknown qubit <Math tex="|\\psi\\rangle" /> she wants to transmit
+              to Bob. She performs a Bell-state measurement on
+              <Math tex="|\\psi\\rangle" /> together with her half of the shared Bell pair,
+              then sends the 2-bit outcome to Bob over a classical channel. Bob applies the
+              corresponding Pauli correction to his half — which is now in state
+              <Math tex="|\\psi\\rangle" />. The original at Alice is destroyed in the
+              measurement, consistent with no-cloning <SourceNote id="bennett-prl-1993" />.
+            </p>
+          </article>
+
+          <article class="use-card">
+            <h3>Entanglement swapping</h3>
+            <p>
+              Alice and a relay station share a Bell pair; the relay and Bob share another.
+              The relay performs a Bell-state measurement on its two qubits and sends the
+              2-bit result to one of the endpoints, who applies a Pauli correction. Alice
+              and Bob now share a Bell pair, even though their qubits never interacted. The
+              primitive every memory-based quantum repeater is built
+              on <SourceNote id="zukowski-prl-1993" />.
+            </p>
+          </article>
+
+          <article class="use-card">
+            <h3>Distillation</h3>
+            <p>
+              Bell pairs delivered through a noisy channel are mixed states with reduced
+              fidelity. Distillation protocols consume two (or more) low-fidelity pairs and
+              produce one higher-fidelity pair, trading throughput for quality. Together
+              with swapping, distillation makes long-distance entanglement distribution
+              feasible without per-photon error correction
+              <SourceNote id="bennett-pra-1996" />.
+            </p>
+          </article>
+        </Grid>
+      </section>
+
+      <section id="bsm" data-nav-section>
+        <h2>Bell-state measurement</h2>
+        <p>
+          A <strong>Bell-state measurement (BSM)</strong> is a joint measurement on two
+          qubits in the Bell basis. The outcome is one of four labels —
+          <Math tex="|\Phi^+\rangle" />, <Math tex="|\Phi^-\rangle" />,
+          <Math tex="|\Psi^+\rangle" />, <Math tex="|\Psi^-\rangle" /> — and the two qubits
+          are left in that Bell state. The label is two classical bits; the receiver uses
+          those bits to choose which Pauli correction to apply
+          (<Math tex="I" />, <Math tex="X" />, <Math tex="Z" />, or <Math tex="XZ" />)
+          and recover the intended state.
+        </p>
+        <p>
+          BSM is the operational primitive behind both teleportation (Alice does a BSM on
+          her unknown qubit and her half of the shared Bell pair; the 2-bit outcome tells
+          Bob which Pauli to apply) and entanglement swapping (a relay does a BSM on one
+          half of pair AB and one half of pair BC; the end qubits A and C are left
+          entangled, even though they never interacted).
+        </p>
+
+        <h3>How a photonic BSM is built</h3>
+        <p>
+          The canonical linear-optics implementation: the two qubits enter a 50:50 beam
+          splitter, the two output ports each go through a polarising beam splitter, and
+          four single-photon detectors sit at the four PBS outputs. Two-photon interference
+          at the central beam splitter routes the photons in a way that depends on the
+          Bell state at the input. The four-detector click pattern is the readout.
+        </p>
+
+        <figure class="bsm-figure">
+          <svg viewBox="0 0 1100 700" role="img"
+               aria-label="Linear-optics Bell-state measurement schematic, top-down layout following Azuma RMP 2023 Fig. 3(b). Sources at top; photons converge at the BS, exit through two PBSes, terminate at four detectors at the bottom. Running history of identified outcomes shown on the right."
+               data-bsm>
+            <defs>
+              <radialGradient id="bsm-photon-cloud" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%"   stop-color="var(--color-accent)" stop-opacity="0.95"/>
+                <stop offset="40%"  stop-color="var(--color-accent)" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="var(--color-accent)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            {/* --------------------------------------------------------
+                Grid: origin (60, 80), unit 70 px.
+                  src1 (4,0)=340,80     src2 (8,0)=620,80
+                  BS   (6,2)=480,220
+                  PBS₁ (3,5)=270,430    PBS₂ (9,5)=690,430
+                  D_H1 (1,7)=130,570    D_V1 (5,7)=410,570
+                  D_V2 (7,7)=550,570    D_H2 (11,7)=830,570
+                Every beam segment runs at exactly 45° between two
+                grid points. The optical elements (BS plate, PBS
+                squares, detector Ds) are drawn axis-aligned on top
+                of the beams — the lines pass through each element
+                centre without bending.
+                -------------------------------------------------------- */}
+
+            {/* ===== Outcome readout (top-left) ===== */}
+            <text x="30" y="40" class="bsm-outcome-label">BSM outcome — this shot</text>
+            <g data-bsm-outbit="A" transform="translate(64 96)">
+              <rect data-bsm-outbit-bg x="-22" y="-26" width="44" height="52" rx="4"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-outbit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
+                    class="bsm-outbit-text">—</text>
+            </g>
+            <text x="120" y="104" text-anchor="middle" class="bsm-outbit-sep">,</text>
+            <g data-bsm-outbit="B" transform="translate(176 96)">
+              <rect data-bsm-outbit-bg x="-22" y="-26" width="44" height="52" rx="4"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-outbit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
+                    class="bsm-outbit-text">—</text>
+            </g>
+            <text x="30" y="166" class="bsm-input-line">
+              projects to: <tspan data-bsm-input class="bsm-input-value-inline">—</tspan>
+            </text>
+
+            {/* ===== Source labels and dots (top of schematic) ===== */}
+            <text x="340" y="56" text-anchor="middle" class="bsm-label">qubit 1</text>
+            <text x="620" y="56" text-anchor="middle" class="bsm-label">qubit 2</text>
+            <circle cx="340" cy="80" r="3.5" fill="var(--color-text)"/>
+            <circle cx="620" cy="80" r="3.5" fill="var(--color-text)"/>
+
+            {/* ===== Beams (all 45°) — drawn first so elements overlay ===== */}
+            {/* sources → BS */}
+            <line x1="340" y1="80"  x2="480" y2="220"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            <line x1="620" y1="80"  x2="480" y2="220"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            {/* BS → PBSes */}
+            <line x1="480" y1="220" x2="270" y2="430"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            <line x1="480" y1="220" x2="690" y2="430"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            {/* PBS₁ → D_H1 (outer, down-left) and D_V1 (inner, down-right) */}
+            <line x1="270" y1="430" x2="130" y2="570"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            <line x1="270" y1="430" x2="410" y2="570"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            {/* PBS₂ → D_V2 (inner, down-left) and D_H2 (outer, down-right) */}
+            <line x1="690" y1="430" x2="550" y2="570"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+            <line x1="690" y1="430" x2="830" y2="570"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="3,3" opacity="0.6"/>
+
+            {/* ===== BS: thin vertical plate (physically vertical for
+                this 45°-from-above geometry; reflects each input by 90°). ===== */}
+            <rect x="476" y="204" width="8" height="32"
+                  fill="var(--color-accent)" stroke="var(--color-accent)" stroke-width="1"/>
+            <text x="500" y="216" class="bsm-elem-label" dominant-baseline="middle">BS</text>
+            <text x="500" y="230" class="bsm-elem-label" dominant-baseline="middle">50:50</text>
+
+            {/* ===== PBS₁: square with \\ diagonal (entanglement-page style) ===== */}
+            <g>
+              <rect x="260" y="420" width="20" height="20"
+                    fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.5"/>
+              <line x1="260" y1="420" x2="280" y2="440"
+                    stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="248" y="416" text-anchor="end" class="bsm-elem-label">PBS₁</text>
+            </g>
+
+            {/* ===== PBS₂: same style, mirrored ===== */}
+            <g>
+              <rect x="680" y="420" width="20" height="20"
+                    fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.5"/>
+              <line x1="680" y1="420" x2="700" y2="440"
+                    stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="712" y="416" class="bsm-elem-label">PBS₂</text>
+            </g>
+
+            {/* ===== Four detectors. D-shape, flat side facing the
+                incoming beam from above. Rotations chosen so the flat
+                normal points back along the beam towards the PBS. ===== */}
+            {/* D_H1: beam from upper-right (PBS₁); flat normal points upper-right → rotate 45° */}
+            <g data-bsm-det="H1" transform="translate(130 570) rotate(45)">
+              <path data-bsm-result="H1"
+                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.2"/>
+            </g>
+            {/* D_V1: beam from upper-left (PBS₁); flat normal upper-left → rotate -45° */}
+            <g data-bsm-det="V1" transform="translate(410 570) rotate(-45)">
+              <path data-bsm-result="V1"
+                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.2"/>
+            </g>
+            {/* D_V2: beam from upper-right (PBS₂); flat normal upper-right → rotate 45° */}
+            <g data-bsm-det="V2" transform="translate(550 570) rotate(45)">
+              <path data-bsm-result="V2"
+                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.2"/>
+            </g>
+            {/* D_H2: beam from upper-left (PBS₂); flat normal upper-left → rotate -45° */}
+            <g data-bsm-det="H2" transform="translate(830 570) rotate(-45)">
+              <path data-bsm-result="H2"
+                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
+                    stroke-linejoin="round" opacity="0.2"/>
+            </g>
+
+            {/* ===== Per-detector bit cell (always visible at rest;
+                inverts to white-on-black when its detector fires). ===== */}
+            <g data-bsm-bit="H1" transform="translate(130 610)">
+              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
+                    class="bsm-bit-text">0</text>
+            </g>
+            <g data-bsm-bit="V1" transform="translate(410 610)">
+              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
+                    class="bsm-bit-text">0</text>
+            </g>
+            <g data-bsm-bit="V2" transform="translate(550 610)">
+              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
+                    class="bsm-bit-text">1</text>
+            </g>
+            <g data-bsm-bit="H2" transform="translate(830 610)">
+              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
+                    class="bsm-bit-text">1</text>
+            </g>
+
+            <text x="130" y="650" text-anchor="middle" class="bsm-det-name">D₁ᴴ</text>
+            <text x="410" y="650" text-anchor="middle" class="bsm-det-name">D₁ⱽ</text>
+            <text x="550" y="650" text-anchor="middle" class="bsm-det-name">D₂ⱽ</text>
+            <text x="830" y="650" text-anchor="middle" class="bsm-det-name">D₂ᴴ</text>
+
+            {/* ===== Animated photons. Cloud for the undefined-
+                polarisation segments (source → BS → PBS); replaced
+                by a sharp H or V bar after the PBS. Matches the
+                entanglement-page bar convention: rotate 0 = H,
+                rotate 90 = V. ===== */}
+            <g data-bsm-photon="A" transform="translate(340 80)" opacity="0">
+              <circle data-bsm-cloud r="13" fill="url(#bsm-photon-cloud)"/>
+              <line data-bsm-bar x1="-8" y1="0" x2="8" y2="0"
+                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round" opacity="0"/>
+            </g>
+            <g data-bsm-photon="B" transform="translate(620 80)" opacity="0">
+              <circle data-bsm-cloud r="13" fill="url(#bsm-photon-cloud)"/>
+              <line data-bsm-bar x1="-8" y1="0" x2="8" y2="0"
+                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round" opacity="0"/>
+            </g>
+
+            {/* ===== History pane on the right ===== */}
+            <line x1="870" y1="30" x2="870" y2="680"
+                  stroke="var(--color-rule)" stroke-width="0.8" stroke-dasharray="2,3"/>
+            <text x="980" y="46" text-anchor="middle" class="bsm-pane-title">BSM history</text>
+            <text x="980" y="66" text-anchor="middle" class="bsm-pane-sub">(click bits) — projection</text>
+
+            {[0,1,2,3,4,5,6,7,8,9,10,11].map((i) => (
+              <g data-bsm-row={i} opacity="0">
+                <text x="892" y={100 + i * 30} class="bsm-row-bits" dominant-baseline="middle">—</text>
+                <text x="990" y={100 + i * 30} class="bsm-row-state" dominant-baseline="middle">—</text>
+              </g>
+            ))}
+
+            <text x="980" y="510" text-anchor="middle" class="bsm-rate-label">identified (Ψ outcomes)</text>
+            <text data-bsm-rate x="980" y="538" text-anchor="middle" class="bsm-rate-value">0 / 0</text>
+            <text data-bsm-rate-pct x="980" y="562" text-anchor="middle" class="bsm-rate-pct">—</text>
+            <text x="980" y="620" text-anchor="middle" class="bsm-rate-note">long-run limit:</text>
+            <text x="980" y="638" text-anchor="middle" class="bsm-rate-note bsm-rate-note--em">50% (linear optics)</text>
+          </svg>
+          <figcaption>
+            Top-down layout following Azuma RMP 2023 Fig. 3(b). The BSM is a
+            <em>measurement</em> — it projects whatever 2-qubit state arrives at its two
+            inputs onto the Bell basis. The Bell state is the <em>post-measurement</em>
+            outcome, not the input. In teleportation specifically, Alice's two qubits going
+            in are <em>not</em> a Bell state: one is the unknown state |ψ⟩ she wants to
+            send, the other is her half of a Bell pair shared with Bob (which has no
+            well-defined polarisation state on its own; it's entangled with Bob's qubit).
+            What's required is that the two photons be <strong>indistinguishable</strong>
+            in everything except polarisation (same wavelength, arrival time, spatial mode)
+            and that they share the same H/V polarisation basis — the Hong–Ou–Mandel
+            interference at the BS then sorts the four Bell-basis components by symmetry.
+            <br/><br/>
+            The animation samples the BSM <strong>projection outcome</strong> directly each
+            cycle — uniformly over the four Bell states, which is the distribution
+            teleportation produces — and replays the click pattern that fires for that
+            outcome. The BS does not touch polarisation; it sorts the two photons into
+            spatial-mode patterns by the <strong>symmetry</strong> of the joint
+            polarisation state, and the PBSes plus detectors perform the actual
+            polarisation measurement.
+            <br/><br/>
+            Each detector carries a 1-bit label encoding <em>which PBS it belongs to</em>:
+            port-1 detectors (D₁ᴴ, D₁ⱽ) are <strong>0</strong>; port-2 detectors (D₂ᴴ,
+            D₂ⱽ) are <strong>1</strong>. The 2-bit outcome shown at top-left is the pair of
+            bits from the two clicks, with the white-on-black flash marking the current
+            shot. With this assignment each Bell-basis outcome has a unique signature:
+            <strong>(0, 1)</strong> = one click each port → <strong>Ψ⁻</strong>;
+            <strong>(0, 0)</strong> = both clicks at port 1, <strong>(1, 1)</strong> = both
+            clicks at port 2 → <strong>Ψ⁺</strong>;
+            <strong>(0, —)</strong> or <strong>(1, —)</strong> = only one detector fired
+            (both photons bunched at a single detector) → <strong>Φ</strong> outcome,
+            indistinguishable between Φ⁺ and Φ⁻, BSM failure. The "—" makes the void side
+            explicit: the other PBS saw no photons.
+          </figcaption>
+        </figure>
+
+        <script type="module" is:inline>
+          // BSM animation, top-down layout.
+          //
+          // Each cycle:
+          //   1. Pick a uniformly random input Bell state.
+          //   2. Decide the click signature (Lo/Curty/Qi PRL 108.130503):
+          //        Ψ⁺: same port, opposite pol → {H1,V1} or {H2,V2}
+          //        Ψ⁻: different ports, opposite pol → {H1,V2} or {V1,H2}
+          //        Φ±: 2 photons coincident at one of the 4 detectors
+          //   3. Animate photons sources → BS → assigned PBSes → assigned
+          //      detectors. Polarisation is resolved at the PBS — the
+          //      photon glyph switches from a cloud (undefined pol) to
+          //      a sharp H or V bar at the PBS.
+          //   4. Click flash + bit-cell flash + outcome cells flash
+          //      (white-on-black). For Φ outcomes the second outcome
+          //      cell stays "—" because only one detector fired.
+          //   5. History row prepended; success-rate counter updated.
+          const root = document.querySelector("[data-bsm]");
+          if (root) {
+            const photon = {
+              A: root.querySelector('[data-bsm-photon="A"]'),
+              B: root.querySelector('[data-bsm-photon="B"]'),
+            };
+            const glyph = {};
+            for (const k of ["A", "B"]) {
+              glyph[k] = {
+                cloud: photon[k].querySelector('[data-bsm-cloud]'),
+                bar:   photon[k].querySelector('[data-bsm-bar]'),
+              };
+            }
+            const detPath = {
+              H1: root.querySelector('[data-bsm-result="H1"]'),
+              V1: root.querySelector('[data-bsm-result="V1"]'),
+              H2: root.querySelector('[data-bsm-result="H2"]'),
+              V2: root.querySelector('[data-bsm-result="V2"]'),
+            };
+            const bitGroup = {};
+            for (const k of ["H1", "V1", "H2", "V2"]) {
+              const g = root.querySelector(`[data-bsm-bit="${k}"]`);
+              bitGroup[k] = {
+                bg:   g.querySelector('[data-bsm-bit-bg]'),
+                text: g.querySelector('[data-bsm-bit-text]'),
+              };
+            }
+            const outBit = ["A", "B"].map((tag) => {
+              const g = root.querySelector(`[data-bsm-outbit="${tag}"]`);
+              return {
+                bg:   g.querySelector('[data-bsm-outbit-bg]'),
+                text: g.querySelector('[data-bsm-outbit-text]'),
+              };
+            });
+            const inputLabel = root.querySelector('[data-bsm-input]');
+            const rateValue  = root.querySelector('[data-bsm-rate]');
+            const ratePct    = root.querySelector('[data-bsm-rate-pct]');
+            const HISTORY_ROWS = 12;
+            const rows = [];
+            for (let i = 0; i < HISTORY_ROWS; i++) {
+              const g = root.querySelector(`[data-bsm-row="${i}"]`);
+              rows.push({
+                group: g,
+                state: g.querySelector('.bsm-row-state'),
+                bits:  g.querySelector('.bsm-row-bits'),
+              });
+            }
+
+            // Element coordinates (must match SVG above exactly).
+            const SRC_A = { x: 340, y: 80  };
+            const SRC_B = { x: 620, y: 80  };
+            const BS    = { x: 480, y: 220 };
+            const PBS = {
+              1: { x: 270, y: 430 },
+              2: { x: 690, y: 430 },
+            };
+            const DET = {
+              H1: { x: 130, y: 570 },
+              V1: { x: 410, y: 570 },
+              V2: { x: 550, y: 570 },
+              H2: { x: 830, y: 570 },
+            };
+            const DET_PBS = { H1: 1, V1: 1, H2: 2, V2: 2 };
+            const DET_BIT = { H1: 0, V1: 0, H2: 1, V2: 1 };  // port-bit: port 1 → 0, port 2 → 1
+            const DET_POL = { H1: "H", V1: "V", H2: "H", V2: "V" };
+
+            function setPos(g, x, y) { g.setAttribute("transform", `translate(${x} ${y})`); }
+            function show(g)         { g.setAttribute("opacity", "1"); }
+            function hide(g)         { g.setAttribute("opacity", "0"); }
+            function setCloud(tag) {
+              glyph[tag].cloud.setAttribute("opacity", "1");
+              glyph[tag].bar.setAttribute("opacity", "0");
+            }
+            function setBar(tag, pol) {
+              glyph[tag].cloud.setAttribute("opacity", "0");
+              glyph[tag].bar.setAttribute("opacity", "1");
+              glyph[tag].bar.setAttribute("transform", `rotate(${pol === "H" ? 0 : 90})`);
+            }
+            function setDetAll(op) {
+              for (const k of ["H1", "V1", "H2", "V2"]) {
+                detPath[k].setAttribute("opacity", String(op));
+              }
+            }
+            function lockDet(keys) {
+              for (const k of ["H1", "V1", "H2", "V2"]) {
+                detPath[k].setAttribute("opacity", keys.includes(k) ? "1" : "0.08");
+              }
+            }
+            function resetBitCells() {
+              for (const k of ["H1", "V1", "H2", "V2"]) {
+                bitGroup[k].bg.setAttribute("opacity", "0");
+                bitGroup[k].text.classList.remove("bsm-bit-text--active");
+              }
+            }
+            function activateBitCells(keys) {
+              for (const k of ["H1", "V1", "H2", "V2"]) {
+                if (keys.includes(k)) {
+                  bitGroup[k].bg.setAttribute("opacity", "1");
+                  bitGroup[k].text.classList.add("bsm-bit-text--active");
+                } else {
+                  bitGroup[k].bg.setAttribute("opacity", "0");
+                  bitGroup[k].text.classList.remove("bsm-bit-text--active");
+                }
+              }
+            }
+            function resetOutBits() {
+              for (const c of outBit) {
+                c.text.textContent = "—";
+                c.text.classList.remove("bsm-outbit-text--active");
+                c.bg.setAttribute("opacity", "0");
+              }
+            }
+            function setOutBit(idx, value) {
+              const c = outBit[idx];
+              if (value === null) {
+                c.text.textContent = "—";
+                c.text.classList.remove("bsm-outbit-text--active");
+                c.bg.setAttribute("opacity", "0");
+              } else {
+                c.text.textContent = String(value);
+                c.text.classList.add("bsm-outbit-text--active");
+                c.bg.setAttribute("opacity", "1");
+              }
+            }
+            function setInputLabel(state) {
+              inputLabel.textContent = state === null ? "—" : "|" + state + "⟩";
+            }
+
+            function pickOutcome() {
+              const r = Math.random();
+              const state = r < 0.25 ? "Ψ+"
+                          : r < 0.50 ? "Ψ-"
+                          : r < 0.75 ? "Φ+"
+                          :            "Φ-";
+              const coin = Math.random() < 0.5;
+              if (state === "Ψ+") {
+                return coin
+                  ? { state, a: "H1", b: "V1", success: true }
+                  : { state, a: "H2", b: "V2", success: true };
+              }
+              if (state === "Ψ-") {
+                return coin
+                  ? { state, a: "H1", b: "V2", success: true }
+                  : { state, a: "V1", b: "H2", success: true };
+              }
+              const det = ["H1", "V1", "H2", "V2"][Math.floor(Math.random() * 4)];
+              return { state, a: det, b: det, success: false };
+            }
+
+            const log = [];
+            let identified = 0;
+            let total      = 0;
+            function pushHistory(o) {
+              total += 1;
+              if (o.success) identified += 1;
+              const bitsText = o.success
+                ? "(" + DET_BIT[o.a] + ", " + DET_BIT[o.b] + ")"
+                : "(" + DET_BIT[o.a] + ", —)";
+              log.unshift({ state: o.state, bits: bitsText, success: o.success });
+              if (log.length > HISTORY_ROWS) log.length = HISTORY_ROWS;
+              for (let i = 0; i < HISTORY_ROWS; i++) {
+                const r = rows[i];
+                const e = log[i];
+                if (!e) {
+                  r.group.setAttribute("opacity", "0");
+                  continue;
+                }
+                r.group.setAttribute("opacity", "1");
+                r.state.textContent = "|" + e.state + "⟩";
+                r.bits.textContent  = e.bits;
+                r.state.classList.toggle("bsm-row-state--success",  e.success);
+                r.state.classList.toggle("bsm-row-state--fail",    !e.success);
+                r.bits.classList.toggle( "bsm-row-bits--success",   e.success);
+                r.bits.classList.toggle( "bsm-row-bits--fail",     !e.success);
+                r.state.classList.toggle("bsm-row--latest", i === 0);
+                r.bits.classList.toggle( "bsm-row--latest", i === 0);
+              }
+              rateValue.textContent = identified + " / " + total;
+              const pct = total === 0 ? 0 : Math.round(100 * identified / total);
+              ratePct.textContent = pct + "%";
+            }
+
+            const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            if (reduced) {
+              setPos(photon.A, DET.H1.x, DET.H1.y);
+              setPos(photon.B, DET.V1.x, DET.V1.y);
+              setBar("A", "H");
+              setBar("B", "V");
+              show(photon.A); show(photon.B);
+              lockDet(["H1", "V1"]);
+              activateBitCells(["H1", "V1"]);
+              setOutBit(0, 0);
+              setOutBit(1, 0);
+              setInputLabel("Ψ+");
+              const sample = [
+                { state: "Ψ+", a: "H1", b: "V1", success: true },
+                { state: "Φ-", a: "V1", b: "V1", success: false },
+                { state: "Ψ-", a: "H1", b: "V2", success: true },
+                { state: "Φ+", a: "H2", b: "H2", success: false },
+                { state: "Ψ+", a: "H2", b: "V2", success: true },
+                { state: "Φ+", a: "V2", b: "V2", success: false },
+                { state: "Ψ-", a: "V1", b: "H2", success: true },
+                { state: "Φ-", a: "H1", b: "H1", success: false },
+              ];
+              for (const e of sample.slice().reverse()) pushHistory(e);
+            } else {
+              const T_IN    = 1100;
+              const T_PAUSE =  350;
+              const T_OUT1  =  550;
+              const T_OUT2  =  650;
+              const T_CLICK =  200;
+              const T_HOLD  = 1500;
+              const T_RESET =  400;
+              const CYCLE   = T_IN + T_PAUSE + T_OUT1 + T_OUT2 + T_CLICK + T_HOLD + T_RESET;
+
+              const ease = (t) => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
+
+              // Detector pulse state — same shape as the entanglement-
+              // demo `flash` / `updateBorders` recipe. Each fired
+              // detector gets pulseEnd[key] set to now + PULSE_DUR at
+              // click time; updateBorders interpolates the stroke-width.
+              const PULSE_DUR = 320;
+              const pulseEnd = { H1: 0, V1: 0, H2: 0, V2: 0 };
+
+              let started = null;
+              let outcome = null;
+              let recorded = false;
+
+              function frame(now) {
+                if (!started) started = now;
+                const elapsed = now - started;
+                const phase = elapsed % CYCLE;
+
+                const P_IN_END    = T_IN;
+                const P_PAUSE_END = P_IN_END    + T_PAUSE;
+                const P_OUT1_END  = P_PAUSE_END + T_OUT1;
+                const P_OUT2_END  = P_OUT1_END  + T_OUT2;
+                const P_CLICK_END = P_OUT2_END  + T_CLICK;
+                const P_HOLD_END  = P_CLICK_END + T_HOLD;
+
+                if (phase < P_IN_END) {
+                  if (phase < 40 || outcome === null) {
+                    outcome = pickOutcome();
+                    recorded = false;
+                    setInputLabel(outcome.state);
+                    setDetAll(0.2);
+                    resetBitCells();
+                    resetOutBits();
+                    setCloud("A");
+                    setCloud("B");
+                  }
+                  const t = ease(phase / T_IN);
+                  setPos(photon.A, SRC_A.x + (BS.x - SRC_A.x) * t,
+                                   SRC_A.y + (BS.y - SRC_A.y) * t);
+                  setPos(photon.B, SRC_B.x + (BS.x - SRC_B.x) * t,
+                                   SRC_B.y + (BS.y - SRC_B.y) * t);
+                  show(photon.A); show(photon.B);
+                } else if (phase < P_PAUSE_END) {
+                  setPos(photon.A, BS.x - 6, BS.y + 4);
+                  setPos(photon.B, BS.x + 6, BS.y + 4);
+                } else if (phase < P_OUT1_END) {
+                  const t = ease((phase - P_PAUSE_END) / T_OUT1);
+                  const pbsA = PBS[DET_PBS[outcome.a]];
+                  const pbsB = PBS[DET_PBS[outcome.b]];
+                  const dxA = outcome.a === outcome.b ? -6 : 0;
+                  const dxB = outcome.a === outcome.b ?  6 : 0;
+                  setPos(photon.A,
+                    BS.x + (pbsA.x - BS.x) * t + dxA * t,
+                    BS.y + (pbsA.y - BS.y) * t);
+                  setPos(photon.B,
+                    BS.x + (pbsB.x - BS.x) * t + dxB * t,
+                    BS.y + (pbsB.y - BS.y) * t);
+                } else if (phase < P_OUT2_END) {
+                  // Polarisation resolved at the PBS — switch to bars.
+                  setBar("A", DET_POL[outcome.a]);
+                  setBar("B", DET_POL[outcome.b]);
+                  const t = ease((phase - P_OUT1_END) / T_OUT2);
+                  const pbsA = PBS[DET_PBS[outcome.a]];
+                  const pbsB = PBS[DET_PBS[outcome.b]];
+                  const detA = DET[outcome.a];
+                  const detB = DET[outcome.b];
+                  const dxA = outcome.a === outcome.b ? -6 * (1 - t) : 0;
+                  const dxB = outcome.a === outcome.b ?  6 * (1 - t) : 0;
+                  setPos(photon.A,
+                    pbsA.x + (detA.x - pbsA.x) * t + dxA,
+                    pbsA.y + (detA.y - pbsA.y) * t);
+                  setPos(photon.B,
+                    pbsB.x + (detB.x - pbsB.x) * t + dxB,
+                    pbsB.y + (detB.y - pbsB.y) * t);
+                  show(photon.A); show(photon.B);
+                } else if (phase < P_HOLD_END) {
+                  // Arrival at the detector: photons disappear (absorbed),
+                  // detector D pulses (border thickens then settles),
+                  // bit cells + outcome cells flash white-on-black,
+                  // history row prepended. Same recipe as the
+                  // entanglement-demo border pulse.
+                  const keys = outcome.a === outcome.b
+                    ? [outcome.a]
+                    : [outcome.a, outcome.b];
+                  if (!recorded) {
+                    hide(photon.A); hide(photon.B);
+                    lockDet(keys);
+                    activateBitCells(keys);
+                    if (outcome.success) {
+                      setOutBit(0, DET_BIT[outcome.a]);
+                      setOutBit(1, DET_BIT[outcome.b]);
+                    } else {
+                      setOutBit(0, DET_BIT[outcome.a]);
+                      setOutBit(1, null);
+                    }
+                    for (const k of keys) pulseEnd[k] = now + PULSE_DUR;
+                    pushHistory(outcome);
+                    recorded = true;
+                  }
+                } else {
+                  hide(photon.A); hide(photon.B);
+                  setDetAll(0.2);
+                  setInputLabel(null);
+                  resetBitCells();
+                  resetOutBits();
+                }
+
+                // Per-frame: animate detector D stroke-width based on
+                // remaining pulse time (thickens, then settles back).
+                for (const k of ["H1", "V1", "H2", "V2"]) {
+                  const remaining = (pulseEnd[k] || 0) - now;
+                  if (remaining > 0) {
+                    const t = remaining / PULSE_DUR;
+                    detPath[k].setAttribute("stroke-width", String(1.5 + 3 * t));
+                  } else {
+                    detPath[k].setAttribute("stroke-width", "1.5");
+                  }
+                }
+                requestAnimationFrame(frame);
+              }
+              requestAnimationFrame(frame);
+            }
+          }
+        </script>
+
+
+
+
+        <h3>Why only half the time, on photons</h3>
+        <p>
+          The 50% ceiling is fundamental to linear-optics BSM, not a hardware limitation:
+          no arrangement of beam splitters, phase shifters, and detectors that uses only
+          the two input photons can do better. Calsamiglia and Lütkenhaus proved this as
+          an upper bound for dual-rail / polarisation encodings without ancillas
+          <SourceNote id="calsamiglia-aphysb-2001" />; Azuma's review re-derives it next
+          to the click-pattern table for the same apparatus this animation uses
+          <SourceNote id="azuma-rmp-95" />. Lifting the bound requires either ancilla
+          photons in the apparatus or genuine non-linearity (cross-Kerr media, Rydberg
+          interactions, atom–photon gates). A demonstration exceeding 50 % with
+          squeezed-light ancillas exists <SourceNote id="bayerbach-sciadv-2023" />, but
+          at a hardware cost that has not yet entered fielded systems.
+        </p>
+        <p>
+          <strong>Matter-qubit BSMs</strong> — performed on two stationary qubits sitting
+          in the same node (two trapped-ion register slots, two NV-centre spins, two
+          superconducting qubits on the same chip) — are <em>deterministic in principle</em>.
+          The textbook recipe is CNOT followed by a Hadamard on the control followed by a
+          single-qubit computational-basis readout of each qubit; the four 2-bit outcomes
+          label the four Bell states one-to-one
+          <SourceNote id="nielsen-chuang-qcqi" />. Success probability reduces to the
+          fidelity of the underlying CNOT and readout — today routinely 99 %+ on
+          trapped-ion, neutral-atom, and superconducting hardware — so "close to 100 %"
+          is shorthand for "as good as the gate stack on that platform". Two-qubit gate
+          and readout times are platform-specific (≈10–100&nbsp;μs gates and ≈100&nbsp;μs–1&nbsp;ms
+          readout on trapped ions, ≈1&nbsp;μs gates on NV, ≈50–300&nbsp;ns gates on
+          superconducting circuits) <SourceNote id="meddeb-comnet-2025" />, so a matter
+          BSM is several orders of magnitude slower than a photonic linear-optics BSM
+          (nanoseconds — set by optical path length plus detector response).
+        </p>
+        <p>
+          Where each kind of BSM sits in a real network: the BSM <em>between two distant
+          nodes</em> (for entanglement swapping at a repeater, or for the central node in
+          MDI-QKD <SourceNote id="lo-prl-mdi-2012" />) is performed on photons at a
+          midpoint Bell-state-analyser station, with the photonic 50 % retry overhead
+          baked into the architecture. Matter BSM is used <em>inside</em> a single node —
+          for example, to teleport a qubit between two memory slots in the same register,
+          or to project onto the Bell basis as part of an intra-node operation in a
+          processing repeater.
+        </p>
+      </section>
+
+
       <section id="requirements" data-nav-section>
         <h2>What it takes to deliver Bell pairs</h2>
         <p>
@@ -1261,6 +1968,184 @@ const sections = [
   :global(.epr-caption) {
     font-size: 11px;
     fill: var(--color-text-mute);
+  }
+
+  /* BSM figure: wrapped in the same card style as the entanglement
+     EPS demo (.epr) — same padding, background, border, gap rhythm
+     — so the two animated demos read as the same kind of "set-piece"
+     element. See CLAUDE.md → "Shared design concepts" → demo-card
+     wrapper for the full convention. */
+  .bsm-figure {
+    margin: var(--space-4) 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .bsm-figure svg {
+    width: 100%;
+    height: auto;
+    max-width: 880px;
+    display: block;
+    margin: 0 auto;
+  }
+  .bsm-figure figcaption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
+  }
+  .bsm-figure figcaption strong {
+    color: var(--color-text);
+  }
+  :global(.bsm-label) {
+    font-size: 17px;
+    font-weight: 600;
+    fill: var(--color-text);
+  }
+  :global(.bsm-elem-label) {
+    font-size: 13px;
+    font-weight: 600;
+    fill: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(.bsm-det-label) {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    fill: var(--color-text);
+  }
+  :global(.bsm-input-label) {
+    font-size: 13px;
+    fill: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(.bsm-input-value) {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 600;
+    fill: var(--color-text);
+  }
+  :global(.bsm-det-name) {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    fill: var(--color-text);
+  }
+
+  /* Top-of-figure outcome readout — two big bit cells. Idle state
+     shows "—" muted with no backdrop; active state inverts to
+     white-on-black via the .bsm-outbit-text--active class plus the
+     backdrop rect's opacity toggle. Same trick the entanglement-demo
+     uses for the active |00⟩/|11⟩ kets — see CLAUDE.md design notes. */
+  :global(.bsm-outcome-label) {
+    font-size: 14px;
+    font-weight: 600;
+    fill: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(.bsm-outbit-text) {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 600;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-outbit-text--active) {
+    fill: var(--color-bg);
+    font-weight: 700;
+  }
+  :global(.bsm-outbit-sep) {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-input-line) {
+    font-size: 14px;
+    fill: var(--color-text);
+  }
+  :global(.bsm-input-value-inline) {
+    font-size: 22px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+
+  /* Per-detector bit cell — mono digit (0 or 1) with the same
+     white-on-black trick. Always visible (so the reader sees the bit
+     assignment at rest), and inverts when its detector fires. */
+  :global(.bsm-bit-text) {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 600;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-bit-text--active) {
+    fill: var(--color-bg);
+    font-weight: 700;
+  }
+
+  /* Right-hand history pane. Newest entry at the top; each row holds
+     a Bell-state label + the 2-bit code. Success rows use accent
+     colour, Φ-failures stay muted. */
+  :global(.bsm-pane-title) {
+    font-size: 15px;
+    font-weight: 600;
+    fill: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(.bsm-pane-sub) {
+    font-size: 13px;
+    fill: var(--color-text);
+  }
+  :global(.bsm-row-state) {
+    font-size: 20px;
+    font-weight: 600;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-row-bits) {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-row-state--success),
+  :global(.bsm-row-bits--success) {
+    fill: var(--color-accent);
+  }
+  :global(.bsm-row-state--fail),
+  :global(.bsm-row-bits--fail) {
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-row--latest) {
+    font-weight: 700;
+  }
+  :global(.bsm-rate-label) {
+    font-size: 13px;
+    fill: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(.bsm-rate-value) {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 600;
+    fill: var(--color-text);
+  }
+  :global(.bsm-rate-pct) {
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 700;
+    fill: var(--color-accent);
+  }
+  :global(.bsm-rate-note) {
+    font-size: 13px;
+    fill: var(--color-text);
+  }
+  :global(.bsm-rate-note--em) {
+    font-style: italic;
   }
 
   /* Per-side measurement-history readout under each detector. Both
