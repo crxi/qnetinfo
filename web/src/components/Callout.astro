@@ -1,0 +1,85 @@
+---
+/**
+ * Callout — sidebar / aside box for content the main reading line
+ * doesn't depend on. Notation primers, derivation asides, "why this
+ * matters" boxes, caveats. Wrapped in <aside> for semantics; the
+ * label runs as a small uppercase eyebrow at the top edge so the
+ * reader can decide whether to read or skip the block.
+ *
+ * Usage:
+ *
+ *   <Callout label="Notation primer">
+ *     <p>...</p>
+ *     <p>...</p>
+ *   </Callout>
+ *
+ *   <Callout label="Why two parameters, not four" tone="note">
+ *     <p>...</p>
+ *     <ol> ... </ol>
+ *     <p>...</p>
+ *   </Callout>
+ *
+ * `tone` selects the leading edge colour:
+ *   - "note" (default) — accent-coloured rail; informational asides.
+ *   - "warn"           — warm-amber rail; caveats / pitfalls.
+ *   - "muted"          — rule-coloured rail; off-path commentary.
+ *
+ * Multi-child content (paragraphs, lists, code) spaces evenly via
+ * the inner grid + gap; no per-child margin tweaks needed.
+ */
+
+interface Props {
+  label: string;
+  tone?: "note" | "warn" | "muted";
+}
+
+const { label, tone = "note" } = Astro.props;
+---
+
+<aside class:list={["callout", `callout--${tone}`]} aria-label={label}>
+  <p class="callout__label">{label}</p>
+  <slot />
+</aside>
+
+<style>
+  .callout {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-2);
+    border-inline-start: 3px solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    /* Grid + gap keeps multi-paragraph / list callouts evenly
+       spaced without each child needing margin overrides. */
+    display: grid;
+    gap: var(--space-2);
+  }
+  .callout--note  { border-inline-start-color: var(--color-accent); }
+  .callout--warn  { border-inline-start-color: #c46a2a; }
+  .callout--muted { border-inline-start-color: var(--color-rule); }
+
+  .callout__label {
+    margin: 0;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+  .callout--warn  .callout__label { color: #c46a2a; }
+  .callout--muted .callout__label { color: var(--color-text-mute); }
+
+  .callout :global(p) {
+    margin: 0;
+    line-height: var(--leading-snug);
+  }
+  .callout :global(ol),
+  .callout :global(ul) {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  .callout :global(li) {
+    line-height: var(--leading-snug);
+  }
+</style>

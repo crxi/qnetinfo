@@ -1,0 +1,579 @@
+---
+/**
+ * /repeaters — Quantum repeaters: 1G / 2G / 3G families
+ *
+ * Tier C · Mechanisms.
+ *
+ * Citations:
+ *   - muralidharan-scirep-2016 — Muralidharan et al., Sci. Rep. 6, 20463
+ *     (2016). The 1G/2G/3G taxonomy used here, classified by which
+ *     errors (loss, operation) are suppressed probabilistically vs.
+ *     deterministically.
+ *   - azuma-rmp-95 — Azuma et al., RMP 95, 045006 (2023). The
+ *     comprehensive review; Sec. III.B and Table V are the source
+ *     for the per-generation signalling, time-scale and cost-coefficient
+ *     numbers.
+ *   - sangouard-rmp-83 — Sangouard et al., RMP 83, 33 (2011). 1G
+ *     atomic-ensemble protocols (DLCZ-style).
+ *   - bayerbach-sciadv-2023 — Bayerbach et al., Sci. Adv. 9, eadf4080
+ *     (2023). Linear-optics BSM exceeding 50% with ancilla photons.
+ *   - bennett-pra-1996 — BBPSSW distillation (the 2-EDP that 1G uses).
+ *   - zukowski-prl-1993 — entanglement swapping.
+ *   - kumar-ijndc-2025 — current network survey, 1G/2G/3G description.
+ *   - jones-njp-2016 — link-architecture context (forward reference).
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+import Callout from "../components/Callout.astro";
+import Math from "../components/Math.astro";
+
+const sections = [
+  { id: "overview",   label: "Overview" },
+  { id: "core",       label: "The shared core" },
+  { id: "gen1",       label: "1G — heralded + distilled" },
+  { id: "gen2",       label: "2G — encoded memories" },
+  { id: "gen3",       label: "3G — block-encoded transport" },
+  { id: "bsm-limit",  label: "The 50 % BSM ceiling" },
+  { id: "compare",    label: "Side-by-side comparison" },
+  { id: "role",       label: "Network role" },
+];
+---
+
+<Infographic
+  title="Quantum repeaters — 1G / 2G / 3G"
+  description="Quantum repeaters extend Bell-pair distribution beyond the single-fibre loss limit by chaining heralded entanglement, memory, swapping, and error correction across multiple intermediate nodes. The literature classifies repeaters into three architectural generations — 1G uses heralded generation plus two-way distillation; 2G adds quantum error correction at the memory; 3G replaces swapping with block-encoded transmission and one-way signalling. This page covers all three, plus the linear-optics 50 % Bell-state-measurement ceiling that bounds 1G generation rates."
+  references={[
+    "azuma-rmp-95",
+    "bayerbach-sciadv-2023",
+    "bennett-pra-1996",
+    "jones-njp-2016",
+    "kumar-ijndc-2025",
+    "muralidharan-scirep-2016",
+    "sangouard-rmp-83",
+    "zukowski-prl-1993",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="repeaters" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>Quantum repeaters</h1>
+        <p>
+          Photon loss in optical fibre is exponential in distance — about 0.20 dB/km at
+          1550 nm — and the no-cloning theorem rules out the optical amplifiers that
+          classical telecom uses to compensate. A direct Bell-pair link between two
+          endpoints is bounded at roughly 100–200 km of standard fibre before the rate
+          collapses. <strong>Quantum repeaters</strong> are the network elements that
+          break that limit by inserting intermediate nodes where the link's accumulated
+          loss can be reset.
+        </p>
+        <p>
+          The literature classifies repeaters into three architectural generations,
+          following Muralidharan et al. (2014, 2016) and the comprehensive Azuma et al.
+          review (2023). The classification axis is which errors — loss errors,
+          operation errors — each generation suppresses <em>probabilistically</em> (with
+          two-way classical signalling and retries) versus
+          <em>deterministically</em> (with quantum error correction at the encoding
+          level). The three generations exhibit progressively weaker reliance on
+          two-way classical signalling, progressively heavier hardware overhead, and
+          progressively better rate scaling with
+          distance <SourceNote id="muralidharan-scirep-2016" /><SourceNote id="azuma-rmp-95" />.
+        </p>
+      </header>
+
+      <section id="core" data-nav-section>
+        <h2>The shared core</h2>
+        <p>
+          The first two generations share a four-step core. A repeater chain is a
+          sequence of nodes <Math tex="N_0, N_1, \\dots, N_n" /> (with Alice at
+          <Math tex="N_0" /> and Bob at <Math tex="N_n" />) connected by short fibre
+          segments of length <Math tex="L_0" /> each. Within that chain:
+        </p>
+        <ol class="rp-core">
+          <li>
+            <strong>Heralded entanglement generation.</strong> Each adjacent pair
+            <Math tex="(N_k, N_{k+1})" /> runs a <em>heralded entanglement-generation
+            protocol</em> (HEGP) — typically photonic, with the heralding signal
+            announced over a classical channel. On success, the two nodes share a
+            Bell pair stored in their local quantum memories; on failure, they retry.
+          </li>
+          <li>
+            <strong>Quantum memory.</strong> Each node holds its half of a successful
+            pair while waiting for its other neighbour's pair to herald. Memory
+            coherence time bounds how unsynchronised the link-level successes can be
+            before the stored pair degrades.
+          </li>
+          <li>
+            <strong>Entanglement swapping.</strong> Each interior node performs a
+            Bell-state measurement on its two stored qubits, fusing the two adjacent
+            Bell pairs into one across the longer
+            distance <SourceNote id="zukowski-prl-1993" />. Composed across the chain,
+            this delivers an end-to-end pair between Alice and Bob.
+          </li>
+          <li>
+            <strong>Entanglement distillation.</strong> Operation errors and channel
+            noise multiply per hop. The end-to-end pair's fidelity is repaired by a
+            distillation protocol — two low-fidelity pairs in, one higher-fidelity
+            pair out, with classical post-selection on local measurement
+            outcomes <SourceNote id="bennett-pra-1996" />.
+          </li>
+        </ol>
+        <p>
+          The first generation runs all four steps as written. The second replaces the
+          distillation step (and, where possible, the heralded-generation step) with
+          quantum error correction on the memory qubits. The third drops the
+          generation-and-swap pattern altogether and instead transmits a block-encoded
+          quantum state directly through the chain, repairing loss at each station with
+          QEC.
+        </p>
+      </section>
+
+      <section id="gen1" data-nav-section>
+        <h2>1G — heralded generation, distillation, two-way signalling</h2>
+        <p>
+          First-generation repeaters suppress <em>both</em> loss errors and operation
+          errors probabilistically. Loss is handled by HEGP — repeat until heralded
+          success — and operation errors are handled by two-way entanglement distillation
+          (2-EDP). Both subprotocols require classical messages travelling between
+          repeater nodes in <em>both</em> directions, which is the architectural
+          signature of 1G: the time scale per success step is bounded below by
+          <Math tex="\\max(L_0/c,\\, t_{\\text{op}})" />, where
+          <Math tex="L_0/c" /> is the round-trip classical-signalling latency between
+          adjacent nodes <SourceNote id="azuma-rmp-95" />.
+        </p>
+        <p>
+          The canonical 1G protocol family is BDCZ (Briegel–Dür–Cirac–Zoller, 1998),
+          built around <em>nested purification</em>: pairs at distance
+          <Math tex="L_0" /> are distilled, then swapped to distance
+          <Math tex="2L_0" />, distilled again, swapped to <Math tex="4L_0" />, and so
+          on up to the full chain length. The atomic-ensemble variants pioneered by
+          DLCZ (Duan–Lukin–Cirac–Zoller, 2001) and surveyed exhaustively by Sangouard
+          et al. share the same control structure with photonic emission from collective
+          ensemble excitations <SourceNote id="sangouard-rmp-83" />.
+        </p>
+        <p>
+          1G is the family with the longest experimental track record — every
+          memory-based repeater demonstration to date (NV centres, SiV centres, trapped
+          ions, neutral atoms) is, architecturally, a 1G prototype with a small number
+          of nodes. The cost is the rate scaling: the cost coefficient is
+          <Math tex="\\text{poly}(L)" />, and the time scale per step is dominated by
+          the classical round-trip <SourceNote id="muralidharan-scirep-2016" />.
+        </p>
+      </section>
+
+      <section id="gen2" data-nav-section>
+        <h2>2G — encoded memory qubits with quantum error correction</h2>
+        <p>
+          Second-generation repeaters keep the heralded-generation-plus-swapping
+          structure of 1G but replace probabilistic distillation with deterministic
+          quantum error correction at the encoding level. Each logical memory qubit is
+          encoded into a block of physical qubits (a small CSS or surface code), and
+          operation errors at the swap stations are corrected by syndrome measurement
+          rather than purified out by 2-EDP. Loss errors during photonic generation
+          are still handled probabilistically, so two-way signalling for the
+          generation step remains; the swaps and gates themselves no longer need it.
+        </p>
+        <p>
+          The shift from 2-EDP to QEC has a measurable effect on the time scale: it
+          drops from <Math tex="\\max(L/c,\\, t_0)" /> in 1G to
+          <Math tex="\\max(L_0/c,\\, t_0)" /> in 2G, with
+          <Math tex="L_0" /> being the inter-node spacing rather than the full distance
+          <Math tex="L" />, and the cost coefficient improves to
+          <Math tex="\\text{polylog}(L)" /> <SourceNote id="azuma-rmp-95" />. The
+          overhead is hardware: each memory qubit is now several physical qubits, and
+          each repeater node needs a fault-tolerant logical processor good enough to
+          run the syndrome circuits at the code's threshold.
+        </p>
+        <p>
+          2G has not yet been demonstrated end-to-end. The hardware requirement (logical
+          memory qubits below threshold, performing local QEC continuously) is essentially
+          the same as for fault-tolerant local quantum computing, which the field has
+          only recently approached at the small-block-code scale.
+        </p>
+      </section>
+
+      <section id="gen3" data-nav-section>
+        <h2>3G — block-encoded transport, one-way signalling</h2>
+        <p>
+          Third-generation repeaters dispense with the heralded-generation-and-swap
+          pattern entirely. Instead, the sender encodes a logical qubit into a block of
+          physical qubits and transmits the block through the chain. Each repeater
+          station applies QEC to repair both loss and operation errors before forwarding
+          the block to the next station. There are no Bell pairs in the architectural
+          picture, no swap operations, and — most importantly — no two-way classical
+          signalling: each station processes its block and forwards it onward in one
+          direction <SourceNote id="muralidharan-scirep-2016" />.
+        </p>
+        <p>
+          The signalling change matters because it removes the
+          <Math tex="L_0/c" /> latency floor that 1G and 2G inherit from their
+          retry-and-confirm subprotocols. The 3G time scale per step is the local gate
+          time <Math tex="t_0" /> alone, and the cost coefficient is
+          <Math tex="\\text{polylog}(L)" /> <SourceNote id="azuma-rmp-95" />. In
+          regimes where the bottleneck is end-to-end latency rather than hardware
+          density, 3G is the architecture that wins.
+        </p>
+        <p>
+          The hardware demand is the steepest of the three. The block code must
+          tolerate at least 50 % loss per segment to break the no-cloning bound on
+          deterministic loss correction (see Sec. III.B of Azuma et al.) — a high bar
+          for any current photonic platform — and the QEC at each station must run at
+          the line rate. 3G remains a theoretical regime, with proposed concrete
+          implementations based on tree-graph codes, parity-check codes, and
+          GKP-encoded continuous-variable channels but no end-to-end experimental
+          demonstration.
+        </p>
+        <Callout label="Generations are not a sequence to walk through" tone="muted">
+          <p>
+            The numbering reflects increasing technological difficulty, not a fixed
+            development order. A given network deployment might use 1G for some links
+            and 2G for others depending on which physical platform sits at each node;
+            3G remains a theoretical possibility for very-long-haul links once the
+            hardware requirements (logical-qubit-rate QEC and high-loss-tolerant block
+            codes) are met.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="bsm-limit" data-nav-section>
+        <h2>The 50 % linear-optics BSM ceiling</h2>
+        <p>
+          The Bell-state measurement is the central operation in both teleportation
+          (where it consumes Alice's <Math tex="|\\psi\\rangle" /> and her half of a
+          Bell pair) and in 1G/2G entanglement swapping (where it fuses two Bell pairs
+          at a relay). On photonic qubits, however, a BSM done with linear optics —
+          beam splitters, phase shifters, and single-photon detectors, with no
+          interaction nonlinearity and no ancilla photons — cannot succeed more than
+          50 % of the time. The bound is due to Calsamiglia and Lütkenhaus (2001):
+          linear optics can distinguish only two of the four Bell states
+          (<Math tex="|\\Psi^+\\rangle" /> and <Math tex="|\\Psi^-\\rangle" />),
+          collapsing the other two into ambiguous detection patterns. Up to 50 %
+          success — never more, with linear optics
+          alone <SourceNote id="azuma-rmp-95" />.
+        </p>
+        <p>
+          The 50 % ceiling is the headline cost of running 1G repeaters on photonic
+          link-layer protocols. Each successful entanglement generation already burns
+          <Math tex="1/P_{\\text{ent}}" /> attempts on average just from photon loss
+          and detector inefficiency; the BSM ceiling halves that further at the swap
+          stations, so the per-hop overhead compounds with the chain length.
+        </p>
+        <p>
+          The ceiling is not absolute — it applies specifically to <em>linear-optics
+          schemes without ancillae</em>. Adding ancilla photons (entangled or not)
+          breaks the bound: a textbook scheme using one ancilla Bell pair raises the
+          BSM success probability to 75 %, and Bayerbach et al. demonstrated a
+          linear-optics BSM operating above the 50 % bound experimentally with two
+          ancilla photons, achieving a measured success probability of about
+          57.9 % <SourceNote id="bayerbach-sciadv-2023" />. These ancilla-assisted or
+          "boosted" BSM schemes are the practical workaround to the linear-optics
+          ceiling and are beginning to appear in repeater protocol designs.
+        </p>
+      </section>
+
+      <section id="compare" data-nav-section>
+        <h2>Side-by-side comparison</h2>
+        <p>
+          The same axes the literature uses to define the generations
+          (Muralidharan 2016 Table 1; Azuma 2023 Table V), summarised:
+        </p>
+        <figure class="rp-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Axis</th>
+                <th>1G</th>
+                <th>2G</th>
+                <th>3G</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Loss-error suppression</td>
+                <td>Probabilistic (HEGP retries)</td>
+                <td>Probabilistic (HEGP retries)</td>
+                <td>Deterministic (block-code QEC)</td>
+              </tr>
+              <tr>
+                <td>Operation-error suppression</td>
+                <td>Probabilistic (2-EDP distillation)</td>
+                <td>Deterministic (memory-qubit QEC)</td>
+                <td>Deterministic (block-code QEC)</td>
+              </tr>
+              <tr>
+                <td>Classical signalling</td>
+                <td>Two-way</td>
+                <td>Two-way (for generation only)</td>
+                <td>One-way</td>
+              </tr>
+              <tr>
+                <td>Time scale per step</td>
+                <td><Math tex="\\max(L/c,\\, t_0)" /></td>
+                <td><Math tex="\\max(L_0/c,\\, t_0)" /></td>
+                <td><Math tex="t_0" /></td>
+              </tr>
+              <tr>
+                <td>Cost coefficient</td>
+                <td><Math tex="\\text{poly}(L)" /></td>
+                <td><Math tex="\\text{polylog}(L)" /></td>
+                <td><Math tex="\\text{polylog}(L)" /></td>
+              </tr>
+              <tr>
+                <td>Memory requirement</td>
+                <td>Bare qubits, long coherence</td>
+                <td>Encoded logical qubits at threshold</td>
+                <td>Encoded logical qubits at threshold</td>
+              </tr>
+              <tr>
+                <td>Demonstrated end-to-end</td>
+                <td>Yes (small-N prototypes)</td>
+                <td>Not yet</td>
+                <td>Not yet</td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            Three generations of quantum repeaters, after Muralidharan et al.
+            <em>Sci. Rep.</em> 6, 20463 (2016) and Azuma et al. <em>Rev. Mod. Phys.</em>
+            95, 045006 (2023), Table V. <Math tex="L" /> is the total Alice-to-Bob
+            distance, <Math tex="L_0" /> the inter-node spacing, <Math tex="c" /> the
+            speed of classical signalling, <Math tex="t_0" /> the local gate time. The
+            time-scale row gives the per-step latency floor that the architecture's
+            classical-signalling pattern imposes.
+          </figcaption>
+        </figure>
+
+        <figure class="rp-strip">
+          <svg viewBox="0 0 760 220" role="img"
+               aria-label="Three repeater generations: 1G with heralded generation and distillation, 2G with encoded memories, 3G with block-encoded transmission">
+            {/* 1G strip */}
+            <text x="20" y="30" class="rp-gen-label">1G</text>
+            <text x="20" y="46" class="rp-gen-sub">heralded · 2-EDP · two-way</text>
+            <line x1="80" y1="38" x2="740" y2="38" stroke="var(--color-rule)" stroke-width="1"/>
+            {/* 5 nodes for 1G */}
+            {[110, 240, 370, 500, 630, 730].map((x, i) => (
+              <g>
+                <circle cx={x} cy="38" r="7"
+                        fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.4"/>
+                <text x={x} y="58" text-anchor="middle" class="rp-node-label">{i === 0 ? "A" : i === 5 ? "B" : `N${i}`}</text>
+              </g>
+            ))}
+            {/* Bell-pair arcs and BSM ovals */}
+            <path d="M 110 38 Q 175 14 240 38" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 240 38 Q 305 14 370 38" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 370 38 Q 435 14 500 38" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 500 38 Q 565 14 630 38" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 630 38 Q 680 14 730 38" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+
+            {/* 2G strip */}
+            <text x="20" y="115" class="rp-gen-label">2G</text>
+            <text x="20" y="131" class="rp-gen-sub">encoded mem · QEC · two-way (gen)</text>
+            <line x1="80" y1="123" x2="740" y2="123" stroke="var(--color-rule)" stroke-width="1"/>
+            {[110, 240, 370, 500, 630, 730].map((x, i) => (
+              <g>
+                <rect x={x - 9} y="115" width="18" height="16" rx="2"
+                      fill="var(--color-surface-2)" stroke="var(--color-text)" stroke-width="1.2"/>
+                <text x={x} y="143" text-anchor="middle" class="rp-node-label">{i === 0 ? "A" : i === 5 ? "B" : `N${i}`}</text>
+              </g>
+            ))}
+            <path d="M 110 123 Q 175 99 240 123" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 240 123 Q 305 99 370 123" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 370 123 Q 435 99 500 123" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 500 123 Q 565 99 630 123" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+            <path d="M 630 123 Q 680 99 730 123" fill="none" stroke="var(--color-text)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.7"/>
+
+            {/* 3G strip */}
+            <text x="20" y="195" class="rp-gen-label">3G</text>
+            <text x="20" y="211" class="rp-gen-sub">block-encoded · QEC · one-way</text>
+            <line x1="80" y1="203" x2="740" y2="203" stroke="var(--color-rule)" stroke-width="1"/>
+            {[110, 240, 370, 500, 630, 730].map((x, i) => (
+              <g>
+                <rect x={x - 11} y="195" width="22" height="16" rx="2"
+                      fill="var(--color-surface-2)" stroke="var(--color-accent)" stroke-width="1.4"/>
+                <text x={x} y="223" text-anchor="middle" class="rp-node-label">{i === 0 ? "A" : i === 5 ? "B" : `N${i}`}</text>
+              </g>
+            ))}
+            {/* One-way arrows for 3G */}
+            <line x1="121" y1="203" x2="229" y2="203" stroke="var(--color-accent)" stroke-width="1.4"/>
+            <polygon points="229,203 222,200 222,206" fill="var(--color-accent)"/>
+            <line x1="251" y1="203" x2="359" y2="203" stroke="var(--color-accent)" stroke-width="1.4"/>
+            <polygon points="359,203 352,200 352,206" fill="var(--color-accent)"/>
+            <line x1="381" y1="203" x2="489" y2="203" stroke="var(--color-accent)" stroke-width="1.4"/>
+            <polygon points="489,203 482,200 482,206" fill="var(--color-accent)"/>
+            <line x1="511" y1="203" x2="619" y2="203" stroke="var(--color-accent)" stroke-width="1.4"/>
+            <polygon points="619,203 612,200 612,206" fill="var(--color-accent)"/>
+            <line x1="641" y1="203" x2="719" y2="203" stroke="var(--color-accent)" stroke-width="1.4"/>
+            <polygon points="719,203 712,200 712,206" fill="var(--color-accent)"/>
+          </svg>
+          <figcaption>
+            Schematic comparison. <strong>1G</strong>: bare-qubit memory at each node;
+            heralded Bell pairs (dashed arcs) on each segment, fused by swaps at
+            interior nodes, with two-way classical traffic confirming each
+            attempt. <strong>2G</strong>: same chain, but each memory is now an
+            encoded logical qubit (square) running QEC; distillation no longer needed
+            for operation errors, but heralded photonic generation still uses two-way
+            signalling. <strong>3G</strong>: no Bell pairs in the picture — each
+            station holds a logical-qubit decoder, applies QEC, and forwards a
+            block-encoded state in one direction. The arrows mark the one-way nature
+            of the architecture; the time-scale floor of <Math tex="L_0/c" /> that 1G
+            and 2G inherit is gone.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="role" data-nav-section>
+        <h2>Network role</h2>
+        <p>
+          Repeaters are the network element that turns a two-node Bell-pair link into a
+          long-haul service. Where the entanglement-distribution layer below them
+          delivers Bell pairs across a single link, repeaters chain those links together
+          to span continents. The choice of generation is a hardware-economics question:
+          1G is what we can build today, 2G is what becomes available once logical
+          memory qubits are below threshold, and 3G is what becomes available once
+          high-loss-tolerant block codes can be processed at line rate at every
+          station <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+        <p>
+          Three companion subjects expand this:
+        </p>
+        <ul>
+          <li>
+            <strong>Distillation</strong> details the 2-EDP step that 1G repeaters use
+            to clean up operation errors. <em>Covered in the</em>
+            <strong>distillation</strong> <em>subject.</em>
+          </li>
+          <li>
+            <strong>All-photonic repeaters</strong> cover an alternative family that
+            sidesteps the memory requirement entirely by transmitting cluster states.
+            <em>Covered in the</em> <strong>all-photonic</strong> <em>subject.</em>
+          </li>
+          <li>
+            <strong>Links</strong> describes the per-segment fibre, hollow-core, free-
+            space, and satellite media on which any repeater chain is
+            built <SourceNote id="jones-njp-2016" />.
+            <em>Covered in the</em> <strong>links</strong> <em>subject.</em>
+          </li>
+          <li>
+            <strong>Metrics</strong> grounds the loss / fidelity / coherence numbers
+            that bound how each generation performs in practice.
+            <em>Covered in the</em> <strong>metrics</strong> <em>subject.</em>
+          </li>
+        </ul>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+
+  ol.rp-core {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  ol.rp-core li { line-height: var(--leading-snug); }
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+
+  /* Comparison table */
+  .rp-table {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-3);
+    overflow-x: auto;
+  }
+  .rp-table table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+  .rp-table th,
+  .rp-table td {
+    padding: var(--space-2) var(--space-3);
+    text-align: start;
+    vertical-align: top;
+    border-block-end: 1px solid var(--color-rule);
+  }
+  .rp-table th {
+    font-weight: 700;
+    color: var(--color-text);
+    background: var(--color-surface-2);
+  }
+  .rp-table tbody tr:last-child td {
+    border-block-end: none;
+  }
+  .rp-table td:first-child {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .rp-table figcaption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
+  }
+
+  /* Three-strip schematic */
+  .rp-strip {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .rp-strip svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 260px;
+    display: block;
+  }
+  .rp-strip figcaption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
+  }
+
+  :global(.rp-gen-label) {
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.rp-gen-sub) {
+    font-size: 10px;
+    fill: var(--color-text-mute);
+    font-style: italic;
+  }
+  :global(.rp-node-label) {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-mute);
+  }
+</style>

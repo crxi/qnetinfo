@@ -1,0 +1,326 @@
+---
+/**
+ * SiteNav — workspace-level navigation rail.
+ *
+ * Layout:
+ *   - Title row: "Quantum Network Infographics".
+ *   - Home link.
+ *   - Subjects grouped by tier with a small uppercase divider above
+ *     each group (TIER_LABEL["A" | "B" | …]). Tiers are *visual*
+ *     dividers, not foldable groups — every subject is visible at
+ *     once. With 15 subjects across 5 tiers, foldable groups don't
+ *     earn the click-to-expand cost.
+ *   - The current subject's `<a>` is followed by an indented `<ol>`
+ *     of in-page sections (when a `sections` array is passed). The
+ *     sections live *under* the current subject in the rail rather
+ *     than as a separate "On this page" group, so the reader keeps
+ *     the subject context while scanning sections.
+ *
+ * On viewports < 60 rem the rail collapses into a sticky-top
+ * horizontal strip, with subjects and sections shown as two
+ * scrollable inline lists separated by a divider; tier labels hide
+ * to save horizontal space.
+ */
+
+import { SUBJECTS, TIER_LABEL, type SubjectTier } from "../lib/subjects";
+
+interface Section {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  /** Slug of the current subject; undefined on the landing page. */
+  currentSubject?: string;
+  /** Optional in-page sections — pass an array on subject pages, omit on the landing. */
+  sections?: Section[];
+}
+
+const { currentSubject, sections } = Astro.props;
+
+// Group subjects by tier in a stable A → E order. Tiers without
+// any subjects are skipped (none today, but defensive).
+const TIER_ORDER: SubjectTier[] = ["A", "B", "C", "D", "E"];
+const groupedTiers = TIER_ORDER
+  .map((tier) => ({
+    tier,
+    label: TIER_LABEL[tier],
+    subjects: SUBJECTS.filter((s) => s.tier === tier),
+  }))
+  .filter((g) => g.subjects.length > 0);
+---
+
+<nav class="site-nav" aria-label="Site navigation">
+  <p class="site-nav__title">Quantum Network Infographics</p>
+
+  <ul class="site-nav__list site-nav__list--home">
+    <li>
+      <a href="/" class:list={{ "is-current": !currentSubject }}>Home</a>
+    </li>
+  </ul>
+
+  {groupedTiers.map((group) => (
+    <section class="site-nav__group" aria-label={group.label}>
+      <p class="site-nav__group-label">{group.label}</p>
+      <ul class="site-nav__list site-nav__list--subjects">
+        {group.subjects.map((s) => (
+          <li>
+            {s.status === "shipped" ? (
+              <a
+                href={`/${s.slug}`}
+                class:list={{ "is-current": currentSubject === s.slug }}
+              >{s.navLabel ?? s.title}</a>
+            ) : (
+              <span
+                class="is-planned"
+                aria-disabled="true"
+                title="Planned — not yet available"
+              >
+                {s.navLabel ?? s.title}
+                <span class="planned-tag">(planned)</span>
+              </span>
+            )}
+
+            {/* In-page sections nest under the current subject only. */}
+            {currentSubject === s.slug && sections && sections.length > 0 && (
+              <ol class="site-nav__sections" aria-label="On this page">
+                {sections.map((sec) => (
+                  <li>
+                    <a href={`#${sec.id}`} data-section-target={sec.id}>{sec.label}</a>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</nav>
+
+<script>
+  type LinkEl = HTMLAnchorElement;
+
+  function init(): void {
+    const links = Array.from(
+      document.querySelectorAll<LinkEl>("[data-section-target]"),
+    );
+    if (links.length === 0) return;
+
+    for (const a of links) {
+      a.addEventListener("click", (e) => {
+        const id = a.dataset.sectionTarget;
+        if (!id) return;
+        const el = document.getElementById(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.replaceState(null, "", `#${id}`);
+      });
+    }
+
+    const observer = new IntersectionObserver(
+      () => {
+        const visibleIds = new Set<string>();
+        document.querySelectorAll<HTMLElement>("[data-nav-section]").forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight * 0.4 && r.bottom > window.innerHeight * 0.2) {
+            visibleIds.add(el.id);
+          }
+        });
+        let activeId: string | null = null;
+        for (const a of links) {
+          if (visibleIds.has(a.dataset.sectionTarget!)) {
+            activeId = a.dataset.sectionTarget!;
+            break;
+          }
+        }
+        for (const a of links) {
+          a.classList.toggle("is-active", a.dataset.sectionTarget === activeId);
+        }
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.5, 1] },
+    );
+
+    for (const a of links) {
+      const el = document.getElementById(a.dataset.sectionTarget!);
+      if (el) observer.observe(el);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+</script>
+
+<style>
+  .site-nav {
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .site-nav__title {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-mute);
+    font-weight: 600;
+    margin: 0;
+    padding-inline-start: var(--space-3);
+  }
+
+  /* Tier divider — small uppercase eyebrow above each tier's
+     subject list. Thin visual rule only; not interactive. */
+  .site-nav__group { display: grid; gap: var(--space-1); }
+  .site-nav__group-label {
+    margin: 0;
+    padding-inline-start: var(--space-3);
+    padding-block-start: var(--space-2);
+    border-block-start: 1px solid var(--color-rule);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-mute);
+    font-weight: 600;
+  }
+
+  .site-nav__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-inline-start: 1px solid var(--color-rule);
+  }
+  .site-nav__list li { margin: 0; }
+  .site-nav__list a {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-mute);
+    text-decoration: none;
+    border-inline-start: 2px solid transparent;
+    margin-inline-start: -1px;
+    transition:
+      color 140ms ease,
+      border-color 140ms ease,
+      background 140ms ease;
+  }
+  .site-nav__list a:hover,
+  .site-nav__list a:focus-visible {
+    color: var(--color-text);
+    background: var(--color-surface-2);
+    outline: none;
+  }
+  .site-nav__list a.is-current,
+  .site-nav__list a.is-active {
+    color: var(--color-accent);
+    border-inline-start-color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* Planned subjects: show in the rail but don't link. */
+  .site-nav__list .is-planned {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-mute);
+    border-inline-start: 2px solid transparent;
+    margin-inline-start: -1px;
+    cursor: default;
+    opacity: 0.6;
+  }
+  .site-nav__list .planned-tag {
+    display: inline;
+    font-size: 0.85em;
+    color: var(--color-text-mute);
+    margin-inline-start: 0.4em;
+    font-weight: 400;
+  }
+
+  /* In-page sections nested under the current subject. Indented
+     one step further than subject links and given a slightly
+     smaller font + tighter padding so the visual hierarchy reads
+     "this is a sub-list of where you are". */
+  .site-nav__sections {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-1) var(--space-3);
+    border-inline-start: 1px solid var(--color-rule);
+    font-size: 0.92em;
+  }
+  .site-nav__sections li { margin: 0; }
+  .site-nav__sections a {
+    display: block;
+    padding: var(--space-1) var(--space-3);
+    color: var(--color-text-mute);
+    text-decoration: none;
+    border-inline-start: 2px solid transparent;
+    margin-inline-start: -1px;
+    transition:
+      color 140ms ease,
+      border-color 140ms ease,
+      background 140ms ease;
+  }
+  .site-nav__sections a:hover,
+  .site-nav__sections a:focus-visible {
+    color: var(--color-text);
+    background: var(--color-surface-2);
+    outline: none;
+  }
+  .site-nav__sections a.is-active {
+    color: var(--color-accent);
+    border-inline-start-color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* Narrow viewports: collapse to a sticky horizontal strip. Tier
+     dividers and the sections sub-list both hide on mobile —
+     subjects flatten into a single horizontal scroll, sections
+     would be unreadable in this layout. Readers on narrow viewports
+     can still hash-jump from anchor links inside the page copy. */
+  @media (max-width: 60rem) {
+    .site-nav {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 10;
+      background: var(--color-bg);
+      padding-block: var(--space-2);
+      border-block-end: 1px solid var(--color-rule);
+      margin-block-end: var(--space-3);
+      gap: var(--space-1);
+    }
+    .site-nav__title,
+    .site-nav__group-label,
+    .site-nav__sections {
+      display: none;
+    }
+    .site-nav__group {
+      gap: 0;
+    }
+    .site-nav__list {
+      display: flex;
+      gap: var(--space-1);
+      overflow-x: auto;
+      border-inline-start: none;
+      padding-inline: var(--space-2);
+      scrollbar-width: none;
+    }
+    .site-nav__list::-webkit-scrollbar { display: none; }
+    .site-nav__list a,
+    .site-nav__list .is-planned {
+      white-space: nowrap;
+      border-inline-start: none;
+      border-block-end: 2px solid transparent;
+      padding: var(--space-1) var(--space-2);
+    }
+    .site-nav__list a.is-current,
+    .site-nav__list a.is-active {
+      border-inline-start: none;
+      border-block-end-color: var(--color-accent);
+    }
+  }
+
+  @media print {
+    .site-nav { display: none; }
+  }
+</style>

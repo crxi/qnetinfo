@@ -1,0 +1,355 @@
+# Citation registry for the infographics workspace. Keys are stable —
+# they're referenced from <SourceNote id="..."/> in pages. Pre-loaded
+# entries below cover the planned subjects so the citation id can be
+# referenced from page copy as soon as that subject is built.
+
+- id: ezratty-uqt-2025-p2
+  title: "Understanding Quantum Technologies, Part 2 — Quantum Hardware"
+  authors: ["Olivier Ezratty"]
+  publisher: "Self-published"
+  year: 2025
+  type: book
+  url: "https://www.oezratty.net"
+
+- id: ezratty-uqt-2025-p4
+  title: "Understanding Quantum Technologies, Part 4 — Communications & Sensing"
+  authors: ["Olivier Ezratty"]
+  publisher: "Self-published"
+  year: 2025
+  type: book
+  url: "https://www.oezratty.net"
+
+- id: meddeb-comnet-2025
+  title: "Quantum internet building blocks state of research and development"
+  authors: ["Aref Meddeb"]
+  publisher: "Computer Networks"
+  year: 2025
+  type: paper
+  doi: "10.1016/j.comnet.2025.111151"
+
+- id: kumar-ijndc-2025
+  title: "Quantum Internet: Technologies, Protocols, and Research Challenges"
+  authors: ["Vinay Kumar", "Claudio Cicconetti", "Marco Conti", "Andrea Passarella"]
+  publisher: "International Journal of Networked and Distributed Computing"
+  year: 2025
+  type: paper
+  doi: "10.1007/s44227-025-00060-5"
+
+- id: itu-g-694-2
+  title: "ITU-T G.694.2 — Spectral grids for WDM applications: CWDM wavelength grid"
+  publisher: "ITU-T"
+  year: 2020
+  type: standard
+  marker: "ITU-T G.694.2"
+
+# ---- Pre-loaded for planned subjects ----
+
+- id: kozlowski-rfc9340
+  title: "Architectural Principles for a Quantum Internet"
+  authors: ["Wojciech Kozlowski", "Stephanie Wehner", "Rodney Van Meter", "Bruno Rijsman", "Angela Sara Cacciapuoti", "Marcello Caleffi", "Shota Nagayama"]
+  publisher: "IETF / IRTF"
+  year: 2023
+  type: standard
+  url: "https://www.rfc-editor.org/rfc/rfc9340"
+  marker: "RFC 9340"
+
+- id: wehner-science-2018
+  title: "Quantum internet: A vision for the road ahead"
+  authors: ["Stephanie Wehner", "David Elkouss", "Ronald Hanson"]
+  publisher: "Science"
+  year: 2018
+  type: paper
+  doi: "10.1126/science.aam9288"
+
+- id: purohit-arxiv-2023
+  title: "Building a Quantum-ready Ecosystem"
+  authors: ["Abhishek Purohit", "Maninder Kaur", "Zeki Can Seskir", "Matthew T. Posner", "Araceli Venegas-Gomez"]
+  publisher: "arXiv:2304.06843"
+  year: 2023
+  type: paper
+  url: "https://arxiv.org/abs/2304.06843"
+
+- id: azuma-rmp-95
+  title: "Quantum repeaters: From quantum networks to the quantum internet"
+  authors: ["Koji Azuma", "Sophia E. Economou", "David Elkouss", "Paul Hilaire", "Liang Jiang", "Hoi-Kwong Lo", "Ilan Tzitrin"]
+  publisher: "Reviews of Modern Physics"
+  year: 2023
+  type: paper
+  doi: "10.1103/RevModPhys.95.045006"
+
+- id: sangouard-rmp-83
+  title: "Quantum repeaters based on atomic ensembles and linear optics"
+  authors: ["Nicolas Sangouard", "Christoph Simon", "Hugues de Riedmatten", "Nicolas Gisin"]
+  publisher: "Reviews of Modern Physics"
+  year: 2011
+  type: paper
+  doi: "10.1103/RevModPhys.83.33"
+
+- id: azuma-natcomm-2015
+  title: "All-photonic quantum repeaters"
+  authors: ["Koji Azuma", "Kiyoshi Tamaki", "Hoi-Kwong Lo"]
+  publisher: "Nature Communications"
+  year: 2015
+  type: paper
+  doi: "10.1038/ncomms7787"
+
+- id: bayerbach-sciadv-2023
+  title: "Bell-state measurement exceeding 50 % success probability with linear optics"
+  authors: ["Matthias J. Bayerbach", "Simone E. D'Aurelio", "Peter van Loock", "Stefanie Barz"]
+  publisher: "Science Advances"
+  year: 2023
+  type: paper
+  doi: "10.1126/sciadv.adf4080"
+
+- id: bennett-pra-1996
+  title: "Mixed-state entanglement and quantum error correction"
+  authors: ["Charles H. Bennett", "David P. DiVincenzo", "John A. Smolin", "William K. Wootters"]
+  publisher: "Physical Review A"
+  year: 1996
+  type: paper
+  doi: "10.1103/PhysRevA.54.3824"
+
+- id: meter-ieee-2014
+  title: "Quantum Networking"
+  authors: ["Rodney Van Meter"]
+  publisher: "Wiley / ISTE"
+  year: 2014
+  type: book
+  url: "https://www.wiley.com/en-us/Quantum+Networking-p-9781848215375"
+
+- id: yin-science-2017
+  title: "Satellite-based entanglement distribution over 1200 kilometers"
+  authors: ["Juan Yin", "Yuan Cao", "Yu-Huai Li", "Sheng-Kai Liao", "Liang Zhang", "Ji-Gang Ren", "Wen-Qi Cai", "Wei-Yue Liu", "et al."]
+  publisher: "Science"
+  year: 2017
+  type: paper
+  doi: "10.1126/science.aan3211"
+
+# ---- Pre-loaded for subject 3 (`metrics`) — channel attenuation references ----
+
+- id: itu-g-652-d
+  title: "ITU-T G.652 — Characteristics of a single-mode optical fibre and cable (the 0.20 dB/km @ 1550 nm reference)"
+  publisher: "ITU-T"
+  year: 2016
+  type: standard
+  url: "https://www.itu.int/rec/T-REC-G.652"
+  marker: "ITU-T G.652.D"
+
+- id: jasion-ofc-2022
+  title: "0.174 dB/km hollow-core double nested antiresonant nodeless fibre (DNANF)"
+  authors: ["Gregory T. Jasion", "Hans Christian Hopper Mulvad", "Yong Chen", "Ian A. Davidson", "Eric Numkam Fokoua", "Thomas D. Bradley", "Marco Petrovich", "Francesco Poletti"]
+  publisher: "Optical Fiber Communication Conference (OFC) postdeadline"
+  year: 2022
+  type: paper
+  url: "https://opg.optica.org/abstract.cfm?uri=OFC-2022-Th4C.7"
+
+- id: lumenisity-microsoft-2024
+  title: "Hollow-core fibre at 0.091 dB/km — commercial deployment (Lumenisity / Microsoft)"
+  publisher: "Microsoft / Lumenisity"
+  year: 2024
+  type: misc
+  url: "https://news.microsoft.com/source/features/innovation/hollow-core-fiber/"
+
+- id: schmitt-manderbach-prl-2007
+  title: "Experimental demonstration of free-space decoy-state quantum key distribution over 144 km"
+  authors: ["Tobias Schmitt-Manderbach", "Henning Weier", "Martin Fürst", "Rupert Ursin", "Felix Tiefenbacher", "Thomas Scheidl", "Josep Perdigues", "Zoran Sodnik", "Christian Kurtsiefer", "John G. Rarity", "Anton Zeilinger", "Harald Weinfurter"]
+  publisher: "Physical Review Letters"
+  year: 2007
+  type: paper
+  doi: "10.1103/PhysRevLett.98.010504"
+
+# ---- For subject 1 (`qubits`) ----
+
+- id: divincenzo-2000
+  title: "The Physical Implementation of Quantum Computation"
+  authors: ["David P. DiVincenzo"]
+  publisher: "Fortschritte der Physik"
+  year: 2000
+  type: paper
+  doi: "10.1002/1521-3978(200009)48:9/11<771::AID-PROP771>3.0.CO;2-E"
+
+# ---- For subject 2 (`entanglement`) ----
+
+- id: bell-1964
+  title: "On the Einstein Podolsky Rosen Paradox"
+  authors: ["John S. Bell"]
+  publisher: "Physics Physique Физика"
+  year: 1964
+  type: paper
+  doi: "10.1103/PhysicsPhysiqueFizika.1.195"
+
+- id: bennett-prl-1993
+  title: "Teleporting an unknown quantum state via dual classical and Einstein-Podolsky-Rosen channels"
+  authors: ["Charles H. Bennett", "Gilles Brassard", "Claude Crépeau", "Richard Jozsa", "Asher Peres", "William K. Wootters"]
+  publisher: "Physical Review Letters"
+  year: 1993
+  type: paper
+  doi: "10.1103/PhysRevLett.70.1895"
+
+- id: wootters-nature-1982
+  title: "A single quantum cannot be cloned"
+  authors: ["W. K. Wootters", "W. H. Zurek"]
+  publisher: "Nature"
+  year: 1982
+  type: paper
+  doi: "10.1038/299802a0"
+
+- id: zukowski-prl-1993
+  title: "Event-ready-detectors Bell experiment via entanglement swapping"
+  authors: ["Marek Żukowski", "Anton Zeilinger", "Michael A. Horne", "Artur K. Ekert"]
+  publisher: "Physical Review Letters"
+  year: 1993
+  type: paper
+  doi: "10.1103/PhysRevLett.71.4287"
+
+- id: cacciapuoti-ieeetc-2020
+  title: "When Entanglement Meets Classical Communications: Quantum Teleportation for the Quantum Internet"
+  authors: ["Angela Sara Cacciapuoti", "Marcello Caleffi", "Rodney Van Meter", "Lajos Hanzo"]
+  publisher: "IEEE Transactions on Communications"
+  year: 2020
+  type: paper
+  doi: "10.1109/TCOMM.2020.2978071"
+
+- id: forbes-rpp-2025
+  title: "Heralded generation of entanglement with photons"
+  authors: ["Iain Forbes", "Jonathan C. F. Matthews", "et al."]
+  publisher: "Reports on Progress in Physics"
+  year: 2025
+  type: paper
+  doi: "10.1088/1361-6633/ade0c1"
+
+- id: pompili-science-2021
+  title: "Realization of a multinode quantum network of remote solid-state qubits"
+  authors: ["Matteo Pompili", "Sophie L. N. Hermans", "Simon Baier", "Hans K. C. Beukers", "et al."]
+  publisher: "Science"
+  year: 2021
+  type: paper
+  doi: "10.1126/science.abg1919"
+
+- id: kwiat-prl-1995
+  title: "New high-intensity source of polarization-entangled photon pairs"
+  authors: ["Paul G. Kwiat", "Klaus Mattle", "Harald Weinfurter", "Anton Zeilinger", "Alexander V. Sergienko", "Yanhua Shih"]
+  publisher: "Physical Review Letters"
+  year: 1995
+  type: paper
+  doi: "10.1103/PhysRevLett.75.4337"
+
+- id: knaut-nature-2024
+  title: "Entanglement of nanophotonic quantum memory nodes in a telecom network"
+  authors: ["Can M. Knaut", "Aziza Suleymanzade", "Yan-Cheng Wei", "Daniel R. Assumpcao", "et al."]
+  publisher: "Nature"
+  year: 2024
+  type: paper
+  doi: "10.1038/s41586-024-07252-z"
+
+- id: jones-njp-2016
+  title: "Design and analysis of communication protocols for quantum repeater networks"
+  authors: ["Cody Jones", "Danny Kim", "Matthew T. Rakher", "Paul G. Kwiat", "Thaddeus D. Ladd"]
+  publisher: "New Journal of Physics"
+  year: 2016
+  type: paper
+  doi: "10.1088/1367-2630/18/8/083015"
+
+- id: duan-nature-414
+  title: "Long-distance quantum communication with atomic ensembles and linear optics"
+  authors: ["L.-M. Duan", "M. D. Lukin", "J. I. Cirac", "P. Zoller"]
+  publisher: "Nature"
+  year: 2001
+  type: paper
+  doi: "10.1038/35106500"
+
+- id: muralidharan-scirep-2016
+  title: "Optimal architectures for long distance quantum communication"
+  authors: ["Sreraman Muralidharan", "Linshu Li", "Jungsang Kim", "Norbert Lütkenhaus", "Mikhail D. Lukin", "Liang Jiang"]
+  publisher: "Scientific Reports"
+  year: 2016
+  type: paper
+  doi: "10.1038/srep20463"
+
+- id: horodecki-pra-1999
+  title: "General teleportation channel, singlet fraction, and quasidistillation"
+  authors: ["Ryszard Horodecki", "Michał Horodecki", "Paweł Horodecki"]
+  publisher: "Physical Review A"
+  year: 1999
+  type: paper
+  doi: "10.1103/PhysRevA.60.1888"
+
+- id: massar-prl-1995
+  title: "Optimal extraction of information from finite quantum ensembles"
+  authors: ["Serge Massar", "Sandu Popescu"]
+  publisher: "Physical Review Letters"
+  year: 1995
+  type: paper
+  doi: "10.1103/PhysRevLett.74.1259"
+
+- id: lauk-qst-2020
+  title: "Perspectives on quantum transduction"
+  authors: ["Nikolai Lauk", "Neil Sinclair", "Schuyler Barzanjeh", "Jacob P. Covey", "Mark Saffman", "Maria Spiropulu", "Christoph Simon"]
+  publisher: "Quantum Science and Technology"
+  year: 2020
+  type: paper
+  doi: "10.1088/2058-9565/ab788a"
+
+- id: dahlberg-sigcomm-2019
+  title: "A link layer protocol for quantum networks"
+  authors: ["Axel Dahlberg", "Matthew Skrzypczyk", "Tim Coopmans", "Leon Wubben", "Filip Rozpędek", "Matteo Pompili", "Arian Stolk", "et al."]
+  publisher: "Proceedings of the ACM Special Interest Group on Data Communication (SIGCOMM)"
+  year: 2019
+  type: paper
+  doi: "10.1145/3341302.3342070"
+
+- id: lucamarini-nature-2018
+  title: "Overcoming the rate–distance limit of quantum key distribution without quantum repeaters"
+  authors: ["Marco Lucamarini", "Zhiliang L. Yuan", "James F. Dynes", "Andrew J. Shields"]
+  publisher: "Nature"
+  year: 2018
+  type: paper
+  doi: "10.1038/s41586-018-0066-6"
+
+- id: broadbent-focs-2009
+  title: "Universal blind quantum computation"
+  authors: ["Anne Broadbent", "Joseph Fitzsimons", "Elham Kashefi"]
+  publisher: "Proceedings of the 50th Annual IEEE Symposium on Foundations of Computer Science (FOCS)"
+  year: 2009
+  type: paper
+  doi: "10.1109/FOCS.2009.36"
+
+- id: lo-prl-mdi-2012
+  title: "Measurement-device-independent quantum key distribution"
+  authors: ["Hoi-Kwong Lo", "Marcos Curty", "Bing Qi"]
+  publisher: "Physical Review Letters"
+  year: 2012
+  type: paper
+  doi: "10.1103/PhysRevLett.108.130503"
+
+- id: gottesman-prl-2012
+  title: "Longer-baseline telescopes using quantum repeaters"
+  authors: ["Daniel Gottesman", "Thomas Jennewein", "Sarah Croke"]
+  publisher: "Physical Review Letters"
+  year: 2012
+  type: paper
+  doi: "10.1103/PhysRevLett.109.070503"
+
+- id: komar-natphys-2014
+  title: "A quantum network of clocks"
+  authors: ["Péter Kómár", "Eric M. Kessler", "Michael Bishof", "Liang Jiang", "Anders S. Sørensen", "Jun Ye", "Mikhail D. Lukin"]
+  publisher: "Nature Physics"
+  year: 2014
+  type: paper
+  doi: "10.1038/nphys3000"
+
+- id: cirac-prl-1999
+  title: "Distributed quantum computation over noisy channels"
+  authors: ["J. Ignacio Cirac", "A. K. Ekert", "S. F. Huelga", "Chiara Macchiavello"]
+  publisher: "Physical Review A"
+  year: 1999
+  type: paper
+  doi: "10.1103/PhysRevA.59.4249"
+
+- id: quisp-icons
+  title: "QuISP network icon library"
+  authors: ["AQUA — Advancing Quantum Architecture (Keio University) / Van Meter et al."]
+  publisher: "GitHub"
+  year: 2022
+  type: misc
+  url: "https://github.com/sfc-aqua/quisp/tree/master/Network%20icons"

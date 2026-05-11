@@ -1,0 +1,20 @@
+# Build outputs
+web/dist/
+web/.astro/
+
+# Dependencies
+node_modules/
+
+# OS
+.DS_Store
+
+# Editor
+*.swp
+*~
+
+# Python (for any subject pipelines)
+__pycache__/
+*.pyc
+
+# Internal — workspace-private steering documents, fact-checks, etc.
+_private/

@@ -1,0 +1,680 @@
+---
+/**
+ * /distillation — Entanglement distillation
+ *
+ * Tier A · Foundations.
+ *
+ * Citations:
+ *   - bennett-pra-1996 — Bennett, DiVincenzo, Smolin, Wootters,
+ *     PRA 54, 3824 (1996). The BBPSSW distillation protocol.
+ *   - kumar-ijndc-2025 — current network survey.
+ *   - kozlowski-rfc9340 — link-layer service framing.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+import Callout from "../components/Callout.astro";
+import Math from "../components/Math.astro";
+
+const sections = [
+  { id: "overview", label: "Overview" },
+  { id: "why",      label: "Why distill" },
+  { id: "protocol", label: "The BBPSSW protocol" },
+  { id: "tradeoff", label: "Throughput vs fidelity" },
+  { id: "role",     label: "Network role" },
+];
+---
+
+<Infographic
+  title="Entanglement distillation"
+  description="Distillation takes two low-fidelity Bell pairs and produces one higher-fidelity pair, at the cost of throughput. The BBPSSW protocol uses local CNOTs and measurement at each end, with classical comparison of the outcomes. This page covers why distillation matters, the protocol, and the throughput/fidelity trade-off."
+  references={[
+    "bennett-pra-1996",
+    "horodecki-pra-1999",
+    "kozlowski-rfc9340",
+    "massar-prl-1995",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="distillation" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>Entanglement distillation</h1>
+        <p>
+          Bell pairs delivered through a noisy quantum channel are imperfect — their
+          fidelity to the ideal Bell state is below 1. <strong>Distillation</strong>
+          (also called <em>purification</em>) is the family of protocols that take two
+          (or more) low-fidelity Bell pairs and produce one pair of higher fidelity, at
+          the cost of throughput. The canonical protocol is BBPSSW, from Bennett, Brassard,
+          Popescu, Schumacher, Smolin and Wootters
+          (1996) <SourceNote id="bennett-pra-1996" />.
+        </p>
+        <p>
+          Distillation is the network's response to fidelity loss. Each entanglement-
+          generation event has imperfections; each swap at a relay multiplies them. By
+          sacrificing some pairs to clean others up, the network can keep delivered
+          fidelity above whatever threshold downstream applications need (teleportation,
+          QKD key extraction, distributed quantum computing).
+        </p>
+      </header>
+
+      <section id="why" data-nav-section>
+        <h2>Why distill</h2>
+        <p>
+          A perfect Bell pair has fidelity <Math tex="F = 1" />. Real channels deliver
+          mixed states with <Math tex="F < 1" /> — typical numbers in current memory-based
+          repeater experiments are <Math tex="F \\sim 0.7\\,\\text{–}\\,0.9" /> on a single
+          link. Two problems compound:
+        </p>
+        <ul>
+          <li>
+            <strong>Multi-hop multiplication.</strong> Chained entanglement swapping
+            multiplies per-link fidelities (see the swapping subject). Two hops at
+            <Math tex="F = 0.85" /> each give an end-to-end pair at roughly
+            <Math tex="F \\sim 0.72" /> after the swap; ten hops at
+            <Math tex="F = 0.95" /> each fall to <Math tex="\\sim 0.6" />. Without
+            countermeasures, fidelity decays exponentially in the number of hops.
+          </li>
+          <li>
+            <strong>Application thresholds.</strong> Many downstream protocols simply do
+            not work below a fidelity threshold. For teleportation of an arbitrary qubit
+            through a Bell pair, the average output fidelity is
+            <Math tex="(2F+1)/3" />, where <Math tex="F" /> is the pair's singlet
+            fraction (its overlap with the closest Bell state)
+            <SourceNote id="horodecki-pra-1999" />. Below
+            <Math tex="F = \\tfrac{1}{2}" /> the output drops to ⅔ — what a classical
+            measure-and-prepare strategy alone can already
+            achieve <SourceNote id="massar-prl-1995" /> — and the entanglement provides
+            no quantum advantage. Practical applications need the Bell pair well above
+            this threshold.
+          </li>
+        </ul>
+        <p>
+          Distillation flips the trade. Spend more pairs to get fewer pairs, but each
+          one is cleaner. Since long-distance distribution is throughput-limited anyway
+          (Bell-pair generation rates are slow), trading a factor of throughput for a
+          factor of fidelity is often the right deal.
+        </p>
+      </section>
+
+      <section id="protocol" data-nav-section>
+        <h2>The BBPSSW protocol</h2>
+        <p>
+          The simplest distillation primitive consumes two Bell pairs and probabilistically
+          produces one cleaner pair. Alice and Bob each hold one half of each pair —
+          <Math tex="(a_1, b_1)" /> are the <em>source</em> pair (the one we hope to keep)
+          and <Math tex="(a_2, b_2)" /> are the <em>target</em> pair (consumed in the
+          measurement). The protocol is local at each side, with one round of classical
+          communication to reconcile outcomes.
+        </p>
+
+        <ol class="dt-steps">
+          <li>
+            <strong>Local CNOTs.</strong> Alice applies a CNOT with
+            <Math tex="a_1" /> as control and <Math tex="a_2" /> as target. Bob applies
+            the same operation locally: <Math tex="b_1" /> control,
+            <Math tex="b_2" /> target.
+          </li>
+          <li>
+            <strong>Measure the target pair.</strong> Alice measures
+            <Math tex="a_2" /> in the computational basis (the standard
+            <Math tex="|0\\rangle" /> / <Math tex="|1\\rangle" /> basis); Bob measures
+            <Math tex="b_2" />. Each gets a 1-bit outcome.
+          </li>
+          <li>
+            <strong>Compare classically.</strong> Alice and Bob exchange their target-pair
+            outcomes over a classical channel.
+          </li>
+          <li>
+            <strong>Decide.</strong> If the outcomes match (both 0 or both 1), the source
+            pair <Math tex="(a_1, b_1)" /> is <em>kept</em> — its fidelity has been
+            increased. If they disagree, the source pair is discarded; the round is a
+            failure and produces nothing.
+          </li>
+        </ol>
+
+        <figure class="dt" id="dt-fig" data-dt>
+          <svg viewBox="0 0 720 340" role="img"
+               aria-label="Distillation animation: two noisy Bell pairs are combined via local CNOTs and target-pair measurement; matching outcomes keep the source pair at higher fidelity, mismatching outcomes discard it."
+               data-dt-svg>
+            {/* ─── Endpoint labels ─────────────────────────────── */}
+            <text x="80" y="22" text-anchor="middle" class="dt-label">Alice</text>
+            <text x="640" y="22" text-anchor="middle" class="dt-label">Bob</text>
+
+            {/* ─── Two endpoint boxes ─────────────────────────── */}
+            <rect x="20"  y="32" width="160" height="276" rx="6"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <rect x="540" y="32" width="160" height="276" rx="6"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+
+            {/* ─── Source pair (a1 ↔ b1) at the top ────────────── */}
+            <path data-dt-source-line
+                  d="M 80 80 Q 360 30 640 80"
+                  fill="none" stroke="var(--color-text)" stroke-width="2"
+                  stroke-dasharray="6,3" opacity="0.9"/>
+            <text data-dt-source-flabel x="360" y="20" text-anchor="middle" class="dt-flabel">source pair · F = 0.70</text>
+
+            <g transform="translate(80 80)">
+              <circle r="18" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="0" y="4" text-anchor="middle" class="dt-slot-mark">a₁</text>
+            </g>
+            <g transform="translate(640 80)">
+              <circle r="18" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="0" y="4" text-anchor="middle" class="dt-slot-mark">b₁</text>
+            </g>
+
+            {/* ─── Target pair (a2 ↔ b2) below ─────────────────── */}
+            <path data-dt-target-line
+                  d="M 80 200 Q 360 250 640 200"
+                  fill="none" stroke="var(--color-text)" stroke-width="2"
+                  stroke-dasharray="6,3" opacity="0.9"/>
+            <text x="360" y="262" text-anchor="middle" class="dt-flabel">target pair · F = 0.70</text>
+
+            <g transform="translate(80 200)" data-dt-slot="a2">
+              <circle r="18" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="0" y="4" text-anchor="middle" class="dt-slot-mark">a₂</text>
+            </g>
+            <g transform="translate(640 200)" data-dt-slot="b2">
+              <circle r="18" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="0" y="4" text-anchor="middle" class="dt-slot-mark">b₂</text>
+            </g>
+
+            {/* ─── CNOTs (Alice and Bob) ───────────────────────── */}
+            {/* Alice's CNOT: control on a1, target on a2. Drawn
+                as a vertical line between the two slots, with a
+                filled control dot on the source side and a target
+                circle (with cross) on the target side. */}
+            <g data-dt-cnot-a opacity="0">
+              <line x1="80" y1="100" x2="80" y2="180"
+                    stroke="var(--color-accent)" stroke-width="2"/>
+              <circle cx="80" cy="100" r="4" fill="var(--color-accent)"/>
+              <circle cx="80" cy="182" r="8" fill="none"
+                      stroke="var(--color-accent)" stroke-width="2"/>
+              <line x1="80" y1="174" x2="80" y2="190"
+                    stroke="var(--color-accent)" stroke-width="2"/>
+              <line x1="72" y1="182" x2="88" y2="182"
+                    stroke="var(--color-accent)" stroke-width="2"/>
+            </g>
+            <g data-dt-cnot-b opacity="0">
+              <line x1="640" y1="100" x2="640" y2="180"
+                    stroke="var(--color-accent)" stroke-width="2"/>
+              <circle cx="640" cy="100" r="4" fill="var(--color-accent)"/>
+              <circle cx="640" cy="182" r="8" fill="none"
+                      stroke="var(--color-accent)" stroke-width="2"/>
+              <line x1="640" y1="174" x2="640" y2="190"
+                    stroke="var(--color-accent)" stroke-width="2"/>
+              <line x1="632" y1="182" x2="648" y2="182"
+                    stroke="var(--color-accent)" stroke-width="2"/>
+            </g>
+
+            {/* CNOT labels */}
+            <text data-dt-cnot-a-label x="115" y="145" class="dt-action-label" opacity="0">CNOT</text>
+            <text data-dt-cnot-b-label x="605" y="145" class="dt-action-label" text-anchor="end" opacity="0">CNOT</text>
+
+            {/* ─── Measurements on target pair ─────────────────── */}
+            <g data-dt-measure-a opacity="0">
+              <rect x="100" y="225" width="34" height="22" rx="3"
+                    fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="1.5"/>
+              <text x="117" y="240" text-anchor="middle" class="dt-meas-label">M</text>
+              <text data-dt-bit-a x="148" y="240" class="dt-bit">0</text>
+            </g>
+            <g data-dt-measure-b opacity="0">
+              <rect x="586" y="225" width="34" height="22" rx="3"
+                    fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="1.5"/>
+              <text x="603" y="240" text-anchor="middle" class="dt-meas-label">M</text>
+              <text data-dt-bit-b x="572" y="240" text-anchor="end" class="dt-bit">0</text>
+            </g>
+
+            {/* ─── Classical channel for outcome comparison ────── */}
+            <line x1="180" y1="280" x2="540" y2="280"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="4,3" opacity="0.65"/>
+            <text x="360" y="296" text-anchor="middle" class="dt-channel">classical channel · compare outcomes</text>
+
+            {/* Comparison verdict label, appears in phase 4 */}
+            <text data-dt-verdict x="360" y="278" text-anchor="middle" class="dt-verdict" opacity="0">match</text>
+          </svg>
+
+          <ol class="dt-step-list" data-dt-steps>
+            <li data-dt-step="1"><strong>1.</strong> Two noisy Bell pairs at <Math tex="F = 0.70" /></li>
+            <li data-dt-step="2"><strong>2.</strong> Alice and Bob each apply a local CNOT (source → target)</li>
+            <li data-dt-step="3"><strong>3.</strong> Measure the target pair locally</li>
+            <li data-dt-step="4"><strong>4.</strong> Compare outcomes over the classical channel</li>
+            <li data-dt-step="5"><strong>5a.</strong> Match → keep source pair, fidelity boosted</li>
+            <li data-dt-step="5b"><strong>5b.</strong> Mismatch → discard, try again</li>
+          </ol>
+
+          <figcaption>
+            Each cycle alternates between a success (outcomes match — source pair kept,
+            fidelity label rises and the connecting curve thickens) and a failure
+            (outcomes disagree — source pair fades and the round produces nothing). The
+            target pair is consumed either way. Real protocols can reach much higher
+            fidelity by recursing — feeding distilled pairs back in as input to another
+            round.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="tradeoff" data-nav-section>
+        <h2>Throughput vs fidelity</h2>
+        <p>
+          BBPSSW spends two pairs to (probabilistically) produce one cleaner pair. The
+          success probability for input fidelity <Math tex="F" /> is roughly
+          <Math tex="F^2 + (1 - F)^2 / 3" />; on success, the output pair has fidelity
+          <Math tex="F'" /> approximately
+          <Math tex="(F^2 + (1-F)^2 / 9) / (F^2 + (1-F)^2 / 3)" />. Two takeaways:
+        </p>
+        <ul>
+          <li>
+            <strong>Each round at least halves the throughput.</strong> Two pairs in,
+            zero or one out. Successive rounds compound this: distilling once costs ½
+            throughput, twice costs ¼, etc.
+          </li>
+          <li>
+            <strong>Each round increases fidelity provided the input was already above
+            <Math tex="F = 1/2" /></strong>. Below that threshold, BBPSSW's output is
+            <em>worse</em> than the input — there's no useful entanglement to amplify,
+            so distillation can't bootstrap from purely classical noise. This is why
+            generation must already deliver above-threshold pairs before distillation
+            can help.
+          </li>
+        </ul>
+        <Callout label="Variants and recursion">
+          <p>
+            Real distillation protocols recurse. Two distilled pairs from one round can
+            be fed in as inputs to a second round, producing a doubly-distilled pair at
+            yet higher fidelity. The cost is throughput compounding (¼ for two rounds,
+            ⅛ for three, …). The protocol family extends to multi-pair generalisations
+            (Deutsch et al. 1996) and protocols tuned for specific noise channels.
+            Across all variants, the BBPSSW pattern — <em>local operations, measure a
+            sacrificial target pair, classical reconcile</em> — is the structural core.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="role" data-nav-section>
+        <h2>Network role</h2>
+        <p>
+          Distillation lives at the link or end-to-end layer. A network's
+          entanglement-generation rate sets the supply of low-fidelity Bell pairs;
+          distillation is the post-processing that turns that supply into a smaller
+          supply of high-fidelity pairs the application layer can actually use. RFC 9340
+          treats distillation as part of the layered service contract — the link layer
+          delivers Bell pairs, optionally with distillation rounds applied, at a
+          specified fidelity <SourceNote id="kozlowski-rfc9340" />.
+        </p>
+        <p>
+          Two related subjects pick up the threads:
+        </p>
+        <ul>
+          <li>
+            <strong>Repeaters</strong> integrate generation, swapping, and distillation
+            into the 1G / 2G / 3G architectural families. The role of distillation
+            differs across generations — central in 1G and 2G, replaced by quantum error
+            correction in 3G. <em>Covered in the</em> <strong>repeaters</strong>
+            <em>subject.</em>
+          </li>
+          <li>
+            <strong>Metrics</strong> grounds the fidelity numbers we've been throwing
+            around — what counts as "low" or "high" fidelity, what application thresholds
+            actually require, and how fidelity composes with loss along a real channel.
+            <em>Covered in the</em> <strong>metrics</strong> <em>subject.</em>
+          </li>
+        </ul>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<script type="module" is:inline>
+  // Distillation animation. Six-phase loop, alternating success
+  // and failure cycles so the reader sees both outcomes:
+  //   1. Setup — two noisy Bell pairs visible at F ≈ 0.70.
+  //   2. Local CNOTs at Alice and Bob (source → target).
+  //   3. Measurement of the target pair on each side.
+  //   4. Classical comparison — match / mismatch label.
+  //   5. Decision:
+  //        success → source pair stays, F label rises, line thickens
+  //        failure → source pair fades out (discarded)
+  //   6. Hold, then reset.
+  // Successive cycles alternate success / failure deterministically.
+  const fig = document.querySelector("[data-dt]");
+  if (fig) {
+    const svg         = fig.querySelector("[data-dt-svg]");
+    const sourceLine  = svg.querySelector("[data-dt-source-line]");
+    const sourceFLab  = svg.querySelector("[data-dt-source-flabel]");
+    const targetLine  = svg.querySelector("[data-dt-target-line]");
+    const cnotA       = svg.querySelector("[data-dt-cnot-a]");
+    const cnotB       = svg.querySelector("[data-dt-cnot-b]");
+    const cnotALabel  = svg.querySelector("[data-dt-cnot-a-label]");
+    const cnotBLabel  = svg.querySelector("[data-dt-cnot-b-label]");
+    const measA       = svg.querySelector("[data-dt-measure-a]");
+    const measB       = svg.querySelector("[data-dt-measure-b]");
+    const bitA        = svg.querySelector("[data-dt-bit-a]");
+    const bitB        = svg.querySelector("[data-dt-bit-b]");
+    const slotA2      = svg.querySelector('[data-dt-slot="a2"]');
+    const slotB2      = svg.querySelector('[data-dt-slot="b2"]');
+    const measARect   = svg.querySelector("[data-dt-measure-a] rect");
+    const measBRect   = svg.querySelector("[data-dt-measure-b] rect");
+    const verdict     = svg.querySelector("[data-dt-verdict]");
+    const stepEls     = Array.from(fig.querySelectorAll("[data-dt-step]"));
+
+    const PULSE_DUR = 280;
+    const flash = { MA: 0, MB: 0 };
+    function pulse(side, now) { flash[side] = now + PULSE_DUR; }
+    function updateBorders(now) {
+      for (const [side, rect] of [["MA", measARect], ["MB", measBRect]]) {
+        if (!rect) continue;
+        const remaining = flash[side] - now;
+        if (remaining > 0) {
+          const t = remaining / PULSE_DUR;
+          rect.setAttribute("stroke-width", String(1.5 + 2.0 * t));
+        } else {
+          rect.setAttribute("stroke-width", "1.5");
+        }
+      }
+    }
+
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function setOpacity(el, op) { el.setAttribute("opacity", String(op)); }
+    function highlightStep(n) {
+      for (const el of stepEls) {
+        const isActive = el.dataset.dtStep === String(n);
+        el.classList.toggle("dt-step--active", isActive);
+      }
+    }
+
+    if (reducedMotion) {
+      setOpacity(sourceLine, 1);
+      sourceLine.setAttribute("stroke-width", "3.5");
+      sourceFLab.textContent = "source pair · F = 0.83 ✓";
+      setOpacity(targetLine, 0);
+      setOpacity(cnotA, 1);
+      setOpacity(cnotB, 1);
+      setOpacity(measA, 1);
+      setOpacity(measB, 1);
+      bitA.textContent = "0";
+      bitB.textContent = "0";
+      verdict.textContent = "match — keep source";
+      setOpacity(verdict, 1);
+      highlightStep(5);
+    } else {
+      const T_SETUP   = 1500;
+      const T_CNOT    = 1650;
+      const T_MEAS    = 1500;
+      const T_COMP    = 1500;
+      const T_DECIDE  = 1650;
+      const T_HOLD    = 1350;
+      const T_PAUSE   = 375;
+      const T_TOTAL   = T_SETUP + T_CNOT + T_MEAS + T_COMP + T_DECIDE + T_HOLD + T_PAUSE;
+
+      let running = false;
+      let cycleStart = 0;
+      let success = true;
+      let outcome = 0; // 0 = both 0, 1 = both 1 (when success); for fail: a≠b
+      let firedMeasure = false;
+
+      function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function pickCycle() {
+        // Deterministically alternate success / failure so the
+        // reader sees both branches; pick a random outcome
+        // pattern within each branch.
+        success = !success;
+        if (success) {
+          // both 0 or both 1, randomly
+          outcome = Math.random() < 0.5 ? 0 : 1;
+          bitA.textContent = String(outcome);
+          bitB.textContent = String(outcome);
+          verdict.textContent = "match — keep source";
+        } else {
+          // 01 or 10
+          const flip = Math.random() < 0.5;
+          bitA.textContent = flip ? "0" : "1";
+          bitB.textContent = flip ? "1" : "0";
+          verdict.textContent = "mismatch — discard";
+        }
+      }
+
+      function frame(now) {
+        if (!running) return;
+        const elapsed = now - cycleStart;
+
+        if (elapsed < T_SETUP) {
+          highlightStep(1);
+          // Reset state
+          setOpacity(sourceLine, 0.9);
+          sourceLine.setAttribute("stroke-width", "2");
+          sourceFLab.textContent = "source pair · F = 0.70";
+          setOpacity(targetLine, 0.9);
+          setOpacity(slotA2, 1);
+          setOpacity(slotB2, 1);
+          setOpacity(cnotA, 0);
+          setOpacity(cnotB, 0);
+          setOpacity(cnotALabel, 0);
+          setOpacity(cnotBLabel, 0);
+          setOpacity(measA, 0);
+          setOpacity(measB, 0);
+          setOpacity(verdict, 0);
+        } else if (elapsed < T_SETUP + T_CNOT) {
+          highlightStep(2);
+          const t = (elapsed - T_SETUP) / T_CNOT;
+          const e = ease(t);
+          setOpacity(cnotA, e);
+          setOpacity(cnotB, e);
+          setOpacity(cnotALabel, e);
+          setOpacity(cnotBLabel, e);
+        } else if (elapsed < T_SETUP + T_CNOT + T_MEAS) {
+          highlightStep(3);
+          if (!firedMeasure) {
+            pulse("MA", now);
+            pulse("MB", now);
+            firedMeasure = true;
+          }
+          const t = (elapsed - T_SETUP - T_CNOT) / T_MEAS;
+          const e = ease(t);
+          setOpacity(cnotA, 1 - e * 0.5);
+          setOpacity(cnotB, 1 - e * 0.5);
+          setOpacity(measA, e);
+          setOpacity(measB, e);
+          // Target pair is being consumed: target qubits fade
+          setOpacity(slotA2, 1 - e * 0.5);
+          setOpacity(slotB2, 1 - e * 0.5);
+          setOpacity(targetLine, 0.9 * (1 - e * 0.6));
+        } else if (elapsed < T_SETUP + T_CNOT + T_MEAS + T_COMP) {
+          highlightStep(4);
+          const t = (elapsed - T_SETUP - T_CNOT - T_MEAS) / T_COMP;
+          const e = ease(t);
+          setOpacity(verdict, e);
+          // Target fully consumed
+          setOpacity(targetLine, 0.36 * (1 - e));
+          setOpacity(slotA2, 0.5 * (1 - e));
+          setOpacity(slotB2, 0.5 * (1 - e));
+        } else if (elapsed < T_SETUP + T_CNOT + T_MEAS + T_COMP + T_DECIDE) {
+          highlightStep(success ? 5 : 6);
+          const t = (elapsed - T_SETUP - T_CNOT - T_MEAS - T_COMP) / T_DECIDE;
+          const e = ease(t);
+          setOpacity(targetLine, 0);
+          setOpacity(slotA2, 0);
+          setOpacity(slotB2, 0);
+          if (success) {
+            // Source pair improves: line thickens, fidelity goes up
+            const w = 2 + e * 1.7;  // 2 → 3.7
+            sourceLine.setAttribute("stroke-width", String(w));
+            const F = 0.70 + e * 0.13; // 0.70 → 0.83
+            sourceFLab.textContent = `source pair · F = ${F.toFixed(2)} ✓`;
+            setOpacity(sourceLine, 1);
+          } else {
+            // Source pair discarded
+            setOpacity(sourceLine, 0.9 * (1 - e));
+            sourceLine.setAttribute("stroke-width", "2");
+            sourceFLab.textContent = `source pair · discarded ✗`;
+            setOpacity(sourceFLab, 1 - e * 0.4);
+          }
+        } else if (elapsed < T_TOTAL - T_PAUSE) {
+          highlightStep(success ? 5 : 6);
+          // Hold final state
+        } else if (elapsed >= T_TOTAL) {
+          cycleStart = now;
+          pickCycle();
+          firedMeasure = false;
+          // Re-set sourceFLab opacity (might have been faded on failure)
+          setOpacity(sourceFLab, 1);
+        }
+
+        updateBorders(now);
+        requestAnimationFrame(frame);
+      }
+
+      pickCycle();
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !running) {
+            running = true;
+            cycleStart = performance.now();
+            pickCycle();
+            requestAnimationFrame(frame);
+          } else if (!entry.isIntersecting) {
+            running = false;
+          }
+        }
+      });
+      observer.observe(fig);
+    }
+  }
+</script>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+
+  ol.dt-steps {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  ol.dt-steps li { line-height: var(--leading-snug); }
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+
+  .dt {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .dt svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 380px;
+    display: block;
+  }
+  .dt figcaption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
+  }
+
+  ol.dt-step-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 4px;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  ol.dt-step-list li {
+    padding: var(--space-1) var(--space-2);
+    border-inline-start: 3px solid transparent;
+    color: var(--color-text-mute);
+    transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+  }
+  ol.dt-step-list li.dt-step--active {
+    color: var(--color-text);
+    border-inline-start-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+
+  :global(.dt-label) {
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.dt-flabel) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--color-text);
+    font-weight: 600;
+  }
+  :global(.dt-channel) {
+    font-size: 10px;
+    fill: var(--color-text-mute);
+    font-style: italic;
+  }
+  :global(.dt-slot-mark) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.dt-action-label) {
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--color-accent);
+    letter-spacing: 0.05em;
+  }
+  :global(.dt-meas-label) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--color-accent);
+  }
+  :global(.dt-bit) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.dt-verdict) {
+    font-size: 12px;
+    font-weight: 700;
+    fill: var(--color-accent);
+  }
+
+  @keyframes dt-flow {
+    to { stroke-dashoffset: -18; }
+  }
+  [data-dt-source-line],
+  [data-dt-target-line] {
+    animation: dt-flow 1.6s linear infinite;
+  }
+</style>

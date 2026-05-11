@@ -1,0 +1,121 @@
+---
+import "../styles/reset.css";
+import "../styles/tokens.css";
+import "../styles/print.css";
+import "katex/dist/katex.min.css";
+
+import ReferencesList from "../components/ReferencesList.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** IDs of `sources.yaml` entries cited on this page. Drives the
+   *  bottom-of-page bibliography — pages without citations pass an
+   *  empty array (or omit) and the bibliography section is hidden. */
+  references?: string[];
+}
+const { title, description, references = [] } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <main id="main" class:list={["page-main", { "page-main--with-nav": Astro.slots.has("nav") }]}>
+      {Astro.slots.has("nav") && (
+        <aside class="page-nav-rail" aria-label="Section navigation">
+          <slot name="nav" />
+        </aside>
+      )}
+      <div class="page-content">
+        <slot />
+      </div>
+    </main>
+    <footer>
+      <ReferencesList ids={references} />
+    </footer>
+
+    <style is:global>
+      body {
+        background: var(--color-bg);
+        color: var(--color-text);
+        font-family: var(--font-sans);
+        font-size: var(--text-base);
+        line-height: var(--leading-body);
+      }
+      main {
+        max-inline-size: var(--wide-width);
+        margin-inline: auto;
+        padding: var(--space-6) var(--space-4);
+      }
+      /* Pages that fill the `nav` slot get a left-rail TOC. The grid
+         widens to keep the content column at its readable size while
+         the rail sits in the gutter. On narrow viewports the rail
+         collapses to a sticky horizontal strip (handled inside
+         SiteNav itself) and the grid becomes single-column. */
+      .page-main--with-nav {
+        display: grid;
+        grid-template-columns: 13rem minmax(0, 1fr);
+        gap: var(--space-5);
+        align-items: start;
+        max-inline-size: calc(var(--wide-width) + 13rem + var(--space-5));
+      }
+      .page-main--with-nav .page-nav-rail {
+        position: sticky;
+        inset-block-start: var(--space-4);
+        align-self: start;
+        max-block-size: calc(100vh - var(--space-7));
+        overflow-y: auto;
+      }
+      @media (max-width: 60rem) {
+        .page-main--with-nav {
+          grid-template-columns: minmax(0, 1fr);
+          max-inline-size: var(--wide-width);
+        }
+        .page-main--with-nav .page-nav-rail {
+          position: static;
+          max-block-size: none;
+          overflow: visible;
+        }
+      }
+      @media print {
+        .page-main--with-nav { grid-template-columns: minmax(0, 1fr); }
+        .page-nav-rail { display: none; }
+      }
+      footer {
+        max-inline-size: var(--wide-width);
+        margin-inline: auto;
+        padding: 0 var(--space-4) var(--space-7);
+      }
+      h1 { font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
+      h2 { font-size: var(--text-2xl); margin-block-start: var(--space-7); }
+      h3 { font-size: var(--text-xl); margin-block-start: var(--space-5); }
+      /* No prose-width cap on paragraphs: the container (`main`) already
+         caps the line length via --wide-width, and capping <p> at 65ch
+         while leaving <ul>/<ol> uncapped produced a visible asymmetry
+         (paragraphs at ~75% width, bullets at full container width).
+         Re-add a per-prose cap only if we add a "long-form" page that
+         needs the classic 60–75-char reading column. */
+      a  { color: var(--color-accent); text-underline-offset: 0.15em; }
+
+      .skip-link {
+        position: absolute;
+        inset-block-start: -40px;
+        inset-inline-start: var(--space-3);
+        padding: var(--space-2) var(--space-3);
+        background: var(--color-accent);
+        color: white;
+        border-radius: var(--radius);
+      }
+      .skip-link:focus { inset-block-start: var(--space-3); }
+    </style>
+  </body>
+</html>

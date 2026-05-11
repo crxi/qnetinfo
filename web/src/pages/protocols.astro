@@ -1,0 +1,213 @@
+---
+/**
+ * /protocols — Protocol stack and RFC 9340 architectural principles
+ *
+ * Tier D · Infrastructure.
+ *
+ * Citations:
+ *   - kozlowski-rfc9340 — IRTF Architectural Principles for a
+ *     Quantum Internet (the canonical document).
+ *   - wehner-science-2018 — vision + 5-stage roadmap.
+ *   - meter-ieee-2014 — Van Meter's "Quantum Networking" book;
+ *     earlier proposal with link / network / transport layers.
+ *   - dahlberg-sigcomm-2019 — link-layer protocol design with EGP
+ *     and distributed-queue protocol.
+ *   - kumar-ijndc-2025 — §4.5 protocol stack survey.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+import Math from "../components/Math.astro";
+
+const sections = [
+  { id: "overview",    label: "Overview" },
+  { id: "rfc9340",     label: "RFC 9340 principles" },
+  { id: "stacks",      label: "Layered stacks compared" },
+  { id: "link-layer",  label: "The link layer" },
+  { id: "open",        label: "What's deliberately deferred" },
+];
+---
+
+<Infographic
+  title="Protocol stack and architectural principles"
+  description="The quantum-internet protocol stack: RFC 9340's architectural principles, the layered stacks proposed by Wehner 2018, Van Meter 2014, and Dahlberg 2019, and the deliberately deferred concerns (naming, addressing, routing) that the standardisation track has left open."
+  references={[
+    "dahlberg-sigcomm-2019",
+    "kozlowski-rfc9340",
+    "kumar-ijndc-2025",
+    "meter-ieee-2014",
+    "wehner-science-2018",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="protocols" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>Protocol stack and architectural principles</h1>
+        <p>
+          A quantum-internet protocol stack faces design constraints that don't appear in
+          the classical TCP/IP stack: no-cloning forbids store-and-forward retransmission,
+          the link-layer service delivers an entangled resource rather than a bit
+          stream, and the network has to coordinate two-way classical communication
+          alongside the quantum channel. RFC 9340 is the IRTF's informational
+          consolidation of how to think about these — the canonical reference for the
+          architecture <SourceNote id="kozlowski-rfc9340" />.
+        </p>
+        <p>
+          This page covers RFC 9340's architectural principles, the three layered-stack
+          proposals that inform it (Wehner 2018, Van Meter 2014, Dahlberg 2019), the
+          link-layer service the rest of the stack rests on, and the concerns the
+          standardisation track has deliberately deferred.
+        </p>
+      </header>
+
+      <section id="rfc9340" data-nav-section>
+        <h2>RFC 9340 principles</h2>
+        <p>
+          RFC 9340 defines the link-layer service as <q>deliver Bell pair (A, B) on
+          demand</q> between two named endpoints, at adequate fidelity. Everything else
+          — teleportation, key extraction, distributed computing — is built on top of
+          that primitive at higher layers <SourceNote id="kozlowski-rfc9340" />. The
+          document is informational rather than a wire-protocol standard; it names
+          requirements, layer boundaries, and a vocabulary, but does not specify on-wire
+          formats.
+        </p>
+        <p>
+          Three principles worth flagging:
+        </p>
+        <ul>
+          <li>
+            <strong>Bell pair as the network resource.</strong> The network's product is
+            entanglement, not bits. Applications consume Bell pairs; the network's success
+            metric is entanglement-delivery rate × fidelity, not bandwidth.
+          </li>
+          <li>
+            <strong>Classical co-routing.</strong> Every quantum protocol requires a
+            classical side-channel for measurement results, corrections, and heralding
+            signals. The classical channel is in-band with the quantum service; the stack
+            schedules both.
+          </li>
+          <li>
+            <strong>Deferred concerns.</strong> Naming, addressing, and routing are
+            acknowledged as open and not standardised. The document calls these out so
+            implementations don't accidentally invent incompatible solutions.
+          </li>
+        </ul>
+      </section>
+
+      <section id="stacks" data-nav-section>
+        <h2>Layered stacks compared</h2>
+        <p>
+          Three influential layered-stack proposals precede or accompany RFC 9340:
+        </p>
+        <ul>
+          <li>
+            <strong>Van Meter 2014</strong> — the earliest comprehensive proposal. Five
+            layers (physical, link, network, transport, application) mapping
+            classical-TCP/IP structure onto a quantum context, with entanglement
+            generation and purification at the link / network boundary
+            <SourceNote id="meter-ieee-2014" />.
+          </li>
+          <li>
+            <strong>Wehner 2018</strong> — Frames the quantum internet as a five-stage
+            roadmap of capabilities (trusted-node QKD → prepare-and-measure → entanglement
+            distribution → quantum memory → fault-tolerant) rather than a strict layered
+            stack; each stage unlocks a class of applications. The protocol-stack view is
+            implicit but the stages are the operational reference points
+            <SourceNote id="wehner-science-2018" />.
+          </li>
+          <li>
+            <strong>Dahlberg 2019</strong> — A concrete protocol design for the link
+            layer specifically: an Entanglement Generation Protocol (EGP) that requests
+            on-demand pair generation, and a Distributed-Queue Protocol (DQP) that
+            schedules competing requests across two nodes
+            <SourceNote id="dahlberg-sigcomm-2019" />. Implemented on the NV-centre stack
+            at Delft.
+          </li>
+        </ul>
+        <p>
+          RFC 9340 sits above this work, consolidating the architectural principles
+          without prescribing a specific wire protocol. Kumar 2025 §4.5 surveys all three
+          together <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+      </section>
+
+      <section id="link-layer" data-nav-section>
+        <h2>The link layer</h2>
+        <p>
+          The link-layer service in a quantum network has two responsibilities: generate
+          Bell pairs on demand between adjacent nodes, and report success or failure
+          with the necessary metadata (fidelity, heralding outcome, Pauli correction).
+          The Dahlberg EGP design specifies a request-response interface — an application
+          asks for a Bell pair with a target fidelity, and the EGP either delivers one
+          and reports the outcome or reports a failure with diagnostic
+          state <SourceNote id="dahlberg-sigcomm-2019" />.
+        </p>
+        <p>
+          Above the link layer, two consumers dominate today: the application layer
+          (teleportation, QKD, distributed-compute primitives), and the network layer
+          (multi-hop swapping to extend entanglement beyond a single link). The covered
+          subjects — teleportation, swapping, distribution — sit at this interface.
+        </p>
+      </section>
+
+      <section id="open" data-nav-section>
+        <h2>What's deliberately deferred</h2>
+        <p>
+          RFC 9340 names several concerns as open and unstandardised:
+        </p>
+        <ul>
+          <li>
+            <strong>Naming and addressing.</strong> How a node identifies itself or names
+            its counterparties is unspecified. Classical analogues (IP addresses, DNS
+            names) may not map cleanly because the network resource is a Bell pair, not a
+            destination IP.
+          </li>
+          <li>
+            <strong>Routing.</strong> Which path to take across a quantum-repeater
+            network is an active research area. Multi-hop swapping introduces fidelity
+            decay that path-selection algorithms have to account for; classical
+            shortest-path is not the answer.
+          </li>
+          <li>
+            <strong>Heterogeneity.</strong> Two endpoints may run different qubit
+            modalities (transmon ↔ NV centre, for example), and the entanglement
+            generation that connects them must bridge their photonic encodings and
+            wavelengths. The protocol layer carries the heterogeneity question.
+          </li>
+        </ul>
+        <p>
+          These are intentional deferrals — the standardisation track preferred to nail
+          down architectural principles before locking in concrete protocols whose
+          numbers would change as the hardware evolves. Future RFCs and protocol drafts
+          will fill in these layers as the platforms mature.
+        </p>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+</style>

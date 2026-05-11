@@ -1,0 +1,249 @@
+---
+/**
+ * /links — Physical-layer link types for quantum networks
+ *
+ * Tier D · Infrastructure.
+ *
+ * Citations:
+ *   - itu-g-652-d — standard single-mode fibre at 0.20 dB/km @ 1550 nm.
+ *   - jasion-ofc-2022 — best academic HCF attenuation.
+ *   - lumenisity-microsoft-2024 — commercial HCF deployment.
+ *   - schmitt-manderbach-prl-2007 — FSO 144 km decoy QKD.
+ *   - yin-science-2017 — Micius 1200 km satellite entanglement.
+ *   - kumar-ijndc-2025 — survey-level reference.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+
+const sections = [
+  { id: "overview",  label: "Overview" },
+  { id: "fibre",     label: "Standard fibre" },
+  { id: "hcf",       label: "Hollow-core fibre" },
+  { id: "fso",       label: "Free-space optical" },
+  { id: "satellite", label: "Satellite" },
+  { id: "compare",   label: "Side-by-side comparison" },
+];
+---
+
+<Infographic
+  title="Links — fibre, hollow-core, free-space, satellite"
+  description="Four physical-layer link types for quantum networks: standard single-mode fibre, hollow-core fibre, free-space optical, and satellite. Per-channel loss, reach, latency, and operational profile, grounded in ITU-T standards and the canonical experimental demonstrations."
+  references={[
+    "itu-g-652-d",
+    "jasion-ofc-2022",
+    "kumar-ijndc-2025",
+    "lumenisity-microsoft-2024",
+    "schmitt-manderbach-prl-2007",
+    "yin-science-2017",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="links" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>Links — fibre, hollow-core, free-space, satellite</h1>
+        <p>
+          A quantum network's physical layer has four practical choices: standard
+          single-mode fibre (SMF), hollow-core fibre (HCF), free-space optical (FSO), and
+          satellite. Each has a different loss profile, reach, latency, and operational
+          envelope. Because no-cloning rules out the optical amplifiers that classical
+          fibre relies on, the unaided reach of a quantum link is a pure attenuation
+          budget — every dB of loss eats directly into the photon-survival
+          probability <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+        <p>
+          The choice between the four is driven by the regime: SMF is ubiquitous and
+          mature; HCF is faster and lower-loss but early in commercial deployment; FSO
+          fits last-mile and short metropolitan hops where fibre isn't installed; satellite
+          is the only viable medium for intercontinental quantum links until repeaters
+          mature.
+        </p>
+      </header>
+
+      <section id="fibre" data-nav-section>
+        <h2>Standard single-mode fibre (SMF)</h2>
+        <p>
+          ITU-T G.652.D defines the canonical telecom fibre: attenuation
+          <strong>0.20 dB/km at 1550 nm</strong>, in the C-band where the loss minimum
+          sits <SourceNote id="itu-g-652-d" />. SMF is deployed in every existing telecom
+          network, with installed base measured in millions of kilometres. Polarisation
+          drifts over long distances and requires active compensation; chromatic
+          dispersion is manageable; the medium is mature.
+        </p>
+        <p>
+          Practical reach for unaided quantum links: roughly 100–200 km before the
+          channel-loss budget bottoms out under realistic detector dark-count rates and
+          source brightness. Beyond that, repeaters (memory-based or otherwise) are
+          needed.
+        </p>
+      </section>
+
+      <section id="hcf" data-nav-section>
+        <h2>Hollow-core fibre (HCF)</h2>
+        <p>
+          Light propagates in an air- (or vacuum-) filled core rather than silica,
+          avoiding silica's intrinsic loss floor. The best academic demonstration to date
+          is Jasion et al.'s 2022 OFC postdeadline at <strong>0.174 dB/km</strong> in a
+          double-nested antiresonant nodeless fibre (DNANF)
+          <SourceNote id="jasion-ofc-2022" />. The commercial state of the art is
+          Lumenisity / Microsoft's <strong>0.091 dB/km</strong> hollow-core fibre, now in
+          early data-centre interconnect deployments <SourceNote id="lumenisity-microsoft-2024" />.
+        </p>
+        <p>
+          Two practical advantages over SMF: lower loss extends the unaided reach, and
+          the in-fibre speed is ~99.7 % of <em>c</em> rather than ~67 % (silica's index).
+          That second figure matters for latency-sensitive interconnects and for keeping
+          the classical-correction round-trip inside the memory-coherence budget on
+          memory-based repeaters. Manufacturing is harder than SMF; deployment is early
+          but accelerating.
+        </p>
+      </section>
+
+      <section id="fso" data-nav-section>
+        <h2>Free-space optical (FSO)</h2>
+        <p>
+          A telescope-to-telescope link through the atmosphere. Clear-sky loss is roughly
+          <strong>0.5 dB/km</strong> in good weather, much higher in fog or rain.
+          Atmospheric turbulence introduces beam scintillation and beam wander; daytime
+          background light is a noise source that limits usable link bandwidth.
+        </p>
+        <p>
+          The canonical demonstration is Schmitt-Manderbach et al.'s 2007 decoy-state QKD
+          over a 144 km horizontal link between La Palma and Tenerife
+          <SourceNote id="schmitt-manderbach-prl-2007" />. FSO fits where fibre isn't
+          available — across rivers, across building gaps in dense urban environments, or
+          to mobile platforms — but weather dependence makes it a poor solo backbone.
+        </p>
+      </section>
+
+      <section id="satellite" data-nav-section>
+        <h2>Satellite</h2>
+        <p>
+          A satellite-borne photon source flies above the dense atmosphere; the loss
+          budget for an uplink/downlink is dominated by roughly 6 km of dense atmospheric
+          layer plus beam divergence over thousands of kilometres. Single-pass loss to
+          LEO is in the 30–50 dB range depending on elevation angle and weather. The rest
+          of the path is near-vacuum, so atmospheric attenuation only applies near the
+          ground station.
+        </p>
+        <p>
+          Yin et al. 2017 (the Micius satellite) demonstrated <strong>entanglement
+          distribution over 1200 km</strong> between two ground stations, with one photon
+          delivered to each — the canonical proof that satellite links work as a quantum
+          channel <SourceNote id="yin-science-2017" />. Operational constraints include
+          pointing acquisition, daytime background-light rejection, and pass-scheduling
+          (a LEO satellite is overhead for only a few minutes per orbit). Above
+          intercontinental distance, satellite is currently the only practical medium —
+          fibre and HCF can't yet bridge the gap.
+        </p>
+      </section>
+
+      <section id="compare" data-nav-section>
+        <h2>Side-by-side comparison</h2>
+
+        <table class="links-table">
+          <thead>
+            <tr>
+              <th scope="col">Link</th>
+              <th scope="col">Loss</th>
+              <th scope="col">Unaided reach</th>
+              <th scope="col">Latency</th>
+              <th scope="col">Operational notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">SMF (ITU G.652.D)</th>
+              <td>0.20 dB/km @ 1550 nm</td>
+              <td>~100–200 km</td>
+              <td>~5 µs/km (silica)</td>
+              <td>Ubiquitous; mature; polarisation needs active correction</td>
+            </tr>
+            <tr>
+              <th scope="row">Hollow-core (HCF)</th>
+              <td>0.091–0.174 dB/km</td>
+              <td>~300–400 km</td>
+              <td>~3.4 µs/km (vacuum)</td>
+              <td>Early commercial; lower loss + lower latency than SMF</td>
+            </tr>
+            <tr>
+              <th scope="row">Free-space (FSO)</th>
+              <td>~0.5 dB/km clear sky</td>
+              <td>10s of km terrestrial</td>
+              <td>~3.4 µs/km</td>
+              <td>Scintillation + weather + daytime background; gaps in service</td>
+            </tr>
+            <tr>
+              <th scope="row">Satellite</th>
+              <td>~30–50 dB single-pass to LEO</td>
+              <td>1000+ km via space</td>
+              <td>~3.4 µs/km in vacuum, plus atmospheric leg</td>
+              <td>Pointing, weather, daytime, pass-scheduling; intercontinental viable</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Each link has a regime where it wins. The metrics subject covers loss-budget
+          composition (how the per-km numbers turn into end-to-end photon-survival
+          probabilities); the repeaters subject covers what happens past the unaided
+          reach.
+        </p>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+
+  .links-table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  .links-table thead th {
+    text-align: start;
+    padding: var(--space-2) var(--space-3);
+    border-block-end: 2px solid var(--color-rule);
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .links-table tbody th,
+  .links-table tbody td {
+    padding: var(--space-2) var(--space-3);
+    vertical-align: top;
+    border-block-end: 1px solid var(--color-rule);
+  }
+  .links-table tbody th {
+    text-align: start;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .links-table tbody td { color: var(--color-text-mute); }
+  .links-table tbody tr:last-child th,
+  .links-table tbody tr:last-child td { border-block-end: 0; }
+</style>

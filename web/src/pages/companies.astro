@@ -1,0 +1,216 @@
+---
+/**
+ * /companies — Vendor landscape (landing page)
+ *
+ * Tier E · Applications & market.
+ *
+ * This is the landing page for the long-term vendor index.
+ * Per-vendor sub-pages are deferred; this round ships the
+ * landing only.
+ *
+ * Citations:
+ *   - ezratty-uqt-2025-p2 — survey-level coverage of the vendor landscape.
+ *   - meddeb-comnet-2025 — per-platform R&D status.
+ *   - kumar-ijndc-2025 — survey-level positioning.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import Grid from "../components/Grid.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+
+const sections = [
+  { id: "overview",       label: "Overview" },
+  { id: "computers",      label: "Computer vendors" },
+  { id: "networking",     label: "Networking & QKD" },
+  { id: "components",     label: "Components" },
+  { id: "notes",          label: "Notes on this page" },
+];
+---
+
+<Infographic
+  title="Vendors — landscape and long-term tracking"
+  description="A growing index of vendors building quantum-network hardware and applications. This is the landing page; per-vendor sub-pages will land separately as the data schema is filled out."
+  references={[
+    "ezratty-uqt-2025-p2",
+    "kumar-ijndc-2025",
+    "meddeb-comnet-2025",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="companies" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>Vendors — landscape and long-term tracking</h1>
+        <p>
+          A quantum-networking workspace that doesn't track vendors loses touch with what
+          can actually be procured. This page is the workspace's vendor index, grouped
+          by primary role and platform. It's deliberately neutral — name, platform, role,
+          and a one-line position, drawn from the survey literature
+          <SourceNote id="ezratty-uqt-2025-p2" /><SourceNote id="meddeb-comnet-2025" />.
+          Detailed milestone timelines and per-vendor pages are planned as a separate
+          long-term-maintained tier; see the notes at the bottom for the schema.
+        </p>
+        <p>
+          Vendors split naturally into three buckets: <strong>computers</strong> (build
+          quantum processors), <strong>networking &amp; QKD</strong> (build the network
+          fabric or the QKD endpoints), and <strong>components</strong> (build the
+          memories, sources, and other infrastructure that the other two consume).
+        </p>
+      </header>
+
+      <section id="computers" data-nav-section>
+        <h2>Computer vendors</h2>
+        <p>
+          Vendors building quantum processors. The platform column maps onto the
+          stationary-qubit encodings covered in the qubits subject.
+        </p>
+
+        <h3 class="vendor-platform">Superconducting</h3>
+        <ul class="vendor-list">
+          <li><strong>IBM</strong> — transmon; large public roadmap (Heron, Nighthawk, Starling, Blue Jay).</li>
+          <li><strong>Google</strong> — transmon; Sycamore lineage.</li>
+          <li><strong>Rigetti</strong> — transmon; Ankaa series.</li>
+          <li><strong>IQM</strong> — transmon; multi-chip systems.</li>
+          <li><strong>USTC</strong> — transmon; Jiuzhang and Zuchongzhi families.</li>
+        </ul>
+
+        <h3 class="vendor-platform">Trapped ion</h3>
+        <ul class="vendor-list">
+          <li><strong>Quantinuum</strong> — Yb⁺ / Ba⁺; H1/H2 racetrack QCCD systems.</li>
+          <li><strong>IonQ</strong> — Yb⁺; commercial cloud access.</li>
+          <li><strong>Oxford Ionics</strong> — Sr⁺; on-chip integration.</li>
+          <li><strong>Universal Quantum</strong> — Yb⁺ networked-ion modules.</li>
+        </ul>
+
+        <h3 class="vendor-platform">Neutral atom</h3>
+        <ul class="vendor-list">
+          <li><strong>QuEra</strong> — Rb-87; Rydberg gates on optical tweezer arrays.</li>
+          <li><strong>Atom Computing</strong> — Sr; large-array room-temperature systems.</li>
+          <li><strong>Pasqal</strong> — Rb; Orion line, analog and digital modes.</li>
+          <li><strong>ColdQuanta / Infleqtion</strong> — Rb; computing + sensing.</li>
+        </ul>
+
+        <h3 class="vendor-platform">Photonic</h3>
+        <ul class="vendor-list">
+          <li><strong>PsiQuantum</strong> — photonic fault-tolerant; silicon-photonic chips.</li>
+          <li><strong>Xanadu</strong> — photonic, continuous-variable + Gaussian boson sampling.</li>
+          <li><strong>ORCA Computing</strong> — photonic memory-based; squeezed-light approach.</li>
+          <li><strong>Quandela</strong> — quantum-dot single-photon sources + photonic chips.</li>
+          <li><strong>QuiX Quantum</strong> — photonic linear-optical processors.</li>
+        </ul>
+
+        <h3 class="vendor-platform">NV / SiV (diamond)</h3>
+        <ul class="vendor-list">
+          <li><strong>Quantum Brilliance</strong> — NV-centre room-temperature compute appliances.</li>
+          <li><strong>Lightsynq</strong> — SiV-centre memory nodes for the quantum internet.</li>
+        </ul>
+      </section>
+
+      <section id="networking" data-nav-section>
+        <h2>Networking and QKD vendors</h2>
+        <p>
+          Vendors building the network fabric or the QKD endpoint systems that consume it.
+        </p>
+
+        <ul class="vendor-list">
+          <li><strong>ID Quantique</strong> — QKD systems; long-running commercial deployment.</li>
+          <li><strong>Toshiba</strong> — QKD systems; Twin-Field demonstrations.</li>
+          <li><strong>MagiQ Technologies</strong> — QKD endpoints.</li>
+          <li><strong>Aliro Quantum</strong> — quantum-network orchestration and simulation; AliroNet stack.</li>
+          <li><strong>Qunnect</strong> — quantum-networking testbed hardware; Rb-vapour memories.</li>
+          <li><strong>Quantum Bridge Tech</strong> — quantum-network infrastructure for QKD and entanglement distribution.</li>
+        </ul>
+      </section>
+
+      <section id="components" data-nav-section>
+        <h2>Components</h2>
+        <p>
+          Vendors building memories, photon sources, transducers, and other components
+          that the computer and networking layers consume.
+        </p>
+
+        <ul class="vendor-list">
+          <li><strong>Welinq</strong> — quantum memories; QDrive Rb-cold-atom memory module.</li>
+          <li><strong>Quandela</strong> (above) — single-photon sources from quantum dots.</li>
+          <li><strong>QuiX Quantum</strong> (above) — photonic processors and integrated circuits.</li>
+          <li><strong>Lightsynq</strong> (above) — SiV-centre quantum-memory modules.</li>
+          <li>(per-vendor index will expand here as data files land — see the notes section)</li>
+        </ul>
+      </section>
+
+      <section id="notes" data-nav-section>
+        <h2>Notes on this page</h2>
+        <p>
+          Three things to flag about this index:
+        </p>
+        <ul>
+          <li>
+            <strong>It's a snapshot.</strong> Quantum networking is moving fast; entries
+            here go stale within months. Updates are explicit commits, not crawls.
+          </li>
+          <li>
+            <strong>It's deliberately neutral.</strong> No milestone counts, no fundraising
+            rounds, no public-roadmap dates. Those belong on per-vendor pages where they
+            can be cited to a primary source. Index entries here are name + platform +
+            role only.
+          </li>
+          <li>
+            <strong>Per-vendor sub-pages are deferred.</strong> The plan is one
+            <code>companies/&lt;vendor&gt;.yaml</code> per vendor with a milestones
+            timeline, public roadmap, and links to canonical announcements (vendor
+            press, peer-reviewed papers, conference talks — not second-hand TechCrunch
+            entries). When those land, they'll render as
+            <code>/companies/&lt;vendor&gt;</code> sub-routes.
+          </li>
+        </ul>
+        <p>
+          For survey-level reference on the per-platform vendor landscape, see Ezratty
+          UQT Pt 2 <SourceNote id="ezratty-uqt-2025-p2" /> and Kumar 2025
+          IJNDC <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+  section h3.vendor-platform {
+    margin: 0;
+    margin-block-start: var(--space-2);
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+
+  .vendor-list li { color: var(--color-text-mute); }
+  .vendor-list strong { color: var(--color-text); }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--color-surface-2);
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-sm);
+  }
+</style>

@@ -1,0 +1,258 @@
+---
+/**
+ * /applications — What the quantum internet is for
+ *
+ * Tier E · Applications & market.
+ *
+ * Citations:
+ *   - kumar-ijndc-2025 — §3 applications catalogue.
+ *   - wehner-science-2018 — 5-stage application roadmap.
+ *   - cacciapuoti-ieeetc-2020 — networking framing.
+ *   - kozlowski-rfc9340 — link-layer service contract.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+import Math from "../components/Math.astro";
+
+const sections = [
+  { id: "overview",   label: "Overview" },
+  { id: "qkd",        label: "Quantum key distribution" },
+  { id: "dqc",        label: "Distributed quantum computing" },
+  { id: "bqc",        label: "Blind quantum computing" },
+  { id: "sensing",    label: "Networked sensing & clocks" },
+  { id: "demands",    label: "Cross-application demands" },
+];
+---
+
+<Infographic
+  title="What the quantum internet is for"
+  description="The applications that consume Bell pairs as a network resource: QKD, distributed quantum computing, blind quantum computing, networked sensing, and clock synchronisation. Each places different demands on the network's entanglement-delivery rate, fidelity, and reach."
+  references={[
+    "cacciapuoti-ieeetc-2020",
+    "kozlowski-rfc9340",
+    "kumar-ijndc-2025",
+    "wehner-science-2018",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="applications" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>What the quantum internet is for</h1>
+        <p>
+          A quantum network's product is delivered Bell pairs. The applications consume
+          them: cryptographic key extraction, teleportation between processors, blind
+          delegation, distributed sensing, and synchronised clocks. Different applications
+          place different demands on the network's entanglement-delivery rate, fidelity,
+          and reach — and the maturity ladder is steep. Today's deployed application is
+          QKD; the rest are in research or pilot
+          stages <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+        <p>
+          Wehner et al. 2018 organised the application landscape as a five-stage roadmap
+          tied to network capability: trusted-node QKD → prepare-and-measure QKD →
+          entanglement distribution → quantum memory → fault-tolerant. Each stage unlocks
+          its corresponding application class <SourceNote id="wehner-science-2018" />.
+        </p>
+      </header>
+
+      <section id="qkd" data-nav-section>
+        <h2>Quantum key distribution (QKD)</h2>
+        <p>
+          QKD is the only application of quantum networking with commercial deployment
+          today. Two paradigm families: <strong>prepare-and-measure</strong> protocols
+          (BB84 and its variants, with decoy states for security against
+          photon-number-splitting attacks) where Alice prepares states and Bob measures;
+          and <strong>entanglement-based</strong> protocols (BBM92, Ekert91) where a
+          shared Bell pair is the resource. Variants address specific operational
+          constraints: <strong>Measurement-Device-Independent QKD</strong> (MDI-QKD) puts
+          the trust in the source and removes detector side-channel attacks;
+          <strong>Twin-Field QKD</strong> (TF-QKD) scales the key rate as √η rather than
+          η, doubling effective reach.
+        </p>
+        <p>
+          QKD requires the lowest fidelity threshold of any quantum-network application —
+          ~0.85 raw is workable after error correction and privacy amplification, and
+          field-deployed systems run reliably between metropolitan-scale endpoints. The
+          bulk of vendor activity in quantum networking is QKD <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+      </section>
+
+      <section id="dqc" data-nav-section>
+        <h2>Distributed quantum computing (DQC)</h2>
+        <p>
+          A single quantum processor with a fixed qubit count is bounded by what its
+          chip-scale platform allows; networking processors into a cluster lets the
+          combined machine run circuits larger than any single node. The networking
+          primitive is <strong>gate teleportation</strong>: a CNOT between qubits at two
+          different nodes is performed by consuming a Bell pair and exchanging a small
+          number of classical bits. The protocol generalises to other two-qubit gates
+          and to higher-fidelity primitives via distillation.
+        </p>
+        <p>
+          DQC's demands on the network are strict: gate teleportation requires fidelities
+          above ~0.99 to compose into a useful multi-gate circuit. The end-to-end
+          fidelity drops multiplicatively with depth, so DQC sits at the high-fidelity
+          end of the application spectrum and depends critically on
+          distillation <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+      </section>
+
+      <section id="bqc" data-nav-section>
+        <h2>Blind quantum computing (BQC)</h2>
+        <p>
+          A client has sensitive input data and wants a remote quantum server to compute
+          on it without learning the inputs or outputs. <strong>Blind quantum computing</strong>
+          protocols achieve this: the client prepares (or has delivered) qubits in known
+          states known only to them, sends them to the server, and the server executes
+          the computation through measurement-based protocols on those qubits. Because
+          the server never learns the state encoding, it learns nothing about the data.
+        </p>
+        <p>
+          BQC is appealing for high-value privacy use cases — financial computations,
+          pharmaceutical search, government applications. Like DQC it requires high
+          fidelity and is currently research-stage.
+        </p>
+      </section>
+
+      <section id="sensing" data-nav-section>
+        <h2>Networked sensing & clock synchronisation</h2>
+        <p>
+          Entanglement between sensors at different locations improves measurement
+          precision beyond what classical correlation allows. Two well-developed
+          applications:
+        </p>
+        <ul>
+          <li>
+            <strong>Networked atomic clocks.</strong> Distributing entangled states
+            between geographically separated atomic clocks lets the network's frequency
+            measurement scale better than √N with the number of clocks (Heisenberg-limited
+            rather than shot-noise-limited).
+          </li>
+          <li>
+            <strong>Distributed interferometry.</strong> Very-long-baseline
+            interferometry (VLBI) for astronomy can in principle use entangled photon
+            pairs to extend the effective baseline. This is research-level but
+            theoretically promising.
+          </li>
+        </ul>
+        <p>
+          Sensing applications consume entanglement differently from QKD or DQC — the
+          fidelity threshold can be more relaxed in some protocols, but the
+          source-of-randomness and timing-precision constraints are
+          tighter <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+      </section>
+
+      <section id="demands" data-nav-section>
+        <h2>Cross-application demands</h2>
+        <p>
+          The four application families have qualitatively different requirements on
+          rate, fidelity, and reach:
+        </p>
+
+        <table class="apps-table">
+          <thead>
+            <tr>
+              <th scope="col">Application</th>
+              <th scope="col">Rate</th>
+              <th scope="col">Fidelity</th>
+              <th scope="col">Reach</th>
+              <th scope="col">Deployment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">QKD</th>
+              <td>kbit/s–Mbit/s key rates</td>
+              <td>Modest (~0.85 raw)</td>
+              <td>Metro to satellite</td>
+              <td>Commercial, fielded</td>
+            </tr>
+            <tr>
+              <th scope="row">Distributed QC</th>
+              <td>Per-gate Bell pairs</td>
+              <td>High (≥0.99)</td>
+              <td>Datacentre to metro</td>
+              <td>Research / early proto</td>
+            </tr>
+            <tr>
+              <th scope="row">Blind QC</th>
+              <td>Per-computation</td>
+              <td>High (≥0.99)</td>
+              <td>Client-to-server, any</td>
+              <td>Research</td>
+            </tr>
+            <tr>
+              <th scope="row">Networked sensing</th>
+              <td>Application-specific</td>
+              <td>Protocol-specific</td>
+              <td>City to global</td>
+              <td>Research</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          The metrics subject covers what these demands mean for a network's engineering
+          budget; the maturity subject covers where each application sits on the TRL
+          ladder <SourceNote id="cacciapuoti-ieeetc-2020" />.
+        </p>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+
+  .apps-table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  .apps-table thead th {
+    text-align: start;
+    padding: var(--space-2) var(--space-3);
+    border-block-end: 2px solid var(--color-rule);
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .apps-table tbody th,
+  .apps-table tbody td {
+    padding: var(--space-2) var(--space-3);
+    vertical-align: top;
+    border-block-end: 1px solid var(--color-rule);
+  }
+  .apps-table tbody th {
+    text-align: start;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .apps-table tbody td { color: var(--color-text-mute); }
+  .apps-table tbody tr:last-child th,
+  .apps-table tbody tr:last-child td { border-block-end: 0; }
+</style>

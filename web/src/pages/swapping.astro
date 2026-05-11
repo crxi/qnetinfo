@@ -1,0 +1,626 @@
+---
+/**
+ * /swapping — Entanglement swapping
+ *
+ * Tier A · Foundations.
+ *
+ * Citations:
+ *   - zukowski-prl-1993 — Żukowski et al., PRL 71, 4287 (1993).
+ *     The original entanglement-swapping proposal.
+ *   - bennett-prl-1993 — teleportation; swapping is structurally
+ *     "teleporting half of a Bell pair".
+ *   - kumar-ijndc-2025 — current network survey.
+ *   - jones-njp-2016 — repeater protocol architectures (MM/SR/MS),
+ *     all built on swapping.
+ *   - pompili-science-2021 — three-node experimental demo.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SourceNote from "../components/SourceNote.astro";
+import Callout from "../components/Callout.astro";
+import Math from "../components/Math.astro";
+
+const sections = [
+  { id: "overview",   label: "Overview" },
+  { id: "setup",      label: "The setup" },
+  { id: "protocol",   label: "The protocol" },
+  { id: "chains",     label: "Chained swapping for reach" },
+  { id: "role",       label: "Network role" },
+];
+---
+
+<Infographic
+  title="Entanglement swapping"
+  description="Entanglement swapping joins two Bell pairs into one across a longer distance via a Bell-state measurement at a relay station. The endpoints' qubits are entangled afterward despite never having interacted. Chained swaps are the primitive every memory-based quantum repeater is built on. This page covers the protocol, why it works, and how it extends across multiple hops."
+  references={[
+    "jones-njp-2016",
+    "kumar-ijndc-2025",
+    "pompili-science-2021",
+    "zukowski-prl-1993",
+  ]}
+>
+  <SiteNav slot="nav" currentSubject="swapping" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <h1>Entanglement swapping</h1>
+        <p>
+          Two Bell pairs sharing one node can be <em>fused</em> into a single Bell pair
+          spanning the two outer endpoints — without those endpoints ever interacting and
+          without measuring the qubits being networked. The trick is a Bell-state
+          measurement at the shared node: the BSM consumes the two qubits at the relay,
+          and what's left is an entangled pair between the two distant qubits, up to a
+          Pauli correction that's announced via a classical
+          channel <SourceNote id="zukowski-prl-1993" />.
+        </p>
+        <p>
+          Swapping is the primitive that lets a quantum network <em>reach</em>. A direct
+          Bell pair between Alice and Bob is bounded by photon loss at maybe 100–200 km
+          of standard fibre; chains of swaps stitch shorter pairs together so the
+          end-to-end pair can span much further. Every memory-based quantum repeater —
+          and every link architecture in the distribution
+          subject — is built on this primitive <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+      </header>
+
+      <section id="setup" data-nav-section>
+        <h2>The setup</h2>
+        <p>
+          Three parties: Alice, a relay station, and Bob. Two Bell pairs already exist:
+        </p>
+        <ul>
+          <li>
+            <strong>Pair 1:</strong> Alice's qubit <Math tex="A" /> and the relay's qubit
+            <Math tex="R_1" /> are entangled in <Math tex="|\\Phi^+\\rangle_{A R_1}" />.
+          </li>
+          <li>
+            <strong>Pair 2:</strong> the relay's qubit <Math tex="R_2" /> and Bob's qubit
+            <Math tex="B" /> are entangled in <Math tex="|\\Phi^+\\rangle_{R_2 B}" />.
+          </li>
+        </ul>
+        <p>
+          The relay holds two qubits, <Math tex="R_1" /> and <Math tex="R_2" />, one
+          drawn from each pair. The relay is just a station that <em>mediates</em>; the
+          qubits at Alice and Bob are never touched by anything other than their original
+          entanglement-generation event and (eventually) the local Pauli correction.
+        </p>
+      </section>
+
+      <section id="protocol" data-nav-section>
+        <h2>The protocol</h2>
+        <p>
+          Three steps, structurally identical to teleportation — except that what's being
+          "teleported" is Alice's half of Pair 1 onto Bob's qubit, with the relay
+          performing the BSM in the middle.
+        </p>
+
+        <ol class="sw-steps">
+          <li>
+            <strong>BSM at the relay.</strong> The relay performs a Bell-state measurement
+            on its two qubits <Math tex="R_1" /> and <Math tex="R_2" />. Both pre-shared
+            pairs (<Math tex="A \\leftrightarrow R_1" /> and
+            <Math tex="R_2 \\leftrightarrow B" />) are consumed by the measurement. The
+            outcome is two classical bits identifying which of the four Bell states the
+            BSM landed on, which in turn determines which Bell state
+            <Math tex="A" /> and <Math tex="B" /> are now in.
+          </li>
+          <li>
+            <strong>Classical communication.</strong> The relay sends the 2 bits to Bob
+            (or Alice — either endpoint will do).
+          </li>
+          <li>
+            <strong>Pauli correction.</strong> Bob applies one of <Math tex="I" />,
+            <Math tex="X" />, <Math tex="Z" />, <Math tex="ZX" /> to his qubit
+            <Math tex="B" /> based on the bits. After the correction,
+            <Math tex="A" /> and <Math tex="B" /> are in the Bell state
+            <Math tex="|\\Phi^+\\rangle_{AB}" /> — a freshly entangled pair across the
+            full distance.
+          </li>
+        </ol>
+
+        <figure class="sw" id="sw-fig" data-sw>
+          <svg viewBox="0 0 720 280" role="img"
+               aria-label="Entanglement swapping animation: two Bell pairs Alice-Relay and Relay-Bob fused via BSM at the relay"
+               data-sw-svg>
+            {/* ─── Endpoint and relay labels ───────────────────── */}
+            <text x="80"  y="22" text-anchor="middle" class="sw-label">Alice</text>
+            <text x="360" y="22" text-anchor="middle" class="sw-label">Relay</text>
+            <text x="640" y="22" text-anchor="middle" class="sw-label">Bob</text>
+
+            {/* ─── Three node boxes ────────────────────────────── */}
+            <rect x="20"  y="32" width="120" height="216" rx="6"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <rect x="280" y="32" width="160" height="216" rx="6"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <rect x="580" y="32" width="120" height="216" rx="6"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+
+            {/* ─── Bell-pair line 1: Alice ↔ R1 ────────────────── */}
+            <path data-sw-pair="1"
+                  d="M 80 140 Q 200 70 320 140"
+                  fill="none" stroke="var(--color-text)" stroke-width="1.5"
+                  stroke-dasharray="6,3" opacity="0.85"/>
+
+            {/* ─── Bell-pair line 2: R2 ↔ Bob ─────────────────── */}
+            <path data-sw-pair="2"
+                  d="M 400 140 Q 520 70 640 140"
+                  fill="none" stroke="var(--color-text)" stroke-width="1.5"
+                  stroke-dasharray="6,3" opacity="0.85"/>
+
+            {/* ─── End-to-end Bell pair (revealed in phase 4) ─── */}
+            <path data-sw-pair-final
+                  d="M 80 140 Q 360 30 640 140"
+                  fill="none" stroke="var(--color-accent)" stroke-width="2"
+                  stroke-dasharray="6,3" opacity="0"/>
+
+            {/* ─── Classical channel from relay to Bob ─────────── */}
+            <line x1="440" y1="220" x2="640" y2="220"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="4,3" opacity="0.65"/>
+
+            {/* ─── Qubit slots ─────────────────────────────────── */}
+            {/* Alice */}
+            <g transform="translate(80 140)" data-sw-slot="A">
+              <circle r="18" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">A</text>
+            </g>
+
+            {/* Relay's two halves */}
+            <g transform="translate(320 140)" data-sw-slot="R1">
+              <circle r="16" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.2"/>
+              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">R₁</text>
+            </g>
+            <g transform="translate(400 140)" data-sw-slot="R2">
+              <circle r="16" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.2"/>
+              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">R₂</text>
+            </g>
+
+            {/* Bob */}
+            <g transform="translate(640 140)" data-sw-slot="B">
+              <circle r="18" fill="var(--color-bg)"
+                      stroke="var(--color-text)" stroke-width="1.5"/>
+              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">B</text>
+            </g>
+
+            {/* ─── BSM box at the relay (phase 2) ──────────────── */}
+            <g data-sw-bsm opacity="0">
+              <rect x="296" y="120" width="128" height="40" rx="4"
+                    fill="none" stroke="var(--color-accent)" stroke-width="2"
+                    stroke-dasharray="3,2"/>
+              <text x="360" y="113" text-anchor="middle" class="sw-action-label">BSM</text>
+            </g>
+
+            {/* ─── Correction box at Bob (phase 4) ─────────────── */}
+            <g data-sw-corr opacity="0">
+              <rect x="600" y="170" width="80" height="40" rx="4"
+                    fill="none" stroke="var(--color-accent)" stroke-width="2"
+                    stroke-dasharray="3,2"/>
+              <text x="640" y="163" text-anchor="middle" class="sw-action-label">X<tspan baseline-shift="super" font-size="9">a</tspan> Z<tspan baseline-shift="super" font-size="9">b</tspan></text>
+            </g>
+
+            {/* ─── BSM result bits travelling to Bob ──────────── */}
+            <text data-sw-bit="0" x="440" y="225" class="sw-bit" opacity="0">0</text>
+            <text data-sw-bit="1" x="452" y="225" class="sw-bit" opacity="0">0</text>
+
+            {/* ─── Channel labels ─────────────────────────────── */}
+            <text x="200" y="56" text-anchor="middle" class="sw-channel">pre-shared Bell pair (Alice ↔ R₁)</text>
+            <text x="520" y="56" text-anchor="middle" class="sw-channel">pre-shared Bell pair (R₂ ↔ Bob)</text>
+            <text x="540" y="240" text-anchor="middle" class="sw-channel">classical channel · 2 bits</text>
+            <text data-sw-final-label x="360" y="20" text-anchor="middle" class="sw-final-label" opacity="0">end-to-end Bell pair (Alice ↔ Bob)</text>
+          </svg>
+
+          <ol class="sw-step-list" data-sw-steps>
+            <li data-sw-step="1"><strong>1.</strong> Two pre-shared Bell pairs: Alice↔R₁ and R₂↔Bob</li>
+            <li data-sw-step="2"><strong>2.</strong> Relay performs BSM on R₁, R₂ → 2 classical bits</li>
+            <li data-sw-step="3"><strong>3.</strong> Bits travel to Bob</li>
+            <li data-sw-step="4"><strong>4.</strong> Bob applies <Math tex="X^a Z^b" /> correction</li>
+            <li data-sw-step="5"><strong>5.</strong> Alice and Bob now share a Bell pair</li>
+          </ol>
+
+          <figcaption>
+            Two pre-shared Bell pairs — Alice with R₁ at the relay, R₂ at the relay with
+            Bob — are stitched together by the relay's BSM. After the relay measures
+            its two qubits and Bob applies the corresponding Pauli correction, Alice and
+            Bob's qubits are in the Bell state <Math tex="|\\Phi^+\\rangle_{AB}" />, even
+            though they were never operated on together. The end-to-end pair (top accent
+            curve) emerges from the two original pairs (which are consumed in the
+            process).
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="chains" data-nav-section>
+        <h2>Chained swapping for reach</h2>
+        <p>
+          One swap doubles the reach of an unaided link. A chain of <Math tex="n" />
+          swaps links <Math tex="n+1" /> short pairs into a single Bell pair spanning the
+          full distance. Each relay in the chain performs its own BSM and broadcasts its
+          2-bit result; the corrections compose at one of the endpoints. Memory-based
+          repeaters use this pattern as their core operation, with quantum memories at
+          each node holding the qubits while pairs are generated and swaps are
+          coordinated <SourceNote id="jones-njp-2016" />.
+        </p>
+        <Callout label="Why fidelity drops with chain length">
+          <p>
+            Each Bell pair starts at some fidelity below 1 — heralded entanglement is
+            never perfect. Each BSM at a relay is also imperfect, and each Pauli
+            correction sees noise from the classical-message latency relative to the
+            memory's coherence time. The end-to-end Bell pair's fidelity is roughly the
+            product of the per-link fidelities, multiplied by the BSM and memory
+            contributions, so chains of swaps degrade fidelity multiplicatively. This
+            is why distillation matters at scale — it counters the multiplicative loss
+            by spending throughput on cleaner pairs.
+          </p>
+          <p>
+            The first multi-node demo with this pattern is Pompili et al. 2021, which
+            ran a three-node SiV-centre network with on-demand entanglement
+            distribution between non-neighbouring
+            nodes <SourceNote id="pompili-science-2021" />.
+          </p>
+        </Callout>
+      </section>
+
+      <section id="role" data-nav-section>
+        <h2>Network role</h2>
+        <p>
+          Swapping is the primitive that turns a two-node Bell-pair distribution into a
+          full network. The link-layer service ("deliver Bell pair (A, B) on demand")
+          inside a single link is a generation problem; getting that pair across more
+          than one link is a swapping problem. A repeater is, mechanically, a station
+          that holds memories long enough to align swaps — the network engineering is
+          all about which pairs to generate when, who fires first, and how to recover
+          if any single link's heralding fails.
+        </p>
+        <p>
+          Three follow-on subjects expand on this:
+        </p>
+        <ul>
+          <li>
+            <strong>Distribution</strong> covers the link architectures (MM, SR, MS)
+            that get a Bell pair onto a single link in the first place.
+            <em>Covered in the</em> <strong>distribution</strong> <em>subject.</em>
+          </li>
+          <li>
+            <strong>Distillation</strong> trades two noisy Bell pairs for one cleaner
+            pair, restoring fidelity that chained swapping erodes.
+            <em>Covered in the</em> <strong>distillation</strong> <em>subject.</em>
+          </li>
+          <li>
+            <strong>Repeaters</strong> integrate generation, swapping, and distillation
+            into the 1G / 2G / 3G architectural families. <em>Covered in the</em>
+            <strong>repeaters</strong> <em>subject.</em>
+          </li>
+        </ul>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<script type="module" is:inline>
+  // Entanglement-swapping animation. Five-phase loop:
+  //   1. Setup — two pre-shared Bell pairs (Alice-R1 and R2-Bob)
+  //      visible as wavy dashed curves between the slots.
+  //   2. BSM at relay — labelled box appears around R1 and R2;
+  //      both relay slots fade as their qubits are consumed; 2
+  //      classical bits emerge at the relay's classical-channel output.
+  //   3. Send — bits travel along the dashed classical channel to Bob.
+  //   4. Correction at Bob — labelled box appears at Bob;
+  //      bits are absorbed; the original two Bell-pair lines fade
+  //      out and a new end-to-end Bell-pair curve from Alice to Bob
+  //      appears (with its descriptive label).
+  //   5. Hold — final state visible, then reset.
+  const fig = document.querySelector("[data-sw]");
+  if (fig) {
+    const svg       = fig.querySelector("[data-sw-svg]");
+    const pair1     = svg.querySelector('[data-sw-pair="1"]');
+    const pair2     = svg.querySelector('[data-sw-pair="2"]');
+    const pairFinal = svg.querySelector("[data-sw-pair-final]");
+    const finalLab  = svg.querySelector("[data-sw-final-label]");
+    const slotR1    = svg.querySelector('[data-sw-slot="R1"]');
+    const slotR2    = svg.querySelector('[data-sw-slot="R2"]');
+    const bsmBox    = svg.querySelector("[data-sw-bsm]");
+    const corrBox   = svg.querySelector("[data-sw-corr]");
+    const bsmRect   = bsmBox.querySelector("rect");
+    const corrRect  = corrBox.querySelector("rect");
+    const bit0      = svg.querySelector('[data-sw-bit="0"]');
+    const bit1      = svg.querySelector('[data-sw-bit="1"]');
+    const stepEls   = Array.from(fig.querySelectorAll("[data-sw-step]"));
+
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function setOpacity(el, op) { el.setAttribute("opacity", String(op)); }
+    function setBitsAt(x) {
+      bit0.setAttribute("x", String(x));
+      bit1.setAttribute("x", String(x + 12));
+    }
+    function highlightStep(n) {
+      for (const el of stepEls) {
+        const isActive = Number(el.dataset.swStep) === n;
+        el.classList.toggle("sw-step--active", isActive);
+      }
+    }
+
+    if (reducedMotion) {
+      setOpacity(pair1, 0.15);
+      setOpacity(pair2, 0.15);
+      setOpacity(pairFinal, 1);
+      setOpacity(finalLab, 1);
+      setOpacity(slotR1, 0);
+      setOpacity(slotR2, 0);
+      setOpacity(bsmBox, 0);
+      setOpacity(corrBox, 1);
+      bit0.textContent = "0";
+      bit1.textContent = "1";
+      setBitsAt(620);
+      setOpacity(bit0, 0);
+      setOpacity(bit1, 0);
+      highlightStep(5);
+    } else {
+      const T_SETUP = 1500;
+      const T_BSM   = 1800;
+      const T_SEND  = 2100;
+      const T_CORR  = 1650;
+      const T_HOLD  = 1500;
+      const T_PAUSE = 375;
+      const T_TOTAL = T_SETUP + T_BSM + T_SEND + T_CORR + T_HOLD + T_PAUSE;
+      const BIT_X_START = 440;
+      const BIT_X_END   = 620;
+
+      let running = false;
+      let cycleStart = 0;
+      let bsmA = 0, bsmB = 0;
+      let firedBSM = false, firedCorr = false;
+
+      // Border-pulse state. When a relay BSM or Bob's correction
+      // fires we set the rect's pulseEnd; updateBorders() interpolates
+      // the stroke-width back to its base over PULSE_DUR ms.
+      const PULSE_DUR = 280;
+      const flash = { BSM: 0, CORR: 0 };
+      function pulse(key, now) { flash[key] = now + PULSE_DUR; }
+      function updateBorders(now) {
+        for (const [key, rect] of [["BSM", bsmRect], ["CORR", corrRect]]) {
+          const remaining = flash[key] - now;
+          if (remaining > 0) {
+            const t = remaining / PULSE_DUR;
+            rect.setAttribute("stroke-width", String(2 + 2.5 * t));
+          } else {
+            rect.setAttribute("stroke-width", "2");
+          }
+        }
+      }
+
+      function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function pickCycle() {
+        bsmA = Math.random() < 0.5 ? 0 : 1;
+        bsmB = Math.random() < 0.5 ? 0 : 1;
+        bit0.textContent = String(bsmA);
+        bit1.textContent = String(bsmB);
+      }
+
+      function frame(now) {
+        if (!running) return;
+        const elapsed = now - cycleStart;
+
+        if (elapsed < T_SETUP) {
+          // Phase 1: setup — both Bell pairs visible.
+          highlightStep(1);
+          setOpacity(pair1, 0.85);
+          setOpacity(pair2, 0.85);
+          setOpacity(pairFinal, 0);
+          setOpacity(finalLab, 0);
+          setOpacity(slotR1, 1);
+          setOpacity(slotR2, 1);
+          setOpacity(bsmBox, 0);
+          setOpacity(corrBox, 0);
+          setOpacity(bit0, 0);
+          setOpacity(bit1, 0);
+        } else if (elapsed < T_SETUP + T_BSM) {
+          // Phase 2: BSM at relay.
+          highlightStep(2);
+          if (!firedBSM) { pulse("BSM", now); firedBSM = true; }
+          const t = (elapsed - T_SETUP) / T_BSM;
+          const e = ease(t);
+          setOpacity(bsmBox, Math.min(1, e * 2));
+          setOpacity(slotR1, 1 - e);
+          setOpacity(slotR2, 1 - e);
+          // Pair lines fade somewhat; they're still there until
+          // BSM is fully consumed.
+          setOpacity(pair1, 0.85 * (1 - e * 0.5));
+          setOpacity(pair2, 0.85 * (1 - e * 0.5));
+          // Bits emerge in second half.
+          const bitOpacity = Math.max(0, (e - 0.5) * 2);
+          setOpacity(bit0, bitOpacity);
+          setOpacity(bit1, bitOpacity);
+          setBitsAt(BIT_X_START);
+        } else if (elapsed < T_SETUP + T_BSM + T_SEND) {
+          // Phase 3: bits travel to Bob.
+          highlightStep(3);
+          const t = (elapsed - T_SETUP - T_BSM) / T_SEND;
+          const e = ease(t);
+          setOpacity(bsmBox, 1 - e * 0.6);
+          setOpacity(slotR1, 0);
+          setOpacity(slotR2, 0);
+          // Pair lines continue fading.
+          setOpacity(pair1, 0.4 * (1 - e));
+          setOpacity(pair2, 0.4 * (1 - e));
+          setOpacity(bit0, 1);
+          setOpacity(bit1, 1);
+          // Linear in time: classical bits travel at constant speed.
+          setBitsAt(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
+        } else if (elapsed < T_SETUP + T_BSM + T_SEND + T_CORR) {
+          // Phase 4: correction at Bob, end-to-end pair appears.
+          highlightStep(4);
+          if (!firedCorr) { pulse("CORR", now); firedCorr = true; }
+          const t = (elapsed - T_SETUP - T_BSM - T_SEND) / T_CORR;
+          const e = ease(t);
+          setOpacity(bit0, 1 - e);
+          setOpacity(bit1, 1 - e);
+          setBitsAt(BIT_X_END);
+          setOpacity(corrBox, Math.min(1, e * 2));
+          setOpacity(bsmBox, 0.4 * (1 - e));
+          // Old pair lines fade out, new end-to-end fades in.
+          setOpacity(pair1, 0);
+          setOpacity(pair2, 0);
+          setOpacity(pairFinal, e);
+          setOpacity(finalLab, e);
+        } else if (elapsed < T_TOTAL - T_PAUSE) {
+          // Phase 5: hold final state.
+          highlightStep(5);
+          setOpacity(bsmBox, 0);
+          setOpacity(corrBox, 1);
+          setOpacity(pairFinal, 1);
+          setOpacity(finalLab, 1);
+          setOpacity(bit0, 0);
+          setOpacity(bit1, 0);
+        } else if (elapsed >= T_TOTAL) {
+          cycleStart = now;
+          firedBSM = false;
+          firedCorr = false;
+          pickCycle();
+        }
+
+        updateBorders(now);
+        requestAnimationFrame(frame);
+      }
+
+      pickCycle();
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !running) {
+            running = true;
+            cycleStart = performance.now();
+            pickCycle();
+            requestAnimationFrame(frame);
+          } else if (!entry.isIntersecting) {
+            running = false;
+          }
+        }
+      });
+      observer.observe(fig);
+    }
+  }
+</script>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p { margin: 0; }
+
+  section { display: grid; gap: var(--space-3); }
+
+  ol.sw-steps {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  ol.sw-steps li { line-height: var(--leading-snug); }
+  ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
+  }
+  li { line-height: var(--leading-snug); }
+
+  .sw {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .sw svg {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 320px;
+    display: block;
+  }
+  .sw figcaption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
+  }
+
+  ol.sw-step-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 4px;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  ol.sw-step-list li {
+    padding: var(--space-1) var(--space-2);
+    border-inline-start: 3px solid transparent;
+    color: var(--color-text-mute);
+    transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+  }
+  ol.sw-step-list li.sw-step--active {
+    color: var(--color-text);
+    border-inline-start-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+
+  :global(.sw-label) {
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.sw-channel) {
+    font-size: 10px;
+    fill: var(--color-text-mute);
+    font-style: italic;
+  }
+  :global(.sw-final-label) {
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--color-accent);
+  }
+  :global(.sw-slot-mark) {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.sw-action-label) {
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--color-accent);
+    letter-spacing: 0.05em;
+  }
+  :global(.sw-bit) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+
+  @keyframes sw-flow {
+    to { stroke-dashoffset: -18; }
+  }
+  [data-sw-pair="1"],
+  [data-sw-pair="2"],
+  [data-sw-pair-final] {
+    animation: sw-flow 1.6s linear infinite;
+  }
+</style>
