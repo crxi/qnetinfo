@@ -60,7 +60,11 @@ platforms:
     roles: [compute]
 
   - id: si_spin
-    label: "Silicon spin qubits"
+    # The "Silicon spin" qubit is the dominant modern quantum-dot
+    # incarnation: an electron spin trapped in a Si CMOS quantum dot.
+    # Labelled to make the quantum-dot family explicit, matching the
+    # qubits page card title.
+    label: "Quantum dot (Si spin)"
     subtitle: "electron Larmor · 10–50 GHz · 6–30 mm"
     freq_range_hz: [1.0e10, 5.0e10]
     vendor_lines:
@@ -106,7 +110,10 @@ platforms:
     roles: [compute, memory, source]
 
   - id: quantum_dots
-    label: "Quantum dots"
+    # Quantum dots also host stationary qubits (see si_spin above) —
+    # this entry is specifically the photon-source role, at visible
+    # optical wavelengths. Labelled to keep the two roles distinct.
+    label: "Quantum dot (photon source)"
     subtitle: "600–950 nm · 316–500 THz"
     wavelength_range_nm: [600, 950]
     # Quandela removed: their QD is the photon source inside their photonic
