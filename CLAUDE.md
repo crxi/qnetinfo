@@ -33,7 +33,7 @@ This workspace is **not** referenced from the taxonomy / standards projects (`QN
 
 ## Tone and audience
 
-Same audience as the rest of the workspace — senior professionals in government / enterprise who evaluate, plan, and procure quantum technology. Plain English, confident and direct, no marketing language, every technical term defined on first use.
+Same audience as the rest of the workspace — senior professionals in government / enterprise who evaluate, plan, and procure quantum technology. Clear and direct, no marketing language, every technical term defined on first use.
 
 ### Prose style — write like Kumar / RFC 9340
 

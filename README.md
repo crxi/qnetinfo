@@ -2,7 +2,7 @@
 
 A field guide to quantum networking — long-scrolling, visual-first pages covering the field from *what is a qubit* through entanglement distribution and protocol stacks to vendor landscape and TRL. New subjects land as the field evolves; existing ones get updated when the numbers do.
 
-Target reader: a senior professional in government or enterprise — security architect, strategist, procurement officer, CISO — who needs to evaluate, plan, and procure quantum technology without first becoming a physicist. Every technical term gets a plain-English explanation on first use.
+Target reader: a senior professional in government or enterprise — security architect, strategist, procurement officer, CISO — who needs to evaluate, plan, and procure quantum technology without first becoming a physicist. Every technical term is defined on first use.
 
 ## Subjects
 

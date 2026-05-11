@@ -49,7 +49,7 @@ export interface Subject {
 export const SUBJECTS: Subject[] = [
   {
     slug: "qubits",
-    title: "What is a qubit, in plain English",
+    title: "What is a qubit",
     navLabel: "Qubits",
     blurb: "Modalities, encodings, what 0 and 1 actually mean in each platform — the vocabulary every other subject builds on.",
     status: "shipped",
