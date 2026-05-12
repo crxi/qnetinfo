@@ -204,6 +204,19 @@ const ts = new Date().toISOString().replace(/[T:]/g, "-").slice(0, 19);
     height: auto;
     display: block;
   }
+  /* On phones the 1300px viewBox renders too small for the platform
+     labels and axis ticks to stay legible (~25% scale). Below 60rem
+     we let the chart overflow horizontally and the user pans. The
+     min-width keeps the chart at its natural readable scale. */
+  @media (max-width: 60rem) {
+    .spectrum-chart {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .chart-svg {
+      min-inline-size: 900px;
+    }
+  }
   .chart-title {
     font-size: 22px;
     font-weight: 700;

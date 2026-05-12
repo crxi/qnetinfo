@@ -121,115 +121,106 @@ const sections = [
           </article>
         </Grid>
 
+        <p>
+          Schematic comparison of the three architectures, after Jones et al.
+          <em>New J. Phys.</em> 18 083015 (2016) <SourceNote id="jones-njp-2016" />.
+          Filled circles are matter qubits (memories); the dashed accent box is the
+          Bell-state analyser; the accent-bordered diamond is an entangled-pair source.
+          MM and MS both place equipment at the link midpoint but use it differently:
+          MM measures (heralds on two-photon interference); MS emits (heralds on a
+          single source-side detection). SR runs no midpoint equipment and places the
+          BSA at the receiver.
+        </p>
+
         <figure class="arch-fig">
-          <svg viewBox="0 0 720 360" role="img"
-               aria-label="Three distribution architectures: MeetInTheMiddle, SenderReceiver, MidpointSource — schematic comparison of where the source sits and who holds the Bell-state analyser">
-
-            {/* Three rows: MM (top), SR (middle), MS (bottom).
-                Each row shows: Alice (left node) — link — Bob (right node).
-                Filled circles = matter qubits / memories.
-                Diamond = entangled-pair source.
-                Dashed box = Bell-state analyser. */}
-
-            {/* ─── Row 1: MeetInTheMiddle ────────────────────── */}
-            <g transform="translate(0 30)">
-              <text x="20" y="0" class="arch-row-label">MM</text>
-
-              {/* Alice node (memory + local source) */}
-              <rect x="60" y="10" width="80" height="50" rx="4"
-                    fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-              <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
-              <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
-
-              {/* Photon arrows toward midpoint */}
-              <line x1="145" y1="35" x2="295" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                    marker-end="url(#arrow)"/>
-
-              {/* Midpoint Bell-state analyser */}
-              <rect x="300" y="10" width="120" height="50" rx="4"
-                    fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
-              <text x="360" y="40" text-anchor="middle" class="arch-bsa-label">BSA</text>
-              <text x="360" y="76" text-anchor="middle" class="arch-node-label">midpoint analyser</text>
-
-              {/* Photon arrow from Bob to midpoint */}
-              <line x1="575" y1="35" x2="425" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                    marker-end="url(#arrow)"/>
-
-              {/* Bob node */}
-              <rect x="580" y="10" width="80" height="50" rx="4"
-                    fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-              <circle cx="635" cy="35" r="8" fill="var(--color-text)"/>
-              <text x="635" y="76" text-anchor="middle" class="arch-node-label">Bob memory</text>
-            </g>
-
-            {/* ─── Row 2: SenderReceiver ─────────────────────── */}
-            <g transform="translate(0 150)">
-              <text x="20" y="0" class="arch-row-label">SR</text>
-
-              {/* Alice node (memory + local source) */}
-              <rect x="60" y="10" width="80" height="50" rx="4"
-                    fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-              <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
-              <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
-
-              {/* Photon arrow Alice → Bob (full link) */}
-              <line x1="145" y1="35" x2="555" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                    marker-end="url(#arrow)"/>
-
-              {/* Bob node — memory + BSA */}
-              <rect x="560" y="10" width="100" height="50" rx="4"
-                    fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
-              <circle cx="585" cy="35" r="8" fill="var(--color-text)"/>
-              <text x="625" y="40" class="arch-bsa-label">BSA</text>
-              <text x="610" y="76" text-anchor="middle" class="arch-node-label">Bob memory + analyser</text>
-            </g>
-
-            {/* ─── Row 3: MidpointSource ─────────────────────── */}
-            <g transform="translate(0 270)">
-              <text x="20" y="0" class="arch-row-label">MS</text>
-
-              {/* Alice node (memory only) */}
-              <rect x="60" y="10" width="80" height="50" rx="4"
-                    fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-              <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
-              <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
-
-              {/* Midpoint entangled-pair source (diamond) */}
-              <polygon points="360,10 420,35 360,60 300,35"
-                       fill="var(--color-surface-2)" stroke="var(--color-accent)" stroke-width="1.5"/>
-              <text x="360" y="40" text-anchor="middle" class="arch-bsa-label">SPDC</text>
-              <text x="360" y="76" text-anchor="middle" class="arch-node-label">midpoint pair source</text>
-
-              {/* Photons outward to each endpoint */}
-              <line x1="300" y1="35" x2="145" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                    marker-end="url(#arrow)"/>
-              <line x1="420" y1="35" x2="575" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                    marker-end="url(#arrow)"/>
-
-              {/* Bob node (memory only) */}
-              <rect x="580" y="10" width="80" height="50" rx="4"
-                    fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-              <circle cx="635" cy="35" r="8" fill="var(--color-text)"/>
-              <text x="635" y="76" text-anchor="middle" class="arch-node-label">Bob memory</text>
-            </g>
-
+          <div class="arch-fig-scroll">
+          <svg viewBox="0 0 720 100" role="img"
+               aria-label="MeetInTheMiddle: photons from each endpoint travel to a midpoint Bell-state analyser">
+            <text x="20" y="30" class="arch-row-label">MM</text>
+            <rect x="60" y="10" width="80" height="50" rx="4"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
+            <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
+            <line x1="145" y1="35" x2="295" y2="35" stroke="var(--color-text)" stroke-width="1.2"
+                  marker-end="url(#arrow-mm)"/>
+            <rect x="300" y="10" width="120" height="50" rx="4"
+                  fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="360" y="40" text-anchor="middle" class="arch-bsa-label">BSA</text>
+            <text x="360" y="76" text-anchor="middle" class="arch-node-label">midpoint analyser</text>
+            <line x1="575" y1="35" x2="425" y2="35" stroke="var(--color-text)" stroke-width="1.2"
+                  marker-end="url(#arrow-mm)"/>
+            <rect x="580" y="10" width="80" height="50" rx="4"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <circle cx="635" cy="35" r="8" fill="var(--color-text)"/>
+            <text x="635" y="76" text-anchor="middle" class="arch-node-label">Bob memory</text>
             <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+              <marker id="arrow-mm" viewBox="0 0 10 10" refX="9" refY="5"
                       markerWidth="6" markerHeight="6" orient="auto-start-reverse">
                 <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text)"/>
               </marker>
             </defs>
           </svg>
-          <figcaption>
-            Schematic comparison of the three architectures, after Jones et al.
-            <em>New J. Phys.</em> 18 083015 (2016). Filled circles are matter qubits
-            (memories); the dashed accent box is the Bell-state analyser; the
-            accent-bordered diamond on the bottom row is an entangled-pair source.
-            MM and MS both place equipment at the link midpoint but use it
-            differently: MM measures (heralds on two-photon interference); MS emits
-            (heralds on a single source-side detection). SR runs no midpoint
-            equipment and places the BSA at the receiver.
-          </figcaption>
+          </div>
+          <figcaption><strong>MeetInTheMiddle.</strong> Both endpoints emit photons toward a midpoint BSA. Heralding requires two-photon interference; rate scales with full-link transmission.</figcaption>
+        </figure>
+
+        <figure class="arch-fig">
+          <div class="arch-fig-scroll">
+          <svg viewBox="0 0 720 100" role="img"
+               aria-label="SenderReceiver: photon travels the full link from sender to receiver who runs the analyser">
+            <text x="20" y="30" class="arch-row-label">SR</text>
+            <rect x="60" y="10" width="80" height="50" rx="4"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
+            <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
+            <line x1="145" y1="35" x2="555" y2="35" stroke="var(--color-text)" stroke-width="1.2"
+                  marker-end="url(#arrow-sr)"/>
+            <rect x="560" y="10" width="100" height="50" rx="4"
+                  fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <circle cx="585" cy="35" r="8" fill="var(--color-text)"/>
+            <text x="625" y="40" class="arch-bsa-label">BSA</text>
+            <text x="610" y="76" text-anchor="middle" class="arch-node-label">Bob memory + analyser</text>
+            <defs>
+              <marker id="arrow-sr" viewBox="0 0 10 10" refX="9" refY="5"
+                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text)"/>
+              </marker>
+            </defs>
+          </svg>
+          </div>
+          <figcaption><strong>SenderReceiver.</strong> Sender's photon traverses the full link; receiver runs the BSA. Single-photon transmission, but the photon travels the entire distance.</figcaption>
+        </figure>
+
+        <figure class="arch-fig">
+          <div class="arch-fig-scroll">
+          <svg viewBox="0 0 720 100" role="img"
+               aria-label="MidpointSource: an entangled pair source at the midpoint emits one photon to each endpoint">
+            <text x="20" y="30" class="arch-row-label">MS</text>
+            <rect x="60" y="10" width="80" height="50" rx="4"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
+            <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
+            <polygon points="360,10 420,35 360,60 300,35"
+                     fill="var(--color-surface-2)" stroke="var(--color-accent)" stroke-width="1.5"/>
+            <text x="360" y="40" text-anchor="middle" class="arch-bsa-label">SPDC</text>
+            <text x="360" y="76" text-anchor="middle" class="arch-node-label">midpoint pair source</text>
+            <line x1="300" y1="35" x2="145" y2="35" stroke="var(--color-text)" stroke-width="1.2"
+                  marker-end="url(#arrow-ms)"/>
+            <line x1="420" y1="35" x2="575" y2="35" stroke="var(--color-text)" stroke-width="1.2"
+                  marker-end="url(#arrow-ms)"/>
+            <rect x="580" y="10" width="80" height="50" rx="4"
+                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            <circle cx="635" cy="35" r="8" fill="var(--color-text)"/>
+            <text x="635" y="76" text-anchor="middle" class="arch-node-label">Bob memory</text>
+            <defs>
+              <marker id="arrow-ms" viewBox="0 0 10 10" refX="9" refY="5"
+                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text)"/>
+              </marker>
+            </defs>
+          </svg>
+          </div>
+          <figcaption><strong>MidpointSource.</strong> A pair source at the midpoint emits one photon to each endpoint. Heralding fires on the source-side partner; no two-photon interference required.</figcaption>
         </figure>
       </section>
 
@@ -438,6 +429,19 @@ const sections = [
     block-size: auto;
     max-block-size: 380px;
     display: block;
+  }
+  /* Below 36rem the row is too wide for legibility at 360px viewport.
+     The SVG sits in a scroll wrapper with min-width so labels stay
+     readable; the figcaption stays in normal flow. */
+  .arch-fig-scroll { inline-size: 100%; }
+  @media (max-width: 36rem) {
+    .arch-fig-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .arch-fig svg {
+      min-inline-size: 600px;
+    }
   }
   .arch-fig figcaption {
     margin: 0;

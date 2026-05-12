@@ -349,6 +349,7 @@ const sections = [
         </figure>
 
         <figure class="rp-strip">
+          <div class="rp-strip-scroll">
           <svg viewBox="0 0 760 220" role="img"
                aria-label="Three repeater generations: 1G with heralded generation and distillation, 2G with encoded memories, 3G with block-encoded transmission">
             {/* 1G strip */}
@@ -410,6 +411,7 @@ const sections = [
             <line x1="641" y1="203" x2="719" y2="203" stroke="var(--color-accent)" stroke-width="1.4"/>
             <polygon points="719,203 712,200 712,206" fill="var(--color-accent)"/>
           </svg>
+          </div>
           <figcaption>
             Schematic comparison. <strong>1G</strong>: bare-qubit memory at each node;
             heralded Bell pairs (dashed arcs) on each segment, fused by swaps at
@@ -553,6 +555,20 @@ const sections = [
     block-size: auto;
     max-block-size: 260px;
     display: block;
+  }
+  /* On phones, 760px viewBox scales to <360px and labels become
+     microscopic. Below 50rem the SVG sits in a scroll wrapper with
+     a min-width so the strips stay legible. Figcaption stays in
+     normal flow. */
+  .rp-strip-scroll { inline-size: 100%; }
+  @media (max-width: 50rem) {
+    .rp-strip-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .rp-strip svg {
+      min-inline-size: 700px;
+    }
   }
   .rp-strip figcaption {
     margin: 0;
