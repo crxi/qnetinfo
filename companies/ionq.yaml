@@ -1,0 +1,79 @@
+slug: ionq
+name: IonQ
+categories: [qc]
+hq: College Park, Maryland, USA
+founded: 2015
+status: public
+parent: null
+
+positioning: >
+  Trapped-ion quantum computing systems sold through cloud platforms (AWS Braket,
+  Azure Quantum, GCP) and as on-premise installations. NYSE-listed since 2021;
+  the most commercially exposed pure-play trapped-ion vendor.
+
+modalities:
+  qc:
+    qubit_type: trapped-ion
+    physical_qubits_current: 36
+    logical_qubits_current: 0
+    one_q_fidelity: 0.99962
+    two_q_fidelity: 0.9943
+    coherence_t1_ms: null
+    coherence_t2_ms: null
+    ec_code: null
+    connectivity: all-to-all
+    gate_set: []
+
+milestones:
+  - date: 2024-09
+    tag: qc
+    headline: Forte Enterprise launched commercially — 36 algorithmic qubits target
+    source_url: https://ionq.com/news/september-19-2024-ionq-forte-enterprise
+    source_type: press
+  - date: 2023-09
+    tag: qc
+    headline: IonQ Forte initial release, barium hyperfine qubit demonstrations
+    source_url: https://ionq.com/posts/october-04-2023-ionq-forte-now-available
+    source_type: press
+  - date: 2021-10
+    tag: qc
+    headline: NYSE listing via SPAC merger
+    source_url: https://ionq.com/news/october-01-2021-ionq-completes-business-combination
+    source_type: filing
+
+roadmap:
+  - target: 2025
+    item: Tempo system — 64 algorithmic qubits, networked-cell architecture
+    source_url: https://ionq.com/posts/february-26-2024-ionq-tempo-roadmap
+    tag: qc
+  - target: 2028
+    item: Modular networked-ion systems, early error correction
+    source_url: https://ionq.com/posts/october-12-2023-our-roadmap
+    tag: qc
+
+current_flagship:
+  name: Forte Enterprise
+  generation: trapped-ion gen-3
+
+references:
+  - kind: blog
+    citation_key: null
+    url: https://ionq.com/posts/october-12-2023-our-roadmap
+    note: Public technical roadmap blog post (2023)
+  - kind: press
+    citation_key: null
+    url: https://ionq.com/news/september-19-2024-ionq-forte-enterprise
+    note: Forte Enterprise launch
+  - kind: preprint
+    citation_key: null
+    url: https://arxiv.org/abs/2406.02501
+    note: Algorithmic-qubit benchmarking methodology (2024)
+
+partial:
+  - modalities.qc.coherence_t1_ms
+  - modalities.qc.coherence_t2_ms
+  - modalities.qc.ec_code
+  - modalities.qc.gate_set
+
+last_verified: 2026-05-12
+verification_method: web

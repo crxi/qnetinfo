@@ -4,9 +4,12 @@
  *
  * Tier E · Applications & market.
  *
- * This is the landing page for the long-term vendor index.
- * Per-vendor sub-pages are deferred; this round ships the
- * landing only.
+ * The landing reads every YAML in qnetinfo/companies/ via the companies
+ * loader and groups vendors by primary category. The textual platform
+ * lists below (transmon / trapped-ion / etc.) survive as a static
+ * snapshot for vendors that don't have a dossier yet — once a dossier
+ * lands in qnetinfo/companies/<slug>.yaml, the vendor's name on this
+ * landing page can be promoted to a link to its sub-page.
  *
  * Citations:
  *   - ezratty-uqt-2025-p2 — survey-level coverage of the vendor landscape.
@@ -16,22 +19,37 @@
 import Infographic from "../layouts/Infographic.astro";
 import Center from "../components/Center.astro";
 import Stack from "../components/Stack.astro";
-import Grid from "../components/Grid.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
+import {
+  COMPANIES,
+  CATEGORY_LABEL,
+  CATEGORY_ORDER,
+  companiesByPrimary,
+  type Company,
+} from "../lib/companies.ts";
 
 const sections = [
-  { id: "overview",       label: "Overview" },
-  { id: "computers",      label: "Computer vendors" },
-  { id: "networking",     label: "Networking & QKD" },
-  { id: "components",     label: "Components" },
-  { id: "notes",          label: "Notes on this page" },
+  { id: "overview",   label: "Overview" },
+  { id: "dossiers",   label: "Vendor dossiers" },
+  { id: "computers",  label: "Computer vendors" },
+  { id: "networking", label: "Networking & QKD" },
+  { id: "components", label: "Components" },
+  { id: "notes",      label: "Notes on this page" },
 ];
+
+// Group dossiers by primary category, in the canonical CATEGORY_ORDER.
+const grouped: { category: typeof CATEGORY_ORDER[number]; companies: Company[] }[] =
+  CATEGORY_ORDER
+    .map((c) => ({ category: c, companies: companiesByPrimary(c) }))
+    .filter((g) => g.companies.length > 0);
+
+const haveDossiers = COMPANIES.length > 0;
 ---
 
 <Infographic
   title="Vendors — landscape and long-term tracking"
-  description="A growing index of vendors building quantum-network hardware and applications. This is the landing page; per-vendor sub-pages will land separately as the data schema is filled out."
+  description="A growing index of vendors building quantum-network hardware and applications. Vendors with a YAML dossier render as deep-dive sub-pages with milestones, roadmap, and capability metrics."
   references={[
     "ezratty-uqt-2025-p2",
     "kumar-ijndc-2025",
@@ -47,12 +65,11 @@ const sections = [
         <h1>Vendors — landscape and long-term tracking</h1>
         <p>
           A quantum-networking workspace that doesn't track vendors loses touch with what
-          can actually be procured. This page is the workspace's vendor index, grouped
-          by primary role and platform. It's deliberately neutral — name, platform, role,
-          and a one-line position, drawn from the survey literature
+          can actually be procured. This page is the workspace's vendor index, with
+          two layers: a curated dossier per vendor (built from a per-vendor YAML in
+          <code>qnetinfo/companies/</code>), and a static landscape snapshot for vendors
+          where a dossier hasn't been compiled yet
           <SourceNote id="ezratty-uqt-2025-p2" /><SourceNote id="meddeb-comnet-2025" />.
-          Detailed milestone timelines and per-vendor pages are planned as a separate
-          long-term-maintained tier; see the notes at the bottom for the schema.
         </p>
         <p>
           Vendors split naturally into three buckets: <strong>computers</strong> (build
@@ -62,11 +79,48 @@ const sections = [
         </p>
       </header>
 
+      <section id="dossiers" data-nav-section>
+        <h2>Vendor dossiers</h2>
+        {haveDossiers ? (
+          <p>
+            Each dossier below links to a per-vendor page with milestones, roadmap, and
+            modality-specific capability details. Compiled from primary sources (papers,
+            vendor technology pages); see each page for source links.
+          </p>
+        ) : (
+          <p class="empty">No dossiers compiled yet. Add a YAML to <code>qnetinfo/companies/</code> to populate.</p>
+        )}
+        {grouped.map((group) => (
+          <div class="dossier-group">
+            <h3 class="dossier-group-title">{CATEGORY_LABEL[group.category]}</h3>
+            <ul class="dossier-grid">
+              {group.companies.map((c) => (
+                <li class="dossier-card">
+                  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/companies/${c.slug}`}>
+                    <div class="dossier-name">{c.name}</div>
+                    <div class="dossier-positioning">{c.positioning}</div>
+                    <div class="dossier-meta">
+                      {c.categories.length > 1 && (
+                        <span class="dossier-extra-cats">
+                          also: {c.categories.slice(1).map((cc) => CATEGORY_LABEL[cc]).join(", ")}
+                        </span>
+                      )}
+                      <span class="dossier-hq">{c.hq}</span>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </section>
+
       <section id="computers" data-nav-section>
-        <h2>Computer vendors</h2>
+        <h2>Computer vendors (landscape snapshot)</h2>
         <p>
           Vendors building quantum processors. The platform column maps onto the
-          stationary-qubit encodings covered in the qubits subject.
+          stationary-qubit encodings covered in the qubits subject. Names without
+          a dossier yet appear as plain text.
         </p>
 
         <h3 class="vendor-platform">Superconducting</h3>
@@ -138,33 +192,32 @@ const sections = [
           <li><strong>Quandela</strong> (above) — single-photon sources from quantum dots.</li>
           <li><strong>QuiX Quantum</strong> (above) — photonic processors and integrated circuits.</li>
           <li><strong>Lightsynq</strong> (above) — SiV-centre quantum-memory modules.</li>
-          <li>(per-vendor index will expand here as data files land — see the notes section)</li>
         </ul>
       </section>
 
       <section id="notes" data-nav-section>
         <h2>Notes on this page</h2>
-        <p>
-          Three things to flag about this index:
-        </p>
         <ul>
           <li>
-            <strong>It's a snapshot.</strong> Quantum networking is moving fast; entries
-            here go stale within months. Updates are explicit commits, not crawls.
+            <strong>The landscape snapshot is a starting point.</strong> Names + platforms
+            + one-line positions, drawn from survey literature. Goes stale within months.
           </li>
           <li>
-            <strong>It's deliberately neutral.</strong> No milestone counts, no fundraising
-            rounds, no public-roadmap dates. Those belong on per-vendor pages where they
-            can be cited to a primary source. Index entries here are name + platform +
-            role only.
+            <strong>Dossiers are the long-term tracking surface.</strong> One
+            <code>qnetinfo/companies/&lt;slug&gt;.yaml</code> per vendor with milestones,
+            roadmap, capability metrics, and citations. Schema documented in
+            <code>qnetinfo/companies/CLAUDE.md</code>.
           </li>
           <li>
-            <strong>Per-vendor sub-pages are deferred.</strong> The plan is one
-            <code>companies/&lt;vendor&gt;.yaml</code> per vendor with a milestones
-            timeline, public roadmap, and links to canonical announcements (vendor
-            press, peer-reviewed papers, conference talks — not second-hand TechCrunch
-            entries). When those land, they'll render as
-            <code>/companies/&lt;vendor&gt;</code> sub-routes.
+            <strong>The coupling is one-way:</strong> YAML → Astro at build time. Dropping
+            a new YAML file in <code>qnetinfo/companies/</code> and rebuilding produces a
+            new sub-page automatically. No template edits per vendor.
+          </li>
+          <li>
+            <strong>Source priority for dossiers:</strong> peer-reviewed paper &gt; arXiv
+            preprint &gt; vendor blog or technology page &gt; press release &gt; industry
+            tracker. Wikipedia is acceptable only for company-history facts, never for
+            technical numbers.
           </li>
         </ul>
         <p>
@@ -205,6 +258,54 @@ const sections = [
 
   .vendor-list li { color: var(--color-text-mute); }
   .vendor-list strong { color: var(--color-text); }
+
+  /* Dossier grid */
+  .dossier-group { display: grid; gap: var(--space-2); margin-block-end: var(--space-3); }
+  .dossier-group-title {
+    margin: 0;
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+  .dossier-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-2);
+  }
+  .dossier-card {
+    padding: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    transition: border-color 150ms ease;
+  }
+  .dossier-card:hover { border-color: var(--color-accent); }
+  .dossier-card a {
+    display: grid;
+    gap: 6px;
+    padding: var(--space-3);
+    color: inherit;
+    text-decoration: none;
+  }
+  .dossier-name {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: var(--text-md);
+  }
+  .dossier-positioning {
+    font-size: var(--text-sm);
+    color: var(--color-text-mute);
+    line-height: var(--leading-snug);
+  }
+  .dossier-meta {
+    margin-block-start: var(--space-1);
+    display: flex; gap: var(--space-2); flex-wrap: wrap;
+    font-size: var(--text-xs); color: var(--color-text-mute);
+  }
+  .dossier-extra-cats { color: var(--color-accent); }
+  .empty { color: var(--color-text-mute); }
 
   code {
     font-family: var(--font-mono);

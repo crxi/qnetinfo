@@ -1,0 +1,173 @@
+/**
+ * Company-dossier loader.
+ *
+ * Reads every YAML file in qnetinfo/companies/ at build time via Vite's
+ * import.meta.glob (eager). The qnetinfo/companies/ directory is the
+ * single source of truth — files are produced by the
+ * quantum-company-research skill or written by hand against the schema
+ * documented in qnetinfo/companies/CLAUDE.md.
+ *
+ * Coupling is one-way: YAML → this loader → Astro pages. Nothing in the
+ * site writes back to the YAML files.
+ */
+
+export type Category =
+  | "qc"
+  | "qkd"
+  | "memory"
+  | "network"
+  | "source-detect"
+  | "sensing"
+  | "software"
+  | "enabling";
+
+export const CATEGORY_LABEL: Record<Category, string> = {
+  qc: "Quantum computers",
+  qkd: "QKD",
+  memory: "Quantum memory",
+  network: "Networking",
+  "source-detect": "Sources & detectors",
+  sensing: "Quantum sensing",
+  software: "Software & middleware",
+  enabling: "Enabling supply chain",
+};
+
+/** Display order on the landing page. */
+export const CATEGORY_ORDER: Category[] = [
+  "qc",
+  "qkd",
+  "memory",
+  "network",
+  "source-detect",
+  "sensing",
+  "software",
+  "enabling",
+];
+
+export type CompanyStatus = "public" | "private" | "acquired" | "defunct";
+export type SourceType =
+  | "paper"
+  | "preprint"
+  | "press"
+  | "blog"
+  | "conf-talk"
+  | "filing";
+
+export interface Milestone {
+  date: string; // YYYY or YYYY-MM
+  tag?: Category;
+  headline: string;
+  source_url: string;
+  source_type: SourceType;
+}
+
+export interface RoadmapItem {
+  target: string; // YYYY or "Q3 2025"
+  item: string;
+  source_url?: string;
+  tag?: Category;
+}
+
+export interface Reference {
+  kind: SourceType;
+  citation_key: string | null;
+  url: string;
+  note?: string;
+}
+
+/** Modality-specific data. Each block is optional. */
+export interface ModalityQC {
+  qubit_type: string;
+  physical_qubits_current: number | null;
+  logical_qubits_current: number | null;
+  one_q_fidelity: number | null;
+  two_q_fidelity: number | null;
+  coherence_t1_ms: number | null;
+  coherence_t2_ms: number | null;
+  ec_code: string | null;
+  connectivity: string | null;
+  gate_set: string[];
+}
+
+export interface ModalityQKD {
+  protocol: string[];
+  rate_distance: string;
+  deployed_demos: string[];
+}
+
+export interface ModalityMemory {
+  platform: string;
+  storage_time_ms: number | null;
+  retrieval_efficiency: number | null;
+  fidelity: number | null;
+  wavelength_nm: number | null;
+  mode_capacity: number | null;
+}
+
+export interface ModalityNetwork {
+  role: string;
+  products: string[];
+}
+
+export interface Modalities {
+  qc?: ModalityQC;
+  qkd?: ModalityQKD;
+  memory?: ModalityMemory;
+  network?: ModalityNetwork;
+  // The remaining four are open-shape for now; tighten as data lands.
+  "source-detect"?: Record<string, unknown>;
+  sensing?: Record<string, unknown>;
+  software?: Record<string, unknown>;
+  enabling?: Record<string, unknown>;
+}
+
+export interface Company {
+  slug: string;
+  name: string;
+  categories: Category[];
+  hq: string;
+  founded: number;
+  status: CompanyStatus;
+  parent: string | null;
+  positioning: string;
+  modalities: Modalities;
+  milestones: Milestone[];
+  roadmap: RoadmapItem[];
+  current_flagship: { name: string; generation: string } | null;
+  references: Reference[];
+  partial: string[];
+  last_verified: string;
+  verification_method: "web" | "reference-library" | "mixed";
+}
+
+const yamls = import.meta.glob<Company>("../../../companies/*.yaml", {
+  eager: true,
+  import: "default",
+});
+
+/** All company dossiers, sorted by name. */
+export const COMPANIES: Company[] = Object.values(yamls).sort((a, b) =>
+  a.name.localeCompare(b.name),
+);
+
+/** Companies whose primary (index-0) category equals `c`. */
+export function companiesByPrimary(c: Category): Company[] {
+  return COMPANIES.filter((co) => co.categories[0] === c);
+}
+
+/** Look up by slug. Returns undefined if not present. */
+export function companyBySlug(slug: string): Company | undefined {
+  return COMPANIES.find((c) => c.slug === slug);
+}
+
+/**
+ * Days since `last_verified`. Used for the staleness badge — entries
+ * older than 90 days are flagged on the per-vendor page.
+ */
+export function daysSinceVerified(company: Company): number {
+  const verified = new Date(company.last_verified).getTime();
+  const now = Date.now();
+  return Math.floor((now - verified) / (1000 * 60 * 60 * 24));
+}
+
+export const STALE_THRESHOLD_DAYS = 90;

@@ -1,0 +1,383 @@
+---
+/**
+ * /companies/<slug> — per-vendor dossier.
+ *
+ * Reads qnetinfo/companies/<slug>.yaml at build time via the companies
+ * loader (see src/lib/companies.ts). getStaticPaths() emits one static
+ * page per YAML file; adding a new vendor is just dropping a YAML and
+ * rebuilding.
+ */
+import Infographic from "../../layouts/Infographic.astro";
+import Center from "../../components/Center.astro";
+import Stack from "../../components/Stack.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import {
+  COMPANIES,
+  CATEGORY_LABEL,
+  STALE_THRESHOLD_DAYS,
+  daysSinceVerified,
+  type Company,
+  type Milestone,
+} from "../../lib/companies.ts";
+
+export async function getStaticPaths() {
+  return COMPANIES.map((company) => ({
+    params: { slug: company.slug },
+    props: { company },
+  }));
+}
+
+interface Props { company: Company; }
+const { company } = Astro.props;
+
+const sections = [
+  { id: "overview",   label: "Overview" },
+  { id: "flagship",   label: "Current flagship" },
+  { id: "milestones", label: "Milestones" },
+  { id: "roadmap",    label: "Roadmap" },
+  { id: "details",    label: "Capability details" },
+  { id: "references", label: "References" },
+];
+
+const staleDays = daysSinceVerified(company);
+const isStale = staleDays > STALE_THRESHOLD_DAYS;
+
+const partialSet = new Set(company.partial ?? []);
+function isPartial(path: string): boolean { return partialSet.has(path); }
+
+// Sort milestones by date descending (most recent first).
+function parseDate(s: string): number {
+  const [y, m] = s.split("-").map((n) => parseInt(n, 10));
+  return new Date(y, (m ?? 1) - 1).getTime();
+}
+const milestones: Milestone[] = [...company.milestones].sort(
+  (a, b) => parseDate(b.date) - parseDate(a.date),
+);
+---
+
+<Infographic title={`${company.name} — vendor dossier`} description={company.positioning}>
+  <SiteNav slot="nav" currentSubject="companies" sections={sections} />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero" id="overview" data-nav-section>
+        <div class="vendor-headline">
+          <h1>{company.name}</h1>
+          <div class="vendor-tags">
+            {company.categories.map((c) => (
+              <span class="vendor-cat-pill">{CATEGORY_LABEL[c]}</span>
+            ))}
+          </div>
+        </div>
+        <p class="vendor-positioning">{company.positioning}</p>
+        <dl class="vendor-meta">
+          <div><dt>HQ</dt><dd>{company.hq}</dd></div>
+          <div><dt>Founded</dt><dd>{company.founded}</dd></div>
+          <div><dt>Status</dt><dd>{company.status}</dd></div>
+          {company.parent && <div><dt>Parent</dt><dd>{company.parent}</dd></div>}
+          <div>
+            <dt>Last verified</dt>
+            <dd>
+              {company.last_verified}
+              {isStale && <span class="stale-tag" title={`${staleDays} days old — re-verify`}>stale</span>}
+            </dd>
+          </div>
+        </dl>
+      </header>
+
+      {company.current_flagship && (
+        <section id="flagship" data-nav-section>
+          <h2>Current flagship</h2>
+          <p><strong>{company.current_flagship.name}</strong> — {company.current_flagship.generation}</p>
+        </section>
+      )}
+
+      <section id="milestones" data-nav-section>
+        <h2>Milestones</h2>
+        {milestones.length === 0 ? (
+          <p class="empty">No milestones recorded.</p>
+        ) : (
+          <ol class="timeline">
+            {milestones.map((m) => (
+              <li>
+                <div class="timeline-date">{m.date}</div>
+                <div class="timeline-body">
+                  <div class="timeline-headline">{m.headline}</div>
+                  <div class="timeline-meta">
+                    {m.tag && <span class="timeline-tag">{CATEGORY_LABEL[m.tag]}</span>}
+                    <span class="timeline-source">{m.source_type}</span>
+                    <a href={m.source_url} target="_blank" rel="noreferrer">source ↗</a>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
+
+      <section id="roadmap" data-nav-section>
+        <h2>Roadmap</h2>
+        {company.roadmap.length === 0 ? (
+          <p class="empty">No public roadmap recorded.</p>
+        ) : (
+          <ul class="roadmap">
+            {company.roadmap.map((r) => (
+              <li>
+                <span class="roadmap-target">{r.target}</span>
+                <span class="roadmap-item">{r.item}</span>
+                {r.source_url && <a href={r.source_url} target="_blank" rel="noreferrer">source ↗</a>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section id="details" data-nav-section>
+        <h2>Capability details</h2>
+
+        {company.modalities.qc && (
+          <div class="modality-block">
+            <h3>Quantum computing</h3>
+            <dl class="modality-fields">
+              <div><dt>Qubit type</dt><dd>{company.modalities.qc.qubit_type}</dd></div>
+              <div>
+                <dt>Physical qubits</dt>
+                <dd class:list={[{ "field-partial": isPartial("modalities.qc.physical_qubits_current") }]}>
+                  {company.modalities.qc.physical_qubits_current ?? "—"}
+                </dd>
+              </div>
+              <div>
+                <dt>Logical qubits</dt>
+                <dd class:list={[{ "field-partial": isPartial("modalities.qc.logical_qubits_current") }]}>
+                  {company.modalities.qc.logical_qubits_current ?? "—"}
+                </dd>
+              </div>
+              <div>
+                <dt>1Q gate fidelity</dt>
+                <dd>{company.modalities.qc.one_q_fidelity ?? "—"}</dd>
+              </div>
+              <div>
+                <dt>2Q gate fidelity</dt>
+                <dd>{company.modalities.qc.two_q_fidelity ?? "—"}</dd>
+              </div>
+              <div>
+                <dt>T₁</dt>
+                <dd class:list={[{ "field-partial": isPartial("modalities.qc.coherence_t1_ms") }]}>
+                  {company.modalities.qc.coherence_t1_ms ?? "—"} {company.modalities.qc.coherence_t1_ms ? "ms" : ""}
+                </dd>
+              </div>
+              <div>
+                <dt>T₂</dt>
+                <dd class:list={[{ "field-partial": isPartial("modalities.qc.coherence_t2_ms") }]}>
+                  {company.modalities.qc.coherence_t2_ms ?? "—"} {company.modalities.qc.coherence_t2_ms ? "ms" : ""}
+                </dd>
+              </div>
+              <div>
+                <dt>EC code</dt>
+                <dd class:list={[{ "field-partial": isPartial("modalities.qc.ec_code") }]}>
+                  {company.modalities.qc.ec_code ?? "—"}
+                </dd>
+              </div>
+              <div><dt>Connectivity</dt><dd>{company.modalities.qc.connectivity ?? "—"}</dd></div>
+            </dl>
+          </div>
+        )}
+
+        {company.modalities.qkd && (
+          <div class="modality-block">
+            <h3>QKD</h3>
+            <dl class="modality-fields">
+              <div><dt>Protocols</dt><dd>{company.modalities.qkd.protocol.join(", ")}</dd></div>
+              <div><dt>Rate vs distance</dt><dd>{company.modalities.qkd.rate_distance || "—"}</dd></div>
+            </dl>
+          </div>
+        )}
+
+        {company.modalities.memory && (
+          <div class="modality-block">
+            <h3>Quantum memory</h3>
+            <dl class="modality-fields">
+              <div><dt>Platform</dt><dd>{company.modalities.memory.platform || "—"}</dd></div>
+              <div><dt>Storage time</dt><dd>{company.modalities.memory.storage_time_ms ?? "—"} {company.modalities.memory.storage_time_ms ? "ms" : ""}</dd></div>
+              <div><dt>Retrieval efficiency</dt><dd>{company.modalities.memory.retrieval_efficiency ?? "—"}</dd></div>
+              <div><dt>Fidelity</dt><dd>{company.modalities.memory.fidelity ?? "—"}</dd></div>
+              <div><dt>Wavelength</dt><dd>{company.modalities.memory.wavelength_nm ?? "—"} {company.modalities.memory.wavelength_nm ? "nm" : ""}</dd></div>
+              <div><dt>Mode capacity</dt><dd>{company.modalities.memory.mode_capacity ?? "—"}</dd></div>
+            </dl>
+          </div>
+        )}
+
+        {company.modalities.network && (
+          <div class="modality-block">
+            <h3>Networking</h3>
+            <dl class="modality-fields">
+              <div><dt>Role</dt><dd>{company.modalities.network.role || "—"}</dd></div>
+              {company.modalities.network.products.length > 0 && (
+                <div><dt>Products</dt><dd>{company.modalities.network.products.join(", ")}</dd></div>
+              )}
+            </dl>
+          </div>
+        )}
+
+        {company.partial.length > 0 && (
+          <div class="partial-note">
+            <strong>Unverified fields ({company.partial.length}):</strong>
+            <ul>{company.partial.map((p) => <li><code>{p}</code></li>)}</ul>
+          </div>
+        )}
+      </section>
+
+      <section id="references" data-nav-section>
+        <h2>References</h2>
+        {company.references.length === 0 ? (
+          <p class="empty">No references recorded.</p>
+        ) : (
+          <ul class="refs">
+            {company.references.map((r) => (
+              <li>
+                <span class="ref-kind">{r.kind}</span>
+                <a href={r.url} target="_blank" rel="noreferrer">{r.url}</a>
+                {r.note && <div class="ref-note">{r.note}</div>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero { padding-block: var(--space-6) var(--space-4); display: grid; gap: var(--space-3); }
+  .hero h1 { margin: 0; }
+  .vendor-headline { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); }
+  .vendor-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .vendor-cat-pill {
+    font-size: var(--text-xs); line-height: 1;
+    padding: 3px 8px; border-radius: 999px;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+  }
+  .vendor-positioning { margin: 0; font-size: var(--text-md); color: var(--color-text-mute); }
+  .vendor-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-2);
+    margin: 0;
+  }
+  .vendor-meta div { display: grid; }
+  .vendor-meta dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-mute);
+    font-weight: 600;
+  }
+  .vendor-meta dd { margin: 0; color: var(--color-text); }
+  .stale-tag {
+    margin-inline-start: 8px;
+    font-size: var(--text-xs);
+    color: var(--color-accent-2);
+    border: 1px solid var(--color-accent-2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  section { display: grid; gap: var(--space-3); }
+  section h2 { margin: 0; }
+  section h3 { margin: 0; font-size: var(--text-base); }
+  .empty { color: var(--color-text-mute); font-style: normal; }
+
+  /* Timeline */
+  ol.timeline {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: var(--space-3);
+  }
+  ol.timeline li {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-block-start: 1px solid var(--color-rule);
+  }
+  .timeline-date { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-mute); }
+  .timeline-headline { font-weight: 500; color: var(--color-text); }
+  .timeline-meta {
+    margin-block-start: 4px;
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-mute);
+  }
+  .timeline-tag { color: var(--color-accent); }
+  .timeline-source { text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Roadmap */
+  ul.roadmap { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2); }
+  ul.roadmap li {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-block: var(--space-1);
+  }
+  .roadmap-target { font-family: var(--font-mono); color: var(--color-accent); font-weight: 600; }
+  .roadmap-item { color: var(--color-text); }
+
+  /* Modality blocks */
+  .modality-block { display: grid; gap: var(--space-2); }
+  .modality-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-2) var(--space-3);
+    margin: 0;
+  }
+  .modality-fields div { display: grid; gap: 2px; }
+  .modality-fields dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-mute);
+  }
+  .modality-fields dd { margin: 0; color: var(--color-text); }
+  .field-partial { color: var(--color-text-soft); font-style: normal; }
+  .field-partial::after {
+    content: "unverified";
+    margin-inline-start: 6px;
+    font-size: var(--text-xs);
+    color: var(--color-text-mute);
+    border: 1px solid var(--color-rule);
+    padding: 0 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .partial-note {
+    margin-block-start: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-surface-2);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+  }
+  .partial-note ul { margin: 4px 0 0 0; padding-inline-start: var(--space-4); }
+  .partial-note code { font-family: var(--font-mono); }
+
+  /* References */
+  ul.refs { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2); }
+  ul.refs li { padding-block: var(--space-1); border-block-start: 1px solid var(--color-rule); }
+  ul.refs li:first-child { border-block-start: none; }
+  .ref-kind {
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    margin-inline-end: var(--space-2);
+    padding: 1px 6px;
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    color: var(--color-text-mute);
+  }
+  .ref-note { font-size: var(--text-sm); color: var(--color-text-mute); margin-block-start: 2px; }
+</style>
