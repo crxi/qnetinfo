@@ -225,42 +225,41 @@ const sections = [
         <Grid min="22rem" gap="var(--space-3)">
           <article class="enc-card">
             <EncodingDiagram kind="polarisation" />
-            <h3>Polarisation</h3>
+            <div class="enc-head">
+              <h3>Polarisation</h3>
+              <span class="enc-prefers enc-prefers--fso">free-space</span>
+            </div>
             <p>
               Direction of the electromagnetic field's oscillation: horizontal (H) and
               vertical (V) form the computational basis; diagonal (D, A) and circular (R, L)
               are equal superpositions on the Bloch sphere. Intuitive and used widely in
-              free-space and short-fibre QKD; polarisation drifts in long fibre and requires
-              active compensation.
+              free-space and short-fibre QKD. Birefringence in long fibre rotates the
+              polarisation state and requires active compensation
+              <SourceNote id="azuma-rmp-95" />.
             </p>
           </article>
 
           <article class="enc-card">
             <EncodingDiagram kind="time-bin" />
-            <h3>Time-bin</h3>
+            <div class="enc-head">
+              <h3>Time-bin</h3>
+              <span class="enc-prefers enc-prefers--fibre">fibre</span>
+            </div>
             <p>
               The photon arrives in one of two well-separated time slots — early or late.
-              Time-bin is robust over long fibre because it does not depend on a maintained
-              polarisation reference. The dominant encoding in metropolitan and long-haul
-              QKD deployments today.
-            </p>
-          </article>
-
-          <article class="enc-card">
-            <EncodingDiagram kind="phase" />
-            <h3>Phase</h3>
-            <p>
-              Relative phase of the photon's wave (e.g. 0 vs π). Phase survives amplitude
-              loss because it is preserved as the photon attenuates, which makes phase the
-              basis of choice for Twin-Field QKD and the dual-rail logical-qubit schemes
-              that underpin most photonic quantum computing. Requires a phase reference
-              between the distant nodes.
+              Time-bin is unaffected by fibre birefringence, making it the dominant encoding
+              in metropolitan and long-haul QKD deployments today. The relative phase
+              between the early and late modes is itself the resource Twin-Field QKD
+              exploits to beat the rate-loss bound.
             </p>
           </article>
 
           <article class="enc-card">
             <EncodingDiagram kind="frequency-bin" />
-            <h3>Frequency-bin</h3>
+            <div class="enc-head">
+              <h3>Frequency-bin</h3>
+              <span class="enc-prefers enc-prefers--fibre">fibre</span>
+            </div>
             <p>
               The photon occupies one of several discrete frequency modes (ω₁, ω₂, …).
               Compatible with deployed dense-wavelength-division-multiplexing (DWDM)
@@ -272,15 +271,32 @@ const sections = [
 
           <article class="enc-card">
             <EncodingDiagram kind="dual-rail" />
-            <h3>Spatial / dual-rail (path)</h3>
+            <div class="enc-head">
+              <h3>Path (spatial)</h3>
+              <span class="enc-prefers enc-prefers--fibre">fibre</span>
+            </div>
             <p>
-              Which of several optical paths (modes) the photon takes. <strong>Dual-rail</strong>
-              when there are exactly two parallel modes. The default encoding inside
+              Which of two optical paths the photon takes. The default encoding inside
               integrated photonic chips: gates (beam splitters, phase shifters) compose
-              cleanly, and measurement is unambiguous.
+              cleanly, and measurement is unambiguous. As with time-bin, path-encoded
+              photons prefer fibre over free-space transport
+              <SourceNote id="azuma-rmp-95" />.
             </p>
           </article>
         </Grid>
+
+        <p>
+          All four encodings above are <strong>dual-rail</strong> in the broader sense — the
+          qubit lives in two orthogonal modes (two polarisations, two time-bins, two
+          frequency-bins, two paths), and <Math tex="|0\\rangle" /> / <Math tex="|1\\rangle" />
+          are <q>which mode is occupied</q>. The alternative is <strong>single-rail</strong>
+          encoding, where the qubit lives in one mode and <Math tex="|0\\rangle" /> /
+          <Math tex="|1\\rangle" /> are different states <em>of</em> that mode — Fock states
+          (vacuum vs single photon), coherent / cat states, and GKP states are the standard
+          examples. Single-rail encodings show up in continuous-variable QKD and in some
+          bosonic error-corrected qubits but are not the focus of this series
+          <SourceNote id="azuma-rmp-95" />.
+        </p>
 
         <p>
           A photon can also carry <em>multiple</em> qubits at once by encoding in two or more
@@ -612,6 +628,25 @@ const sections = [
     line-height: var(--leading-snug);
     color: var(--color-text-mute);
   }
+  .enc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .enc-head h3 { margin: 0; }
+  .enc-prefers {
+    flex-shrink: 0;
+    font-size: var(--text-xs);
+    line-height: 1;
+    padding: 3px 7px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    letter-spacing: 0.02em;
+    text-transform: lowercase;
+  }
+  .enc-prefers--fibre { color: var(--color-accent); }
+  .enc-prefers--fso   { color: var(--color-text-soft); }
 
   .divincenzo {
     list-style: decimal;

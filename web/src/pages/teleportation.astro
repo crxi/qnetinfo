@@ -25,7 +25,7 @@ const sections = [
   { id: "what",       label: "What teleportation does" },
   { id: "protocol",   label: "The protocol" },
   { id: "circuit",    label: "Circuit diagram" },
-  { id: "math",       label: "Mathematical representation" },
+  { id: "math",       label: "No faster-than-light shortcut" },
   { id: "ledger",     label: "Resources and limits" },
   { id: "role",       label: "Network role" },
 ];
@@ -122,151 +122,214 @@ const sections = [
 
         <ol class="tp-steps">
           <li>
-            <strong>Bell-state measurement at Alice.</strong> Alice measures her two
-            qubits <Math tex="C" /> and <Math tex="A" /> jointly in the Bell basis. The
-            measurement projects them onto one of the four Bell states
-            <Math tex="|\\Phi^\\pm\\rangle" />, <Math tex="|\\Psi^\\pm\\rangle" /> with
-            equal probability. The outcome is two classical bits.
+            <strong>Initial joint state.</strong> The three qubits together are
+            <Math tex="|\\psi\\rangle_C \\otimes |\\Phi^+\\rangle_{AB}" />. Re-expanding on
+            <Math tex="C, A" /> in the Bell basis,
+            <Math display tex="|\\psi\\rangle_C \\otimes |\\Phi^+\\rangle_{AB} = \\tfrac{1}{2}\\bigl( |\\Phi^+\\rangle_{CA} |\\psi\\rangle_B + |\\Phi^-\\rangle_{CA} Z|\\psi\\rangle_B + |\\Psi^+\\rangle_{CA} X|\\psi\\rangle_B + |\\Psi^-\\rangle_{CA} ZX|\\psi\\rangle_B \\bigr)." />
+            The state of the three qubits hasn't changed — this is the same vector written
+            in a different basis. But it now exposes that <Math tex="B" /> is correlated
+            with <Math tex="|\\psi\\rangle" /> up to a Pauli operator, indexed by which
+            Bell state <Math tex="C, A" /> sit in.
           </li>
           <li>
-            <strong>Classical communication.</strong> Alice sends the 2 bits to Bob over
-            a classical channel.
+            <strong>Bell-state measurement at Alice.</strong> Alice measures
+            <Math tex="C" /> and <Math tex="A" /> jointly in the Bell basis. The
+            measurement projects them onto one of the four Bell states with equal
+            probability ¼ and yields two classical bits
+            <Math tex="(a, b)" />.
           </li>
           <li>
-            <strong>Pauli correction at Bob.</strong> Bob applies one of four Pauli
-            operations (<Math tex="I" />, <Math tex="X" />, <Math tex="Z" />, or
-            <Math tex="ZX" />) to <Math tex="B" />, indexed by the 2 bits.
+            <strong>Classical communication.</strong> Alice sends <Math tex="(a, b)" /> to
+            Bob over a classical channel. At this point Bob's qubit is in
+            <Math tex="P|\\psi\\rangle" /> — the right state up to a known Pauli operator
+            <Math tex="P \\in \\{I, X, Z, ZX\\}" />.
           </li>
           <li>
-            <strong>Done.</strong> Bob's qubit <Math tex="B" /> is now in state
-            <Math tex="|\\psi\\rangle" />. Alice's BSM has projected
-            <Math tex="C" /> and <Math tex="A" /> jointly onto one of the four Bell states:
-            <Math tex="C" /> no longer carries <Math tex="|\\psi\\rangle" /> and
-            <Math tex="A" /> is no longer entangled with <Math tex="B" />. The Bell-pair
-            entanglement <Math tex="A \\leftrightarrow B" /> is consumed. Only Bob holds
+            <strong>Pauli correction at Bob.</strong> Bob applies <Math tex="X^b Z^a" />,
+            which equals the inverse of <Math tex="P" />. His qubit is now in
             <Math tex="|\\psi\\rangle" />.
           </li>
         </ol>
 
-        <figure class="tp" id="tp-fig" data-tp>
-          <svg viewBox="0 0 720 280" role="img"
-               aria-label="Quantum teleportation protocol animation: Alice's BSM, classical bit transmission, Bob's Pauli correction"
-               data-tp-svg>
-            {/* ─── Endpoint labels and box outlines ─────────────── */}
-            <text x="80" y="22" text-anchor="middle" class="tp-label">Alice</text>
-            <text x="640" y="22" text-anchor="middle" class="tp-label">Bob</text>
+        <p>
+          The bit pattern <Math tex="(a, b)" /> tells Bob which Bell state Alice's BSM
+          collapsed onto, and therefore which Pauli to apply:
+        </p>
 
-            <rect x="20"  y="32" width="200" height="216" rx="6"
+        <table class="tp-pauli-table">
+          <thead>
+            <tr><th>(a, b)</th><th>Bell outcome</th><th>State at Bob before correction</th><th>Pauli <Math tex="P^{-1}" /> to apply</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>(0, 0)</td><td><Math tex="|\\Phi^+\\rangle" /></td><td><Math tex="|\\psi\\rangle" /></td><td><Math tex="I" /></td></tr>
+            <tr><td>(0, 1)</td><td><Math tex="|\\Psi^+\\rangle" /></td><td><Math tex="X|\\psi\\rangle" /></td><td><Math tex="X" /></td></tr>
+            <tr><td>(1, 0)</td><td><Math tex="|\\Phi^-\\rangle" /></td><td><Math tex="Z|\\psi\\rangle" /></td><td><Math tex="Z" /></td></tr>
+            <tr><td>(1, 1)</td><td><Math tex="|\\Psi^-\\rangle" /></td><td><Math tex="ZX|\\psi\\rangle" /></td><td><Math tex="ZX" /></td></tr>
+          </tbody>
+        </table>
+
+        <Callout label="Does Bob already have |ψ⟩ after Alice's measurement?">
+          <p>
+            Not quite. The moment Alice's BSM fires, Bob's qubit is in
+            <Math tex="P|\\psi\\rangle" /> — one of <Math tex="|\\psi\\rangle" />,
+            <Math tex="X|\\psi\\rangle" />, <Math tex="Z|\\psi\\rangle" />, or
+            <Math tex="ZX|\\psi\\rangle" /> — and Bob doesn't yet know which. He cannot
+            distinguish these four states from local measurements alone (his density
+            matrix is <Math tex="\\tfrac{1}{2}\\mathbb{I}" /> regardless), so the qubit
+            carries no usable information until the two bits arrive and he can apply
+            <Math tex="P^{-1}" />. <em>Then</em> Bob holds <Math tex="|\\psi\\rangle" />.
+            Calling <Math tex="B" /> <q>the teleported qubit</q> before the correction is
+            a shorthand — the state of the qubit at that moment is
+            <Math tex="P|\\psi\\rangle" />, not <Math tex="|\\psi\\rangle" />.
+          </p>
+        </Callout>
+
+        <figure class="tp" id="tp-fig" data-tp>
+          <svg viewBox="0 0 720 260" role="img"
+               aria-label="Quantum teleportation protocol animation: Alice's BSM on C and A, classical bit transmission, Bob's Pauli correction on B"
+               data-tp-svg>
+            <defs>
+              <radialGradient id="tp-cloud-std" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%"   stop-color="var(--tp-teal)"   stop-opacity="0.95"/>
+                <stop offset="40%"  stop-color="var(--tp-teal)"   stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="var(--tp-teal)"   stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="tp-cloud-psi" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%"   stop-color="var(--tp-purple)" stop-opacity="0.95"/>
+                <stop offset="40%"  stop-color="var(--tp-purple)" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="var(--tp-purple)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            {/* ─── Endpoint labels and outline boxes ────────────── */}
+            <text x="130" y="22" text-anchor="middle" class="tp-label">Alice</text>
+            <text x="610" y="22" text-anchor="middle" class="tp-label">Bob</text>
+
+            <rect x="20"  y="32" width="240" height="200" rx="6"
                   fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <rect x="500" y="32" width="200" height="216" rx="6"
+            <rect x="500" y="32" width="200" height="200" rx="6"
                   fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
 
             {/* ─── Channel labels ─────────────────────────────── */}
-            <text x="360" y="62" text-anchor="middle" class="tp-channel">quantum channel · pre-shared Bell pair</text>
-            <text x="360" y="252" text-anchor="middle" class="tp-channel">classical channel · 2 bits</text>
+            <text x="380" y="58" text-anchor="middle" class="tp-channel">quantum channel · pre-shared Bell pair</text>
+            <text x="380" y="236" text-anchor="middle" class="tp-channel">classical channel · 2 bits</text>
 
-            {/* ─── Bell-pair line ─────────────────────────────── */}
-            {/* Drawn as a sinuous wave from Alice's Bell-half slot
-                to Bob's Bell-half slot, signalling the entangled
-                resource. Fades during phase 2 (Alice's BSM
-                consumes Alice's half). */}
+            {/* ─── Entangled-pair line: high-frequency sinewave from A → B.
+                Built in script (long path string). Fades during BSM. ──── */}
             <path data-tp-bellpair
-                  d="M 80 90 Q 180 50 360 70 T 640 90"
-                  fill="none" stroke="var(--color-text)" stroke-width="1.5"
-                  stroke-dasharray="6,3" opacity="0.85"/>
+                  d="M 0 0"
+                  fill="none" stroke="var(--tp-teal)" stroke-width="1.4"
+                  opacity="0.9"/>
 
             {/* ─── Classical channel line ─────────────────────── */}
-            <line x1="80"  y1="220" x2="640" y2="220"
+            <line x1="200" y1="220" x2="600" y2="220"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="4,3" opacity="0.65"/>
 
-            {/* ─── Alice side: |ψ⟩ qubit + Bell half ──────────── */}
-            {/* |ψ⟩ — Alice's input. Bar at random angle θ_input.
-                Sits at (80, 150). Fades during phase 2 (consumed
-                by BSM). */}
-            <g data-tp-psi-alice transform="translate(80 150)">
-              <circle r="22" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.5"/>
-              <line data-tp-bar="psi-alice" x1="-12" y1="0" x2="12" y2="0"
-                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round"/>
+            {/* ─── Alice side: A (top) and C (bottom) ───────────── */}
+            {/* A — Bell half, teal cloud at (75, 100). */}
+            <g data-tp-bell-alice transform="translate(75 100)">
+              <circle r="15" fill="url(#tp-cloud-std)"/>
             </g>
-            <text x="80" y="195" text-anchor="middle" class="tp-slot-label">|ψ⟩</text>
+            <text x="46" y="105" text-anchor="end" class="tp-slot-label">A</text>
 
-            {/* Alice's Bell half — circle slot at (80, 90).
-                During phase 1 it just shows a generic dot indicating
-                "entangled qubit"; it's a half of |Φ⁺⟩ so it has no
-                local state. Fades during phase 2. */}
-            <g data-tp-bell-alice transform="translate(80 90)">
-              <circle r="14" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.2"/>
-              <text x="0" y="4" text-anchor="middle" class="tp-bell-mark">A</text>
+            {/* C — the qubit to teleport, purple cloud at (75, 175). */}
+            <g data-tp-psi-alice transform="translate(75 175)">
+              <circle r="15" fill="url(#tp-cloud-psi)"/>
+            </g>
+            <text x="46" y="180" text-anchor="end" class="tp-slot-label">C</text>
+
+            {/* ─── Mini-BSM glyph (right portion of Alice's box) ─────
+                Two input beams from A and C converge at a small BS
+                plate; two output beams go to two D-detectors.
+                Lives in x=125..245, y=85..195. Fades in during phase 2. */}
+            <g data-tp-bsm opacity="0">
+              {/* Input beam A → BS */}
+              <line x1="90" y1="100" x2="165" y2="137"
+                    stroke="var(--color-text-soft)" stroke-width="1"
+                    stroke-dasharray="2,2"/>
+              {/* Input beam C → BS */}
+              <line x1="90" y1="175" x2="165" y2="137"
+                    stroke="var(--color-text-soft)" stroke-width="1"
+                    stroke-dasharray="2,2"/>
+              {/* Output beam BS → upper detector */}
+              <line x1="165" y1="137" x2="225" y2="100"
+                    stroke="var(--color-text-soft)" stroke-width="1"
+                    stroke-dasharray="2,2"/>
+              {/* Output beam BS → lower detector */}
+              <line x1="165" y1="137" x2="225" y2="175"
+                    stroke="var(--color-text-soft)" stroke-width="1"
+                    stroke-dasharray="2,2"/>
+              {/* BS plate (thin vertical rect, accent colour) */}
+              <rect x="162" y="125" width="6" height="24"
+                    fill="var(--tp-teal)" stroke="var(--tp-teal)" stroke-width="1"/>
+              {/* BSM label above */}
+              <text x="165" y="120" text-anchor="middle" class="tp-action-label">BSM</text>
+              {/* Upper detector D (flat side facing BS) */}
+              <g transform="translate(225 100) rotate(-135)">
+                <path d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                      fill="var(--color-text)" stroke="var(--color-text)"
+                      stroke-width="1.2" stroke-linejoin="round" opacity="0.85"/>
+              </g>
+              {/* Lower detector D */}
+              <g transform="translate(225 175) rotate(135)">
+                <path d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                      fill="var(--color-text)" stroke="var(--color-text)"
+                      stroke-width="1.2" stroke-linejoin="round" opacity="0.85"/>
+              </g>
+              {/* Bell outcome ket — appears under BSM glyph */}
+              <text data-tp-bell-out x="165" y="161" text-anchor="middle" class="tp-bell-out">|Φ⁺⟩</text>
             </g>
 
-            {/* BSM box at Alice — appears during phase 2,
-                surrounding both Alice qubits with a labeled box. */}
-            <g data-tp-bsm-box opacity="0">
-              <rect x="40" y="68" width="80" height="110" rx="4"
-                    fill="none" stroke="var(--color-accent)" stroke-width="2"
+            {/* ─── Bob side: B cloud, eventually holds the teleported state ── */}
+            <g data-tp-bell-bob transform="translate(600 130)">
+              <circle data-tp-bell-bob-cloud r="20" fill="url(#tp-cloud-std)"/>
+            </g>
+            <text x="600" y="98" text-anchor="middle" class="tp-slot-label">B</text>
+
+            {/* P badge — small chip overlaid on B during phases 2-3.
+                Reads e.g. "X", "Z", "ZX", "I". Drops on correction. */}
+            <g data-tp-bob-pauli opacity="0" transform="translate(625 110)">
+              <rect x="-12" y="-9" width="24" height="18" rx="3"
+                    fill="var(--color-bg)" stroke="var(--tp-purple)" stroke-width="1.4"/>
+              <text data-tp-bob-pauli-text x="0" y="4" text-anchor="middle" class="tp-pauli-badge">P</text>
+            </g>
+
+            {/* Correction operator label — appears in phase 4. */}
+            <g data-tp-corr-box opacity="0" transform="translate(600 168)">
+              <rect x="-28" y="-12" width="56" height="24" rx="3"
+                    fill="none" stroke="var(--tp-purple)" stroke-width="1.6"
                     stroke-dasharray="3,2"/>
-              <text x="80" y="60" text-anchor="middle" class="tp-action-label">BSM</text>
+              <text data-tp-corr-text x="0" y="5" text-anchor="middle" class="tp-action-label">P⁻¹</text>
             </g>
 
-            {/* ─── Bob side: Bell half + output ───────────────── */}
-            {/* Bob's Bell half — circle slot at (640, 90). During
-                phases 1–3, just a "B" mark. During phase 4 it
-                becomes the output: a bar appears, initially at a
-                "wrong" angle (representing Bob's pre-correction
-                Pauli-rotated state), then animates to θ_input. */}
-            <g data-tp-bell-bob transform="translate(640 90)">
-              <circle r="14" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.2"/>
-              <text data-tp-bell-bob-mark x="0" y="4" text-anchor="middle" class="tp-bell-mark">B</text>
+            {/* ─── Classical bits (a, b) ─────────────────────────── */}
+            <g data-tp-bits opacity="0">
+              <text data-tp-bits-text x="250" y="216" class="tp-bit">(0, 0)</text>
             </g>
-
-            {/* Bob's output qubit slot — empty until phase 4.
-                When the correction fires, a bar appears at the
-                target angle θ_input. */}
-            <g data-tp-out-bob transform="translate(640 150)" opacity="0">
-              <circle r="22" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.5"/>
-              <line data-tp-bar="out-bob" x1="-12" y1="0" x2="12" y2="0"
-                    stroke="var(--color-text)" stroke-width="3" stroke-linecap="round"/>
-            </g>
-            <text data-tp-out-label x="640" y="195" text-anchor="middle" class="tp-slot-label" opacity="0">|ψ⟩</text>
-
-            {/* Correction label at Bob — appears during phase 4. */}
-            <g data-tp-corr-box opacity="0">
-              <rect x="600" y="128" width="80" height="44" rx="4"
-                    fill="none" stroke="var(--color-accent)" stroke-width="2"
-                    stroke-dasharray="3,2"/>
-              <text data-tp-corr-text x="640" y="120" text-anchor="middle" class="tp-action-label">X<tspan baseline-shift="super" font-size="9">a</tspan> Z<tspan baseline-shift="super" font-size="9">b</tspan></text>
-            </g>
-
-            {/* ─── BSM result bits at Alice's output ──────────── */}
-            {/* Two digits that appear after the BSM event,
-                adjacent to Alice's box, ready to travel along the
-                classical channel. */}
-            <text data-tp-bit="0" x="220" y="225" class="tp-bit" opacity="0">0</text>
-            <text data-tp-bit="1" x="232" y="225" class="tp-bit" opacity="0">0</text>
           </svg>
 
           <ol class="tp-step-list" data-tp-steps>
-            <li data-tp-step="1"><strong>1.</strong> Alice has unknown <Math tex="|\\psi\\rangle" /> + shared Bell pair</li>
-            <li data-tp-step="2"><strong>2.</strong> Alice performs BSM → 2 classical bits</li>
-            <li data-tp-step="3"><strong>3.</strong> 2 bits travel to Bob</li>
-            <li data-tp-step="4"><strong>4.</strong> Bob applies <Math tex="X^a Z^b" /> correction</li>
-            <li data-tp-step="5"><strong>5.</strong> Bob holds <Math tex="|\\psi\\rangle" /></li>
+            <li data-tp-step="1"><strong>1.</strong> Alice has C; A and B are a shared Bell pair</li>
+            <li data-tp-step="2"><strong>2.</strong> Alice performs BSM on C and A → bits (a, b)</li>
+            <li data-tp-step="3"><strong>3.</strong> Bits travel to Bob; B holds P|ψ⟩</li>
+            <li data-tp-step="4"><strong>4.</strong> Bob applies P⁻¹</li>
+            <li data-tp-step="5"><strong>5.</strong> B now matches C</li>
           </ol>
 
           <figcaption>
-            Alice's input qubit <Math tex="|\\psi\\rangle" /> holds an arbitrary unknown
-            state — a different one each cycle. Her BSM consumes both
-            <Math tex="|\\psi\\rangle" /> and her half of the shared Bell pair, projecting
-            them jointly onto a Bell state and producing two classical bits. The bits
-            travel to Bob over a classical channel; he applies the matching Pauli
-            correction and his Bell-half ends up in <Math tex="|\\psi\\rangle" />. The
-            Bell pair is consumed in the process — a fresh one is required for the next
-            teleportation.
+            <strong>C</strong> (purple) is the qubit Alice wants to teleport;
+            <strong>A</strong> and <strong>B</strong> (teal) are the two halves of a
+            pre-shared Bell pair, drawn connected by the high-frequency wavy line
+            (entanglement). When Alice's BSM fires, <strong>C</strong> and
+            <strong>A</strong> are jointly measured at the mini-BSM glyph and the
+            outcome ket appears; two classical bits <Math tex="(a, b)" /> emerge along
+            the bottom channel. At that same instant <strong>B</strong> turns purple
+            with a <Math tex="P" /> badge — it's now <Math tex="P|\\psi\\rangle" />,
+            and Bob doesn't yet know which <Math tex="P" />. When the bits arrive Bob
+            applies <Math tex="P^{-1}" />: the badge drops and <strong>B</strong> ends
+            up the same purple as <strong>C</strong>, the visual cue that the state has
+            been transferred. The Bell pair is consumed.
           </figcaption>
         </figure>
       </section>
@@ -404,22 +467,7 @@ const sections = [
       </section>
 
       <section id="math" data-nav-section>
-        <h2>Mathematical representation</h2>
-        <p>
-          Write the joint three-qubit state as
-          <Math tex="|\\psi\\rangle_C \\otimes |\\Phi^+\\rangle_{AB}" /> and expand in the
-          Bell basis on Alice's two qubits <Math tex="C" /> and <Math tex="A" />:
-        </p>
-
-        <Math display tex="|\\psi\\rangle_C \\otimes |\\Phi^+\\rangle_{AB} = \\tfrac{1}{2}\\bigl( |\\Phi^+\\rangle_{CA} \\, |\\psi\\rangle_B + |\\Phi^-\\rangle_{CA} \\, Z|\\psi\\rangle_B + |\\Psi^+\\rangle_{CA} \\, X|\\psi\\rangle_B + |\\Psi^-\\rangle_{CA} \\, ZX|\\psi\\rangle_B \\bigr)" />
-
-        <p>
-          Alice's BSM on <Math tex="C, A" /> picks one of the four Bell states with
-          probability ¼; Bob's qubit <Math tex="B" /> is then in
-          <Math tex="|\\psi\\rangle" /> up to a Pauli operator that's determined by Alice's
-          measurement outcome. Two classical bits identify which outcome she got, and Bob
-          undoes the Pauli with the corresponding correction.
-        </p>
+        <h2>No faster-than-light shortcut</h2>
         <Callout label="Why Alice can't cheat by reading her bits">
           <p>
             Before Alice's classical message arrives, Bob's qubit
@@ -510,238 +558,207 @@ const sections = [
 </Infographic>
 
 <script type="module" is:inline>
-  // Teleportation animation. Five-phase loop:
-  //   1. Setup — Alice has |ψ⟩ at random angle θ; Bell pair shared.
-  //   2. BSM — Alice's two qubits absorbed into a labeled box; two
-  //      random classical bits emerge at the box's output.
-  //   3. Classical send — bits travel along the dashed channel.
-  //   4. Correction — Bob's output slot appears; the bar starts at
-  //      a "wrong" angle and rotates to θ as the correction is
-  //      applied (visually proving the protocol delivered the state).
-  //   5. Hold — final state visible, then reset for next cycle.
+  // Teleportation animation. Visual storyline:
+  //   1. Setup — Alice has C (purple cloud = |ψ⟩) and A (standard
+  //      cloud, Bell half). Bob has B (standard cloud, Bell half).
+  //      Entangled-wave connects A and B.
+  //   2. BSM — BSM box wraps C and A. Bell outcome ket appears
+  //      between them; bits (a, b) emerge below. At the same instant,
+  //      B picks up a purple tint with a "P" badge — physically it's
+  //      now in P|ψ⟩, even though Bob doesn't know which P.
+  //   3. Classical send — (a, b) travels along the classical line.
+  //   4. Correction — bits arrive at Bob; the P badge drops, B turns
+  //      fully purple = |ψ⟩ on Bob.
+  //   5. Hold final state, reset.
   //
-  // prefers-reduced-motion → static end state. IntersectionObserver
-  // pauses the loop when the figure scrolls out of view.
+  // No bar rotations: state equivalence is shown by cloud colour.
+  // C and A do not disappear during BSM — they dim and the Bell-
+  // outcome ket overlays them, reflecting the projection onto a
+  // known Bell state rather than annihilation.
   const fig = document.querySelector("[data-tp]");
   if (fig) {
-    const svg = fig.querySelector("[data-tp-svg]");
-    const psiAlice  = svg.querySelector("[data-tp-psi-alice]");
-    const psiBar    = svg.querySelector('[data-tp-bar="psi-alice"]');
-    const bellAlice = svg.querySelector("[data-tp-bell-alice]");
-    const bellBob   = svg.querySelector("[data-tp-bell-bob]");
-    const bellBobMark = svg.querySelector("[data-tp-bell-bob-mark]");
-    const bellLine  = svg.querySelector("[data-tp-bellpair]");
-    const bsmBox    = svg.querySelector("[data-tp-bsm-box]");
-    const corrBox   = svg.querySelector("[data-tp-corr-box]");
-    const corrText  = svg.querySelector("[data-tp-corr-text]");
-    const outBob    = svg.querySelector("[data-tp-out-bob]");
-    const outBobBar = svg.querySelector('[data-tp-bar="out-bob"]');
-    const outLabel  = svg.querySelector("[data-tp-out-label]");
-    const bit0      = svg.querySelector('[data-tp-bit="0"]');
-    const bit1      = svg.querySelector('[data-tp-bit="1"]');
-    const stepEls   = Array.from(fig.querySelectorAll("[data-tp-step]"));
+    const svg          = fig.querySelector("[data-tp-svg]");
+    const psiAlice     = svg.querySelector("[data-tp-psi-alice]");
+    const bellAlice    = svg.querySelector("[data-tp-bell-alice]");
+    const bellBobCloud = svg.querySelector("[data-tp-bell-bob-cloud]");
+    const bellLine     = svg.querySelector("[data-tp-bellpair]");
+    const bsmGlyph     = svg.querySelector("[data-tp-bsm]");
+    const bellOut      = svg.querySelector("[data-tp-bell-out]");
+    const bobPauli     = svg.querySelector("[data-tp-bob-pauli]");
+    const bobPauliText = svg.querySelector("[data-tp-bob-pauli-text]");
+    const corrBox      = svg.querySelector("[data-tp-corr-box]");
+    const corrText     = svg.querySelector("[data-tp-corr-text]");
+    const bitsGroup    = svg.querySelector("[data-tp-bits]");
+    const bitsText     = svg.querySelector("[data-tp-bits-text]");
+    const stepEls      = Array.from(fig.querySelectorAll("[data-tp-step]"));
+
+    // Build a high-frequency sinewave path from A (90, 100) to B (580, 100).
+    // λ = 14px, amplitude = 5px, so the eye reads "entangled" rather than "smooth wave".
+    (function buildBellLine() {
+      const x0 = 90, x1 = 580, y = 100;
+      const lambda = 14, amp = 5;
+      const n = Math.round((x1 - x0) / lambda);
+      const step = (x1 - x0) / n;
+      let d = `M ${x0} ${y} `;
+      d += `q ${step/4} ${-amp*2} ${step/2} 0 `;
+      for (let i = 1; i < n*2; i++) d += `t ${step/2} 0 `;
+      bellLine.setAttribute("d", d);
+    })();
+
+    // Bell outcome (a,b) → state ket, Pauli operator. Matches the
+    // (a,b) → P table in the prose. Bob applies P⁻¹ which equals P
+    // for I, X, Z (self-inverse) and equals XZ for ZX (up to sign).
+    const OUTCOMES = [
+      { a: 0, b: 0, ket: "|Φ⁺⟩", P: "I"  },
+      { a: 0, b: 1, ket: "|Ψ⁺⟩", P: "X"  },
+      { a: 1, b: 0, ket: "|Φ⁻⟩", P: "Z"  },
+      { a: 1, b: 1, ket: "|Ψ⁻⟩", P: "ZX" },
+    ];
 
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    function setBarAngle(line, deg) {
-      line.setAttribute("transform", `rotate(${deg})`);
-    }
-    function setOpacity(el, op) {
-      el.setAttribute("opacity", String(op));
-    }
+    function setOpacity(el, op) { el.setAttribute("opacity", String(op)); }
     function highlightStep(n) {
       for (const el of stepEls) {
-        const isActive = Number(el.dataset.tpStep) === n;
-        el.classList.toggle("tp-step--active", isActive);
+        el.classList.toggle("tp-step--active", Number(el.dataset.tpStep) === n);
       }
     }
-    function setBitsAt(x) {
-      bit0.setAttribute("x", String(x));
-      bit1.setAttribute("x", String(x + 12));
+    function setBitsX(x)     { bitsText.setAttribute("x", String(x)); }
+    function setBobTint(p)   {
+      // 0 = pure standard cloud (teal), 1 = pure purple. The standard
+      // cloud sits beneath; we fade in the purple overlay on top.
+      bobPauli.querySelector("circle").setAttribute("opacity", String(0.55 * p));
     }
 
     if (reducedMotion) {
-      // Static end state: Alice's qubits gone, Bob holds |ψ⟩.
-      setBarAngle(psiBar, 35);
-      setOpacity(psiAlice, 0);
-      setOpacity(bellAlice, 0);
+      const o = OUTCOMES[1];
+      bitsText.textContent = `(${o.a}, ${o.b})`;
+      bellOut.textContent  = o.ket;
+      setOpacity(bsmGlyph, 0.85);
+      setOpacity(psiAlice, 0.35);
+      setOpacity(bellAlice, 0.35);
       setOpacity(bellLine, 0.15);
-      setBarAngle(outBobBar, 35);
-      setOpacity(outBob, 1);
-      setOpacity(outLabel, 1);
-      setOpacity(bellBobMark, 0);
-      bit0.textContent = "0";
-      bit1.textContent = "1";
-      setBitsAt(560);
-      setOpacity(bit0, 1);
-      setOpacity(bit1, 1);
+      setOpacity(bitsGroup, 1);
+      setBitsX(540);
+      setOpacity(bobPauli, 0);
+      bellBobCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+      setOpacity(corrBox, 1);
       highlightStep(5);
     } else {
-      const T_SETUP   = 1200;
-      const T_BSM     = 1650;
-      const T_SEND    = 2100;
-      const T_CORR    = 1650;
-      const T_HOLD    = 1350;
-      const T_PAUSE   = 300;
-      const T_TOTAL   = T_SETUP + T_BSM + T_SEND + T_CORR + T_HOLD + T_PAUSE;
-      const BIT_X_START = 220;
-      const BIT_X_END   = 560;
+      const T_SETUP = 1200;
+      const T_BSM   = 1500;
+      const T_SEND  = 2000;
+      const T_CORR  = 1300;
+      const T_HOLD  = 1200;
+      const T_PAUSE = 300;
+      const T_TOTAL = T_SETUP + T_BSM + T_SEND + T_CORR + T_HOLD + T_PAUSE;
+      const BIT_X_START = 250;
+      const BIT_X_END   = 540;
 
-      let running = false;
       let cycleStart = 0;
-      let theta = 0;            // input bar angle this cycle
-      let bsmA = 0, bsmB = 0;   // Alice's BSM result this cycle
-      let preCorrAngle = 0;     // Bob's wrong-angle pre-correction display
+      let outcome = OUTCOMES[0];
 
-      // Border-pulse mechanism — briefly thickens the BSM and
-      // correction box outlines at the moment they fire, then decays
-      // back to the base 2px stroke-width. Mirrors the entanglement
-      // page's pulse() pattern.
       const PULSE_DUR = 280;
-      const flash = { BSM: 0, CORR: 0 };
-      const bsmRect  = bsmBox.querySelector("rect");
+      const flash = { CORR: 0 };
       const corrRect = corrBox.querySelector("rect");
       let firedBSM = false;
       let firedCorr = false;
       function pulse(side, now) { flash[side] = now + PULSE_DUR; }
       function updateBorders(now) {
-        for (const [side, rect] of [["BSM", bsmRect], ["CORR", corrRect]]) {
-          const remaining = flash[side] - now;
-          if (remaining > 0) {
-            const t = remaining / PULSE_DUR;
-            rect.setAttribute("stroke-width", String(2 + 2.5 * t));
-          } else {
-            rect.setAttribute("stroke-width", "2");
-          }
+        const remaining = flash.CORR - now;
+        if (remaining > 0) {
+          const t = remaining / PULSE_DUR;
+          corrRect.setAttribute("stroke-width", String(1.6 + 2 * t));
+        } else {
+          corrRect.setAttribute("stroke-width", "1.6");
         }
       }
-
       function ease(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
 
       function pickCycleParams() {
-        // Random input state and random BSM result. The "wrong"
-        // pre-correction angle is some perturbation of θ that
-        // suggests "Bob's qubit hasn't been corrected yet".
-        theta = Math.floor(Math.random() * 36) * 5 - 90; // -90..85, in 5° steps
-        bsmA = Math.random() < 0.5 ? 0 : 1;
-        bsmB = Math.random() < 0.5 ? 0 : 1;
-        // Pre-correction angle: rotate θ by a Pauli-equivalent amount
-        // (representing X|ψ⟩, Z|ψ⟩, or ZX|ψ⟩). For visual purposes,
-        // shift by 35–125° depending on the BSM result so the
-        // correction visibly rotates back to θ.
-        const idx = bsmA * 2 + bsmB;
-        const rot = [0, 90, 60, 130][idx];
-        preCorrAngle = theta + rot;
-        bit0.textContent = String(bsmA);
-        bit1.textContent = String(bsmB);
+        outcome = OUTCOMES[Math.floor(Math.random() * 4)];
+        bitsText.textContent      = `(${outcome.a}, ${outcome.b})`;
+        bellOut.textContent       = outcome.ket;
+        bobPauliText.textContent  = outcome.P;
+        corrText.textContent      = outcome.P + "⁻¹";
+        bellBobCloud.setAttribute("fill", "url(#tp-cloud-std)");
       }
 
       function frame(now) {
-        if (!running) return;
         const elapsed = now - cycleStart;
 
         if (elapsed < T_SETUP) {
-          // Phase 1: setup
+          // Phase 1 — three clouds, entangled-wave between A and B.
           highlightStep(1);
-          setBarAngle(psiBar, theta);
           setOpacity(psiAlice, 1);
           setOpacity(bellAlice, 1);
-          setOpacity(bellLine, 0.85);
-          setOpacity(bellBob, 1);
-          setOpacity(bellBobMark, 1);
-          setOpacity(bsmBox, 0);
+          setOpacity(bellLine, 0.9);
+          setOpacity(bsmGlyph, 0);
+          setOpacity(bobPauli, 0);
           setOpacity(corrBox, 0);
-          setOpacity(outBob, 0);
-          setOpacity(outLabel, 0);
-          setOpacity(bit0, 0);
-          setOpacity(bit1, 0);
+          setOpacity(bitsGroup, 0);
         } else if (elapsed < T_SETUP + T_BSM) {
-          // Phase 2: BSM
+          // Phase 2 — BSM glyph appears, Bell outcome ket overlays it.
+          // Simultaneously B picks up purple tint + P badge.
           highlightStep(2);
-          if (!firedBSM) { pulse("BSM", now); firedBSM = true; }
+          if (!firedBSM) firedBSM = true;
           const t = (elapsed - T_SETUP) / T_BSM;
           const e = ease(t);
-          // Box appears, qubits inside fade
-          setOpacity(bsmBox, Math.min(1, e * 2));
-          setOpacity(psiAlice, 1 - e);
-          setOpacity(bellAlice, 1 - e);
-          setOpacity(bellLine, 0.85 * (1 - e * 0.85));
-          // Bits emerge in the second half of the BSM phase
-          const bitOpacity = Math.max(0, (e - 0.5) * 2);
-          setOpacity(bit0, bitOpacity);
-          setOpacity(bit1, bitOpacity);
-          setBitsAt(BIT_X_START);
+          setOpacity(bsmGlyph, Math.min(1, e * 2));
+          setOpacity(psiAlice, 1 - 0.55 * e);
+          setOpacity(bellAlice, 1 - 0.55 * e);
+          setOpacity(bellLine, 0.9 * (1 - 0.85 * e));
+          const bitO = Math.max(0, (e - 0.5) * 2);
+          setOpacity(bitsGroup, bitO);
+          setBitsX(BIT_X_START);
+          // Bob: cloud morphs to purple; P badge fades in.
+          if (e > 0.5) bellBobCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+          setOpacity(bobPauli, Math.max(0, (e - 0.35) * 1.6));
         } else if (elapsed < T_SETUP + T_BSM + T_SEND) {
-          // Phase 3: send classical bits
+          // Phase 3 — classical bits travel; B is in P|ψ⟩.
           highlightStep(3);
           const t = (elapsed - T_SETUP - T_BSM) / T_SEND;
-          const e = ease(t);
-          setOpacity(bsmBox, 1 - e * 0.6);
-          setOpacity(psiAlice, 0);
-          setOpacity(bellAlice, 0);
-          setOpacity(bellLine, 0.15);
-          setOpacity(bit0, 1);
-          setOpacity(bit1, 1);
-          // Linear in time: classical bits travel at constant speed.
-          setBitsAt(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
+          setOpacity(bsmGlyph, 0.85);
+          setOpacity(psiAlice, 0.4);
+          setOpacity(bellAlice, 0.4);
+          setOpacity(bellLine, 0.13);
+          setOpacity(bitsGroup, 1);
+          setBitsX(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
+          setOpacity(bobPauli, 1);
         } else if (elapsed < T_SETUP + T_BSM + T_SEND + T_CORR) {
-          // Phase 4: correction at Bob
+          // Phase 4 — bits arrive, Bob applies P⁻¹, P badge drops.
           highlightStep(4);
           if (!firedCorr) { pulse("CORR", now); firedCorr = true; }
           const t = (elapsed - T_SETUP - T_BSM - T_SEND) / T_CORR;
           const e = ease(t);
-          // Bits arrive, fade out as they're consumed by the correction
-          setOpacity(bit0, 1 - e);
-          setOpacity(bit1, 1 - e);
-          setBitsAt(BIT_X_END);
-          // Correction box appears
+          setOpacity(bitsGroup, 1 - e);
+          setBitsX(BIT_X_END);
           setOpacity(corrBox, Math.min(1, e * 2));
-          setOpacity(bsmBox, 0.4 * (1 - e));
-          // Bob's bell-half mark fades, output slot appears
-          setOpacity(bellBobMark, 1 - e);
-          setOpacity(outBob, e);
-          setOpacity(outLabel, e);
-          // Bar rotates from preCorrAngle to theta
-          const angle = preCorrAngle + (theta - preCorrAngle) * e;
-          setBarAngle(outBobBar, angle);
+          setOpacity(bobPauli, 1 - e);
         } else if (elapsed < T_TOTAL - T_PAUSE) {
-          // Phase 5: hold final state
+          // Phase 5 — Bob holds |ψ⟩.
           highlightStep(5);
-          setOpacity(bsmBox, 0);
+          setOpacity(bsmGlyph, 0.4);
+          setOpacity(psiAlice, 0.25);
+          setOpacity(bellAlice, 0.25);
+          setOpacity(bitsGroup, 0);
           setOpacity(corrBox, 1);
-          setBarAngle(outBobBar, theta);
-          setOpacity(outBob, 1);
-          setOpacity(outLabel, 1);
-          setOpacity(bit0, 0);
-          setOpacity(bit1, 0);
-          setOpacity(bellBobMark, 0);
+          setOpacity(bobPauli, 0);
         } else if (elapsed >= T_TOTAL) {
           cycleStart = now;
           firedBSM = false;
           firedCorr = false;
           pickCycleParams();
         }
-
         updateBorders(now);
         requestAnimationFrame(frame);
       }
 
       pickCycleParams();
-      const observer = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && !running) {
-            running = true;
-            cycleStart = performance.now();
-            pickCycleParams();
-            requestAnimationFrame(frame);
-          } else if (!entry.isIntersecting) {
-            running = false;
-          }
-        }
-      });
-      observer.observe(fig);
+      cycleStart = performance.now();
+      requestAnimationFrame(frame);
     }
   }
 </script>
@@ -764,6 +781,26 @@ const sections = [
     gap: var(--space-2);
   }
   ol.tp-steps li { line-height: var(--leading-snug); }
+
+  .tp-pauli-table {
+    border-collapse: collapse;
+    margin: var(--space-2) 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  .tp-pauli-table th,
+  .tp-pauli-table td {
+    text-align: left;
+    padding: 4px 16px 4px 0;
+    border-bottom: 1px solid var(--color-rule);
+    color: var(--color-text);
+  }
+  .tp-pauli-table thead th {
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    color: var(--color-text-mute);
+    font-weight: 600;
+  }
   ul {
     margin: 0;
     padding-inline-start: var(--space-4);
@@ -772,8 +809,13 @@ const sections = [
   }
   li { line-height: var(--leading-snug); }
 
-  /* Teleportation figure container */
+  /* Teleportation figure container.
+     Page-local palette overrides — the design-system teal and magenta
+     are too close in luminance for the cloud-colour story to read.
+     Use vivid cyan-teal and purple, scoped to this animation. */
   .tp {
+    --tp-teal: #1aa0a8;
+    --tp-purple: #9333ea;
     margin: 0;
     padding: var(--space-3) var(--space-4);
     background: var(--card-bg);
@@ -853,13 +895,21 @@ const sections = [
     font-weight: 700;
     fill: var(--color-text);
   }
+  :global(.tp-bell-out) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--color-accent);
+  }
+  :global(.tp-pauli-badge) {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
 
-  @keyframes tp-flow {
-    to { stroke-dashoffset: -18; }
-  }
-  [data-tp-bellpair] {
-    animation: tp-flow 1.6s linear infinite;
-  }
+  /* High-frequency wave path — no dash-flow needed; the wave shape
+     itself reads as "entangled". */
 
   /* Circuit-diagram figure (static SVG) — separate from the
      animated protocol figure above. Reuses the figure container
