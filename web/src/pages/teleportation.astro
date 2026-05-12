@@ -83,12 +83,15 @@ const sections = [
           on Bob's. Alice performs a <strong>Bell-state measurement (BSM)</strong> on her
           two qubits <strong>C</strong> and <strong>A</strong>; this collapses them into
           one of the four Bell states and produces two classical bits
-          <Math tex="(a, b)" />. She sends those bits to Bob over a classical channel; he
-          applies the corresponding Pauli operator <Math tex="P^{-1}" /> to <strong>B</strong>,
-          and <strong>B</strong> is now in <Math tex="|\\psi\\rangle" />. <strong>C</strong>
-          and <strong>A</strong> are consumed in the measurement and the Bell-pair
-          entanglement is gone — exactly one copy of <Math tex="|\\psi\\rangle" /> exists
-          at any moment.
+          <Math tex="(a, b)" />. The same instant the BSM fires, <strong>B</strong>
+          becomes <Math tex="P|\\psi\\rangle" /> — call it <Math tex="P(C)" /> — where the
+          Pauli <Math tex="P \\in \\{I, X, Z, ZX\\}" /> is fixed by the Bell-state outcome.
+          Alice sends <Math tex="(a, b)" /> to Bob over a classical channel; Bob reads
+          the bits, looks up which <Math tex="P^{-1}" /> they correspond to, and applies
+          it to <Math tex="P(C)" /> — which gives back <Math tex="C" />, so
+          <strong>B</strong> is now in <Math tex="|\\psi\\rangle" />. <strong>C</strong> and <strong>A</strong> are
+          consumed in the measurement and the Bell-pair entanglement is gone — exactly
+          one copy of <Math tex="|\\psi\\rangle" /> exists at any moment.
         </p>
 
         <figure class="tp" id="tp-fig" data-tp>
@@ -118,9 +121,9 @@ const sections = [
                   fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
 
             {/* Photon labels above clouds */}
-            <text x="130" y="68" text-anchor="middle" class="tp-slot-label">C</text>
-            <text x="210" y="68" text-anchor="middle" class="tp-slot-label">A</text>
-            <text x="560" y="68" text-anchor="middle" class="tp-slot-label">B</text>
+            <text x="130" y="54" text-anchor="middle" class="tp-slot-label">C</text>
+            <text x="210" y="54" text-anchor="middle" class="tp-slot-label">A</text>
+            <text x="560" y="54" text-anchor="middle" class="tp-slot-label">B</text>
 
             {/* Photons */}
             <g data-tp-c transform="translate(130 95)">
@@ -167,7 +170,7 @@ const sections = [
 
             {/* Classical channel */}
             <text x="370" y="266" text-anchor="middle" class="tp-channel">classical channel · 2 bits</text>
-            <line x1="250" y1="295" x2="490" y2="295"
+            <line x1="250" y1="295" x2="560" y2="295"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="4,3" opacity="0.65"/>
 
@@ -175,6 +178,12 @@ const sections = [
             <g data-tp-bits opacity="0">
               <text data-tp-bits-text x="170" y="300" text-anchor="middle" class="tp-bit">(0, 0)</text>
             </g>
+
+            {/* Statement that the BSM has teleported C onto B (up to P).
+                Materialises in the middle of the figure once measurement
+                fires, persists until Bob applies P⁻¹. */}
+            <text data-tp-statement x="370" y="148" text-anchor="middle"
+                  class="tp-statement" opacity="0"></text>
 
             {/* Bob's lock — ring around B with a Pauli letter tag. Appears
                 the moment Alice's BSM fires. The ring is the visual cue
@@ -184,16 +193,17 @@ const sections = [
                       stroke="var(--tp-purple)" stroke-width="2"
                       stroke-dasharray="4,3"/>
               <g data-tp-lock-tag transform="translate(560 138)">
-                <rect x="-16" y="-13" width="32" height="26" rx="4"
+                <rect x="-20" y="-14" width="40" height="28" rx="4"
                       fill="var(--color-bg)" stroke="var(--tp-purple)" stroke-width="1.5"/>
                 <text data-tp-lock-letter x="0" y="6" text-anchor="middle" class="tp-pauli-badge">P</text>
               </g>
             </g>
 
-            {/* Inverse-tag — small chip that materializes near the arriving
-                bits and flies UP to the lock to "unlock" B. */}
+            {/* Inverse chip that materializes near the arriving bits
+                and flies UP to cancel the Pauli badge on B. Same
+                dimensions as the badge above so they overlay exactly. */}
             <g data-tp-inverse opacity="0">
-              <rect x="-22" y="-13" width="44" height="26" rx="4"
+              <rect x="-20" y="-14" width="40" height="28" rx="4"
                     fill="var(--color-bg)" stroke="var(--tp-purple)" stroke-width="1.5"/>
               <text data-tp-inverse-text x="0" y="6" text-anchor="middle" class="tp-pauli-badge">P⁻¹</text>
             </g>
@@ -201,9 +211,9 @@ const sections = [
 
           <ol class="tp-step-list" data-tp-steps>
             <li data-tp-step="1"><strong>1.</strong> Alice has C; A and B are a shared Bell pair</li>
-            <li data-tp-step="2"><strong>2.</strong> Alice's BSM on C + A → bits (a, b); B locks into P|ψ⟩</li>
+            <li data-tp-step="2"><strong>2.</strong> Alice applies BSM on C and A to get 2 classical bits (a, b); B becomes P|ψ⟩</li>
             <li data-tp-step="3"><strong>3.</strong> Bits travel to Bob</li>
-            <li data-tp-step="4"><strong>4.</strong> P⁻¹ unlocks B</li>
+            <li data-tp-step="4"><strong>4.</strong> Bob applies P⁻¹</li>
             <li data-tp-step="5"><strong>5.</strong> B holds |ψ⟩</li>
           </ol>
 
@@ -211,12 +221,12 @@ const sections = [
             <strong>C</strong> (purple) is the qubit to teleport. <strong>A</strong> and
             <strong>B</strong> (teal) are halves of a shared Bell pair, drawn connected
             by the high-frequency wavy line. <strong>C</strong> and <strong>A</strong>
-            drop into Alice's BSM; the Bell-state outcome appears prominently inside the
-            box, then the two bits emerge. At that same instant <strong>B</strong> turns
-            purple but is <em>locked</em> — surrounded by a ring with the Pauli operator
-            it's wearing. When the bits arrive at Bob, the corresponding inverse flies up
-            to the lock and they vanish together. <strong>B</strong> is now the same
-            unlocked purple as <strong>C</strong> was.
+            drop into Alice's BSM; the Bell-state outcome appears inside the box and the
+            two bits emerge below. At that same instant <strong>B</strong> turns purple,
+            marked with the Pauli <em>P</em> the BSM outcome left on it — its state is
+            now <Math tex="P|\\psi\\rangle" />. When the bits arrive at Bob, the matching
+            <Math tex="P^{-1}" /> chip rises to meet that <em>P</em> badge and the two
+            cancel. <strong>B</strong> is now in <Math tex="|\\psi\\rangle" />.
           </figcaption>
         </figure>
 
@@ -572,6 +582,7 @@ const sections = [
     const bellLine     = svg.querySelector("[data-tp-bellpair]");
     const bsmRect      = svg.querySelector("[data-tp-bsm-rect]");
     const bellOut      = svg.querySelector("[data-tp-bell-out]");
+    const statement    = svg.querySelector("[data-tp-statement]");
     const lock         = svg.querySelector("[data-tp-lock]");
     const lockLetter   = svg.querySelector("[data-tp-lock-letter]");
     const inverse      = svg.querySelector("[data-tp-inverse]");
@@ -586,21 +597,36 @@ const sections = [
     const C_BSM  = { x: 130, y: 180 };  // top-left BSM port (vertical descent)
     const A_BSM  = { x: 210, y: 180 };  // top-right BSM port (vertical descent)
     const B_HOME = { x: 560, y: 95 };
+    const LOCK_POS    = { x: 560, y: 138 };  // P-badge centre, not cloud centre
     const BIT_X_START = 170;
-    const BIT_X_END   = 540;
-    const LOCK_POS    = { x: 560, y: 95 };
+    const BIT_X_END   = LOCK_POS.x;          // aligned so the chip flies STRAIGHT UP
 
-    // High-frequency sinewave from A's right edge to B's left edge.
-    (function buildBellLine() {
-      const x0 = A_HOME.x + 20, x1 = B_HOME.x - 22, y = 95;
-      const lambda = 14, amp = 5;
-      const n = Math.round((x1 - x0) / lambda);
-      const step = (x1 - x0) / n;
-      let d = `M ${x0} ${y} `;
-      d += `q ${step/4} ${-amp*2} ${step/2} 0 `;
-      for (let i = 1; i < n*2; i++) d += `t ${step/2} 0 `;
+    // High-frequency sinewave along the line from A's right edge to B's
+    // left edge. Rebuilt each frame while A is moving so the wave
+    // stretches and tilts with A.
+    function rebuildBellLine(ax, ay, bx, by) {
+      const dx = bx - ax, dy = by - ay;
+      const len = Math.hypot(dx, dy);
+      if (len < 1) { bellLine.setAttribute("d", ""); return; }
+      const nx = -dy / len, ny = dx / len;  // unit perpendicular
+      const wavelength = 14, amp = 5;
+      // Dense sampling (~2 px per segment) so the sine is rendered, not
+      // collapsed onto its zero-crossings.
+      const segments = Math.max(40, Math.round(len / 2));
+      let d = `M ${ax} ${ay}`;
+      for (let i = 1; i < segments; i++) {
+        const t = i / segments;
+        const baseX = ax + dx * t;
+        const baseY = ay + dy * t;
+        const phase = (t * len / wavelength) * 2 * Math.PI;
+        const off = Math.sin(phase) * amp;
+        d += ` L ${baseX + nx * off} ${baseY + ny * off}`;
+      }
+      d += ` L ${bx} ${by}`;
       bellLine.setAttribute("d", d);
-    })();
+    }
+    rebuildBellLine(A_HOME.x + 20, A_HOME.y, B_HOME.x - 22, B_HOME.y);
+
     function setPos(g, x, y) { g.setAttribute("transform", `translate(${x} ${y})`); }
 
     // Bell outcome (a,b) → state ket, Pauli operator. Matches the
@@ -671,6 +697,7 @@ const sections = [
         bellOut.textContent   = outcome.ket;
         lockLetter.textContent = outcome.P;
         inverseText.textContent = outcome.P === "I" ? "I" : outcome.P + "⁻¹";
+        statement.textContent = `C is teleported to Bob as ${outcome.P}(C)`;
         bCloud.setAttribute("fill", "url(#tp-cloud-std)");
         setPos(photonC, C_HOME.x, C_HOME.y);
         setPos(photonA, A_HOME.x, A_HOME.y);
@@ -689,40 +716,45 @@ const sections = [
           setOpacity(photonA, 1);
           setPos(photonC, C_HOME.x, C_HOME.y);
           setPos(photonA, A_HOME.x, A_HOME.y);
+          rebuildBellLine(A_HOME.x + 20, A_HOME.y, B_HOME.x - 22, B_HOME.y);
           setOpacity(bellLine, 0.9);
           setOpacity(bellOut, 0);
           setOpacity(bitsGroup, 0);
           setOpacity(lock, 0);
           setOpacity(inverse, 0);
+          setOpacity(statement, 0);
           bCloud.setAttribute("fill", "url(#tp-cloud-std)");
         } else if (elapsed < (t0 += T_DROP)) {
           // Phase 2a — vertical drop. C and A move from home y=95 → 180.
+          // Wavy line tracks A's right edge as it descends.
           highlightStep(2);
           const t = (elapsed - (t0 - T_DROP)) / T_DROP;
           const e = ease(t);
-          setPos(photonC, C_HOME.x, C_HOME.y + (C_BSM.y - C_HOME.y) * e);
-          setPos(photonA, A_HOME.x, A_HOME.y + (A_BSM.y - A_HOME.y) * e);
-          setOpacity(bellLine, 0.9 * (1 - 0.6 * e));
+          const cy = C_HOME.y + (C_BSM.y - C_HOME.y) * e;
+          const ay = A_HOME.y + (A_BSM.y - A_HOME.y) * e;
+          setPos(photonC, C_HOME.x, cy);
+          setPos(photonA, A_HOME.x, ay);
+          rebuildBellLine(A_HOME.x + 20, ay, B_HOME.x - 22, B_HOME.y);
+          setOpacity(bellLine, 0.9);
         } else if (elapsed < (t0 += T_MEASURE)) {
-          // Phase 2b — measurement. Box pulses, Bell ket appears in BIG
-          // font, bits emerge, B locks (purple cloud + ring + Pauli letter).
+          // Phase 2b — measurement. Box pulses, Bell ket appears, the
+          // entanglement wave dies, the statement "C is teleported to
+          // Bob as P(C)" fades in, B turns purple with the Pauli badge.
           highlightStep(2);
           if (!firedMeasure) { pulseEnd = now + PULSE_DUR; firedMeasure = true; }
           const t = (elapsed - (t0 - T_MEASURE)) / T_MEASURE;
           const e = ease(t);
-          // Photons fade into the box.
           setOpacity(photonC, Math.max(0, 1 - e * 2));
           setOpacity(photonA, Math.max(0, 1 - e * 2));
-          // Bell-state ket reveals first.
-          setOpacity(bellOut, Math.min(1, e * 2.5));
-          // Bits emerge in the second half.
+          setOpacity(bellOut, Math.min(1, e * 3));
+          setOpacity(bellLine, Math.max(0, 0.9 * (1 - e * 3)));
           setOpacity(bitsGroup, Math.max(0, (e - 0.5) * 2));
           setBitsX(BIT_X_START);
-          // B turns purple and lock ring appears (slightly after the
-          // ket — same conceptual instant but with a small visual delay).
-          if (e > 0.3) bCloud.setAttribute("fill", "url(#tp-cloud-psi)");
-          setOpacity(lock, Math.max(0, (e - 0.4) * 2));
-          setOpacity(bellLine, 0.12);
+          // B turns purple and Pauli badge appears as soon as BSM fires.
+          bCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+          setOpacity(lock, Math.min(1, e * 2.5));
+          // Statement fades in over first half of measurement.
+          setOpacity(statement, Math.min(1, e * 2));
         } else if (elapsed < (t0 += T_SEND)) {
           // Phase 3 — bits slide right along classical channel.
           highlightStep(3);
@@ -734,6 +766,7 @@ const sections = [
           setBitsX(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
           setOpacity(lock, 1);
           setOpacity(inverse, 0);
+          setOpacity(statement, 1);
         } else if (elapsed < (t0 += T_UNLOCK)) {
           // Phase 4 — bits arrive; an inverse tag materialises at the
           // bit position and flies UP to the lock; both vanish on contact.
@@ -749,10 +782,12 @@ const sections = [
           const ix_now   = ix + (ix_end - ix) * e;
           const iy_now   = iy_start + (iy_end - iy_start) * e;
           setPos(inverse, ix_now, iy_now);
-          // Inverse visible during the flight; fades on arrival.
-          setOpacity(inverse, e < 0.85 ? 1 : (1 - (e - 0.85) / 0.15));
-          // Lock fades out in the second half — the unlock.
-          setOpacity(lock, Math.max(0, 1 - (e - 0.55) / 0.45));
+          // Inverse visible during the flight; both chip and lock
+          // fade together once the chip reaches the badge (e ≈ 0.85).
+          const fadeT = Math.max(0, (e - 0.85) / 0.15);
+          setOpacity(inverse, 1 - fadeT);
+          setOpacity(lock,    1 - fadeT);
+          setOpacity(statement, 1 - fadeT);
           // Bits dissolve as they're "consumed".
           setOpacity(bitsGroup, Math.max(0, 1 - e * 1.5));
         } else if (elapsed < T_TOTAL - T_PAUSE) {
@@ -762,6 +797,7 @@ const sections = [
           setOpacity(bitsGroup, 0);
           setOpacity(lock, 0);
           setOpacity(inverse, 0);
+          setOpacity(statement, 0);
         } else if (elapsed >= T_TOTAL) {
           cycleStart = now;
           pickCycleParams();
@@ -797,7 +833,8 @@ const sections = [
   ol.tp-steps li { line-height: var(--leading-snug); }
 
   .tp-pauli-table-wrap {
-    inline-size: 100%;
+    inline-size: max-content;
+    max-inline-size: 100%;
     overflow-x: auto;
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
@@ -805,19 +842,19 @@ const sections = [
     margin-block-end: var(--space-3);
   }
   .tp-pauli-table {
-    inline-size: 100%;
-    min-inline-size: 40rem;
+    inline-size: auto;
     border-collapse: collapse;
-    margin: var(--space-2) 0;
+    margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
   }
   .tp-pauli-table th,
   .tp-pauli-table td {
     text-align: left;
-    padding: 4px 16px 4px 0;
+    padding: 6px 20px;
     border-bottom: 1px solid var(--color-rule);
     color: var(--color-text);
+    white-space: nowrap;
   }
   .tp-pauli-table thead th {
     font-size: var(--text-xs);
@@ -851,7 +888,6 @@ const sections = [
   .tp svg {
     inline-size: 100%;
     block-size: auto;
-    max-block-size: 320px;
     display: block;
   }
   .tp figcaption {
@@ -887,55 +923,61 @@ const sections = [
   /* :global() because Astro's scoped CSS doesn't propagate to
      <text> children inside SVG markup. */
   :global(.tp-label) {
-    font-size: 13px;
+    font-size: 17px;
     font-weight: 700;
     fill: var(--color-text);
   }
   :global(.tp-channel) {
-    font-size: 10px;
+    font-size: 13px;
     fill: var(--color-text-mute);
     font-style: italic;
   }
   :global(.tp-slot-label) {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 16px;
     fill: var(--color-text);
   }
   :global(.tp-bell-mark) {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 700;
     fill: var(--color-text-mute);
   }
   :global(.tp-action-label) {
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 700;
     fill: var(--color-accent);
     letter-spacing: 0.05em;
   }
   :global(.tp-bit) {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 700;
     fill: var(--color-text);
   }
   :global(.tp-bell-out) {
     font-family: "KaTeX_Math", "Cambria Math", "Times New Roman", serif;
     font-style: italic;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 500;
     fill: var(--tp-purple);
   }
   :global(.tp-bsm-title) {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.08em;
     fill: var(--tp-teal);
   }
+  :global(.tp-statement) {
+    font-size: 17px;
+    font-weight: 600;
+    fill: var(--tp-purple);
+    font-style: italic;
+  }
   :global(.tp-pauli-badge) {
     font-family: "KaTeX_Math", "Cambria Math", "Times New Roman", serif;
     font-style: italic;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 500;
     fill: var(--tp-purple);
   }
@@ -958,7 +1000,6 @@ const sections = [
   .tp-circuit svg {
     inline-size: 100%;
     block-size: auto;
-    max-block-size: 360px;
     display: block;
   }
   .tp-circuit figcaption {

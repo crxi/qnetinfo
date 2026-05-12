@@ -5,6 +5,8 @@ import "../styles/print.css";
 import "katex/dist/katex.min.css";
 
 import ReferencesList from "../components/ReferencesList.astro";
+import { SHIPPED_SUBJECTS } from "../lib/subjects";
+import { url } from "../lib/url";
 
 interface Props {
   title: string;
@@ -15,6 +17,21 @@ interface Props {
   references?: string[];
 }
 const { title, description, references = [] } = Astro.props;
+
+// Derive current subject slug from the URL path (first segment after
+// the base). Drives the prev / next pagination at the page foot so
+// readers can walk the subject sequence without returning to the rail.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const stripped = Astro.url.pathname.replace(new RegExp(`^${base}`), "");
+const currentSlug = stripped.replace(/^\/|\/$/g, "").split("/")[0] || "";
+const currentIdx = currentSlug
+  ? SHIPPED_SUBJECTS.findIndex((s) => s.slug === currentSlug)
+  : -1;
+const prevSubject = currentIdx > 0 ? SHIPPED_SUBJECTS[currentIdx - 1] : null;
+const nextSubject =
+  currentIdx >= 0 && currentIdx < SHIPPED_SUBJECTS.length - 1
+    ? SHIPPED_SUBJECTS[currentIdx + 1]
+    : null;
 ---
 
 <!doctype html>
@@ -40,6 +57,24 @@ const { title, description, references = [] } = Astro.props;
       </div>
     </main>
     <footer>
+      {(prevSubject || nextSubject) && (
+        <nav class="page-pagination" aria-label="Adjacent subjects">
+          {prevSubject ? (
+            <a class="page-pagination__link page-pagination__prev"
+               href={url(`/${prevSubject.slug}`)}>
+              <span class="page-pagination__dir">← Previous</span>
+              <span class="page-pagination__title">{prevSubject.title}</span>
+            </a>
+          ) : <span />}
+          {nextSubject && (
+            <a class="page-pagination__link page-pagination__next"
+               href={url(`/${nextSubject.slug}`)}>
+              <span class="page-pagination__dir">Next →</span>
+              <span class="page-pagination__title">{nextSubject.title}</span>
+            </a>
+          )}
+        </nav>
+      )}
       <ReferencesList ids={references} />
     </footer>
 
@@ -94,6 +129,52 @@ const { title, description, references = [] } = Astro.props;
         max-inline-size: var(--wide-width);
         margin-inline: auto;
         padding: 0 var(--space-4) var(--space-7);
+      }
+      /* Prev / next pagination at the foot of every subject page.
+         Two-column grid; if only one side exists (first/last subject),
+         the empty slot keeps the layout balanced via the bare <span>
+         emitted as a placeholder. */
+      .page-pagination {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-3);
+        margin-block-start: var(--space-7);
+        padding-block-start: var(--space-5);
+        border-block-start: 1px solid var(--color-rule);
+      }
+      .page-pagination__link {
+        display: grid;
+        gap: var(--space-1);
+        padding: var(--space-3) var(--space-4);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        background: var(--card-bg);
+        color: var(--color-text);
+        text-decoration: none;
+        transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+      }
+      .page-pagination__link:hover,
+      .page-pagination__link:focus-visible {
+        border-color: var(--color-accent);
+        background: var(--color-surface-2);
+        outline: none;
+      }
+      .page-pagination__next { text-align: end; }
+      .page-pagination__dir {
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-wide);
+        color: var(--color-text-mute);
+        font-weight: 600;
+      }
+      .page-pagination__title {
+        font-size: var(--text-base);
+        font-weight: 600;
+        line-height: var(--leading-snug);
+      }
+      @media (max-width: 40rem) {
+        .page-pagination { grid-template-columns: 1fr; }
+        .page-pagination__next { text-align: start; }
       }
       h1 { font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
       h2 { font-size: var(--text-2xl); margin-block-start: var(--space-7); }

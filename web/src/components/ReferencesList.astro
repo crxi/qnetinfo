@@ -76,6 +76,18 @@ const showSection = sources.length > 0;
     padding-inline-start: 8.5rem;
     text-indent: -8.5rem;
   }
+  /* Mobile: collapse the hanging indent so wrapped lines don't push
+     under an 8.5-rem-wide phantom gutter. */
+  @media (max-width: 40rem) {
+    .references li {
+      padding-inline-start: 0;
+      text-indent: 0;
+    }
+    .references .ref-marker {
+      display: inline-block;
+      margin-inline-end: 0.4rem;
+    }
+  }
   .references li:target {
     /* When the reader clicks an inline cite, the matching entry
        briefly highlights so it's obvious which one matched. */
