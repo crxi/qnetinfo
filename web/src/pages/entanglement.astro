@@ -91,6 +91,29 @@ const sections = [
 
       <section id="definition" data-nav-section>
         <h2>What entanglement is</h2>
+
+        <Callout label="Scope of this page">
+          <p>
+            <strong>Entanglement</strong> is the general phenomenon: any joint quantum
+            state that can't be written as a tensor product of single-qubit states. That
+            includes a continuum of two-qubit non-product states, three-or-more-qubit
+            states (GHZ, W, cluster, graph states…), and arbitrary mixtures of these.
+            <strong>Bell states</strong> are a specific four-state basis of the
+            maximally-entangled two-qubit states — a small, special slice of the full
+            entanglement landscape.
+          </p>
+          <p>
+            This page is Bell-pair-centric on purpose. Quantum networking delivers Bell
+            pairs as its operational unit, because they are (i) the strongest two-qubit
+            resource, (ii) locally convertible into each other by single-qubit gates, and
+            (iii) sufficient to build every entanglement-based application via
+            teleportation and swapping. Multi-qubit entanglement (GHZ &amp; co.) is
+            briefly noted in §<q>The four Bell pairs</q> but otherwise out of scope —
+            see the Kumar IJNDC review for a fuller taxonomy
+            <SourceNote id="kumar-ijndc-2025" />.
+          </p>
+        </Callout>
+
         <p>
           A single qubit's state is <Math tex="\\alpha|0\\rangle + \\beta|1\\rangle" /> with
           <Math tex="|\\alpha|^2 + |\\beta|^2 = 1" />, and measurement in the computational
@@ -1219,24 +1242,28 @@ const sections = [
                 centre without bending.
                 -------------------------------------------------------- */}
 
-            {/* ===== Outcome readout (top-left) ===== */}
-            <text x="30" y="40" class="bsm-outcome-label">BSM outcome — this shot</text>
-            <g data-bsm-outbit="A" transform="translate(64 96)">
-              <rect data-bsm-outbit-bg x="-22" y="-26" width="44" height="52" rx="4"
+            {/* ===== Outcome readout (top-left): clicks → state → bits ===== */}
+            <text x="30" y="40" class="bsm-outcome-label">this shot</text>
+
+            <text x="95"  y="64" text-anchor="middle" class="bsm-flow-tag">clicks</text>
+            <text x="205" y="64" text-anchor="middle" class="bsm-flow-tag">state</text>
+            <text x="300" y="64" text-anchor="middle" class="bsm-flow-tag">bits</text>
+
+            <g data-bsm-clicks transform="translate(95 100)">
+              <rect data-bsm-clicks-bg x="-60" y="-20" width="120" height="40" rx="3"
                     fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-outbit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
-                    class="bsm-outbit-text">—</text>
+              <text data-bsm-clicks-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
+                    class="bsm-flow-text">—</text>
             </g>
-            <text x="120" y="104" text-anchor="middle" class="bsm-outbit-sep">,</text>
-            <g data-bsm-outbit="B" transform="translate(176 96)">
-              <rect data-bsm-outbit-bg x="-22" y="-26" width="44" height="52" rx="4"
+            <text x="165" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
+            <text data-bsm-state x="205" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-state">—</text>
+            <text x="245" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
+            <g data-bsm-bits transform="translate(300 100)">
+              <rect data-bsm-bits-bg x="-28" y="-20" width="56" height="40" rx="3"
                     fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-outbit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
-                    class="bsm-outbit-text">—</text>
+              <text data-bsm-bits-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
+                    class="bsm-flow-text">—</text>
             </g>
-            <text x="30" y="166" class="bsm-input-line">
-              projects to: <tspan data-bsm-input class="bsm-input-value-inline">—</tspan>
-            </text>
 
             {/* ===== Source labels and dots (top of schematic) ===== */}
             <text x="340" y="56" text-anchor="middle" class="bsm-label">qubit 1</text>
@@ -1331,37 +1358,10 @@ const sections = [
                     stroke-linejoin="round" opacity="0.2"/>
             </g>
 
-            {/* ===== Per-detector bit cell (always visible at rest;
-                inverts to white-on-black when its detector fires). ===== */}
-            <g data-bsm-bit="H1" transform="translate(130 610)">
-              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
-                    fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
-                    class="bsm-bit-text">0</text>
-            </g>
-            <g data-bsm-bit="V1" transform="translate(410 610)">
-              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
-                    fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
-                    class="bsm-bit-text">0</text>
-            </g>
-            <g data-bsm-bit="V2" transform="translate(550 610)">
-              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
-                    fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
-                    class="bsm-bit-text">1</text>
-            </g>
-            <g data-bsm-bit="H2" transform="translate(830 610)">
-              <rect data-bsm-bit-bg x="-15" y="-18" width="30" height="36" rx="3"
-                    fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-bit-text x="0" y="2" text-anchor="middle" dominant-baseline="middle"
-                    class="bsm-bit-text">1</text>
-            </g>
-
-            <text x="130" y="650" text-anchor="middle" class="bsm-det-name">D₁ᴴ</text>
-            <text x="410" y="650" text-anchor="middle" class="bsm-det-name">D₁ⱽ</text>
-            <text x="550" y="650" text-anchor="middle" class="bsm-det-name">D₂ⱽ</text>
-            <text x="830" y="650" text-anchor="middle" class="bsm-det-name">D₂ᴴ</text>
+            <text x="130" y="610" text-anchor="middle" class="bsm-det-name">1<tspan class="bsm-det-sub">H</tspan></text>
+            <text x="410" y="610" text-anchor="middle" class="bsm-det-name">1<tspan class="bsm-det-sub">V</tspan></text>
+            <text x="550" y="610" text-anchor="middle" class="bsm-det-name">2<tspan class="bsm-det-sub">V</tspan></text>
+            <text x="830" y="610" text-anchor="middle" class="bsm-det-name">2<tspan class="bsm-det-sub">H</tspan></text>
 
             {/* ===== Animated photons. Cloud for the undefined-
                 polarisation segments (source → BS → PBS); replaced
@@ -1383,12 +1383,17 @@ const sections = [
             <line x1="870" y1="30" x2="870" y2="680"
                   stroke="var(--color-rule)" stroke-width="0.8" stroke-dasharray="2,3"/>
             <text x="980" y="46" text-anchor="middle" class="bsm-pane-title">BSM history</text>
-            <text x="980" y="66" text-anchor="middle" class="bsm-pane-sub">(click bits) — projection</text>
+            <text x="980" y="66" text-anchor="middle" class="bsm-pane-sub">clicks → state → bits</text>
+
+            <text x="880"  y="86" class="bsm-row-header">clicks</text>
+            <text x="985"  y="86" class="bsm-row-header">state</text>
+            <text x="1050" y="86" class="bsm-row-header">bits</text>
 
             {[0,1,2,3,4,5,6,7,8,9,10,11].map((i) => (
               <g data-bsm-row={i} opacity="0">
-                <text x="892" y={100 + i * 30} class="bsm-row-bits" dominant-baseline="middle">—</text>
-                <text x="990" y={100 + i * 30} class="bsm-row-state" dominant-baseline="middle">—</text>
+                <text x="880"  y={108 + i * 30} class="bsm-row-clicks" dominant-baseline="middle">—</text>
+                <text x="985"  y={108 + i * 30} class="bsm-row-state"  dominant-baseline="middle">—</text>
+                <text x="1050" y={108 + i * 30} class="bsm-row-bits"   dominant-baseline="middle">—</text>
               </g>
             ))}
 
@@ -1399,38 +1404,53 @@ const sections = [
             <text x="980" y="638" text-anchor="middle" class="bsm-rate-note bsm-rate-note--em">50% (linear optics)</text>
           </svg>
           <figcaption>
-            Top-down layout following Azuma RMP 2023 Fig. 3(b). The BSM is a
-            <em>measurement</em> — it projects whatever 2-qubit state arrives at its two
-            inputs onto the Bell basis. The Bell state is the <em>post-measurement</em>
-            outcome, not the input. In teleportation specifically, Alice's two qubits going
-            in are <em>not</em> a Bell state: one is the unknown state |ψ⟩ she wants to
-            send, the other is her half of a Bell pair shared with Bob (which has no
-            well-defined polarisation state on its own; it's entangled with Bob's qubit).
-            What's required is that the two photons be <strong>indistinguishable</strong>
-            in everything except polarisation (same wavelength, arrival time, spatial mode)
-            and that they share the same H/V polarisation basis — the Hong–Ou–Mandel
-            interference at the BS then sorts the four Bell-basis components by symmetry.
+            The BSM is a <em>measurement</em>: it projects the joint state of two
+            indistinguishable photons onto the Bell basis and announces which Bell state
+            the projection landed on. Each detector is labelled by port + polarisation:
+            <strong>1<sub>H</sub></strong> (port 1, H detector),
+            <strong>1<sub>V</sub></strong>, <strong>2<sub>H</sub></strong>,
+            <strong>2<sub>V</sub></strong>. The "this shot" panel (top-left) reads
+            <strong>clicks → state → bits</strong> for the current outcome; the history
+            pane on the right keeps a running log
+            <SourceNote id="azuma-rmp-95" /><SourceNote id="lo-prl-mdi-2012" />.
             <br/><br/>
-            The animation samples the BSM <strong>projection outcome</strong> directly each
-            cycle — uniformly over the four Bell states, which is the distribution
-            teleportation produces — and replays the click pattern that fires for that
-            outcome. The BS does not touch polarisation; it sorts the two photons into
-            spatial-mode patterns by the <strong>symmetry</strong> of the joint
-            polarisation state, and the PBSes plus detectors perform the actual
-            polarisation measurement.
+            <strong>The four outcomes.</strong> A full BSM resolves all four Bell-basis
+            projections — one 2-bit code per Bell state, mapping directly to the Pauli
+            correction Bob applies on his half of the shared pair
+            <SourceNote id="nielsen-chuang-qcqi" />:
+            <table class="bsm-click-table">
+              <thead>
+                <tr><th>BS</th><th>PBS</th><th>click pattern</th><th>Bell state</th><th>bits</th><th>Bob's correction</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>bunched</td><td>same detector, same pol</td><td>2× at 1<sub>H</sub> or 2<sub>H</sub></td><td>|Φ⁺⟩</td><td>00</td><td>I</td></tr>
+                <tr><td>bunched</td><td>same detector, same pol</td><td>2× at 1<sub>V</sub> or 2<sub>V</sub></td><td>|Φ⁻⟩</td><td>01</td><td>Z</td></tr>
+                <tr><td>bunched</td><td>same port, opposite pol</td><td>1<sub>H</sub>+1<sub>V</sub> or 2<sub>H</sub>+2<sub>V</sub></td><td>|Ψ⁺⟩</td><td>10</td><td>X</td></tr>
+                <tr><td>antibunched</td><td>different ports, opposite pol</td><td>1<sub>H</sub>+2<sub>V</sub> or 1<sub>V</sub>+2<sub>H</sub></td><td>|Ψ⁻⟩</td><td>11</td><td>XZ</td></tr>
+              </tbody>
+            </table>
+            The 2 bits literally are Bob's gate switches — bit 1 toggles X, bit 2 toggles
+            Z, so the receiver wires them straight to hardware.
             <br/><br/>
-            Each detector carries a 1-bit label encoding <em>which PBS it belongs to</em>:
-            port-1 detectors (D₁ᴴ, D₁ⱽ) are <strong>0</strong>; port-2 detectors (D₂ᴴ,
-            D₂ⱽ) are <strong>1</strong>. The 2-bit outcome shown at top-left is the pair of
-            bits from the two clicks, with the white-on-black flash marking the current
-            shot. With this assignment each Bell-basis outcome has a unique signature:
-            <strong>(0, 1)</strong> = one click each port → <strong>Ψ⁻</strong>;
-            <strong>(0, 0)</strong> = both clicks at port 1, <strong>(1, 1)</strong> = both
-            clicks at port 2 → <strong>Ψ⁺</strong>;
-            <strong>(0, —)</strong> or <strong>(1, —)</strong> = only one detector fired
-            (both photons bunched at a single detector) → <strong>Φ</strong> outcome,
-            indistinguishable between Φ⁺ and Φ⁻, BSM failure. The "—" makes the void side
-            explicit: the other PBS saw no photons.
+            <strong>The linear-optics catch.</strong> The four states are projected
+            identically by an ideal BSM, but linear-optics hardware can only
+            <em>distinguish</em> the two Ψ outcomes from each other. The two Φ outcomes
+            (|Φ⁺⟩ → 00 and |Φ⁻⟩ → 01) bunch at the same single detector with the same
+            polarisation, producing an identical click pattern — Alice cannot tell which
+            Φ she got, so neither bit code is deliverable
+            <SourceNote id="calsamiglia-aphysb-2001" />. Real linear-optics teleportation
+            therefore post-selects on Ψ clicks (the success rows above) and discards
+            shots that look like a Φ event. 2 of 4 distinguishable = the 50 % ceiling.
+            In the history pane below, Φ rows are shown muted to flag the post-selection.
+            <br/><br/>
+            <em>Note on inputs.</em> The BSM is fed two photons that are <em>not</em> a
+            Bell state — in teleportation, one is the unknown state |ψ⟩ and the other is
+            Alice's half of a Bell pair shared with Bob (which has no well-defined
+            polarisation state on its own). The two photons must be indistinguishable in
+            wavelength, arrival time, and spatial mode, and they must share the same H/V
+            polarisation basis. HOM interference at the BS sorts the four Bell-basis
+            components by exchange symmetry. The animation samples the projection outcome
+            directly each cycle and replays the click pattern that fires for it.
           </figcaption>
         </figure>
 
@@ -1470,22 +1490,15 @@ const sections = [
               H2: root.querySelector('[data-bsm-result="H2"]'),
               V2: root.querySelector('[data-bsm-result="V2"]'),
             };
-            const bitGroup = {};
-            for (const k of ["H1", "V1", "H2", "V2"]) {
-              const g = root.querySelector(`[data-bsm-bit="${k}"]`);
-              bitGroup[k] = {
-                bg:   g.querySelector('[data-bsm-bit-bg]'),
-                text: g.querySelector('[data-bsm-bit-text]'),
-              };
-            }
-            const outBit = ["A", "B"].map((tag) => {
-              const g = root.querySelector(`[data-bsm-outbit="${tag}"]`);
-              return {
-                bg:   g.querySelector('[data-bsm-outbit-bg]'),
-                text: g.querySelector('[data-bsm-outbit-text]'),
-              };
-            });
-            const inputLabel = root.querySelector('[data-bsm-input]');
+            const clicksCell = {
+              bg:   root.querySelector('[data-bsm-clicks-bg]'),
+              text: root.querySelector('[data-bsm-clicks-text]'),
+            };
+            const bitsCell = {
+              bg:   root.querySelector('[data-bsm-bits-bg]'),
+              text: root.querySelector('[data-bsm-bits-text]'),
+            };
+            const stateLabel = root.querySelector('[data-bsm-state]');
             const rateValue  = root.querySelector('[data-bsm-rate]');
             const ratePct    = root.querySelector('[data-bsm-rate-pct]');
             const HISTORY_ROWS = 12;
@@ -1493,9 +1506,10 @@ const sections = [
             for (let i = 0; i < HISTORY_ROWS; i++) {
               const g = root.querySelector(`[data-bsm-row="${i}"]`);
               rows.push({
-                group: g,
-                state: g.querySelector('.bsm-row-state'),
-                bits:  g.querySelector('.bsm-row-bits'),
+                group:  g,
+                clicks: g.querySelector('.bsm-row-clicks'),
+                state:  g.querySelector('.bsm-row-state'),
+                bits:   g.querySelector('.bsm-row-bits'),
               });
             }
 
@@ -1513,9 +1527,21 @@ const sections = [
               V2: { x: 550, y: 570 },
               H2: { x: 830, y: 570 },
             };
-            const DET_PBS = { H1: 1, V1: 1, H2: 2, V2: 2 };
-            const DET_BIT = { H1: 0, V1: 0, H2: 1, V2: 1 };  // port-bit: port 1 → 0, port 2 → 1
-            const DET_POL = { H1: "H", V1: "V", H2: "H", V2: "V" };
+            const DET_KEYS = ["H1", "V1", "H2", "V2"];
+            const polOf = (k) => k[0];                  // "H" or "V"
+            const portOf = (k) => +k[1];                // 1 or 2
+            const pbsOf = (k) => PBS[portOf(k)];
+            const SUB = { H: "ₕ", V: "ᵥ" };
+            const shortKey = (k) => k[1] + SUB[k[0]];   // "H1" → "1ₕ" (Unicode subscript)
+
+            // Nielsen & Chuang bit convention. Linear-optics BSM only
+            // identifies the two Ψ states; Φ outcomes get discarded.
+            const STATE_BITS    = { "Φ+": "00", "Φ-": "01", "Ψ+": "10", "Ψ-": "11" };
+            const STATE_DISPLAY = { "Φ+": "Φ⁺", "Φ-": "Φ⁻", "Ψ+": "Ψ⁺", "Ψ-": "Ψ⁻" };
+            const isSuccess = (state) => state[0] === "Ψ";
+            const clicksFor = (o) => shortKey(o.a) + " + " + shortKey(o.b);
+            const bitsFor   = (o) => STATE_BITS[o.state];
+            const ketFor    = (state) => "|" + STATE_DISPLAY[state] + "⟩";
 
             function setPos(g, x, y) { g.setAttribute("transform", `translate(${x} ${y})`); }
             function show(g)         { g.setAttribute("opacity", "1"); }
@@ -1530,74 +1556,35 @@ const sections = [
               glyph[tag].bar.setAttribute("transform", `rotate(${pol === "H" ? 0 : 90})`);
             }
             function setDetAll(op) {
-              for (const k of ["H1", "V1", "H2", "V2"]) {
-                detPath[k].setAttribute("opacity", String(op));
-              }
+              for (const k of DET_KEYS) detPath[k].setAttribute("opacity", String(op));
             }
             function lockDet(keys) {
-              for (const k of ["H1", "V1", "H2", "V2"]) {
+              for (const k of DET_KEYS) {
                 detPath[k].setAttribute("opacity", keys.includes(k) ? "1" : "0.08");
               }
             }
-            function resetBitCells() {
-              for (const k of ["H1", "V1", "H2", "V2"]) {
-                bitGroup[k].bg.setAttribute("opacity", "0");
-                bitGroup[k].text.classList.remove("bsm-bit-text--active");
-              }
+            function setFlowCell(cell, value, active) {
+              cell.text.textContent = value;
+              cell.text.classList.toggle("bsm-flow-text--active", active);
+              cell.bg.setAttribute("opacity", active ? "1" : "0");
             }
-            function activateBitCells(keys) {
-              for (const k of ["H1", "V1", "H2", "V2"]) {
-                if (keys.includes(k)) {
-                  bitGroup[k].bg.setAttribute("opacity", "1");
-                  bitGroup[k].text.classList.add("bsm-bit-text--active");
-                } else {
-                  bitGroup[k].bg.setAttribute("opacity", "0");
-                  bitGroup[k].text.classList.remove("bsm-bit-text--active");
-                }
-              }
-            }
-            function resetOutBits() {
-              for (const c of outBit) {
-                c.text.textContent = "—";
-                c.text.classList.remove("bsm-outbit-text--active");
-                c.bg.setAttribute("opacity", "0");
-              }
-            }
-            function setOutBit(idx, value) {
-              const c = outBit[idx];
-              if (value === null) {
-                c.text.textContent = "—";
-                c.text.classList.remove("bsm-outbit-text--active");
-                c.bg.setAttribute("opacity", "0");
-              } else {
-                c.text.textContent = String(value);
-                c.text.classList.add("bsm-outbit-text--active");
-                c.bg.setAttribute("opacity", "1");
-              }
-            }
-            function setInputLabel(state) {
-              inputLabel.textContent = state === null ? "—" : "|" + state + "⟩";
+            function setStateLabel(state, active) {
+              stateLabel.textContent = state === null ? "—" : ketFor(state);
+              stateLabel.classList.toggle("bsm-flow-state--success", active && isSuccess(state));
+              stateLabel.classList.toggle("bsm-flow-state--fail",    active && !isSuccess(state));
             }
 
             function pickOutcome() {
-              const r = Math.random();
-              const state = r < 0.25 ? "Ψ+"
-                          : r < 0.50 ? "Ψ-"
-                          : r < 0.75 ? "Φ+"
-                          :            "Φ-";
+              const state = ["Ψ+", "Ψ-", "Φ+", "Φ-"][Math.floor(Math.random() * 4)];
               const coin = Math.random() < 0.5;
               if (state === "Ψ+") {
-                return coin
-                  ? { state, a: "H1", b: "V1", success: true }
-                  : { state, a: "H2", b: "V2", success: true };
+                return coin ? { state, a: "H1", b: "V1" } : { state, a: "H2", b: "V2" };
               }
               if (state === "Ψ-") {
-                return coin
-                  ? { state, a: "H1", b: "V2", success: true }
-                  : { state, a: "V1", b: "H2", success: true };
+                return coin ? { state, a: "H1", b: "V2" } : { state, a: "V1", b: "H2" };
               }
-              const det = ["H1", "V1", "H2", "V2"][Math.floor(Math.random() * 4)];
-              return { state, a: det, b: det, success: false };
+              const det = DET_KEYS[Math.floor(Math.random() * 4)];
+              return { state, a: det, b: det };
             }
 
             const log = [];
@@ -1605,11 +1592,14 @@ const sections = [
             let total      = 0;
             function pushHistory(o) {
               total += 1;
-              if (o.success) identified += 1;
-              const bitsText = o.success
-                ? "(" + DET_BIT[o.a] + ", " + DET_BIT[o.b] + ")"
-                : "(" + DET_BIT[o.a] + ", —)";
-              log.unshift({ state: o.state, bits: bitsText, success: o.success });
+              const success = isSuccess(o.state);
+              if (success) identified += 1;
+              log.unshift({
+                clicks: clicksFor(o),
+                state:  ketFor(o.state),
+                bits:   bitsFor(o),
+                success,
+              });
               if (log.length > HISTORY_ROWS) log.length = HISTORY_ROWS;
               for (let i = 0; i < HISTORY_ROWS; i++) {
                 const r = rows[i];
@@ -1619,14 +1609,14 @@ const sections = [
                   continue;
                 }
                 r.group.setAttribute("opacity", "1");
-                r.state.textContent = "|" + e.state + "⟩";
-                r.bits.textContent  = e.bits;
-                r.state.classList.toggle("bsm-row-state--success",  e.success);
-                r.state.classList.toggle("bsm-row-state--fail",    !e.success);
-                r.bits.classList.toggle( "bsm-row-bits--success",   e.success);
-                r.bits.classList.toggle( "bsm-row-bits--fail",     !e.success);
-                r.state.classList.toggle("bsm-row--latest", i === 0);
-                r.bits.classList.toggle( "bsm-row--latest", i === 0);
+                r.clicks.textContent = e.clicks;
+                r.state.textContent  = e.state;
+                r.bits.textContent   = e.bits;
+                for (const cell of [r.clicks, r.state, r.bits]) {
+                  cell.classList.toggle("bsm-row--success",  e.success);
+                  cell.classList.toggle("bsm-row--fail",    !e.success);
+                  cell.classList.toggle("bsm-row--latest", i === 0);
+                }
               }
               rateValue.textContent = identified + " / " + total;
               const pct = total === 0 ? 0 : Math.round(100 * identified / total);
@@ -1636,25 +1626,25 @@ const sections = [
             const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             if (reduced) {
+              const sampleShot = { state: "Ψ+", a: "H1", b: "V1" };
               setPos(photon.A, DET.H1.x, DET.H1.y);
               setPos(photon.B, DET.V1.x, DET.V1.y);
               setBar("A", "H");
               setBar("B", "V");
               show(photon.A); show(photon.B);
               lockDet(["H1", "V1"]);
-              activateBitCells(["H1", "V1"]);
-              setOutBit(0, 0);
-              setOutBit(1, 0);
-              setInputLabel("Ψ+");
+              setFlowCell(clicksCell, clicksFor(sampleShot), true);
+              setFlowCell(bitsCell,   bitsFor(sampleShot),   true);
+              setStateLabel(sampleShot.state, true);
               const sample = [
-                { state: "Ψ+", a: "H1", b: "V1", success: true },
-                { state: "Φ-", a: "V1", b: "V1", success: false },
-                { state: "Ψ-", a: "H1", b: "V2", success: true },
-                { state: "Φ+", a: "H2", b: "H2", success: false },
-                { state: "Ψ+", a: "H2", b: "V2", success: true },
-                { state: "Φ+", a: "V2", b: "V2", success: false },
-                { state: "Ψ-", a: "V1", b: "H2", success: true },
-                { state: "Φ-", a: "H1", b: "H1", success: false },
+                { state: "Ψ+", a: "H1", b: "V1" },
+                { state: "Φ-", a: "V1", b: "V1" },
+                { state: "Ψ-", a: "H1", b: "V2" },
+                { state: "Φ+", a: "H2", b: "H2" },
+                { state: "Ψ+", a: "H2", b: "V2" },
+                { state: "Φ+", a: "V2", b: "V2" },
+                { state: "Ψ-", a: "V1", b: "H2" },
+                { state: "Φ-", a: "H1", b: "H1" },
               ];
               for (const e of sample.slice().reverse()) pushHistory(e);
             } else {
@@ -1666,134 +1656,158 @@ const sections = [
               const T_HOLD  = 1500;
               const T_RESET =  400;
               const CYCLE   = T_IN + T_PAUSE + T_OUT1 + T_OUT2 + T_CLICK + T_HOLD + T_RESET;
+              const P_IN_END    = T_IN;
+              const P_PAUSE_END = P_IN_END    + T_PAUSE;
+              const P_OUT1_END  = P_PAUSE_END + T_OUT1;
+              const P_OUT2_END  = P_OUT1_END  + T_OUT2;
+              const P_CLICK_END = P_OUT2_END  + T_CLICK;
+              const P_HOLD_END  = P_CLICK_END + T_HOLD;
 
               const ease = (t) => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
 
-              // Detector pulse state — same shape as the entanglement-
-              // demo `flash` / `updateBorders` recipe. Each fired
-              // detector gets pulseEnd[key] set to now + PULSE_DUR at
-              // click time; updateBorders interpolates the stroke-width.
               const PULSE_DUR = 320;
               const pulseEnd = { H1: 0, V1: 0, H2: 0, V2: 0 };
+              let pulseActive = false;
 
-              let started = null;
-              let outcome = null;
+              // Continuous animation, EPR-demo pattern. `cycleStart` is
+              // bumped at the end of each cycle (no modulo on elapsed),
+              // and we deliberately don't gate on an IntersectionObserver
+              // — the rAF clock keeps ticking, and the browser already
+              // throttles offscreen rAF for free. This is what stops the
+              // "reset when you scroll" feeling that the modulo approach
+              // had: with modulo, a long off-screen pause leaves the
+              // per-cycle flags stale; with cycleStart-reset-on-completion
+              // every cycle is a clean state.
+              let cycleStart = 0;
+              let outcome = pickOutcome();
               let recorded = false;
+              let barsSet = false;
+              let pausePosSet = false;
+              let resetDone = false;
 
               function frame(now) {
-                if (!started) started = now;
-                const elapsed = now - started;
-                const phase = elapsed % CYCLE;
+                const elapsed = now - cycleStart;
 
-                const P_IN_END    = T_IN;
-                const P_PAUSE_END = P_IN_END    + T_PAUSE;
-                const P_OUT1_END  = P_PAUSE_END + T_OUT1;
-                const P_OUT2_END  = P_OUT1_END  + T_OUT2;
-                const P_CLICK_END = P_OUT2_END  + T_CLICK;
-                const P_HOLD_END  = P_CLICK_END + T_HOLD;
-
-                if (phase < P_IN_END) {
-                  if (phase < 40 || outcome === null) {
-                    outcome = pickOutcome();
-                    recorded = false;
-                    setInputLabel(outcome.state);
-                    setDetAll(0.2);
-                    resetBitCells();
-                    resetOutBits();
-                    setCloud("A");
-                    setCloud("B");
-                  }
-                  const t = ease(phase / T_IN);
+                if (elapsed < P_IN_END) {
+                  const t = ease(elapsed / T_IN);
                   setPos(photon.A, SRC_A.x + (BS.x - SRC_A.x) * t,
                                    SRC_A.y + (BS.y - SRC_A.y) * t);
                   setPos(photon.B, SRC_B.x + (BS.x - SRC_B.x) * t,
                                    SRC_B.y + (BS.y - SRC_B.y) * t);
-                  show(photon.A); show(photon.B);
-                } else if (phase < P_PAUSE_END) {
-                  setPos(photon.A, BS.x - 6, BS.y + 4);
-                  setPos(photon.B, BS.x + 6, BS.y + 4);
-                } else if (phase < P_OUT1_END) {
-                  const t = ease((phase - P_PAUSE_END) / T_OUT1);
-                  const pbsA = PBS[DET_PBS[outcome.a]];
-                  const pbsB = PBS[DET_PBS[outcome.b]];
-                  const dxA = outcome.a === outcome.b ? -6 : 0;
-                  const dxB = outcome.a === outcome.b ?  6 : 0;
+                } else if (elapsed < P_PAUSE_END) {
+                  if (!pausePosSet) {
+                    setPos(photon.A, BS.x - 6, BS.y + 4);
+                    setPos(photon.B, BS.x + 6, BS.y + 4);
+                    pausePosSet = true;
+                  }
+                } else if (elapsed < P_OUT1_END) {
+                  const t = ease((elapsed - P_PAUSE_END) / T_OUT1);
+                  const pbsA = pbsOf(outcome.a);
+                  const pbsB = pbsOf(outcome.b);
+                  const sameDet = outcome.a === outcome.b;
+                  const dxA = sameDet ? -6 : 0;
+                  const dxB = sameDet ?  6 : 0;
                   setPos(photon.A,
                     BS.x + (pbsA.x - BS.x) * t + dxA * t,
                     BS.y + (pbsA.y - BS.y) * t);
                   setPos(photon.B,
                     BS.x + (pbsB.x - BS.x) * t + dxB * t,
                     BS.y + (pbsB.y - BS.y) * t);
-                } else if (phase < P_OUT2_END) {
-                  // Polarisation resolved at the PBS — switch to bars.
-                  setBar("A", DET_POL[outcome.a]);
-                  setBar("B", DET_POL[outcome.b]);
-                  const t = ease((phase - P_OUT1_END) / T_OUT2);
-                  const pbsA = PBS[DET_PBS[outcome.a]];
-                  const pbsB = PBS[DET_PBS[outcome.b]];
+                } else if (elapsed < P_OUT2_END) {
+                  if (!barsSet) {
+                    setBar("A", polOf(outcome.a));
+                    setBar("B", polOf(outcome.b));
+                    barsSet = true;
+                  }
+                  const t = ease((elapsed - P_OUT1_END) / T_OUT2);
+                  const pbsA = pbsOf(outcome.a);
+                  const pbsB = pbsOf(outcome.b);
                   const detA = DET[outcome.a];
                   const detB = DET[outcome.b];
-                  const dxA = outcome.a === outcome.b ? -6 * (1 - t) : 0;
-                  const dxB = outcome.a === outcome.b ?  6 * (1 - t) : 0;
+                  const sameDet = outcome.a === outcome.b;
+                  const dxA = sameDet ? -6 * (1 - t) : 0;
+                  const dxB = sameDet ?  6 * (1 - t) : 0;
                   setPos(photon.A,
                     pbsA.x + (detA.x - pbsA.x) * t + dxA,
                     pbsA.y + (detA.y - pbsA.y) * t);
                   setPos(photon.B,
                     pbsB.x + (detB.x - pbsB.x) * t + dxB,
                     pbsB.y + (detB.y - pbsB.y) * t);
-                  show(photon.A); show(photon.B);
-                } else if (phase < P_HOLD_END) {
-                  // Arrival at the detector: photons disappear (absorbed),
-                  // detector D pulses (border thickens then settles),
-                  // bit cells + outcome cells flash white-on-black,
-                  // history row prepended. Same recipe as the
-                  // entanglement-demo border pulse.
-                  const keys = outcome.a === outcome.b
-                    ? [outcome.a]
-                    : [outcome.a, outcome.b];
+                } else if (elapsed < P_HOLD_END) {
                   if (!recorded) {
+                    const keys = outcome.a === outcome.b
+                      ? [outcome.a]
+                      : [outcome.a, outcome.b];
+                    const success = isSuccess(outcome.state);
                     hide(photon.A); hide(photon.B);
                     lockDet(keys);
-                    activateBitCells(keys);
-                    if (outcome.success) {
-                      setOutBit(0, DET_BIT[outcome.a]);
-                      setOutBit(1, DET_BIT[outcome.b]);
-                    } else {
-                      setOutBit(0, DET_BIT[outcome.a]);
-                      setOutBit(1, null);
-                    }
+                    setFlowCell(clicksCell, clicksFor(outcome), true);
+                    // Φ rows show the projected bits but muted — those
+                    // outcomes are post-selected out in real LO BSM.
+                    setFlowCell(bitsCell, bitsFor(outcome), success);
+                    setStateLabel(outcome.state, true);
                     for (const k of keys) pulseEnd[k] = now + PULSE_DUR;
+                    pulseActive = true;
                     pushHistory(outcome);
                     recorded = true;
                   }
+                } else if (elapsed < CYCLE) {
+                  if (!resetDone) {
+                    hide(photon.A); hide(photon.B);
+                    setDetAll(0.2);
+                    setFlowCell(clicksCell, "—", false);
+                    setFlowCell(bitsCell,   "—", false);
+                    setStateLabel(null, false);
+                    resetDone = true;
+                  }
                 } else {
-                  hide(photon.A); hide(photon.B);
+                  // Cycle complete — start a fresh cycle. After a long
+                  // offscreen pause, this branch fires once on the first
+                  // visible frame and the next cycle plays cleanly from
+                  // the start.
+                  cycleStart = now;
+                  outcome = pickOutcome();
+                  recorded = false;
+                  barsSet = false;
+                  pausePosSet = false;
+                  resetDone = false;
                   setDetAll(0.2);
-                  setInputLabel(null);
-                  resetBitCells();
-                  resetOutBits();
+                  setCloud("A"); setCloud("B");
+                  show(photon.A); show(photon.B);
+                  setFlowCell(clicksCell, "—", false);
+                  setFlowCell(bitsCell,   "—", false);
+                  setStateLabel(null, false);
                 }
 
-                // Per-frame: animate detector D stroke-width based on
-                // remaining pulse time (thickens, then settles back).
-                for (const k of ["H1", "V1", "H2", "V2"]) {
-                  const remaining = (pulseEnd[k] || 0) - now;
-                  if (remaining > 0) {
-                    const t = remaining / PULSE_DUR;
-                    detPath[k].setAttribute("stroke-width", String(1.5 + 3 * t));
-                  } else {
-                    detPath[k].setAttribute("stroke-width", "1.5");
+                if (pulseActive) {
+                  let anyActive = false;
+                  for (const k of DET_KEYS) {
+                    const remaining = pulseEnd[k] - now;
+                    if (remaining > 0) {
+                      detPath[k].setAttribute(
+                        "stroke-width", String(1.5 + 3 * (remaining / PULSE_DUR)));
+                      anyActive = true;
+                    } else if (pulseEnd[k] !== 0) {
+                      detPath[k].setAttribute("stroke-width", "1.5");
+                      pulseEnd[k] = 0;
+                    }
                   }
+                  pulseActive = anyActive;
                 }
                 requestAnimationFrame(frame);
               }
+
+              // Prime the very first cycle: cloud glyphs visible at the
+              // sources, blank readouts. Then start the rAF loop.
+              setCloud("A"); setCloud("B");
+              show(photon.A); show(photon.B);
+              setPos(photon.A, SRC_A.x, SRC_A.y);
+              setPos(photon.B, SRC_B.x, SRC_B.y);
+              cycleStart = performance.now();
               requestAnimationFrame(frame);
             }
           }
         </script>
-
-
-
 
         <h3>Why only half the time, on photons</h3>
         <p>
@@ -1970,11 +1984,6 @@ const sections = [
     fill: var(--color-text-mute);
   }
 
-  /* BSM figure: wrapped in the same card style as the entanglement
-     EPS demo (.epr) — same padding, background, border, gap rhythm
-     — so the two animated demos read as the same kind of "set-piece"
-     element. See CLAUDE.md → "Shared design concepts" → demo-card
-     wrapper for the full convention. */
   .bsm-figure {
     margin: var(--space-4) 0;
     padding: var(--space-3) var(--space-4);
@@ -2000,6 +2009,26 @@ const sections = [
   .bsm-figure figcaption strong {
     color: var(--color-text);
   }
+  .bsm-click-table {
+    border-collapse: collapse;
+    margin: var(--space-2) 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  .bsm-click-table th,
+  .bsm-click-table td {
+    text-align: left;
+    padding: 4px 12px 4px 0;
+    border-bottom: 1px solid var(--color-rule);
+    color: var(--color-text);
+  }
+  .bsm-click-table thead th {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-mute);
+    font-weight: 600;
+  }
   :global(.bsm-label) {
     font-size: 17px;
     font-weight: 600;
@@ -2012,35 +2041,17 @@ const sections = [
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  :global(.bsm-det-label) {
-    font-family: var(--font-mono);
-    font-size: 15px;
-    fill: var(--color-text);
-  }
-  :global(.bsm-input-label) {
-    font-size: 13px;
-    fill: var(--color-text);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  :global(.bsm-input-value) {
-    font-family: var(--font-mono);
-    font-size: 17px;
-    font-weight: 600;
-    fill: var(--color-text);
-  }
   :global(.bsm-det-name) {
     font-family: var(--font-mono);
     font-size: 16px;
     font-weight: 600;
     fill: var(--color-text);
   }
+  :global(.bsm-det-sub) {
+    font-size: 0.7em;
+    baseline-shift: -25%;
+  }
 
-  /* Top-of-figure outcome readout — two big bit cells. Idle state
-     shows "—" muted with no backdrop; active state inverts to
-     white-on-black via the .bsm-outbit-text--active class plus the
-     backdrop rect's opacity toggle. Same trick the entanglement-demo
-     uses for the active |00⟩/|11⟩ kets — see CLAUDE.md design notes. */
   :global(.bsm-outcome-label) {
     font-size: 14px;
     font-weight: 600;
@@ -2048,48 +2059,40 @@ const sections = [
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  :global(.bsm-outbit-text) {
-    font-family: var(--font-mono);
-    font-size: 32px;
-    font-weight: 600;
+  :global(.bsm-flow-tag) {
+    font-size: 11px;
     fill: var(--color-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
-  :global(.bsm-outbit-text--active) {
-    fill: var(--color-bg);
-    font-weight: 700;
-  }
-  :global(.bsm-outbit-sep) {
-    font-family: var(--font-mono);
-    font-size: 28px;
-    fill: var(--color-text-soft);
-  }
-  :global(.bsm-input-line) {
-    font-size: 14px;
-    fill: var(--color-text);
-  }
-  :global(.bsm-input-value-inline) {
-    font-size: 22px;
-    font-weight: 700;
-    fill: var(--color-text);
-  }
-
-  /* Per-detector bit cell — mono digit (0 or 1) with the same
-     white-on-black trick. Always visible (so the reader sees the bit
-     assignment at rest), and inverts when its detector fires. */
-  :global(.bsm-bit-text) {
+  :global(.bsm-flow-text) {
     font-family: var(--font-mono);
     font-size: 22px;
     font-weight: 600;
     fill: var(--color-text-soft);
   }
-  :global(.bsm-bit-text--active) {
+  :global(.bsm-flow-text--active) {
     fill: var(--color-bg);
     font-weight: 700;
   }
+  :global(.bsm-flow-arrow) {
+    font-size: 20px;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-flow-state) {
+    font-size: 22px;
+    font-weight: 600;
+    fill: var(--color-text-soft);
+  }
+  :global(.bsm-flow-state--success) {
+    fill: var(--color-accent);
+    font-weight: 700;
+  }
+  :global(.bsm-flow-state--fail) {
+    fill: var(--color-text-soft);
+    font-weight: 700;
+  }
 
-  /* Right-hand history pane. Newest entry at the top; each row holds
-     a Bell-state label + the 2-bit code. Success rows use accent
-     colour, Φ-failures stay muted. */
   :global(.bsm-pane-title) {
     font-size: 15px;
     font-weight: 600;
@@ -2101,22 +2104,31 @@ const sections = [
     font-size: 13px;
     fill: var(--color-text);
   }
+  :global(.bsm-row-header) {
+    font-size: 10px;
+    fill: var(--color-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :global(.bsm-row-clicks) {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    fill: var(--color-text-soft);
+  }
   :global(.bsm-row-state) {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     fill: var(--color-text-soft);
   }
   :global(.bsm-row-bits) {
     font-family: var(--font-mono);
-    font-size: 18px;
+    font-size: 16px;
     fill: var(--color-text-soft);
   }
-  :global(.bsm-row-state--success),
-  :global(.bsm-row-bits--success) {
+  :global(.bsm-row--success) {
     fill: var(--color-accent);
   }
-  :global(.bsm-row-state--fail),
-  :global(.bsm-row-bits--fail) {
+  :global(.bsm-row--fail) {
     fill: var(--color-text-soft);
   }
   :global(.bsm-row--latest) {
