@@ -49,7 +49,7 @@ const sections = [
       <header class="hero" id="overview" data-nav-section>
         <h1>Entanglement swapping</h1>
         <p>
-          Two Bell pairs sharing one node can be <em>fused</em> into a single Bell pair
+          Two Bell pairs sharing one node can be <strong>fused</strong> into a single Bell pair
           spanning the two outer endpoints — without those endpoints ever interacting and
           without measuring the qubits being networked. The trick is a Bell-state
           measurement at the shared node: the BSM consumes the two qubits at the relay,
@@ -58,12 +58,15 @@ const sections = [
           channel <SourceNote id="zukowski-prl-1993" />.
         </p>
         <p>
-          Swapping is the primitive that lets a quantum network <em>reach</em>. A direct
-          Bell pair between Alice and Bob is bounded by photon loss at maybe 100–200 km
-          of standard fibre; chains of swaps stitch shorter pairs together so the
-          end-to-end pair can span much further. Every memory-based quantum repeater —
-          and every link architecture in the distribution
-          subject — is built on this primitive <SourceNote id="kumar-ijndc-2025" />.
+          Swapping is the primitive that lets a quantum network <strong>reach</strong>.
+          A direct Bell pair between Alice and Bob in standard fibre runs out of usable
+          rate after a few tens of kilometres — fibre attenuation at 0.20 dB/km eats the
+          photon budget fast, and current heralded-entanglement demonstrations are in
+          the 10–50 km range over deployed fibre <SourceNote id="knaut-nature-2024" />.
+          Chains of swaps stitch shorter pairs together so the end-to-end pair can span
+          much further. Every memory-based quantum repeater — and every link
+          architecture in the distribution subject — is built on this
+          primitive <SourceNote id="kumar-ijndc-2025" />.
         </p>
       </header>
 
@@ -84,7 +87,7 @@ const sections = [
         </ul>
         <p>
           The relay holds two qubits, <Math tex="R_1" /> and <Math tex="R_2" />, one
-          drawn from each pair. The relay is just a station that <em>mediates</em>; the
+          drawn from each pair. The relay is just a station that <strong>mediates</strong>; the
           qubits at Alice and Bob are never touched by anything other than their original
           entanglement-generation event and (eventually) the local Pauli correction.
         </p>
@@ -284,18 +287,18 @@ const sections = [
         <ul>
           <li>
             <strong>Distribution</strong> covers the link architectures (MM, SR, MS)
-            that get a Bell pair onto a single link in the first place.
-            <em>Covered in the</em> <strong>distribution</strong> <em>subject.</em>
+            that get a Bell pair onto a single link in the first place. See the
+            <strong>distribution</strong> subject.
           </li>
           <li>
             <strong>Distillation</strong> trades two noisy Bell pairs for one cleaner
-            pair, restoring fidelity that chained swapping erodes.
-            <em>Covered in the</em> <strong>distillation</strong> <em>subject.</em>
+            pair, restoring fidelity that chained swapping erodes. See the
+            <strong>distillation</strong> subject.
           </li>
           <li>
             <strong>Repeaters</strong> integrate generation, swapping, and distillation
-            into the 1G / 2G / 3G architectural families. <em>Covered in the</em>
-            <strong>repeaters</strong> <em>subject.</em>
+            into the 1G / 2G / 3G architectural families. See the
+            <strong>repeaters</strong> subject.
           </li>
         </ul>
       </section>
