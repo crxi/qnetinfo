@@ -128,42 +128,48 @@ const haveDossiers = COMPANIES.length > 0;
 
         <h3 class="vendor-platform">Superconducting</h3>
         <ul class="vendor-list">
-          <li><strong>IBM</strong> — transmon; large public roadmap (Heron, Nighthawk, Starling, Blue Jay).</li>
           <li><strong>Google</strong> — transmon; Sycamore lineage.</li>
-          <li><strong>Rigetti</strong> — transmon; Ankaa series.</li>
+          <li><strong>IBM</strong> — transmon; large public roadmap (Heron, Nighthawk, Starling, Blue Jay).</li>
           <li><strong>IQM</strong> — transmon; multi-chip systems.</li>
+          <li><strong>Rigetti</strong> — transmon; Ankaa series.</li>
           <li><strong>USTC</strong> — transmon; Jiuzhang and Zuchongzhi families.</li>
         </ul>
 
         <h3 class="vendor-platform">Trapped ion</h3>
         <ul class="vendor-list">
-          <li><strong>Quantinuum</strong> — Yb⁺ / Ba⁺; H1/H2 racetrack QCCD systems.</li>
-          <li><strong>IonQ</strong> — Yb⁺; commercial cloud access.</li>
+          <li><strong>AQT (Alpine Quantum Technologies)</strong> — Ca⁺ / Yb⁺; rack-mounted ion-trap systems.</li>
+          <li><strong>IonQ</strong> — Yb⁺ / Ba⁺; commercial cloud access.</li>
           <li><strong>Oxford Ionics</strong> — Sr⁺; on-chip integration.</li>
+          <li><strong>Quantinuum</strong> — Yb⁺ / Ba⁺; H1/H2 racetrack QCCD systems.</li>
           <li><strong>Universal Quantum</strong> — Yb⁺ networked-ion modules.</li>
         </ul>
 
         <h3 class="vendor-platform">Neutral atom</h3>
         <ul class="vendor-list">
-          <li><strong>QuEra</strong> — Rb-87; Rydberg gates on optical tweezer arrays.</li>
           <li><strong>Atom Computing</strong> — Sr; large-array room-temperature systems.</li>
-          <li><strong>Pasqal</strong> — Rb; Orion line, analog and digital modes.</li>
           <li><strong>ColdQuanta / Infleqtion</strong> — Rb; computing + sensing.</li>
+          <li><strong>Pasqal</strong> — Rb; Orion line, analog and digital modes.</li>
+          <li><strong>QuEra</strong> — Rb-87; Rydberg gates on optical tweezer arrays.</li>
         </ul>
 
         <h3 class="vendor-platform">Photonic</h3>
         <ul class="vendor-list">
-          <li><strong>PsiQuantum</strong> — photonic fault-tolerant; silicon-photonic chips.</li>
-          <li><strong>Xanadu</strong> — photonic, continuous-variable + Gaussian boson sampling.</li>
           <li><strong>ORCA Computing</strong> — photonic memory-based; squeezed-light approach.</li>
+          <li><strong>PsiQuantum</strong> — photonic fault-tolerant; silicon-photonic chips.</li>
           <li><strong>Quandela</strong> — quantum-dot single-photon sources + photonic chips.</li>
           <li><strong>QuiX Quantum</strong> — photonic linear-optical processors.</li>
+          <li><strong>Xanadu</strong> — photonic, continuous-variable + Gaussian boson sampling.</li>
         </ul>
 
         <h3 class="vendor-platform">NV / SiV (diamond)</h3>
         <ul class="vendor-list">
-          <li><strong>Quantum Brilliance</strong> — NV-centre room-temperature compute appliances.</li>
           <li><strong>Lightsynq</strong> — SiV-centre memory nodes for the quantum internet.</li>
+          <li><strong>Quantum Brilliance</strong> — NV-centre room-temperature compute appliances.</li>
+        </ul>
+
+        <h3 class="vendor-platform">Topological (Majorana)</h3>
+        <ul class="vendor-list">
+          <li><strong>Microsoft</strong> — Majorana-zero-mode qubits in InAs / Al hybrid devices; long-running topological-qubit programme.</li>
         </ul>
       </section>
 
@@ -174,12 +180,12 @@ const haveDossiers = COMPANIES.length > 0;
         </p>
 
         <ul class="vendor-list">
-          <li><strong>ID Quantique</strong> — QKD systems; long-running commercial deployment.</li>
-          <li><strong>Toshiba</strong> — QKD systems; Twin-Field demonstrations.</li>
-          <li><strong>MagiQ Technologies</strong> — QKD endpoints.</li>
           <li><strong>Aliro Quantum</strong> — quantum-network orchestration and simulation; AliroNet stack.</li>
-          <li><strong>Qunnect</strong> — quantum-networking testbed hardware; Rb-vapour memories.</li>
+          <li><strong>ID Quantique</strong> — QKD systems; long-running commercial deployment.</li>
+          <li><strong>MagiQ Technologies</strong> — QKD endpoints.</li>
           <li><strong>Quantum Bridge Tech</strong> — quantum-network infrastructure for QKD and entanglement distribution.</li>
+          <li><strong>Qunnect</strong> — quantum-networking testbed hardware; Rb-vapour memories.</li>
+          <li><strong>Toshiba</strong> — QKD systems; Twin-Field demonstrations.</li>
         </ul>
       </section>
 
@@ -190,11 +196,29 @@ const haveDossiers = COMPANIES.length > 0;
           that the computer and networking layers consume.
         </p>
 
+        <h3 class="vendor-platform">Quantum memory</h3>
         <ul class="vendor-list">
-          <li><strong>Welinq</strong> — quantum memories; QDrive Rb-cold-atom memory module.</li>
-          <li><strong>Quandela</strong> (above) — single-photon sources from quantum dots.</li>
-          <li><strong>QuiX Quantum</strong> (above) — photonic processors and integrated circuits.</li>
-          <li><strong>Lightsynq</strong> (above) — SiV-centre quantum-memory modules.</li>
+          <li><strong>Lightsynq</strong> — SiV-centre quantum-memory modules.</li>
+          <li><strong>memQ</strong> — Er³⁺-doped telecom-band quantum memories (Argonne / Awschalom-group spin-out).</li>
+          <li><strong>Qunnect</strong> — Rb-vapour quantum memories (also networking, above).</li>
+          <li><strong>Welinq</strong> — QDrive Rb cold-atom memory module.</li>
+        </ul>
+
+        <h3 class="vendor-platform">Single-photon sources</h3>
+        <ul class="vendor-list">
+          <li><strong>Aegiq</strong> — quantum-dot single-photon source components.</li>
+          <li><strong>Quandela</strong> — quantum-dot single-photon sources + photonic chips (also photonic computers, above).</li>
+          <li><strong>Sparrow Quantum</strong> — quantum-dot single-photon source devices.</li>
+        </ul>
+
+        <h3 class="vendor-platform">Photonic processors and integration</h3>
+        <ul class="vendor-list">
+          <li><strong>QuiX Quantum</strong> — photonic processors and integrated circuits (also photonic computers, above).</li>
+        </ul>
+
+        <h3 class="vendor-platform">Materials and foundry</h3>
+        <ul class="vendor-list">
+          <li><strong>Element Six</strong> — synthetic-diamond foundry; substrates for NV / SiV memory nodes.</li>
         </ul>
       </section>
 

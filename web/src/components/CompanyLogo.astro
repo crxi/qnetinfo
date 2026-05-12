@@ -5,8 +5,9 @@
  *   2. logo.domain → Clearbit's free logo API
  *   3. Letter-monogram (first character of the company name in a coloured circle)
  *
- * Clearbit attribution is rendered once on the companies landing page,
- * not per-logo.
+ * The Clearbit case renders both the <img> and a hidden monogram <span>;
+ * an inline onerror handler hides the img and shows the monogram if
+ * Clearbit returns no image. No JS framework needed.
  */
 import type { CompanyLogoSpec } from "../lib/companies.ts";
 
@@ -22,17 +23,35 @@ const initial = name.trim().charAt(0).toUpperCase();
 const local = logo?.local;
 const clearbit = logo?.domain ? `https://logo.clearbit.com/${logo.domain}?size=${size * 2}` : null;
 const fontSize = Math.round(size * 0.5);
+const monogramStyle = `width:${size}px;height:${size}px;font-size:${fontSize}px;`;
 ---
 
 {local ? (
   <img class="cl-logo" src={local} alt={`${name} logo`} width={size} height={size} loading="lazy" />
 ) : clearbit ? (
-  <img class="cl-logo" src={clearbit} alt={`${name} logo`} width={size} height={size} loading="lazy" />
+  <span class="cl-logo-wrap" style={`width:${size}px;height:${size}px;`}>
+    <img
+      class="cl-logo"
+      src={clearbit}
+      alt={`${name} logo`}
+      width={size}
+      height={size}
+      loading="lazy"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
+    />
+    <span class="cl-monogram cl-monogram--fallback" style={monogramStyle}>{initial}</span>
+  </span>
 ) : (
-  <span class="cl-monogram" style={`width:${size}px;height:${size}px;font-size:${fontSize}px;`}>{initial}</span>
+  <span class="cl-monogram" style={monogramStyle}>{initial}</span>
 )}
 
 <style>
+  .cl-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
   .cl-logo {
     display: block;
     object-fit: contain;
@@ -49,5 +68,8 @@ const fontSize = Math.round(size * 0.5);
     font-weight: 700;
     font-family: var(--font-mono);
     flex-shrink: 0;
+  }
+  .cl-monogram--fallback {
+    display: none;
   }
 </style>
