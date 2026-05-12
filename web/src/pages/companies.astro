@@ -21,6 +21,7 @@ import Center from "../components/Center.astro";
 import Stack from "../components/Stack.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
+import CompanyLogo from "../components/CompanyLogo.astro";
 import {
   COMPANIES,
   CATEGORY_LABEL,
@@ -96,7 +97,10 @@ const haveDossiers = COMPANIES.length > 0;
               {group.companies.map((c) => (
                 <li class="dossier-card">
                   <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/companies/${c.slug}`}>
-                    <div class="dossier-name">{c.name}</div>
+                    <div class="dossier-head">
+                      <CompanyLogo name={c.name} logo={c.logo} size={32} />
+                      <div class="dossier-name">{c.name}</div>
+                    </div>
                     <div class="dossier-positioning">{c.positioning}</div>
                     <div class="dossier-meta">
                       {c.categories.length > 1 && (
@@ -287,6 +291,11 @@ const haveDossiers = COMPANIES.length > 0;
     padding: var(--space-3);
     color: inherit;
     text-decoration: none;
+  }
+  .dossier-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
   }
   .dossier-name {
     font-weight: 600;

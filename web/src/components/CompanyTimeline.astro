@@ -1,0 +1,219 @@
+---
+/**
+ * Horizontal timeline combining past milestones and forward roadmap on
+ * one axis. Year ticks across the bottom, a vertical 'today' line, and
+ * one labelled dot per item. Past milestones use filled dots; roadmap
+ * items use outline dots. Labels alternate above/below to avoid overlap.
+ *
+ * Pure SVG, no JS — the page is static.
+ */
+import type { Milestone, RoadmapItem } from "../lib/companies.ts";
+import { CATEGORY_LABEL } from "../lib/companies.ts";
+
+interface Props {
+  milestones: Milestone[];
+  roadmap: RoadmapItem[];
+  foundedYear: number;
+}
+
+const { milestones, roadmap, foundedYear } = Astro.props;
+
+/** Parse "2024-09" or "Q3 2024" or 2024 into a fractional year (2024.67).
+ *  YAML may parse bare years as numbers; coerce to string first. */
+function parseToFracYear(input: string | number | Date): number {
+  if (input instanceof Date) {
+    return input.getFullYear() + input.getMonth() / 12;
+  }
+  const s = String(input).trim();
+  const qMatch = s.match(/^Q([1-4])\s+(\d{4})$/i);
+  if (qMatch) {
+    const q = parseInt(qMatch[1], 10);
+    const y = parseInt(qMatch[2], 10);
+    return y + (q - 1) * 0.25;
+  }
+  const parts = s.split("-").map((n) => parseInt(n, 10));
+  const year = parts[0];
+  const month = parts[1] ?? 6;
+  return year + (month - 1) / 12;
+}
+
+type Point = {
+  fracYear: number;
+  label: string;
+  kind: "milestone" | "roadmap";
+  tag?: string;
+  sourceUrl?: string;
+};
+
+const nowFrac = (() => {
+  const d = new Date();
+  return d.getFullYear() + d.getMonth() / 12;
+})();
+
+const points: Point[] = [
+  ...milestones.map((m) => ({
+    fracYear: parseToFracYear(m.date),
+    label: m.headline,
+    kind: "milestone" as const,
+    tag: m.tag,
+    sourceUrl: m.source_url,
+  })),
+  ...roadmap.map((r) => ({
+    fracYear: parseToFracYear(r.target),
+    label: r.item,
+    kind: "roadmap" as const,
+    tag: r.tag,
+    sourceUrl: r.source_url,
+  })),
+].sort((a, b) => a.fracYear - b.fracYear);
+
+// Empty-state: render nothing if there's nothing to plot.
+const hasContent = points.length > 0;
+
+// Year range: from founding (or earliest item if earlier) to one year
+// after the latest roadmap entry (or now + 2 if no roadmap).
+let yearStart = foundedYear;
+let yearEnd = Math.ceil(nowFrac) + 2;
+if (hasContent) {
+  yearStart = Math.min(yearStart, Math.floor(points[0].fracYear));
+  yearEnd = Math.max(yearEnd, Math.ceil(points[points.length - 1].fracYear) + 1);
+}
+
+const W = 880;
+const H = 220;
+const PAD_L = 30;
+const PAD_R = 30;
+const AXIS_Y = 110;
+const AXIS_W = W - PAD_L - PAD_R;
+
+function xForYear(y: number): number {
+  const t = (y - yearStart) / (yearEnd - yearStart);
+  return PAD_L + t * AXIS_W;
+}
+
+const yearTicks: number[] = [];
+for (let y = yearStart; y <= yearEnd; y++) yearTicks.push(y);
+
+// Alternate label placement: even index above, odd below.
+const labelPlacements = points.map((p, i) => {
+  const above = i % 2 === 0;
+  const yLine  = above ? AXIS_Y - 18 : AXIS_Y + 18;
+  const yLabel = above ? AXIS_Y - 26 : AXIS_Y + 38;
+  const yLabel2 = above ? AXIS_Y - 40 : AXIS_Y + 52;
+  return { above, yLine, yLabel, yLabel2 };
+});
+
+function truncate(s: string, n: number): string {
+  return s.length > n ? s.slice(0, n - 1) + "…" : s;
+}
+---
+
+{hasContent ? (
+  <figure class="ct">
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Company milestone and roadmap timeline">
+      {/* Year-band shading: past vs future */}
+      <rect x={PAD_L} y={AXIS_Y - 1} width={xForYear(nowFrac) - PAD_L} height={2}
+            fill="var(--color-accent)"/>
+      <rect x={xForYear(nowFrac)} y={AXIS_Y - 1} width={W - PAD_R - xForYear(nowFrac)} height={2}
+            fill="var(--color-text-soft)" opacity="0.4"/>
+
+      {/* Year ticks and labels */}
+      {yearTicks.map((y) => (
+        <g>
+          <line x1={xForYear(y)} y1={AXIS_Y - 4} x2={xForYear(y)} y2={AXIS_Y + 4}
+                stroke="var(--color-text-soft)" stroke-width="1"/>
+          <text x={xForYear(y)} y={AXIS_Y + 18} text-anchor="middle" class="ct-year">{y}</text>
+        </g>
+      ))}
+
+      {/* 'Today' vertical line */}
+      <line x1={xForYear(nowFrac)} y1={AXIS_Y - 60} x2={xForYear(nowFrac)} y2={AXIS_Y + 70}
+            stroke="var(--color-accent-2)" stroke-width="1.2" stroke-dasharray="3,3"/>
+      <text x={xForYear(nowFrac)} y={AXIS_Y + 88} text-anchor="middle" class="ct-now">today</text>
+
+      {/* Points */}
+      {points.map((p, i) => {
+        const x = xForYear(p.fracYear);
+        const place = labelPlacements[i];
+        return (
+          <g>
+            <line x1={x} y1={AXIS_Y} x2={x} y2={place.yLine}
+                  stroke="var(--color-text-soft)" stroke-width="0.8"/>
+            {p.kind === "milestone" ? (
+              <circle cx={x} cy={AXIS_Y} r="5" fill="var(--color-accent)" stroke="var(--color-bg)" stroke-width="1.5"/>
+            ) : (
+              <circle cx={x} cy={AXIS_Y} r="5" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="2"/>
+            )}
+            <text x={x} y={place.yLabel} text-anchor="middle" class="ct-label">
+              {truncate(p.label, 28)}
+            </text>
+            <text x={x} y={place.yLabel2} text-anchor="middle" class="ct-sublabel">
+              {p.tag ? CATEGORY_LABEL[p.tag] : ""}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+    <figcaption>
+      <span class="ct-legend"><span class="ct-dot ct-dot--past"></span> shipped milestone</span>
+      <span class="ct-legend"><span class="ct-dot ct-dot--future"></span> public roadmap</span>
+    </figcaption>
+  </figure>
+) : (
+  <p class="empty">No timeline data — add milestones or roadmap entries.</p>
+)}
+
+<style>
+  .ct {
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .ct svg {
+    inline-size: 100%;
+    block-size: auto;
+    display: block;
+  }
+  :global(.ct-year) {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--color-text-mute);
+  }
+  :global(.ct-now) {
+    font-size: 10px;
+    fill: var(--color-accent-2);
+    font-style: italic;
+  }
+  :global(.ct-label) {
+    font-size: 10.5px;
+    fill: var(--color-text);
+  }
+  :global(.ct-sublabel) {
+    font-size: 9px;
+    fill: var(--color-text-mute);
+    font-style: italic;
+  }
+  .ct figcaption {
+    display: flex;
+    gap: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--color-text-mute);
+  }
+  .ct-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ct-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .ct-dot--past { background: var(--color-accent); }
+  .ct-dot--future {
+    background: var(--color-bg);
+    border: 2px solid var(--color-accent);
+  }
+  .empty { color: var(--color-text-mute); }
+</style>

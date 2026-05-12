@@ -5,6 +5,8 @@ hq: College Park, Maryland, USA
 founded: 2015
 status: public
 parent: null
+logo:
+  domain: ionq.com
 
 positioning: >
   Trapped-ion quantum computing systems sold through cloud platforms (AWS Braket,

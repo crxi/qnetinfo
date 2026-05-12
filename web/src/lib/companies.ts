@@ -121,6 +121,13 @@ export interface Modalities {
   enabling?: Record<string, unknown>;
 }
 
+export interface CompanyLogoSpec {
+  /** Domain for Clearbit's logo API (https://logo.clearbit.com/{domain}). */
+  domain?: string;
+  /** Path under web/public — used in preference to Clearbit if present. */
+  local?: string;
+}
+
 export interface Company {
   slug: string;
   name: string;
@@ -129,6 +136,7 @@ export interface Company {
   founded: number;
   status: CompanyStatus;
   parent: string | null;
+  logo?: CompanyLogoSpec;
   positioning: string;
   modalities: Modalities;
   milestones: Milestone[];

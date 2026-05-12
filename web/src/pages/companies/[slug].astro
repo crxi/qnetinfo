@@ -11,6 +11,8 @@ import Infographic from "../../layouts/Infographic.astro";
 import Center from "../../components/Center.astro";
 import Stack from "../../components/Stack.astro";
 import SiteNav from "../../components/SiteNav.astro";
+import CompanyLogo from "../../components/CompanyLogo.astro";
+import CompanyTimeline from "../../components/CompanyTimeline.astro";
 import {
   COMPANIES,
   CATEGORY_LABEL,
@@ -32,6 +34,7 @@ const { company } = Astro.props;
 
 const sections = [
   { id: "overview",   label: "Overview" },
+  { id: "timeline",   label: "Timeline" },
   { id: "flagship",   label: "Current flagship" },
   { id: "milestones", label: "Milestones" },
   { id: "roadmap",    label: "Roadmap" },
@@ -45,8 +48,11 @@ const isStale = staleDays > STALE_THRESHOLD_DAYS;
 const partialSet = new Set(company.partial ?? []);
 function isPartial(path: string): boolean { return partialSet.has(path); }
 
-// Sort milestones by date descending (most recent first).
-function parseDate(s: string): number {
+// Sort milestones by date descending (most recent first). YAML may give
+// us a number (2024) or a Date (2024-09-19); coerce to string and parse.
+function parseDate(input: string | number | Date): number {
+  if (input instanceof Date) return input.getTime();
+  const s = String(input);
   const [y, m] = s.split("-").map((n) => parseInt(n, 10));
   return new Date(y, (m ?? 1) - 1).getTime();
 }
@@ -63,11 +69,14 @@ const milestones: Milestone[] = [...company.milestones].sort(
 
       <header class="hero" id="overview" data-nav-section>
         <div class="vendor-headline">
-          <h1>{company.name}</h1>
-          <div class="vendor-tags">
-            {company.categories.map((c) => (
-              <span class="vendor-cat-pill">{CATEGORY_LABEL[c]}</span>
-            ))}
+          <CompanyLogo name={company.name} logo={company.logo} size={56} />
+          <div class="vendor-title">
+            <h1>{company.name}</h1>
+            <div class="vendor-tags">
+              {company.categories.map((c) => (
+                <span class="vendor-cat-pill">{CATEGORY_LABEL[c]}</span>
+              ))}
+            </div>
           </div>
         </div>
         <p class="vendor-positioning">{company.positioning}</p>
@@ -85,6 +94,11 @@ const milestones: Milestone[] = [...company.milestones].sort(
           </div>
         </dl>
       </header>
+
+      <section id="timeline" data-nav-section>
+        <h2>Timeline</h2>
+        <CompanyTimeline milestones={company.milestones} roadmap={company.roadmap} foundedYear={company.founded} />
+      </section>
 
       {company.current_flagship && (
         <section id="flagship" data-nav-section>
@@ -252,7 +266,16 @@ const milestones: Milestone[] = [...company.milestones].sort(
 <style>
   .hero { padding-block: var(--space-6) var(--space-4); display: grid; gap: var(--space-3); }
   .hero h1 { margin: 0; }
-  .vendor-headline { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); }
+  .vendor-headline {
+    display: flex; flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .vendor-title {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: var(--space-2);
+  }
+  .vendor-title h1 { margin: 0; }
   .vendor-tags { display: flex; gap: 6px; flex-wrap: wrap; }
   .vendor-cat-pill {
     font-size: var(--text-xs); line-height: 1;

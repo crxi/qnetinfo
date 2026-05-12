@@ -1,0 +1,53 @@
+---
+/**
+ * Company logo with a fallback chain:
+ *   1. logo.local (self-hosted under /public)
+ *   2. logo.domain → Clearbit's free logo API
+ *   3. Letter-monogram (first character of the company name in a coloured circle)
+ *
+ * Clearbit attribution is rendered once on the companies landing page,
+ * not per-logo.
+ */
+import type { CompanyLogoSpec } from "../lib/companies.ts";
+
+interface Props {
+  name: string;
+  logo?: CompanyLogoSpec;
+  /** Pixel size for the rendered element (square). */
+  size: number;
+}
+
+const { name, logo, size } = Astro.props;
+const initial = name.trim().charAt(0).toUpperCase();
+const local = logo?.local;
+const clearbit = logo?.domain ? `https://logo.clearbit.com/${logo.domain}?size=${size * 2}` : null;
+const fontSize = Math.round(size * 0.5);
+---
+
+{local ? (
+  <img class="cl-logo" src={local} alt={`${name} logo`} width={size} height={size} loading="lazy" />
+) : clearbit ? (
+  <img class="cl-logo" src={clearbit} alt={`${name} logo`} width={size} height={size} loading="lazy" />
+) : (
+  <span class="cl-monogram" style={`width:${size}px;height:${size}px;font-size:${fontSize}px;`}>{initial}</span>
+)}
+
+<style>
+  .cl-logo {
+    display: block;
+    object-fit: contain;
+    border-radius: 6px;
+    background: var(--color-bg);
+  }
+  .cl-monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+  }
+</style>
