@@ -1,0 +1,154 @@
+slug: pasqal
+name: Pasqal
+categories: [qc]
+hq: Palaiseau, France
+founded: 2019
+status: private
+parent: null
+logo:
+  domain: pasqal.com
+
+positioning: >
+  French neutral-atom quantum computing company spun out of Institut d'Optique
+  (Alain Aspect, Antoine Browaeys, Thierry Lahaye). Builds rubidium-87 optical
+  tweezer arrays that run both analog Hamiltonian-simulation and digital
+  gate-based modes; the only neutral-atom vendor with QPUs installed in
+  EuroHPC supercomputing centres and a commercial deployment in the Gulf.
+
+modalities:
+  qc:
+    qubit_type: neutral-atom
+    physical_qubits_current: 200
+    logical_qubits_current: 0
+    one_q_fidelity: null
+    two_q_fidelity: null
+    coherence_t1_ms: null
+    coherence_t2_ms: null
+    ec_code: null
+    connectivity: programmable
+    gate_set: []
+
+milestones:
+  - date: 2026-03
+    tag: qc
+    headline: >
+      Announces business combination with Bleichroeder Acquisition Corp II;
+      Nasdaq listing planned 2026, Euronext Paris dual-listing to follow;
+      EUR 340M new financing (EUR 170M private round + EUR 170M convertible)
+    source_url: https://www.pasqal.com/newsroom/pasqal-a-global-leader-in-neutral-atom-quantum-computing-to-go-public-via-business-combination-with-bleichroeder-acquisition-corp-ii/
+    source_type: press
+  - date: 2026-02
+    tag: qc
+    headline: >
+      Delivers 140-qubit Orion-class neutral-atom QPU to CINECA (Bologna) under
+      EuroHPC EuroQCS-Italy contract
+    source_url: https://thequantuminsider.com/2026/02/17/pasqal-neutral-atom-qpu-italy/
+    source_type: press
+  - date: 2025-10
+    tag: qc
+    headline: >
+      Saudi Arabia's first quantum computer — 200-qubit neutral-atom system —
+      goes live at Saudi Aramco's data centre in Dhahran
+    source_url: https://www.aramco.com/en/news-media/news/2025/aramco-and-pasqal-make-history-with-saudi-arabias-first-quantum-computer
+    source_type: press
+  - date: 2025-06
+    tag: qc
+    headline: >
+      Releases updated 2025 roadmap — upgradable Orion / Vela / Centaurus /
+      Lyra platform path toward early FTQC by 2028, impactful FTQC by 2029
+    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    source_type: press
+  - date: 2024-11
+    tag: qc
+    headline: >
+      Inaugurates Orion Beta ("Ruby") QPU at GENCI/CEA (Saclay) and a second
+      Pasqal QPU at Forschungszentrum Jülich under the HPCQS programme
+    source_url: https://www.pasqal.com/newsroom/pasqal-drives-europes-quantum-industrialization-with-the-integration-of-two-qpus-into-europes-first-hybrid-hpc-quantum-infrastructure/
+    source_type: press
+  - date: 2024
+    tag: qc
+    headline: >
+      Exceeds 1,000 trapped neutral atoms in a single processor array
+    source_url: https://www.pasqal.com/newsroom/pasqal-exceeds-1000-atoms-in-quantum-processor/
+    source_type: press
+  - date: 2023-01
+    tag: qc
+    headline: >
+      Closes EUR 100M Series B led by Temasek to scale neutral-atom hardware
+    source_url: https://www.pasqal.com/newsroom/pasqal-raises-e100-million-series-b-funding-to-advance-neutral-atoms-quantum-computing/
+    source_type: press
+
+roadmap:
+  - target: 2025
+    item: >
+      Orion Gamma — 140+ physical qubits, third Orion generation; 2 logical
+      qubits demonstrated
+    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    tag: qc
+  - target: 2026
+    item: >
+      250-qubit QPU targeted at quantum advantage on an industry-relevant
+      problem (first half of 2026)
+    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    tag: qc
+  - target: 2027
+    item: >
+      Vela generation — 200+ physical qubits, 20 logical qubits
+    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    tag: qc
+  - target: 2028
+    item: >
+      Centaurus generation — ~10,000 physical qubits, early fault-tolerant
+      quantum computing (early FTQC)
+    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    tag: qc
+  - target: 2029
+    item: >
+      Lyra generation — 100 high-fidelity logical qubits, impactful FTQC;
+      two-qubit gate fidelity target 99.9%
+    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    tag: qc
+
+current_flagship:
+  name: Orion Beta
+  generation: neutral-atom Orion (Rb-87, programmable tweezer array)
+
+references:
+  - kind: press
+    citation_key: null
+    url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
+    note: 2025 roadmap — Orion / Vela / Centaurus / Lyra generations, FTQC path
+  - kind: press
+    citation_key: null
+    url: https://www.aramco.com/en/news-media/news/2025/aramco-and-pasqal-make-history-with-saudi-arabias-first-quantum-computer
+    note: Aramco 200-qubit deployment, Dhahran
+  - kind: press
+    citation_key: null
+    url: https://www.pasqal.com/newsroom/pasqal-selected-to-deliver-new-quantum-computer/
+    note: EuroQCS-Italy 140-qubit CINECA contract
+  - kind: press
+    citation_key: null
+    url: https://www.pasqal.com/newsroom/pasqal-drives-europes-quantum-industrialization-with-the-integration-of-two-qpus-into-europes-first-hybrid-hpc-quantum-infrastructure/
+    note: GENCI/CEA + Jülich HPCQS QPU inaugurations
+  - kind: press
+    citation_key: null
+    url: https://www.pasqal.com/newsroom/pasqal-a-global-leader-in-neutral-atom-quantum-computing-to-go-public-via-business-combination-with-bleichroeder-acquisition-corp-ii/
+    note: Nasdaq / Euronext dual-listing announcement (March 2026)
+  - kind: paper
+    citation_key: null
+    url: https://www.nature.com/articles/s41586-023-06481-y
+    note: >
+      Reference neutral-atom hardware paper (Evered et al., Nature 2023) —
+      99.5% parallel entangling gates on Rb arrays; relevant context, not a
+      Pasqal-authored result.
+
+partial:
+  - modalities.qc.one_q_fidelity
+  - modalities.qc.two_q_fidelity
+  - modalities.qc.coherence_t1_ms
+  - modalities.qc.coherence_t2_ms
+  - modalities.qc.ec_code
+  - modalities.qc.gate_set
+
+last_verified: 2026-05-13
+verification_method: web

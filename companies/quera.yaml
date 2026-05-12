@@ -1,0 +1,92 @@
+slug: quera
+name: QuEra Computing
+categories: [qc]
+hq: Boston, Massachusetts, USA
+founded: 2018
+status: private
+parent: null
+logo:
+  domain: quera.com
+
+positioning: >
+  Neutral-atom quantum computing built on rubidium-87 Rydberg arrays, spun out of
+  the Lukin, Vuletic, and Greiner groups at Harvard and MIT. Operates Aquila, the
+  first publicly available neutral-atom processor on AWS Braket, and is pushing
+  the field's most aggressive logical-qubit roadmap with the Gemini line.
+
+modalities:
+  qc:
+    qubit_type: neutral-atom
+    physical_qubits_current: 256
+    logical_qubits_current: 48
+    one_q_fidelity: null
+    two_q_fidelity: null
+    coherence_t1_ms: null
+    coherence_t2_ms: null
+    ec_code: surface
+    connectivity: reconfigurable
+    gate_set: []
+
+milestones:
+  - date: 2024-02
+    tag: qc
+    headline: >
+      48 logical qubits on a reconfigurable atom array — first programmable
+      logical processor (Bluvstein et al., Nature 626, 58)
+    source_url: https://www.nature.com/articles/s41586-023-06927-3
+    source_type: paper
+  - date: 2024-01
+    tag: qc
+    headline: Three-year roadmap announced — 10,000 physical / 100 logical qubits by 2026
+    source_url: https://www.hpcwire.com/2024/01/09/quera-debuts-3-year-roadmap-to-10000-physical-and-100-logical-qubits/
+    source_type: press
+  - date: 2022-11
+    tag: qc
+    headline: Aquila (256-qubit analog Rydberg processor) goes live on AWS Braket — first publicly available neutral-atom machine
+    source_url: https://aws.amazon.com/blogs/quantum-computing/amazon-braket-launches-aquila-the-first-neutral-atom-quantum-processor-from-quera-computing/
+    source_type: press
+
+roadmap:
+  - target: 2025
+    item: Gemini — ~30 logical qubits with magic-state distillation, >3,000 physical qubits (digital mode)
+    source_url: https://www.hpcwire.com/2024/01/09/quera-debuts-3-year-roadmap-to-10000-physical-and-100-logical-qubits/
+    tag: qc
+  - target: 2026
+    item: 100 logical qubits / ~10,000 physical qubits, error-corrected operation
+    source_url: https://quantumzeitgeist.com/quera-computing-roadmap-100-logical-qubits/
+    tag: qc
+
+current_flagship:
+  name: Aquila
+  generation: neutral-atom analog (256 qubits)
+
+references:
+  - kind: paper
+    citation_key: Bluvstein.Nature.626.58
+    url: https://www.nature.com/articles/s41586-023-06927-3
+    note: >
+      Bluvstein et al. (2024), "Logical quantum processor based on reconfigurable
+      atom arrays", Nature 626, 58–65. 48 logical qubits, surface-code and
+      colour-code demonstrations.
+  - kind: preprint
+    citation_key: null
+    url: https://arxiv.org/abs/2312.03982
+    note: arXiv preprint of the Bluvstein 2024 Nature paper
+  - kind: press
+    citation_key: null
+    url: https://aws.amazon.com/blogs/quantum-computing/amazon-braket-launches-aquila-the-first-neutral-atom-quantum-processor-from-quera-computing/
+    note: AWS Braket launch of Aquila (Nov 2022)
+  - kind: press
+    citation_key: null
+    url: https://www.hpcwire.com/2024/01/09/quera-debuts-3-year-roadmap-to-10000-physical-and-100-logical-qubits/
+    note: QuEra public roadmap to 100 logical qubits by 2026
+
+partial:
+  - modalities.qc.one_q_fidelity
+  - modalities.qc.two_q_fidelity
+  - modalities.qc.coherence_t1_ms
+  - modalities.qc.coherence_t2_ms
+  - modalities.qc.gate_set
+
+last_verified: 2026-05-13
+verification_method: web

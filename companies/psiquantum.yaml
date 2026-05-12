@@ -1,0 +1,117 @@
+slug: psiquantum
+name: PsiQuantum
+categories: [qc]
+hq: Palo Alto, California, USA
+founded: 2016
+status: private
+parent: null
+logo:
+  domain: psiquantum.com
+
+positioning: >
+  Silicon-photonic fault-tolerant quantum computing. Chips are fabricated on
+  300 mm wafers at GlobalFoundries; the architecture is fusion-based (FBQC) and
+  targets a single utility-scale, million-qubit machine rather than a NISQ
+  product line. Funded in part by the Australian and Queensland governments
+  (A$940 M, 2024) to site the first system in Brisbane, with a second
+  US site at the Illinois Quantum and Microelectronics Park in Chicago.
+
+modalities:
+  qc:
+    qubit_type: photonic
+    physical_qubits_current: null
+    logical_qubits_current: 0
+    one_q_fidelity: null
+    two_q_fidelity: null
+    coherence_t1_ms: null
+    coherence_t2_ms: null
+    ec_code: fbqc
+    connectivity: fusion-network
+    gate_set: []
+
+milestones:
+  - date: 2025-09
+    tag: qc
+    headline: Series E closes at US$1 B, valuing PsiQuantum at ~US$7 B
+    source_url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    source_type: press
+  - date: 2025-09
+    tag: qc
+    headline: Groundbreaking on Chicago Quantum Compute Center at Illinois Quantum and Microelectronics Park (former South Works site)
+    source_url: https://www.psiquantum.com/news-import/psiquantum-breaks-ground-chicago
+    source_type: press
+  - date: 2025-02
+    tag: qc
+    headline: "Omega manufacturable photonic chipset announced; companion Nature paper details single-photon sources, SNSPDs and BTO switches fabricated at GlobalFoundries"
+    source_url: https://www.nature.com/articles/s41586-025-08820-7
+    source_type: paper
+  - date: 2025-02
+    tag: qc
+    headline: Omega chipset launch press release
+    source_url: https://www.psiquantum.com/news-import/omega
+    source_type: press
+  - date: 2024-04
+    tag: qc
+    headline: Australian and Queensland governments commit A$940 M for a utility-scale fault-tolerant quantum computer in Brisbane
+    source_url: https://www.psiquantum.com/news-import/psiquantum-to-build-worlds-first-utility-scale-fault-tolerant-quantum-computer-in-australia
+    source_type: press
+  - date: 2023-02
+    tag: qc
+    headline: "Fusion-based quantum computation (FBQC) architecture published in Nature Communications (Bartolucci et al.)"
+    source_url: https://www.nature.com/articles/s41467-023-36493-1
+    source_type: paper
+
+roadmap:
+  - target: 2027
+    item: Brisbane utility-scale Quantum Compute Center operational
+    source_url: https://www.psiquantum.com/news-import/psiquantum-to-build-worlds-first-utility-scale-fault-tolerant-quantum-computer-in-australia
+    tag: qc
+  - target: 2029
+    item: Million-qubit, fault-tolerant, error-corrected machine target
+    source_url: https://www.psiquantum.com/news-import/psiquantum-to-build-worlds-first-utility-scale-fault-tolerant-quantum-computer-in-australia
+    tag: qc
+
+current_flagship:
+  name: Omega
+  generation: silicon-photonic chipset (GlobalFoundries Fab 8, 300 mm)
+
+references:
+  - kind: paper
+    citation_key: null
+    url: https://www.nature.com/articles/s41586-025-08820-7
+    note: "A manufacturable platform for photonic quantum computing — Omega chipset characterisation, Nature (2025)"
+  - kind: paper
+    citation_key: null
+    url: https://www.nature.com/articles/s41467-023-36493-1
+    note: "Bartolucci et al., Fusion-based quantum computation, Nature Communications 14, 912 (2023)"
+  - kind: preprint
+    citation_key: null
+    url: https://arxiv.org/abs/2101.09310
+    note: Original FBQC preprint (2021)
+  - kind: press
+    citation_key: null
+    url: https://www.psiquantum.com/news-import/omega
+    note: Omega chipset announcement (Feb 2025)
+  - kind: press
+    citation_key: null
+    url: https://www.psiquantum.com/news-import/psiquantum-to-build-worlds-first-utility-scale-fault-tolerant-quantum-computer-in-australia
+    note: Australia A$940 M deal (April 2024)
+  - kind: press
+    citation_key: null
+    url: https://www.psiquantum.com/news-import/psiquantum-breaks-ground-chicago
+    note: Chicago site groundbreaking (Sep 2025)
+  - kind: press
+    citation_key: null
+    url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    note: Series E US$1 B (Sep 2025)
+
+partial:
+  - modalities.qc.physical_qubits_current
+  - modalities.qc.one_q_fidelity
+  - modalities.qc.two_q_fidelity
+  - modalities.qc.coherence_t1_ms
+  - modalities.qc.coherence_t2_ms
+  - modalities.qc.gate_set
+
+last_verified: 2026-05-13
+verification_method: web

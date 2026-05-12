@@ -1,0 +1,126 @@
+slug: aliro
+name: Aliro Quantum
+categories: [network, software]
+hq: Brighton, Massachusetts, USA
+founded: 2019
+status: private
+parent: null
+logo:
+  domain: aliroquantum.com
+
+positioning: >
+  Quantum-networking software vendor that builds the control, orchestration, and
+  simulation stack for entanglement-based networks. A Harvard spin-out (Narang
+  Lab); does not build photonic or matter-qubit hardware itself but integrates
+  third-party devices into operable networks for telcos, government labs, and
+  data-centre operators.
+
+modalities:
+  network:
+    role: orchestrator
+    products: [AliroNet, "AliroNet Quickstart"]
+  software:
+    products:
+      - AliroNet Simulator
+      - AliroNet Emulator
+      - AliroNet Pilot
+      - AliroNet Production
+
+milestones:
+  - date: 2026-02
+    tag: network
+    headline: "$15M Series B (oversubscribed) led by Gutbrain Ventures; Cisco Investments, Argon Ventures, and Murata's Wonderstone Ventures participated"
+    source_url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    source_type: press
+  - date: 2025-09
+    tag: network
+    headline: AliroNet support extended to 50+ quantum network devices; AliroNet Quickstart deployed performing BBM92 entanglement-based key distribution with error correction and eavesdropper detection
+    source_url: https://www.businesswire.com/news/home/20250916953518/en/Aliro-Achieves-Critical-Milestone-in-Operationalizing-Quantum-Networks
+    source_type: press
+  - date: 2025-04
+    tag: network
+    headline: "\"Quantum-Powered Security\" product line announced — entanglement-based network security as a commercial offering"
+    source_url: https://www.businesswire.com/news/home/20250423337823/en/Aliro-Announces-Quantum-Powered-Security-to-Revolutionize-Network-Communications
+    source_type: press
+  - date: 2024-09
+    tag: software
+    headline: Expanded contract with US Air Force Research Laboratory (AFRL) to provide Aliro Simulator and professional services for entanglement-based network simulation
+    source_url: https://www.businesswire.com/news/home/20240910658943/en/Aliro-Expands-Relationship-with-U.S.-Air-Force-for-Quantum-Networking
+    source_type: press
+  - date: 2023-12
+    tag: software
+    headline: Aliro Simulator released as a standalone product for organisations designing entanglement-based quantum networks
+    source_url: https://www.businesswire.com/news/home/20231212758541/en/Aliro-Quantum-Introduces-Aliro-Simulator-For-Organizations-Designing-and-Constructing-The-Worlds-First-Quantum-Networks
+    source_type: press
+  - date: 2023-10
+    tag: network
+    headline: Funding round closed (Accenture Ventures participation) to advance entanglement-based secure networking
+    source_url: https://newsroom.accenture.com/news/2023/accenture-invests-in-aliro-quantum-to-establish-secure-quantum-networks
+    source_type: press
+  - date: 2023-02
+    tag: network
+    headline: AliroNet selected as the network controller for the EPB Quantum Network in Chattanooga — first US commercial quantum network (with Qubitekk hardware)
+    source_url: https://www.businesswire.com/news/home/20230228005236/en/Aliro-Quantums-AliroNet-Chosen-as-the-Network-Controller-for-EPB-Quantum-Network-powered-by-Qubitekk
+    source_type: press
+  - date: 2021-09
+    tag: software
+    headline: US Air Force AFWERX contracts awarded to develop quantum network simulation and control software
+    source_url: https://www.prnewswire.com/news-releases/aliro-quantum-secures-contracts-from-us-air-force-to-accelerate-development-of-quantum-network-simulation-and-control-technologies-301336652.html
+    source_type: press
+  - date: 2019-09
+    tag: network
+    headline: Aliro emerges from stealth as a Harvard (Narang Lab) spin-out; Jim Ricotta joins as CEO; $2.7M seed led by Flybridge
+    source_url: https://thequantuminsider.com/2019/09/26/qc-startup-aliro-gets-multi-million-dollar-cash-injection-2/
+    source_type: press
+
+roadmap:
+  - target: 2027
+    item: Pre-configured satellite modules (with hardware specifications and cost models) for the Aliro Simulator, enabling design of fibre+satellite hybrid QKD networks
+    source_url: https://quantumzeitgeist.com/navigating-the-quantum-future-a-look-at-aliros-product-roadmap/
+    tag: software
+  - target: 2026
+    item: ML-driven link-degradation prediction and pre-emptive re-routing in the AliroNet Orchestrator; unified quantum+classical operations dashboards
+    source_url: https://quantumzeitgeist.com/navigating-the-quantum-future-a-look-at-aliros-product-roadmap/
+    tag: network
+
+current_flagship:
+  name: AliroNet
+  generation: full-stack quantum-network orchestration suite (Simulator / Emulator / Pilot / Production modes); AliroNet Quickstart turnkey deployment as of 2025
+
+references:
+  - kind: press
+    citation_key: null
+    url: https://www.businesswire.com/news/home/20230228005236/en/Aliro-Quantums-AliroNet-Chosen-as-the-Network-Controller-for-EPB-Quantum-Network-powered-by-Qubitekk
+    note: EPB Chattanooga network controller selection — first US commercial quantum network
+  - kind: press
+    citation_key: null
+    url: https://www.businesswire.com/news/home/20250916953518/en/Aliro-Achieves-Critical-Milestone-in-Operationalizing-Quantum-Networks
+    note: 50-device support milestone and first AliroNet Quickstart deployment (BBM92)
+  - kind: press
+    citation_key: null
+    url: https://www.businesswire.com/news/home/20240910658943/en/Aliro-Expands-Relationship-with-U.S.-Air-Force-for-Quantum-Networking
+    note: AFRL simulator and services agreement (2024)
+  - kind: blog
+    citation_key: null
+    url: https://www.aliroquantum.com/product/network
+    note: Aliro Q.Network product page — current capabilities overview
+  - kind: blog
+    citation_key: null
+    url: https://www.aliroquantum.com/real-world-quantum-network-deployments-white-paper
+    note: "\"Real World Quantum Network Deployments\" whitepaper"
+  - kind: blog
+    citation_key: null
+    url: https://www.aliroquantum.com/blog/why-quantum-networks-need-orchestration-today
+    note: Orchestration positioning blog post
+  - kind: blog
+    citation_key: null
+    url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    note: 2026 Series B coverage
+
+partial:
+  - modalities.network.role  # "orchestrator" is the closest schema value, but Aliro also supplies simulation and emulation tooling
+  - revenue
+  - headcount
+
+last_verified: 2026-05-13
+verification_method: web

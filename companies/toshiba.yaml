@@ -1,0 +1,104 @@
+slug: toshiba
+name: Toshiba (Cambridge Research Laboratory)
+categories: [qkd]
+hq: Cambridge, UK
+founded: 1991
+status: public
+parent: toshiba
+logo:
+  domain: toshiba.eu
+
+positioning: >
+  Quantum Key Distribution business unit of Toshiba Europe Ltd, run out of the
+  Cambridge Research Laboratory (CRL) and led by Andrew Shields. Scope of this
+  dossier is the QKD product line and Twin-Field QKD research programme — not
+  the wider Toshiba Corporation conglomerate. Ships two commercial QKD systems
+  (Multiplexed MU and Long Distance LD) for metro and inter-city deployments,
+  with the BT London quantum-secured metro network and the JPMorgan Chase /
+  Ciena 800 Gbps co-existence trial as its flagship references.
+
+modalities:
+  qkd:
+    protocol: [BB84, decoy-state, Twin-Field]
+    rate_distance: "MU: >40 kb/s @ 10 dB (~50 km), 30 dB loss budget; LD: 300 kb/s @ 10 dB, 150 km+; TF-QKD: 600 km lab demo"
+    deployed_demos:
+      - BT–Toshiba London quantum-secured metro network (Docklands / City / M4 corridor), commercial trial launched 2022 with EY as first customer
+      - JPMorgan Chase / Toshiba / Ciena — QKD multiplexed with 2x 800 Gbps + 8x 100 Gbps data channels over 70 km production-simulation fibre (2022)
+      - National Composites Centre ↔ Centre for Modelling & Simulation (Bristol) — coherent / Twin-Field QKD over deployed telecom fibre (2025, with BT)
+      - Quantum Corridor (US Midwest) — first cross-state QKD over live commercial metro fibre (2025)
+      - 600 km Twin-Field QKD with dual-band stabilisation, Cambridge lab (Pittaluga et al. 2021)
+
+milestones:
+  - date: 2025-12
+    tag: qkd
+    headline: Quantum Corridor + Toshiba — first cross-state QKD over live commercial metro fibre (US Midwest)
+    source_url: https://news.toshiba.com/press-releases/press-release-details/2025/Quantum-Corridor-Toshiba-Demonstrate-First-Cross-State-Quantum-Key-Distribution-Over-Live-Commercial-Metro-Fiber-Network/default.aspx
+    source_type: press
+  - date: 2025-04
+    tag: qkd
+    headline: Coherent / Twin-Field QKD demonstrated on standard deployed telecom fibre — semiconductor receivers, no cryogenics; Nature paper
+    source_url: https://www.toshiba.eu/quantum/news/toshiba-breakthrough-on-national-quantum-networking/
+    source_type: paper
+  - date: 2022-04
+    tag: qkd
+    headline: BT–Toshiba commercial London metro QKD trial launched with EY as anchor customer
+    source_url: https://newsroom.bt.com/bt-and-toshiba-to-build-worlds-first-commercial-quantum-secured-metro-network-across-london/
+    source_type: press
+  - date: 2022-02
+    tag: qkd
+    headline: JPMorgan Chase / Toshiba / Ciena — QKD co-existing with 800 Gbps data channels on a single 70 km fibre, securing blockchain workload
+    source_url: https://www.jpmorganchase.com/newsroom/press-releases/2022/jpmc-toshiba-ciena-build-first-quantum-key-distribution-network
+    source_type: press
+  - date: 2021-10
+    tag: qkd
+    headline: BT and Toshiba announce world-first commercial quantum-secured metro network across London
+    source_url: https://www.toshiba.eu/pages/eu/Cambridge-Research-Laboratory/bt-and-toshiba-to-build-worlds-first-quantum-secured-commercial-metro-network-across-london
+    source_type: press
+  - date: 2021-06
+    tag: qkd
+    headline: 600 km Twin-Field QKD with dual-band phase stabilisation, Nature Photonics (Pittaluga et al.)
+    source_url: https://www.nature.com/articles/s41566-021-00811-0
+    source_type: paper
+
+roadmap:
+  - target: 2026
+    item: Transition Twin-Field / coherent QKD from lab to deployed national-scale telecom links; continued EuroQCI national testbed integration
+    source_url: https://www.toshiba.eu/quantum/news/toshiba-breakthrough-on-national-quantum-networking/
+    tag: qkd
+
+current_flagship:
+  name: Multiplexed QKD System MU + Long Distance QKD System LD
+  generation: commercial gen-2 (decoy-state BB84); Twin-Field reference platform in field trials
+
+references:
+  - kind: paper
+    citation_key: null
+    url: https://www.nature.com/articles/s41566-021-00811-0
+    note: Pittaluga et al., "600-km repeater-like quantum communications with dual-band stabilization", Nature Photonics 15, 530–535 (2021)
+  - kind: paper
+    citation_key: null
+    url: https://www.toshiba.eu/quantum/news/toshiba-breakthrough-on-national-quantum-networking/
+    note: 2025 Nature paper — coherent QKD over deployed telecom fibre with semiconductor receivers (announcement; full citation per Toshiba CRL release)
+  - kind: vendor
+    citation_key: null
+    url: https://www.toshiba.eu/quantum/products/quantum-key-distribution/multiplexed-qkd-system-mu/
+    note: Multiplexed QKD System MU datasheet — >40 kb/s @ 10 dB, 30 dB loss budget, O-band WDM
+  - kind: vendor
+    citation_key: null
+    url: https://www.toshiba.eu/quantum/products/quantum-key-distribution/long-distance-qkd-system-ld/
+    note: Long Distance QKD System LD datasheet — 300 kb/s @ 10 dB, 150 km+, C-band
+  - kind: press
+    citation_key: null
+    url: https://www.jpmorganchase.com/newsroom/press-releases/2022/jpmc-toshiba-ciena-build-first-quantum-key-distribution-network
+    note: JPMorgan / Toshiba / Ciena QKD + 800 Gbps co-existence trial (2022)
+  - kind: press
+    citation_key: null
+    url: https://newsroom.bt.com/bt-and-toshiba-to-build-worlds-first-commercial-quantum-secured-metro-network-across-london/
+    note: BT–Toshiba London metro QKD network launch
+
+partial:
+  - founded
+  - roadmap
+
+last_verified: 2026-05-13
+verification_method: web

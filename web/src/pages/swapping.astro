@@ -21,6 +21,7 @@ import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
 import Callout from "../components/Callout.astro";
 import Math from "../components/Math.astro";
+import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",   label: "Overview" },
@@ -49,7 +50,7 @@ const sections = [
       <header class="hero" id="overview" data-nav-section>
         <h1>Entanglement swapping</h1>
         <p>
-          Two Bell pairs sharing one node can be <strong>fused</strong> into a single Bell pair
+          Two Bell pairs sharing one node can be <strong>swapped</strong> into a single Bell pair
           spanning the two outer endpoints — without those endpoints ever interacting and
           without measuring the qubits being networked. The trick is a Bell-state
           measurement at the shared node: the BSM consumes the two qubits at the relay,
@@ -58,14 +59,15 @@ const sections = [
           channel <SourceNote id="zukowski-prl-1993" />.
         </p>
         <p>
-          Swapping is the primitive that lets a quantum network <strong>reach</strong>.
-          A direct Bell pair between Alice and Bob in standard fibre runs out of usable
-          rate after a few tens of kilometres — fibre attenuation at 0.20 dB/km eats the
-          photon budget fast, and current heralded-entanglement demonstrations are in
-          the 10–50 km range over deployed fibre <SourceNote id="knaut-nature-2024" />.
-          Chains of swaps stitch shorter pairs together so the end-to-end pair can span
-          much further. Every memory-based quantum repeater — and every link
-          architecture in the distribution subject — is built on this
+          Swapping is the primitive that <strong>extends the reach</strong> of a quantum
+          network. A direct Bell pair between Alice and Bob in standard fibre runs out
+          of usable rate after a few tens of kilometres. At 0.20 dB/km, photon survival
+          halves every 15 km — so only ~1 % make it through 100 km. Current heralded
+          entanglement demonstrations sit in the 10–50 km range over deployed
+          fibre <SourceNote id="knaut-nature-2024" />. Chains of swaps stitch shorter
+          pairs together so the end-to-end pair can span much further. Every memory-based
+          quantum repeater — and every link architecture in
+          <a href={url("/distribution")}>distribution</a> — is built on this
           primitive <SourceNote id="kumar-ijndc-2025" />.
         </p>
       </header>
@@ -127,7 +129,7 @@ const sections = [
 
         <figure class="sw" id="sw-fig" data-sw>
           <svg viewBox="0 0 720 280" role="img"
-               aria-label="Entanglement swapping animation: two Bell pairs Alice-Relay and Relay-Bob fused via BSM at the relay"
+               aria-label="Entanglement swapping animation: two Bell pairs Alice-Relay and Relay-Bob joined via a BSM at the relay"
                data-sw-svg>
             {/* ─── Endpoint and relay labels ───────────────────── */}
             <text x="80"  y="22" text-anchor="middle" class="sw-label">Alice</text>
