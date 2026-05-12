@@ -919,43 +919,19 @@ const sections = [
             Photonic measurement is destructive — a detection consumes the photon. The
             real distinction between heralding and postselection isn't <em>which</em>
             photons get measured; it's whether a usable state survives the procedure and
-            whether a real-time success signal is available.
+            whether a real-time success signal is available. Three modes:
           </p>
-          <p>
-            <strong>Postselected</strong>: every photon is measured, no quantum state
-            survives, and success is determined <em>after the fact</em> by filtering the
-            classical click records. Downstream protocols cannot consume the state because
-            it no longer exists.
-          </p>
-          <p>
-            <strong>Heralded</strong>: a click pattern at dedicated detectors certifies in
-            real time that a desired state has been prepared somewhere addressable that
-            downstream protocols can use. The state can live in different carriers
-            depending on the scheme:
-          </p>
-          <ul>
-            <li>
-              <strong>One-node, photonic carrier</strong> (panel b below). A linear-optical
-              circuit at a single node routes some photons to <strong>ancilla</strong>
-              detectors that herald; the rest exit as target modes carrying the entangled
-              state forward. The standard photonic state-preparation
-              picture <SourceNote id="forbes-rpp-2025" />.
-            </li>
-            <li>
-              <strong>Two-node, memory carrier</strong> (panel c below). Two distant
-              memories each emit a photon entangled with itself; both photons converge at
-              a midpoint Bell-state measurement; a click projects the two memories into
-              an entangled pair. Every photon is consumed at the midpoint — the surviving
-              state lives in the memories at the two endpoints. This is the heralded
-              entanglement generation in Azuma's worked example
-              (RMP 95.045006 §II.B) <SourceNote id="azuma-rmp-95" /> and the primitive
-              that every memory-based repeater is built on.
-            </li>
-          </ul>
 
-          <figure class="hf">
-            <svg viewBox="0 0 960 240" role="img"
-                 aria-label="Postselection versus one-node and two-node heralding">
+          <p>
+            <strong>(a) Postselected.</strong> Every photon is measured; no quantum state
+            survives. Success is determined <em>after the fact</em> by filtering the
+            classical click records. Downstream protocols cannot consume the state
+            because it no longer exists.
+          </p>
+
+          <figure class="hf hf--solo">
+            <svg viewBox="0 0 240 220" role="img"
+                 aria-label="Postselection — every photon is measured, no state survives">
               {/* Panel (a): postselection — left half. Every output mode
                   lands at a detector; no target state survives. All
                   panel content fits within x=10..275, leaving a clear
@@ -1011,15 +987,25 @@ const sections = [
               <text x="142" y="208" text-anchor="middle" class="hf-caption hf-caption--mute">
                 only the click pattern is the output
               </text>
+            </svg>
+            <figcaption>
+              Filled dots are single photons entering a linear-optical circuit
+              <Math tex="U" />. Every output mode terminates at a detector, so no
+              entangled state is available for downstream use.
+            </figcaption>
+          </figure>
 
-              {/* Vertical divider, comfortably between the two panels */}
-              <line x1="320" y1="38" x2="320" y2="210"
-                    stroke="var(--color-rule)" stroke-width="0.6" stroke-dasharray="3,2"/>
+          <p>
+            <strong>(b) Heralded — one-node, photonic carrier.</strong> A linear-optical
+            circuit at a single node routes some photons to <strong>ancilla</strong>
+            detectors that herald; the rest exit as target modes carrying the entangled
+            state forward. The standard photonic state-preparation
+            picture <SourceNote id="forbes-rpp-2025" />.
+          </p>
 
-              {/* Panel (b): heralding — right half. Bottom 2 modes are
-                  ancillas → detectors; top 2 are the target modes,
-                  un-measured, carrying |ψ⟩ to downstream use. All panel
-                  content begins at x=370. */}
+          <figure class="hf hf--solo">
+            <svg viewBox="360 0 280 220" role="img"
+                 aria-label="One-node heralding — ancilla photons signal, target photons survive">
               <text x="370" y="22" class="hf-title">(b) heralding — one node</text>
 
               {/* 4 input photons */}
@@ -1079,16 +1065,29 @@ const sections = [
               <text x="496" y="208" text-anchor="middle" class="hf-caption hf-caption--mute">
                 downstream protocols can use it
               </text>
+            </svg>
+            <figcaption>
+              Adapted from Forbes et al. <em>Rep. Prog. Phys.</em> 88, 086002 (2025),
+              Fig. 1. Some output modes (orange) terminate at ancilla detectors that
+              herald; the remaining modes (purple) carry the entangled state
+              <Math tex="|\\psi\\rangle" /> forward to downstream protocols.
+            </figcaption>
+          </figure>
 
-              {/* Divider between panel (b) and panel (c) */}
-              <line x1="640" y1="38" x2="640" y2="210"
-                    stroke="var(--color-rule)" stroke-width="0.6" stroke-dasharray="3,2"/>
+          <p>
+            <strong>(c) Heralded — two-node, memory carrier.</strong> Two distant memories
+            each emit a photon that travels to a midpoint Bell-state measurement; a click
+            pattern there projects the two memories into a Bell state. Every photon is
+            consumed at the midpoint — the surviving state lives in the memories at the
+            two endpoints, not in any photonic mode. This is the heralded entanglement
+            generation in Azuma's worked example (RMP 95.045006
+            §II.B) <SourceNote id="azuma-rmp-95" /> and the primitive that every
+            memory-based repeater is built on.
+          </p>
 
-              {/* Panel (c): heralding — two nodes (Azuma p.14).
-                  Memory X at left edge, memory Y at right edge, each
-                  emits a photon entangled with itself toward a midpoint
-                  BSM. Click pattern projects the memories into a Bell
-                  state. All panel content lives in x=655..955. */}
+          <figure class="hf hf--solo">
+            <svg viewBox="650 0 305 220" role="img"
+                 aria-label="Two-node heralding — memories at distant nodes, photons converge to midpoint BSM">
               <text x="665" y="22" class="hf-title">(c) heralding — two nodes</text>
 
               {/* Memory X at left */}
@@ -1145,21 +1144,11 @@ const sections = [
               </text>
             </svg>
             <figcaption>
-              Panels (a) and (b) adapted from Forbes et al. <em>Rep. Prog. Phys.</em> 88,
-              086002 (2025), Fig. 1. Filled dots are single photons entering a linear-
-              optical circuit <Math tex="U" />.
-              <strong>(a) Postselection</strong> consumes every photon at measurement;
-              the click pattern is the only output.
-              <strong>(b) One-node heralding</strong> routes a subset (orange) to ancilla
-              detectors whose click pattern certifies the un-measured target modes
-              (purple) — those photons survive in the entangled state
-              <Math tex="|\\psi\\rangle" />.
-              <strong>(c) Two-node heralding</strong> (Azuma RMP 95.045006 §II.B) has two
-              distant memories <Math tex="X" /> and <Math tex="Y" /> each emitting a
-              photon that travels to a midpoint Bell-state measurement; a click pattern
-              there projects the memories into <Math tex="|\\Psi^+\\rangle_{XY}" />. The
-              surviving state lives in matter, not photons — the same heralding principle,
-              different state carrier.
+              Two distant memories <Math tex="X" /> and <Math tex="Y" /> each emit a
+              photon that converges at a midpoint Bell-state measurement; a click pattern
+              projects the memories into <Math tex="|\\Psi^+\\rangle_{XY}" />. The
+              surviving state lives in matter — the same heralding principle as panel
+              (b), but with a different carrier.
             </figcaption>
           </figure>
 
@@ -2392,6 +2381,12 @@ const sections = [
     block-size: auto;
     max-block-size: 240px;
     display: block;
+  }
+  /* hf--solo: a standalone panel figure (one diagram per <figure>),
+     each below its paragraph. Capped at 480px on wide screens so a
+     single panel doesn't grow comically large; full width on mobile. */
+  .hf--solo {
+    max-inline-size: 480px;
   }
   .hf figcaption {
     margin: 0;
