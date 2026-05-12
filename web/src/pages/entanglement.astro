@@ -916,31 +916,46 @@ const sections = [
 
         <Callout label="Postselection vs heralding">
           <p>
-            Photonic measurement is destructive — a detection consumes the photon — which
-            forces a choice for any scheme that <em>generates</em> entanglement using
-            measurement.
+            Photonic measurement is destructive — a detection consumes the photon. The
+            real distinction between heralding and postselection isn't <em>which</em>
+            photons get measured; it's whether a usable state survives the procedure and
+            whether a real-time success signal is available.
           </p>
           <p>
-            <strong>Postselected</strong>: every photon is measured, and successful events
-            are filtered out of the data afterwards. No entangled state survives the
-            procedure — only measurement records that match what an entangled state would
-            have produced.
+            <strong>Postselected</strong>: every photon is measured, no quantum state
+            survives, and success is determined <em>after the fact</em> by filtering the
+            classical click records. Downstream protocols cannot consume the state because
+            it no longer exists.
           </p>
           <p>
-            <strong>Heralded</strong>: some of the photons in the apparatus are dedicated
-            to signalling success rather than carrying the state. These auxiliary photons
-            — <strong>ancilla</strong> photons, the standard quantum-information term for
-            auxiliary particles introduced to serve a protocol rather than carry its
-            output — are routed to dedicated detectors and consumed there. A specific
-            click pattern at those detectors confirms that the <em>other</em> photons in
-            the apparatus, which are not measured, form the desired entangled state and
-            are available for downstream use. Each attempt is therefore known in real
-            time to have succeeded or failed <SourceNote id="forbes-rpp-2025" />.
+            <strong>Heralded</strong>: a click pattern at dedicated detectors certifies in
+            real time that a desired state has been prepared somewhere addressable that
+            downstream protocols can use. The state can live in different carriers
+            depending on the scheme:
           </p>
+          <ul>
+            <li>
+              <strong>One-node, photonic carrier</strong> (panel b below). A linear-optical
+              circuit at a single node routes some photons to <strong>ancilla</strong>
+              detectors that herald; the rest exit as target modes carrying the entangled
+              state forward. The standard photonic state-preparation
+              picture <SourceNote id="forbes-rpp-2025" />.
+            </li>
+            <li>
+              <strong>Two-node, memory carrier</strong> (panel c below). Two distant
+              memories each emit a photon entangled with itself; both photons converge at
+              a midpoint Bell-state measurement; a click projects the two memories into
+              an entangled pair. Every photon is consumed at the midpoint — the surviving
+              state lives in the memories at the two endpoints. This is the heralded
+              entanglement generation in Azuma's worked example
+              (RMP 95.045006 §II.B) <SourceNote id="azuma-rmp-95" /> and the primitive
+              that every memory-based repeater is built on.
+            </li>
+          </ul>
 
           <figure class="hf">
-            <svg viewBox="0 0 640 240" role="img"
-                 aria-label="Postselection versus heralding entangled-state generation circuits">
+            <svg viewBox="0 0 960 240" role="img"
+                 aria-label="Postselection versus one-node and two-node heralding">
               {/* Panel (a): postselection — left half. Every output mode
                   lands at a detector; no target state survives. All
                   panel content fits within x=10..275, leaving a clear
@@ -1005,7 +1020,7 @@ const sections = [
                   ancillas → detectors; top 2 are the target modes,
                   un-measured, carrying |ψ⟩ to downstream use. All panel
                   content begins at x=370. */}
-              <text x="370" y="22" class="hf-title">(b) heralding</text>
+              <text x="370" y="22" class="hf-title">(b) heralding — one node</text>
 
               {/* 4 input photons */}
               <g fill="var(--color-accent)">
@@ -1064,16 +1079,87 @@ const sections = [
               <text x="496" y="208" text-anchor="middle" class="hf-caption hf-caption--mute">
                 downstream protocols can use it
               </text>
+
+              {/* Divider between panel (b) and panel (c) */}
+              <line x1="640" y1="38" x2="640" y2="210"
+                    stroke="var(--color-rule)" stroke-width="0.6" stroke-dasharray="3,2"/>
+
+              {/* Panel (c): heralding — two nodes (Azuma p.14).
+                  Memory X at left edge, memory Y at right edge, each
+                  emits a photon entangled with itself toward a midpoint
+                  BSM. Click pattern projects the memories into a Bell
+                  state. All panel content lives in x=655..955. */}
+              <text x="665" y="22" class="hf-title">(c) heralding — two nodes</text>
+
+              {/* Memory X at left */}
+              <rect x="666" y="78" width="30" height="32" rx="3"
+                    fill="var(--color-bg)" stroke="var(--color-rule)" stroke-width="1.2"/>
+              <text x="681" y="100" text-anchor="middle" class="hf-mem">X</text>
+
+              {/* Memory Y at right */}
+              <rect x="918" y="78" width="30" height="32" rx="3"
+                    fill="var(--color-bg)" stroke="var(--color-rule)" stroke-width="1.2"/>
+              <text x="933" y="100" text-anchor="middle" class="hf-mem">Y</text>
+
+              {/* Photon flow lines (X → BSM, Y → BSM, both converging) */}
+              <line x1="696" y1="94" x2="797" y2="94"
+                    stroke="var(--color-accent)" stroke-width="1.4"/>
+              <line x1="918" y1="94" x2="822" y2="94"
+                    stroke="var(--color-accent)" stroke-width="1.4"/>
+
+              {/* Small photon dots along the flow lines to denote direction */}
+              <g fill="var(--color-accent)">
+                <circle cx="722" cy="94" r="2.5"/>
+                <circle cx="750" cy="94" r="2.5"/>
+                <circle cx="775" cy="94" r="2.5"/>
+                <circle cx="892" cy="94" r="2.5"/>
+                <circle cx="867" cy="94" r="2.5"/>
+                <circle cx="842" cy="94" r="2.5"/>
+              </g>
+
+              {/* BSM box at midpoint */}
+              <rect x="795" y="80" width="28" height="28" rx="3"
+                    fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.4"/>
+              <text x="809" y="124" text-anchor="middle" class="hf-bsm">BSM</text>
+
+              {/* Click marks above BSM (●●) */}
+              <g class="hf-click hf-click--herald">
+                <text x="803" y="73">●</text>
+                <text x="813" y="73">●</text>
+              </g>
+
+              {/* Resulting Bell-pair wave between memories — built as a
+                  series of repeating short curves, dashed-feel. */}
+              <path d="M 696 155 q 6 -7 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0
+                       t 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0
+                       t 13 0 t 13 0 t 13 0"
+                    fill="none" stroke="#7d57b1" stroke-width="1.4"/>
+              <text x="810" y="150" text-anchor="middle" class="hf-target">|Ψ⁺⟩<tspan baseline-shift="sub" font-size="9">XY</tspan></text>
+
+              {/* Panel caption */}
+              <text x="810" y="190" text-anchor="middle" class="hf-caption">
+                photons converge → midpoint clicks
+              </text>
+              <text x="810" y="208" text-anchor="middle" class="hf-caption hf-caption--mute">
+                memories X, Y survive entangled
+              </text>
             </svg>
             <figcaption>
-              Adapted from Forbes et al. <em>Rep. Prog. Phys.</em> 88, 086002 (2025), Fig. 1.
-              Filled dots are single photons entering a linear-optical circuit
-              <Math tex="U" />. <strong>Postselection</strong> (left) consumes every
-              photon at measurement; the click pattern is the only output.
-              <strong>Heralding</strong> (right) routes a subset (orange) to ancilla
+              Panels (a) and (b) adapted from Forbes et al. <em>Rep. Prog. Phys.</em> 88,
+              086002 (2025), Fig. 1. Filled dots are single photons entering a linear-
+              optical circuit <Math tex="U" />.
+              <strong>(a) Postselection</strong> consumes every photon at measurement;
+              the click pattern is the only output.
+              <strong>(b) One-node heralding</strong> routes a subset (orange) to ancilla
               detectors whose click pattern certifies the un-measured target modes
               (purple) — those photons survive in the entangled state
-              <Math tex="|\\psi\\rangle" />, ready for the next protocol step.
+              <Math tex="|\\psi\\rangle" />.
+              <strong>(c) Two-node heralding</strong> (Azuma RMP 95.045006 §II.B) has two
+              distant memories <Math tex="X" /> and <Math tex="Y" /> each emitting a
+              photon that travels to a midpoint Bell-state measurement; a click pattern
+              there projects the memories into <Math tex="|\\Psi^+\\rangle_{XY}" />. The
+              surviving state lives in matter, not photons — the same heralding principle,
+              different state carrier.
             </figcaption>
           </figure>
 
@@ -2357,6 +2443,18 @@ const sections = [
   :global(.hf-target-sub) {
     font-size: 10px;
     fill: #7d57b1;
+  }
+  :global(.hf-mem) {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--color-text);
+  }
+  :global(.hf-bsm) {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    fill: var(--color-text);
   }
   :global(.hf-caption) {
     font-size: 10.5px;
