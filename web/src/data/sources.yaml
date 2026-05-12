@@ -243,6 +243,22 @@
   type: paper
   doi: "10.1126/science.abg1919"
 
+- id: hermans-nature-2022
+  title: "Qubit teleportation between non-neighbouring nodes in a quantum network"
+  authors: ["Sophie L. N. Hermans", "Matteo Pompili", "Hans K. C. Beukers", "Simon Baier", "Johannes Borregaard", "Ronald Hanson"]
+  publisher: "Nature"
+  year: 2022
+  type: paper
+  doi: "10.1038/s41586-022-04697-y"
+
+- id: krutyanskiy-prl-2023
+  title: "Entanglement of trapped-ion qubits separated by 230 metres"
+  authors: ["V. Krutyanskiy", "M. Galli", "V. Krcmarsky", "S. Baier", "D. A. Fioretto", "Y. Pu", "et al."]
+  publisher: "Physical Review Letters"
+  year: 2023
+  type: paper
+  doi: "10.1103/PhysRevLett.130.050803"
+
 - id: kwiat-prl-1995
   title: "New high-intensity source of polarization-entangled photon pairs"
   authors: ["Paul G. Kwiat", "Klaus Mattle", "Harald Weinfurter", "Anton Zeilinger", "Alexander V. Sergienko", "Yanhua Shih"]
