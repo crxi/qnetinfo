@@ -113,7 +113,7 @@ export const SUBJECTS: Subject[] = [
   },
   {
     slug: "spectrum",
-    title: "Quantum platforms on the electromagnetic spectrum",
+    title: "Spectrum — quantum platforms across the EM range",
     navLabel: "Spectrum",
     blurb: "Eleven qubit, memory, and photon-source platforms placed by transition frequency, with vendor flagship machines and the C-band fibre window.",
     status: "shipped",
@@ -161,7 +161,7 @@ export const SUBJECTS: Subject[] = [
   },
   {
     slug: "applications",
-    title: "What the quantum internet is for",
+    title: "Applications of the quantum internet",
     navLabel: "Applications",
     blurb: "QKD, distributed quantum computing, blind quantum computing, networked sensing, and clock synchronisation — what each needs from the network.",
     status: "shipped",
@@ -169,7 +169,7 @@ export const SUBJECTS: Subject[] = [
   },
   {
     slug: "maturity",
-    title: "TRL landscape — per-platform, per-capability",
+    title: "Maturity — TRL across platforms",
     navLabel: "Maturity",
     blurb: "Purohit's QTRL framework over Meddeb's per-platform memory-TRL benchmark, with capability-aware ratings rather than one-size-fits-all numbers.",
     status: "shipped",
@@ -177,7 +177,7 @@ export const SUBJECTS: Subject[] = [
   },
   {
     slug: "companies",
-    title: "Vendors — landscape and long-term tracking",
+    title: "Companies — vendor landscape",
     navLabel: "Companies",
     blurb: "A growing per-vendor index with milestone timelines, public roadmaps, and links to canonical announcements. Maintained as the field evolves.",
     status: "shipped",

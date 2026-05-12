@@ -48,7 +48,7 @@ const haveDossiers = COMPANIES.length > 0;
 ---
 
 <Infographic
-  title="Vendors — landscape and long-term tracking"
+  title="Companies — vendor landscape"
   description="A growing index of vendors building quantum-network hardware and applications. Vendors with a YAML dossier render as deep-dive sub-pages with milestones, roadmap, and capability metrics."
   references={[
     "ezratty-uqt-2025-p2",
@@ -62,14 +62,13 @@ const haveDossiers = COMPANIES.length > 0;
     <Stack space="var(--space-6)">
 
       <header class="hero" id="overview" data-nav-section>
-        <h1>Vendors — landscape and long-term tracking</h1>
+        <h1>Companies — vendor landscape</h1>
         <p>
           A quantum-networking workspace that doesn't track vendors loses touch with what
-          can actually be procured. This page is the workspace's vendor index, with
-          two layers: a curated dossier per vendor (built from a per-vendor YAML in
-          <code>qnetinfo/companies/</code>), and a static landscape snapshot for vendors
-          where a dossier hasn't been compiled yet
-          <SourceNote id="ezratty-uqt-2025-p2" /><SourceNote id="meddeb-comnet-2025" />.
+          can actually be procured. This page has two layers: a deep-dive dossier per
+          vendor — milestones, roadmap, capability metrics, all cited to primary sources
+          — and a static landscape snapshot for vendors where the dossier hasn't been
+          written yet <SourceNote id="ezratty-uqt-2025-p2" /><SourceNote id="meddeb-comnet-2025" />.
         </p>
         <p>
           Vendors split naturally into three buckets: <strong>computers</strong> (build
@@ -88,7 +87,7 @@ const haveDossiers = COMPANIES.length > 0;
             vendor technology pages); see each page for source links.
           </p>
         ) : (
-          <p class="empty">No dossiers compiled yet. Add a YAML to <code>qnetinfo/companies/</code> to populate.</p>
+          <p class="empty">No dossiers compiled yet.</p>
         )}
         {grouped.map((group) => (
           <div class="dossier-group">
@@ -203,21 +202,21 @@ const haveDossiers = COMPANIES.length > 0;
             + one-line positions, drawn from survey literature. Goes stale within months.
           </li>
           <li>
-            <strong>Dossiers are the long-term tracking surface.</strong> One
-            <code>qnetinfo/companies/&lt;slug&gt;.yaml</code> per vendor with milestones,
-            roadmap, capability metrics, and citations. Schema documented in
-            <code>qnetinfo/companies/CLAUDE.md</code>.
-          </li>
-          <li>
-            <strong>The coupling is one-way:</strong> YAML → Astro at build time. Dropping
-            a new YAML file in <code>qnetinfo/companies/</code> and rebuilding produces a
-            new sub-page automatically. No template edits per vendor.
+            <strong>Dossiers are the long-term tracking surface.</strong> Milestones,
+            roadmap, capability metrics, and citations. Fields the dossier couldn't
+            verify to a primary source are shown as <em>unverified</em> rather than
+            filled in with a guess.
           </li>
           <li>
             <strong>Source priority for dossiers:</strong> peer-reviewed paper &gt; arXiv
             preprint &gt; vendor blog or technology page &gt; press release &gt; industry
             tracker. Wikipedia is acceptable only for company-history facts, never for
             technical numbers.
+          </li>
+          <li>
+            <strong>Staleness.</strong> Each dossier records when it was last verified.
+            Entries older than three months get a <em>stale</em> badge on the dossier
+            page — a prompt to re-check the primary sources.
           </li>
         </ul>
         <p>
