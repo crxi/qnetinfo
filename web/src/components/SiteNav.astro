@@ -289,6 +289,12 @@ const groupedTiers = TIER_ORDER
       border-block-end: 1px solid var(--color-rule);
       margin-block-end: var(--space-3);
       gap: var(--space-1);
+      /* Fade-edge swipe affordance — a soft right gradient signals
+         that the strip scrolls horizontally when the subject list
+         overflows the viewport. */
+      position: sticky;
+      mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+      -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
     }
     .site-nav__title,
     .site-nav__group-label,

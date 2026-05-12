@@ -146,6 +146,7 @@ const sections = [
       <section id="compare" data-nav-section>
         <h2>Side-by-side comparison</h2>
 
+        <div class="links-table-wrap">
         <table class="links-table">
           <thead>
             <tr>
@@ -187,6 +188,7 @@ const sections = [
             </tr>
           </tbody>
         </table>
+        </div>
 
         <p>
           Each link has a regime where it wins. The metrics subject covers loss-budget
@@ -219,7 +221,15 @@ const sections = [
   }
   li { line-height: var(--leading-snug); }
 
+  .links-table-wrap {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+  }
   .links-table {
+    min-inline-size: 56rem;
     inline-size: 100%;
     border-collapse: collapse;
     font-size: var(--text-sm);

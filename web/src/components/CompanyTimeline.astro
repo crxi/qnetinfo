@@ -105,6 +105,7 @@ function placement(i: number): Placement {
 
 {hasContent ? (
   <figure class="ct">
+    <div class="ct-scroll">
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Company milestone and roadmap timeline">
       {/* Past/future axis band shading */}
       <rect x={PAD_L} y={AXIS_Y - 1} width={xForYear(nowFrac) - PAD_L} height={2}
@@ -148,6 +149,7 @@ function placement(i: number): Placement {
         );
       })}
     </svg>
+    </div>
     <figcaption>
       <span class="ct-legend"><span class="ct-dot ct-dot--past"></span> shipped milestone</span>
       <span class="ct-legend"><span class="ct-dot ct-dot--future"></span> public roadmap</span>
@@ -159,7 +161,20 @@ function placement(i: number): Placement {
 
 <style>
   .ct { margin: 0; display: grid; gap: var(--space-2); }
+  /* The SVG fills the container on desktop. At phone width the viewBox
+     (880×280) would scale to ~25% and the hardcoded 10px text would
+     become unreadable (~3-4px effective). Below 36rem the SVG wrapper
+     gets horizontal scroll with a min-width so the user pans the
+     timeline at legible size. Figcaption stays in normal flow. */
+  .ct-scroll { inline-size: 100%; }
   .ct svg { inline-size: 100%; block-size: auto; display: block; }
+  @media (max-width: 36rem) {
+    .ct-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .ct svg { min-inline-size: 720px; }
+  }
   :global(.ct-year) {
     font-family: var(--font-mono);
     font-size: 10px;

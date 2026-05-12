@@ -156,6 +156,7 @@ const sections = [
           rate, fidelity, and reach:
         </p>
 
+        <div class="apps-table-wrap">
         <table class="apps-table">
           <thead>
             <tr>
@@ -197,6 +198,7 @@ const sections = [
             </tr>
           </tbody>
         </table>
+        </div>
 
         <p>
           The metrics subject covers what these demands mean for a network's engineering
@@ -228,7 +230,15 @@ const sections = [
   }
   li { line-height: var(--leading-snug); }
 
+  .apps-table-wrap {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+  }
   .apps-table {
+    min-inline-size: 42rem;
     inline-size: 100%;
     border-collapse: collapse;
     font-size: var(--text-sm);

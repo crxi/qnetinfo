@@ -290,6 +290,7 @@ const sections = [
           collapsed onto, and therefore which Pauli to apply:
         </p>
 
+        <div class="tp-pauli-table-wrap">
         <table class="tp-pauli-table">
           <thead>
             <tr><th>(a, b)</th><th>Bell outcome</th><th>State at Bob before correction</th><th>Pauli <Math tex="P^{-1}" /> to apply</th></tr>
@@ -301,6 +302,7 @@ const sections = [
             <tr><td>(1, 1)</td><td><Math tex="|\\Psi^-\\rangle" /></td><td><Math tex="ZX|\\psi\\rangle" /></td><td><Math tex="ZX" /></td></tr>
           </tbody>
         </table>
+        </div>
 
         <Callout label="Does Bob already have |ψ⟩ after Alice's measurement?">
           <p>
@@ -794,7 +796,17 @@ const sections = [
   }
   ol.tp-steps li { line-height: var(--leading-snug); }
 
+  .tp-pauli-table-wrap {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    margin-block-end: var(--space-3);
+  }
   .tp-pauli-table {
+    inline-size: 100%;
+    min-inline-size: 40rem;
     border-collapse: collapse;
     margin: var(--space-2) 0;
     font-size: var(--text-sm);

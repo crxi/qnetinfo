@@ -290,6 +290,9 @@ const milestones: Milestone[] = [...company.milestones].sort(
     gap: var(--space-2);
     margin: 0;
   }
+  @media (max-width: 30rem) {
+    .vendor-meta { grid-template-columns: 1fr 1fr; }
+  }
   .vendor-meta div { display: grid; }
   .vendor-meta dt {
     font-size: var(--text-xs);
@@ -326,6 +329,12 @@ const milestones: Milestone[] = [...company.milestones].sort(
     padding-block: var(--space-2);
     border-block-start: 1px solid var(--color-rule);
   }
+  @media (max-width: 30rem) {
+    ol.timeline li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
   .timeline-date { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-mute); }
   .timeline-headline { font-weight: 500; color: var(--color-text); }
   .timeline-meta {
@@ -346,6 +355,12 @@ const milestones: Milestone[] = [...company.milestones].sort(
     gap: var(--space-3);
     padding-block: var(--space-1);
   }
+  @media (max-width: 30rem) {
+    ul.roadmap li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
   .roadmap-target { font-family: var(--font-mono); color: var(--color-accent); font-weight: 600; }
   .roadmap-item { color: var(--color-text); }
 
@@ -356,6 +371,9 @@ const milestones: Milestone[] = [...company.milestones].sort(
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     gap: var(--space-2) var(--space-3);
     margin: 0;
+  }
+  @media (max-width: 30rem) {
+    .modality-fields { grid-template-columns: 1fr; }
   }
   .modality-fields div { display: grid; gap: 2px; }
   .modality-fields dt {

@@ -88,6 +88,7 @@ const sections = [
           time you add 10 dB to the link.
         </p>
 
+        <div class="metric-table-wrap">
         <table class="metric-table">
           <thead>
             <tr>
@@ -130,6 +131,7 @@ const sections = [
             </tr>
           </tbody>
         </table>
+        </div>
 
         <p>
           Two patterns to take from the table. First, hollow-core fibre roughly halves
@@ -184,6 +186,7 @@ const sections = [
           the table below pulls from his Table 5 <SourceNote id="meddeb-comnet-2025" />.
         </p>
 
+        <div class="metric-table-wrap">
         <table class="metric-table">
           <thead>
             <tr>
@@ -232,6 +235,7 @@ const sections = [
             </tr>
           </tbody>
         </table>
+        </div>
 
         <p>
           Storage time matters in proportion to two other latencies in the network. A
@@ -310,6 +314,7 @@ const sections = [
           differences are forced by physics rather than by engineering
           choice <SourceNote id="cacciapuoti-ieeetc-2020" /><SourceNote id="wehner-science-2018" />:
         </p>
+        <div class="metric-table-wrap">
         <table class="qvc">
           <thead>
             <tr>
@@ -371,6 +376,7 @@ const sections = [
             </tr>
           </tbody>
         </table>
+        </div>
         <p>
           The framing comes from Cacciapuoti et al.'s communication-system view of the
           quantum internet, which models classical and quantum networks against the same
@@ -390,6 +396,7 @@ const sections = [
           efficiency are set aside for clarity.
         </p>
 
+        <div class="metric-table-wrap">
         <table class="metric-table metric-table--budget">
           <thead>
             <tr>
@@ -424,6 +431,7 @@ const sections = [
             </tr>
           </tbody>
         </table>
+        </div>
 
         <p>
           The numbers explain why nobody runs naked single-photon links beyond ~150 km
@@ -508,8 +516,17 @@ const sections = [
      table, and link-budget table. Same row/cell rhythm as the
      comparison table below but with a larger first column for the
      platform/medium name. */
+  .metric-table-wrap {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    margin-block-end: var(--space-3);
+  }
   .metric-table {
     inline-size: 100%;
+    min-inline-size: 48rem;
     border-collapse: collapse;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
@@ -572,6 +589,7 @@ const sections = [
      entries don't drift mid-row. */
   .qvc {
     inline-size: 100%;
+    min-inline-size: 44rem;
     border-collapse: collapse;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
