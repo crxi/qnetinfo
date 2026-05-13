@@ -92,7 +92,7 @@ key_personnel:
   - role: Chair & CEO (Cisco Systems Inc.)
     name: Chuck Robbins
     since: 2015-07
-    source_url: https://newsroom.cisco.com/c/r/newsroom/en/us/leadership/chuck-robbins.html
+    source_url: https://www.cisco.com/c/en/us/about/management.html
   - role: SVP, Outshift by Cisco / Office of the CTO (head of Cisco Quantum Labs)
     name: Vijoy Pandey
     since: 2022
@@ -101,7 +101,7 @@ key_personnel:
   - role: EVP & CFO
     name: Scott Herren
     since: 2020-12
-    source_url: https://newsroom.cisco.com/c/r/newsroom/en/us/leadership/scott-herren.html
+    source_url: https://www.cisco.com/c/en/us/about/management.html
 
 roadmap:
   - target: 2026-2027

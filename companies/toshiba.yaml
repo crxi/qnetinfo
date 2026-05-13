@@ -31,7 +31,7 @@ business_units:
     scope: Parent R&D; quantum-information theory and protocol work, corporate ownership of the Cambridge programme
     hq: Kawasaki, Japan
     lead: ""
-    source_url: https://www.global.toshiba/ww/outline/corporate/rdc.html
+    source_url: https://www.global.toshiba/ww/technology/corporate/rdc.html
 
 modalities:
   qkd:
@@ -81,25 +81,25 @@ shareholders:
     stake_percent: 100
     stake_class: controlling
     as_of: 2023-12
-    source_url: https://www.global.toshiba/ww/news/corporate/2023/12/news-20231220-01.html
+    source_url: https://www.global.toshiba/content/dam/toshiba/ww/ir/corporate/news/20231219_1.pdf
     note: Tender offer completed Sept 2023; Toshiba delisted from Tokyo Stock Exchange 20 Dec 2023 and taken fully private by the JIP consortium
   - holder: Rohm Co., Ltd.
     stake_percent: null
     stake_class: strategic
     as_of: 2023-12
-    source_url: https://www.reuters.com/markets/deals/japan-consortium-takes-toshiba-private-ending-its-74-years-tokyo-bourse-2023-12-20/
+    source_url: https://asia.nikkei.com/Spotlight/Toshiba-in-turmoil/Toshiba-accepts-15bn-buyout-offer-from-Japanese-consortium
     note: Co-investor in the JIP-led take-private consortium
   - holder: Orix Corporation
     stake_percent: null
     stake_class: strategic
     as_of: 2023-12
-    source_url: https://www.reuters.com/markets/deals/japan-consortium-takes-toshiba-private-ending-its-74-years-tokyo-bourse-2023-12-20/
+    source_url: https://asia.nikkei.com/Spotlight/Toshiba-in-turmoil/Toshiba-accepts-15bn-buyout-offer-from-Japanese-consortium
     note: Co-investor in the JIP-led take-private consortium
   - holder: Chubu Electric Power
     stake_percent: null
     stake_class: strategic
     as_of: 2023-12
-    source_url: https://www.reuters.com/markets/deals/japan-consortium-takes-toshiba-private-ending-its-74-years-tokyo-bourse-2023-12-20/
+    source_url: https://asia.nikkei.com/Spotlight/Toshiba-in-turmoil/Toshiba-accepts-15bn-buyout-offer-from-Japanese-consortium
     note: Co-investor in the JIP-led take-private consortium
 
 key_personnel:
@@ -110,11 +110,11 @@ key_personnel:
   - role: President & CEO, Toshiba Corporation (parent)
     name: Taro Shimada
     since: 2022-03
-    source_url: https://www.global.toshiba/ww/outline/corporate/executive.html
+    source_url: https://www.global.toshiba/ww/outline/corporate/organization/executives.html
   - role: Chief Technology Officer, Toshiba Corporation
     name: Hiroaki Tezuka
     since: 2024-04
-    source_url: https://www.global.toshiba/ww/outline/corporate/executive.html
+    source_url: https://www.global.toshiba/ww/outline/corporate/organization/executives.html
   - role: Principal Research Scientist, QKD systems (Cambridge)
     name: Marco Lucamarini
     since: 2014

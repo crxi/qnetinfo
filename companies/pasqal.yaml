@@ -119,7 +119,7 @@ shareholders:
     stake_percent: null
     stake_class: minority
     as_of: 2026-03
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
     note: Jean-Jacques Joulié (CEO, Addax) sits on the Pasqal board
   - holder: Founders (Aspect, Browaeys, Lahaye, Jurczak, Reymond)
     stake_percent: null
@@ -144,7 +144,7 @@ key_personnel:
   - role: CEO & Executive Chairman
     name: Wasiq Bokhari
     since: 2026
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: CTO & Managing Director
     name: Loïc Henriet
     since: 2025-03
@@ -152,7 +152,7 @@ key_personnel:
   - role: Co-Founder & Chief Scientific Officer
     name: Antoine Browaeys
     since: 2019
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Co-Founder & Chief Strategic Alliances Officer
     name: Georges-Olivier Reymond
     since: 2025-03
@@ -160,31 +160,31 @@ key_personnel:
   - role: Chief Operating Officer
     name: Barbara Bonneau
     since: 2024
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Chief Production & Project Officer
     name: Véronique Dentan
     since: 2024
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Chief Hardware Officer
     name: Adrien Signoles
     since: 2024
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Chief Software Officer
     name: Mourad Beji
     since: 2024
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Chief Financial Officer
     name: Jean-Yves Quentel
     since: 2024
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Co-Founder & Board Member
     name: Christophe Jurczak
     since: 2019
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Co-Founder & Chair, Scientific Advisory Board
     name: Alain Aspect
     since: 2019
-    source_url: https://www.pasqal.com/company/leadership/
+    source_url: https://www.pasqal.com/about-us/leadership/
   - role: Co-Founder (Institut d'Optique)
     name: Thierry Lahaye
     since: 2019

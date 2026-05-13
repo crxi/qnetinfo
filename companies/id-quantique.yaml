@@ -77,7 +77,7 @@ milestones:
   - date: 2001
     tag: qkd
     headline: Founded by Nicolas Gisin, Grégoire Ribordy, Hugo Zbinden, Olivier Guinnard — spin-out of University of Geneva
-    source_url: https://www.idquantique.com/about-us/history/
+    source_url: https://www.idquantique.com/about-idq/company-profile/
     source_type: blog
 
 shareholders:
@@ -130,7 +130,7 @@ key_personnel:
   - role: Co-founder
     name: Nicolas Gisin
     since: 2001
-    source_url: https://www.idquantique.com/about-us/history/
+    source_url: https://www.idquantique.com/about-idq/company-profile/
     note: >
       Co-founder and former Chief Scientist; emeritus professor at UNIGE. No longer
       listed on the current IDQ management team or board page (post-2025); retains

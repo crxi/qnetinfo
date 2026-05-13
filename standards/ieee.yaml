@@ -69,7 +69,7 @@ standards:
     group: IEEE Computer Society
     tags: []
     status: draft
-    url: https://standards.ieee.org/ieee/3155/
+    url: https://standards.ieee.org/ieee/3155/10845/
     summary: >
       Programming-method standard for quantum simulators covering
       analog (target Hamiltonian), digital (non-native Hamiltonian
@@ -84,7 +84,7 @@ standards:
     group: IEEE Computer Society
     tags: [policy]
     status: draft
-    url: https://standards.ieee.org/ieee/3329/
+    url: https://standards.ieee.org/ieee/3329/11162/
     summary: >
       Draft standard for measuring and reporting the energy efficiency
       of quantum computing systems. Defines metrics, measurement

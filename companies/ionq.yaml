@@ -30,17 +30,17 @@ milestones:
   - date: 2024-09
     tag: qc
     headline: Forte Enterprise launched commercially — 36 algorithmic qubits target
-    source_url: https://ionq.com/news/september-19-2024-ionq-forte-enterprise
+    source_url: https://www.ionq.com/quantum-systems/forte-enterprise
     source_type: press
   - date: 2023-09
     tag: qc
     headline: IonQ Forte initial release, barium hyperfine qubit demonstrations
-    source_url: https://ionq.com/posts/october-04-2023-ionq-forte-now-available
+    source_url: https://investors.ionq.com/news/news-details/2023/IonQ-Forte-Quantum-Computer-Now-Available-to-Select-Customers-Globally/default.aspx
     source_type: press
   - date: 2021-10
     tag: qc
     headline: NYSE listing via SPAC merger
-    source_url: https://ionq.com/news/october-01-2021-ionq-completes-business-combination
+    source_url: https://investors.ionq.com/news/news-details/2021/IonQ-Completes-Business-Combination-with-dMY-Technology-Group-Inc-III-Becoming-First-Publicly-Traded-Pure-Play-Quantum-Computing-Company/default.aspx
     source_type: filing
 
 shareholders:
@@ -84,7 +84,7 @@ shareholders:
     stake_percent: null
     stake_class: strategic
     as_of: 2025-05
-    source_url: https://ionq.com/news/ionq-completes-acquisition-of-id-quantique
+    source_url: https://www.ionq.com/news/ionq-completes-acquisition-of-id-quantique-cementing-leadership-in-quantum
     note: Received 4,215,740 IonQ shares (~1.4%) as consideration in May 2025 IDQ acquisition
 
 key_personnel:
@@ -130,11 +130,11 @@ key_personnel:
 roadmap:
   - target: 2025
     item: Tempo system — 64 algorithmic qubits, networked-cell architecture
-    source_url: https://ionq.com/posts/february-26-2024-ionq-tempo-roadmap
+    source_url: https://www.ionq.com/quantum-systems/tempo
     tag: qc
   - target: 2028
     item: Modular networked-ion systems, early error correction
-    source_url: https://ionq.com/posts/october-12-2023-our-roadmap
+    source_url: https://www.ionq.com/roadmap
     tag: qc
 
 current_flagship:
@@ -144,12 +144,12 @@ current_flagship:
 references:
   - kind: blog
     citation_key: null
-    url: https://ionq.com/posts/october-12-2023-our-roadmap
-    note: Public technical roadmap blog post (2023)
+    url: https://www.ionq.com/roadmap
+    note: Public technical roadmap landing page
   - kind: press
     citation_key: null
-    url: https://ionq.com/news/september-19-2024-ionq-forte-enterprise
-    note: Forte Enterprise launch
+    url: https://www.ionq.com/quantum-systems/forte-enterprise
+    note: Forte Enterprise product page
   - kind: preprint
     citation_key: null
     url: https://arxiv.org/abs/2406.02501

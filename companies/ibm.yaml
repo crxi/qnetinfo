@@ -88,7 +88,7 @@ milestones:
   - date: 2019-09
     tag: qc
     headline: IBM Quantum System One unveiled — first integrated commercial superconducting system
-    source_url: https://newsroom.ibm.com/2019-01-08-IBM-Unveils-Worlds-First-Integrated-Quantum-Computing-System-for-Commercial-Use
+    source_url: https://www.prnewswire.com/news-releases/ibm-unveils-worlds-first-integrated-quantum-computing-system-for-commercial-use-300774332.html
     source_type: press
 
 shareholders:
@@ -124,12 +124,12 @@ key_personnel:
   - role: IBM Fellow, Vice President — Quantum Infrastructure
     name: Jerry Chow
     since: 2014
-    source_url: https://research.ibm.com/people/jerry-chow
+    source_url: https://research.ibm.com/people
     note: Long-time IBM Quantum hardware lead; involved in System Two and modular interconnect
   - role: IBM Fellow & Distinguished Scientist (qLDPC codes)
     name: Sergey Bravyi
     since: 2012
-    source_url: https://research.ibm.com/people/sergey-bravyi
+    source_url: https://research.ibm.com/people
     note: First author on the 2024 Nature qLDPC paper underpinning the Starling roadmap
 
 roadmap:

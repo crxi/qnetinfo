@@ -182,23 +182,23 @@ key_personnel:
   - role: CEO
     name: Noel Goddard
     since: 2020
-    source_url: https://www.qunnect.inc/team
+    source_url: https://www.qunnect.inc/about
   - role: CTO & Co-founder
     name: Mehdi Namazi
     since: 2017
-    source_url: https://www.qunnect.inc/team
+    source_url: https://www.qunnect.inc/about
   - role: Chief Scientist & Co-founder
     name: Eden Figueroa
     since: 2017
-    source_url: https://www.qunnect.inc/team
+    source_url: https://www.qunnect.inc/about
   - role: Co-founder
     name: Mael Flament
     since: 2017
-    source_url: https://www.qunnect.inc/team
+    source_url: https://www.qunnect.inc/about
   - role: Co-founder
     name: Ari Brill
     since: 2017
-    source_url: https://www.qunnect.inc/team
+    source_url: https://www.qunnect.inc/about
   - role: Board of Directors
     name: Scott Faris
     since: 2026-01

@@ -81,31 +81,31 @@ shareholders:
     stake_percent: null
     stake_class: founder
     as_of: 2025-02
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Co-founder equity; Harvard PI behind the neutral-atom platform
   - holder: Vladan Vuletić
     stake_percent: null
     stake_class: founder
     as_of: 2025-02
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Co-founder equity (MIT)
   - holder: Markus Greiner
     stake_percent: null
     stake_class: founder
     as_of: 2025-02
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Co-founder equity (Harvard)
   - holder: Dirk Englund
     stake_percent: null
     stake_class: founder
     as_of: 2025-02
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Co-founder equity (MIT)
   - holder: Nathan Gemelke
     stake_percent: null
     stake_class: founder
     as_of: 2025-02
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Co-founder equity; CTO/Chief Strategy roles
 
 key_personnel:
@@ -117,31 +117,31 @@ key_personnel:
   - role: President
     name: Takuya Kitagawa
     since: 2024
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
   - role: CTO
     name: Vladan Vuletić
     since: 2018
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Co-founder (MIT)
   - role: Founder & Chief Scientist
     name: Mikhail Lukin
     since: 2018
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Harvard; principal investigator behind the Rydberg-array platform
   - role: Co-founder
     name: Markus Greiner
     since: 2018
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: Harvard
   - role: Co-founder
     name: Dirk Englund
     since: 2018
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
     note: MIT
   - role: Co-founder
     name: Nathan Gemelke
     since: 2018
-    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing
   - role: Chief Product Officer (previously CEO)
     name: Alex Keesling
     since: 2024-07

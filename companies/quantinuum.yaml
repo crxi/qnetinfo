@@ -75,49 +75,49 @@ shareholders:
     stake_percent: null
     stake_class: strategic
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: legacy Cambridge Quantum equity rolled at the 2021 merger; participated in the Aug 2025 round alongside Honeywell
   - holder: JPMorgan Chase
     stake_percent: null
     stake_class: minority
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: entered Jan 2024 round; followed-on in Aug 2025
   - holder: Mitsui & Co.
     stake_percent: null
     stake_class: minority
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: Japan distribution partner; entered Jan 2024 round; followed-on in Aug 2025
   - holder: Amgen
     stake_percent: null
     stake_class: minority
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: strategic biotech customer; entered Jan 2024 round
   - holder: Quanta Computer
     stake_percent: null
     stake_class: strategic
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: new strategic investor in the Aug 2025 $600M round
   - holder: NVentures (NVIDIA)
     stake_percent: null
     stake_class: strategic
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: NVIDIA's corporate venture arm; new investor Aug 2025
   - holder: QED Investors
     stake_percent: null
     stake_class: minority
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: new investor Aug 2025
   - holder: Serendipity Capital
     stake_percent: null
     stake_class: minority
     as_of: 2025-08
-    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    source_url: https://www.quantinuum.com/press-releases/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
     note: follow-on investor Aug 2025
 
 key_personnel:
