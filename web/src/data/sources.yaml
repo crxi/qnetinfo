@@ -35,6 +35,25 @@
   type: paper
   doi: "10.1007/s44227-025-00060-5"
 
+- id: bravyi-nature-2024
+  title: "High-threshold and low-overhead fault-tolerant quantum memory"
+  authors: ["Sergey Bravyi", "Andrew W. Cross", "Jay M. Gambetta", "Dmitri Maslov", "Patrick Rall", "Theodore J. Yoder"]
+  publisher: "Nature"
+  year: 2024
+  type: paper
+  doi: "10.1038/s41586-024-07107-7"
+  url: "https://arxiv.org/abs/2308.07915"
+  note: "IBM bivariate-bicycle qLDPC code — 12 logical qubits in 288 physical (~24:1), vs ~250:1 for surface code at comparable suppression."
+
+- id: zhao-arxiv-2026
+  title: "Ultra-high-rate quantum error correction with reconfigurable atom arrays"
+  authors: ["Chen Zhao", "Andi Gu", "Casey Duckering", "Nishad Maskara", "Hengyun Zhou"]
+  publisher: "arXiv"
+  year: 2026
+  type: preprint
+  url: "https://arxiv.org/abs/2604.16209"
+  note: "Encoding rate >50% — 1152 physical / 580 logical, ~2:1 ratio on neutral-atom hardware."
+
 - id: itu-g-694-2
   title: "ITU-T G.694.2 — Spectral grids for WDM applications: CWDM wavelength grid"
   publisher: "ITU-T"

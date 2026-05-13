@@ -22,16 +22,17 @@ import BlochSphereInteractive from "../components/BlochSphereInteractive.astro";
 import Callout from "../components/Callout.astro";
 import EncodingDiagram from "../components/EncodingDiagram.astro";
 import Math from "../components/Math.astro";
+import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",   label: "What is a qubit" },
   { id: "bloch",      label: "The Bloch sphere" },
-  { id: "logical",    label: "Physical and logical qubits" },
   { id: "encodings",  label: "Flying-qubit encodings" },
   { id: "matter",     label: "Stationary-qubit encodings" },
   { id: "indistinguishability", label: "Indistinguishability" },
   { id: "divincenzo", label: "DiVincenzo's criteria" },
   { id: "takeaway",   label: "Why this matters for networks" },
+  { id: "logical",    label: "Aside — physical vs logical qubits" },
 ];
 ---
 
@@ -39,6 +40,7 @@ const sections = [
   title="What is a qubit"
   description="A qubit is a two-level quantum system whose state is α|0⟩+β|1⟩ with |α|²+|β|²=1. This page covers the definition, the Bloch sphere as the geometric representation of pure single-qubit states, the photonic encodings used to carry qubits across a network, the matter encodings used to store and process them, and DiVincenzo's criteria."
   references={[
+    "bravyi-nature-2024",
     "divincenzo-2000",
     "ezratty-uqt-2025-p2",
     "knaut-nature-2024",
@@ -46,6 +48,7 @@ const sections = [
     "kumar-ijndc-2025",
     "meddeb-comnet-2025",
     "sangouard-rmp-83",
+    "zhao-arxiv-2026",
   ]}
 >
   <SiteNav slot="nav" currentSubject="qubits" sections={sections} />
@@ -99,21 +102,36 @@ const sections = [
             rely on. When two qubits are in superposition <em>together</em> — a joint state
             that doesn't factor into individual single-qubit states — the result is
             <strong>entanglement</strong>, the multi-qubit phenomenon that quantum
-            networking is built around. The next subject covers it.
+            networking is built around.
           </p>
         </Callout>
 
         <Callout label="Notation primer">
           <p>
-            Bra–ket notation, due to Dirac, treats <Math tex="|\\psi\\rangle" /> as a vector in
-            the complex Hilbert space <Math tex="\\mathcal{H}" /> of the system. The
-            corresponding <strong>bra</strong> <Math tex="\\langle\\psi|" /> is the conjugate-transpose
-            row vector in the dual space, and inner products
-            <Math tex="\\langle\\phi|\\psi\\rangle" /> measure overlap between states. A
-            generalisation to <Math tex="n" /> levels is called a <strong>qudit</strong>; qudit
-            technologies have potential advantages but lag qubits significantly and are
-            generally not considered in current quantum-internet architectures
-            <SourceNote id="kumar-ijndc-2025" />.
+            Bra–ket notation, due to Dirac, is shorthand for vectors and their duals. The
+            <strong>ket</strong> <Math tex="|\\psi\\rangle" /> is a column vector in the
+            complex Hilbert space <Math tex="\\mathcal{H}" />; the
+            <strong>bra</strong> <Math tex="\\langle\\psi|" /> is its conjugate-transpose,
+            a row vector in the dual space. The two-level computational basis is just the
+            two standard column vectors:
+          </p>
+          <Math display tex="|0\\rangle = \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix}, \\quad |1\\rangle = \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix}, \\quad \\langle 0| = \\begin{pmatrix} 1 & 0 \\end{pmatrix}, \\quad \\langle 1| = \\begin{pmatrix} 0 & 1 \\end{pmatrix}." />
+          <p>
+            For an <Math tex="n" />-level system (a <strong>qudit</strong>),
+            <Math tex="|k\\rangle" /> is the column vector with a 1 in the
+            <Math tex="k" />-th slot (0-indexed) and zeros elsewhere — e.g. in a 4-level
+            system:
+          </p>
+          <Math display tex="|0\\rangle = \\begin{pmatrix} 1 \\\\ 0 \\\\ 0 \\\\ 0 \\end{pmatrix}, \\; |1\\rangle = \\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\\\ 0 \\end{pmatrix}, \\; |2\\rangle = \\begin{pmatrix} 0 \\\\ 0 \\\\ 1 \\\\ 0 \\end{pmatrix}, \\; |3\\rangle = \\begin{pmatrix} 0 \\\\ 0 \\\\ 0 \\\\ 1 \\end{pmatrix}." />
+          <p>
+            And a general ket has complex entries; its bra is the complex-conjugate row
+            vector — for <Math tex="|a\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle" />,
+            <Math tex="\\langle a| = (\\alpha^* \\;\\; \\beta^*)" />. The inner product
+            <Math tex="\\langle\\phi|\\psi\\rangle" /> is then ordinary row-times-column
+            matrix multiplication, and it measures overlap between states. Qudits
+            generalise this to <Math tex="n > 2" /> but lag qubits significantly and are
+            not in current quantum-internet
+            architectures <SourceNote id="kumar-ijndc-2025" />.
           </p>
         </Callout>
       </header>
@@ -157,7 +175,7 @@ const sections = [
           <p>
             <Math tex="\\alpha" /> and <Math tex="\\beta" /> are complex, so a general
             <Math tex="|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle" /> looks like it
-            has four real degrees of freedom. Two constraints knock that down to two:
+            has four real degrees of freedom. Two constraints reduce that to two:
           </p>
           <ol>
             <li>
@@ -185,39 +203,13 @@ const sections = [
 
       </section>
 
-      <section id="logical" data-nav-section>
-        <h2>Physical and logical qubits</h2>
-        <p>
-          Today's commercial hardware operates <strong>physical</strong> qubits — the actual
-          superconducting circuit, trapped ion, or photon — with finite coherence times,
-          imperfect gates, and continuous interaction with the environment that erodes the
-          state. A <strong>logical</strong> qubit is an error-corrected unit built from many physical
-          qubits via a quantum-error-correction code, designed so that errors in the
-          underlying physical qubits can be detected and corrected without measuring the
-          logical state directly <SourceNote id="kumar-ijndc-2025" />.
-        </p>
-        <p>
-          Surface codes — the most-studied family today — typically need on the order of 1000
-          physical qubits per logical qubit at currently-achievable physical-qubit error
-          rates. Quantum LDPC codes promise overhead below 100:1; bosonic codes (cat, GKP) are
-          a different family that protects fewer logical qubits per cavity but at much lower
-          overhead per cavity.
-        </p>
-        <p>
-          For networks the distinction matters because end-to-end entanglement fidelity has to
-          survive a chain of physical-layer noise. Two error-correction strata are relevant:
-          <strong>distillation</strong> at the link layer, which trades two low-fidelity Bell pairs
-          for one higher-fidelity pair, and end-to-end QEC at the application layer for the
-          qubits being teleported through delivered Bell pairs.
-        </p>
-      </section>
-
       <section id="encodings" data-nav-section>
         <h2>Flying-qubit encodings</h2>
         <p>
           A flying qubit is a quantum state that travels — typically a single photon moving
-          through optical fibre or free space. The Bloch sphere is the same; what changes is
-          which physical degree of freedom carries <Math tex="|0\\rangle" /> and
+          through optical fibre or free space. The mathematical representation is the same
+          two-dimensional Hilbert space as any other qubit; what changes is which physical
+          degree of freedom of the photon carries <Math tex="|0\\rangle" /> and
           <Math tex="|1\\rangle" />. Each of the encodings below has a sweet spot in the
           channel and the kind of network it suits.
         </p>
@@ -312,8 +304,8 @@ const sections = [
         <p>
           A stationary qubit is held in matter for the duration of computation or storage.
           Each platform picks two physical states and labels them <Math tex="|0\\rangle" />
-          and <Math tex="|1\\rangle" /> — the Bloch sphere is the same one introduced
-          earlier; only the underlying physics changes. The encoding choice determines the
+          and <Math tex="|1\\rangle" /> — mathematically still a two-level Hilbert space;
+          only the underlying physics changes. The encoding choice determines the
           operating frequency, the dominant decoherence mechanism, and what kind of photon
           the platform can emit when it has to talk to the network. The cards below
           summarise the leading platforms; for the per-platform background and onward
@@ -567,6 +559,339 @@ const sections = [
         </p>
       </section>
 
+      <section id="logical" data-nav-section>
+        <h2>Physical and logical qubits</h2>
+        <p>
+          Today's commercial hardware operates <strong>physical</strong> qubits — the actual
+          superconducting circuit, trapped ion, or photon — with finite coherence times,
+          imperfect gates, and continuous interaction with the environment that erodes the
+          state. A <strong>logical</strong> qubit is an error-corrected unit built from many physical
+          qubits via a quantum-error-correction code, designed so that errors in the
+          underlying physical qubits can be detected and corrected without measuring the
+          logical state directly <SourceNote id="kumar-ijndc-2025" />.
+        </p>
+        <p>
+          Surface codes — the most-studied family today — historically needed on the order of
+          1000 physical qubits per logical qubit at currently-achievable physical-qubit error
+          rates. The overhead has fallen sharply over the past two years.
+          <strong>Quantum LDPC codes</strong> are the headline advance: Bravyi et al.'s 2024
+          bivariate-bicycle code (IBM) encodes 12 logical qubits in 288 physical (~24:1) with
+          error suppression on par with the surface code's
+          ~250:1 <SourceNote id="bravyi-nature-2024" />. More recently, the Zhao et al. 2026
+          ultra-high-rate codes on reconfigurable neutral-atom arrays reach encoding rates
+          above 50 % — about 2:1 in physical-to-logical
+          terms <SourceNote id="zhao-arxiv-2026" />. <strong>Bosonic codes</strong> (cat, GKP)
+          are a different family that protects fewer logical qubits per cavity but at much
+          lower overhead per cavity. The headline number for a procurement conversation is no
+          longer "1000:1" — it depends on the code and the platform, and the trend is
+          downward.
+        </p>
+
+        <p>
+          The table below sketches the public state of the field as of mid-2026 — what's
+          actually shipping, and what the leading vendors have committed to publicly.
+          Logical-qubit numbers are 0 for NISQ machines; positive integers reflect
+          publicly-demonstrated error-corrected logical qubits from a vendor announcement
+          or a peer-reviewed paper.
+        </p>
+
+        <h3>Currently shipping or publicly demonstrated</h3>
+        <div class="qb-machines-wrap">
+        <table class="qb-machines" data-sortable>
+          <thead>
+            <tr>
+              <th scope="col">Vendor</th>
+              <th scope="col">Machine</th>
+              <th scope="col">Year</th>
+              <th scope="col">Physical</th>
+              <th scope="col">Logical</th>
+              <th scope="col">Modality</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">QuEra</th>
+              <td>Aquila <a class="qb-src" href="https://aws.amazon.com/blogs/quantum-computing/amazon-braket-launches-aquila-the-first-neutral-atom-quantum-processor-from-quera-computing/" target="_blank" rel="noopener" aria-label="Primary source: AWS announcement, Nov 2022" title="AWS announcement, Nov 2022">ⓘ</a></td>
+              <td data-sort="2022">2022</td>
+              <td data-sort="256">256</td>
+              <td data-sort="0">0</td>
+              <td>neutral-atom (analog)</td>
+            </tr>
+            <tr>
+              <th scope="row">Atom Computing</th>
+              <td>Phoenix <a class="qb-src" href="https://www.hpcwire.com/2023/10/24/atom-computing-wins-the-race-to-1000-qubits/" target="_blank" rel="noopener" aria-label="Primary source: HPCwire, Oct 2023" title="HPCwire, Oct 2023">ⓘ</a></td>
+              <td data-sort="2023">2023</td>
+              <td data-sort="1180">1180</td>
+              <td data-sort="0">0</td>
+              <td>neutral-atom</td>
+            </tr>
+            <tr>
+              <th scope="row">IonQ</th>
+              <td>Forte Enterprise <a class="qb-src" href="https://investors.ionq.com/news/news-details/2024/IonQ-Unveils-Its-First-Quantum-Computer-in-Europe-Online-Now-at-a-Record-AQ36/default.aspx" target="_blank" rel="noopener" aria-label="Primary source: IonQ investor release, Dec 2024" title="IonQ investor release, Dec 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="36">36</td>
+              <td data-sort="0">0</td>
+              <td>trapped-ion</td>
+            </tr>
+            <tr>
+              <th scope="row">Quantinuum</th>
+              <td>H2 <a class="qb-src" href="https://www.quantinuum.com/press-releases/quantinuum-launches-industry-first-trapped-ion-56-qubit-quantum-computer-that-challenges-the-worlds-best-supercomputers" target="_blank" rel="noopener" aria-label="Primary source: Quantinuum press release, Jun 2024" title="Quantinuum press release, Jun 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="56">56</td>
+              <td data-sort="0">0</td>
+              <td>trapped-ion</td>
+            </tr>
+            <tr>
+              <th scope="row">Rigetti</th>
+              <td>Ankaa-3 <a class="qb-src" href="https://investors.rigetti.com/news-releases/news-release-details/rigetti-computing-launches-84-qubit-ankaatm-3-system-achieves" target="_blank" rel="noopener" aria-label="Primary source: Rigetti press release, Dec 2024" title="Rigetti press release, Dec 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="84">84</td>
+              <td data-sort="0">0</td>
+              <td>transmon</td>
+            </tr>
+            <tr>
+              <th scope="row">Google</th>
+              <td>Willow <a class="qb-src" href="https://blog.google/innovation-and-ai/technology/research/google-willow-quantum-chip/" target="_blank" rel="noopener" aria-label="Primary source: Google blog + Nature, Dec 2024" title="Google blog + Nature, Dec 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="105">105</td>
+              <td data-sort="1">1</td>
+              <td>transmon (research)</td>
+            </tr>
+            <tr>
+              <th scope="row">IBM</th>
+              <td>Heron R2 <a class="qb-src" href="https://newsroom.ibm.com/2024-11-13-ibm-launches-its-most-advanced-quantum-computers,-fueling-new-scientific-value-and-progress-towards-quantum-advantage" target="_blank" rel="noopener" aria-label="Primary source: IBM newsroom, Nov 2024" title="IBM newsroom, Nov 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="156">156</td>
+              <td data-sort="0">0</td>
+              <td>transmon</td>
+            </tr>
+            <tr>
+              <th scope="row">Origin Quantum</th>
+              <td>Wukong <a class="qb-src" href="https://postquantum.com/industry-news/origin-quantum-wukong/" target="_blank" rel="noopener" aria-label="Primary source: Origin Quantum launch, Jan 2024" title="Origin Quantum launch, Jan 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="72">72</td>
+              <td data-sort="0">0</td>
+              <td>transmon</td>
+            </tr>
+            <tr>
+              <th scope="row">CAS / QuantumCTek</th>
+              <td>Tianyan-504 (Xiaohong) <a class="qb-src" href="https://postquantum.com/industry-news/china-xiaohong/" target="_blank" rel="noopener" aria-label="Primary source: Hefei announcement, Apr 2024" title="CAS / QuantumCTek announcement, Apr 2024">ⓘ</a></td>
+              <td data-sort="2024">2024</td>
+              <td data-sort="504">504</td>
+              <td data-sort="0">0</td>
+              <td>transmon</td>
+            </tr>
+            <tr>
+              <th scope="row">Microsoft</th>
+              <td>Majorana 1 <a class="qb-src" href="https://azure.microsoft.com/en-us/blog/quantum/2025/02/19/microsoft-unveils-majorana-1-the-worlds-first-quantum-processor-powered-by-topological-qubits/" target="_blank" rel="noopener" aria-label="Primary source: Microsoft Azure blog, Feb 2025" title="Microsoft Azure blog, Feb 2025">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="8">8</td>
+              <td data-sort="0">0</td>
+              <td>topological (claims contested)</td>
+            </tr>
+            <tr>
+              <th scope="row">Xanadu</th>
+              <td>Aurora <a class="qb-src" href="https://www.xanadu.ai/press/xanadu-introduces-aurora-worlds-first-scalable-networked-and-modular-quantum-computer" target="_blank" rel="noopener" aria-label="Primary source: Xanadu press release, Jan 2025" title="Xanadu press release, Jan 2025">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="12">12</td>
+              <td data-sort="0">0</td>
+              <td>photonic, networked</td>
+            </tr>
+            <tr>
+              <th scope="row">IonQ</th>
+              <td>Tempo <a class="qb-src" href="https://investors.ionq.com/news/news-details/2025/IonQ-Achieves-Record-Breaking-Quantum-Performance-Milestone-of-AQ-64/default.aspx" target="_blank" rel="noopener" aria-label="Primary source: IonQ investor release, Sep 2025" title="IonQ investor release, Sep 2025">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="100">100</td>
+              <td data-sort="0">0</td>
+              <td>trapped-ion</td>
+            </tr>
+            <tr>
+              <th scope="row">Pasqal</th>
+              <td>Orion Gamma <a class="qb-src" href="https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/" target="_blank" rel="noopener" aria-label="Primary source: Pasqal 2025 roadmap" title="Pasqal 2025 roadmap">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="140">140</td>
+              <td data-sort="0">0</td>
+              <td>neutral-atom</td>
+            </tr>
+            <tr>
+              <th scope="row">IBM</th>
+              <td>Nighthawk <a class="qb-src" href="https://newsroom.ibm.com/2025-11-12-ibm-delivers-new-quantum-processors,-software,-and-algorithm-breakthroughs-on-path-to-advantage-and-fault-tolerance" target="_blank" rel="noopener" aria-label="Primary source: IBM newsroom, Nov 2025" title="IBM newsroom, Nov 2025">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="120">120</td>
+              <td data-sort="0">0</td>
+              <td>transmon</td>
+            </tr>
+            <tr>
+              <th scope="row">USTC</th>
+              <td>Zuchongzhi 3.0 <a class="qb-src" href="https://arxiv.org/abs/2412.11924" target="_blank" rel="noopener" aria-label="Primary source: Gao et al., PRL 134 090601 (Mar 2025)" title="Gao et al., PRL 134 090601 (Mar 2025)">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="105">105</td>
+              <td data-sort="0">0</td>
+              <td>transmon (research)</td>
+            </tr>
+            <tr>
+              <th scope="row">Origin Quantum</th>
+              <td>Wukong-180 <a class="qb-src" href="https://thequbitreport.com/hardware/2026/05/09/chinas-origin-quantum-launches-origin-wukong-180/" target="_blank" rel="noopener" aria-label="Primary source: Origin Quantum announcement, May 9 2026" title="Origin Quantum announcement, May 9 2026">ⓘ</a></td>
+              <td data-sort="2026">2026</td>
+              <td data-sort="180">180 (+ 251 coupling)</td>
+              <td data-sort="0">0</td>
+              <td>transmon</td>
+            </tr>
+            <tr class="qb-row--highlight">
+              <th scope="row">Quantinuum</th>
+              <td>Helios <a class="qb-src" href="https://www.quantinuum.com/press-releases/quantinuum-announces-commercial-launch-of-new-helios-quantum-computer-that-offers-unprecedented-accuracy-to-enable-generative-quantum-ai-genqai" target="_blank" rel="noopener" aria-label="Primary source: Quantinuum press release, Nov 2025" title="Quantinuum press release, Nov 2025">ⓘ</a></td>
+              <td data-sort="2025">2025</td>
+              <td data-sort="98">98</td>
+              <td data-sort="48">48</td>
+              <td>trapped-ion (Ba-137)</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <h3>Public roadmaps</h3>
+        <div class="qb-machines-wrap">
+        <table class="qb-machines" data-sortable>
+          <thead>
+            <tr>
+              <th scope="col">Vendor</th>
+              <th scope="col">Machine</th>
+              <th scope="col">Target</th>
+              <th scope="col">Physical</th>
+              <th scope="col">Logical</th>
+              <th scope="col">Modality</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">IBM</th>
+              <td>Kookaburra <a class="qb-src" href="https://www.ibm.com/quantum/blog/large-scale-ftqc" target="_blank" rel="noopener" aria-label="Primary source: IBM Quantum blog, Jun 2025" title="IBM Quantum blog, Jun 2025">ⓘ</a></td>
+              <td data-sort="2026">2026</td>
+              <td data-sort="4158">4 158</td>
+              <td data-sort="0">qLDPC memory demo</td>
+              <td>transmon</td>
+            </tr>
+            <tr>
+              <th scope="row">QuEra</th>
+              <td>Gemini-class <a class="qb-src" href="https://www.quera.com/press-releases/quera-computing-marks-record-2025-as-the-year-of-fault-tolerance-and-over-230m-of-new-capital-to-accelerate-industrial-deployment" target="_blank" rel="noopener" aria-label="Primary source: QuEra 2025 review, Dec 2025" title="QuEra 2025 review, Dec 2025">ⓘ</a></td>
+              <td data-sort="2026">2026</td>
+              <td data-sort="3000">~3 000</td>
+              <td data-sort="30">30</td>
+              <td>neutral-atom</td>
+            </tr>
+            <tr>
+              <th scope="row">Pasqal</th>
+              <td>Vela <a class="qb-src" href="https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/" target="_blank" rel="noopener" aria-label="Primary source: Pasqal 2025 roadmap" title="Pasqal 2025 roadmap">ⓘ</a></td>
+              <td data-sort="2027">2027</td>
+              <td data-sort="200">200+</td>
+              <td data-sort="20">20</td>
+              <td>neutral-atom</td>
+            </tr>
+            <tr>
+              <th scope="row">Quantinuum</th>
+              <td>Sol <a class="qb-src" href="https://www.hpcwire.com/2025/11/05/quantinuum-introduces-helios-quantum-system-as-roadmap-advances-toward-apollo/" target="_blank" rel="noopener" aria-label="Primary source: HPCwire, Nov 2025" title="HPCwire, Nov 2025">ⓘ</a></td>
+              <td data-sort="2027">2027</td>
+              <td data-sort="192">192</td>
+              <td data-sort="40">tens</td>
+              <td>trapped-ion</td>
+            </tr>
+            <tr>
+              <th scope="row">Pasqal</th>
+              <td>Centaurus <a class="qb-src" href="https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/" target="_blank" rel="noopener" aria-label="Primary source: Pasqal 2025 roadmap" title="Pasqal 2025 roadmap">ⓘ</a></td>
+              <td data-sort="2028">2028</td>
+              <td data-sort="10000">~10 000</td>
+              <td data-sort="50">early FTQC</td>
+              <td>neutral-atom</td>
+            </tr>
+            <tr>
+              <th scope="row">IBM</th>
+              <td>Starling <a class="qb-src" href="https://newsroom.ibm.com/2025-06-10-IBM-Sets-the-Course-to-Build-Worlds-First-Large-Scale,-Fault-Tolerant-Quantum-Computer-at-New-IBM-Quantum-Data-Center" target="_blank" rel="noopener" aria-label="Primary source: IBM newsroom, Jun 2025" title="IBM newsroom, Jun 2025">ⓘ</a></td>
+              <td data-sort="2029">2029</td>
+              <td data-sort="0">—</td>
+              <td data-sort="200">200</td>
+              <td>transmon (qLDPC)</td>
+            </tr>
+            <tr>
+              <th scope="row">Quantinuum</th>
+              <td>Apollo <a class="qb-src" href="https://www.quantinuum.com/press-releases/quantinuum-unveils-accelerated-roadmap-to-achieve-universal-fault-tolerant-quantum-computing-by-2030" target="_blank" rel="noopener" aria-label="Primary source: Quantinuum press release, 2025" title="Quantinuum press release, 2025">ⓘ</a></td>
+              <td data-sort="2029">2029</td>
+              <td data-sort="2000">thousands</td>
+              <td data-sort="500">hundreds</td>
+              <td>trapped-ion</td>
+            </tr>
+            <tr>
+              <th scope="row">IBM</th>
+              <td>Blue Jay <a class="qb-src" href="https://newsroom.ibm.com/2025-06-10-IBM-Sets-the-Course-to-Build-Worlds-First-Large-Scale,-Fault-Tolerant-Quantum-Computer-at-New-IBM-Quantum-Data-Center" target="_blank" rel="noopener" aria-label="Primary source: IBM newsroom, Jun 2025" title="IBM newsroom, Jun 2025">ⓘ</a></td>
+              <td data-sort="2033">2033</td>
+              <td data-sort="100000">—</td>
+              <td data-sort="2000">2 000</td>
+              <td>transmon (qLDPC)</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p class="qb-machines-note">
+          Each row is sourced from a vendor press release, peer-reviewed paper, or
+          investor disclosure — see the per-vendor dossiers under
+          <a href={url("/companies")}>companies</a> for individual citations.
+          Two patterns stand out: trapped ions lead on demonstrated logical-qubit count
+          today (Quantinuum Helios is the only shipping product with publicly-verified
+          error-corrected qubits), and the inflection to ~200 logical qubits at
+          fault-tolerance is uniformly targeted for ~2029 across superconducting,
+          trapped-ion, and neutral-atom roadmaps.
+        </p>
+      </section>
+
+      <script>
+        // Sortable column heads — cycles asc / desc / unsorted on click.
+        // Numeric sort uses each cell's `data-sort` attribute; falls back to
+        // localeCompare on raw text.
+        type SortDir = "asc" | "desc" | "";
+
+        function initSortable(): void {
+          const tables = document.querySelectorAll<HTMLTableElement>("table[data-sortable]");
+          tables.forEach((table) => {
+            const headers = table.querySelectorAll<HTMLTableCellElement>("thead th");
+            const tbody = table.querySelector<HTMLTableSectionElement>("tbody");
+            if (!tbody) return;
+            const originalOrder = Array.from(tbody.querySelectorAll<HTMLTableRowElement>("tr"));
+            headers.forEach((th, colIndex) => {
+              th.addEventListener("click", () => {
+                const current = th.getAttribute("data-sort-dir") as SortDir;
+                headers.forEach((h) => h.removeAttribute("data-sort-dir"));
+                const next: SortDir = current === "asc" ? "desc" : current === "desc" ? "" : "asc";
+                if (next === "") {
+                  originalOrder.forEach((tr) => tbody.appendChild(tr));
+                  return;
+                }
+                th.setAttribute("data-sort-dir", next);
+                const rows = Array.from(tbody.querySelectorAll<HTMLTableRowElement>("tr"));
+                rows.sort((a, b) => {
+                  const ca = a.children[colIndex] as HTMLElement | undefined;
+                  const cb = b.children[colIndex] as HTMLElement | undefined;
+                  const va = ca?.dataset?.sort ?? ca?.textContent?.trim() ?? "";
+                  const vb = cb?.dataset?.sort ?? cb?.textContent?.trim() ?? "";
+                  const na = Number(va);
+                  const nb = Number(vb);
+                  const bothNum =
+                    !Number.isNaN(na) && !Number.isNaN(nb) && va !== "" && vb !== "";
+                  const cmp = bothNum ? na - nb : va.localeCompare(vb);
+                  return next === "asc" ? cmp : -cmp;
+                });
+                rows.forEach((tr) => tbody.appendChild(tr));
+              });
+            });
+          });
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initSortable, { once: true });
+        } else {
+          initSortable();
+        }
+      </script>
+
     </Stack>
   </Center>
 </Infographic>
@@ -655,4 +980,94 @@ const sections = [
     gap: var(--space-2);
   }
   .divincenzo li { line-height: var(--leading-snug); }
+
+  .qb-machines-wrap {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    margin-block-end: var(--space-4);
+  }
+  .qb-machines {
+    inline-size: 100%;
+    min-inline-size: 44rem;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+  .qb-machines thead th {
+    text-align: start;
+    padding: var(--space-2) var(--space-3);
+    border-block-end: 2px solid var(--color-rule);
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .qb-machines tbody th,
+  .qb-machines tbody td {
+    padding: var(--space-2) var(--space-3);
+    vertical-align: top;
+    border-block-end: 1px solid var(--color-rule);
+  }
+  .qb-machines tbody th {
+    text-align: start;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .qb-machines tbody td { color: var(--color-text-mute); }
+  .qb-machines tbody tr:last-child th,
+  .qb-machines tbody tr:last-child td { border-block-end: 0; }
+  .qb-machines .qb-row--highlight th,
+  .qb-machines .qb-row--highlight td {
+    background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  }
+  .qb-machines-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-mute);
+    margin-block-start: var(--space-2);
+  }
+
+  /* (i) source link — small superscript, no underline. !important
+     because the Infographic global `a` rule cascades in unpredictable
+     order vs scoped styles in some browsers. */
+  .qb-src,
+  .qb-src:link,
+  .qb-src:visited,
+  .qb-src:hover,
+  .qb-src:focus-visible {
+    font-size: 0.7em;
+    vertical-align: super;
+    line-height: 1;
+    margin-inline-start: 2px;
+    color: var(--color-text-soft);
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+    border-bottom: 0;
+  }
+  .qb-src:hover,
+  .qb-src:focus-visible {
+    color: var(--color-accent);
+  }
+
+  /* Sortable-table affordance: caret indicators in the header. */
+  .qb-machines thead th {
+    cursor: pointer;
+    user-select: none;
+  }
+  .qb-machines thead th::after {
+    content: " ⇅";
+    color: var(--color-text-soft);
+    font-size: 0.85em;
+    opacity: 0.5;
+  }
+  .qb-machines thead th[data-sort-dir="asc"]::after {
+    content: " ▲";
+    opacity: 1;
+    color: var(--color-accent);
+  }
+  .qb-machines thead th[data-sort-dir="desc"]::after {
+    content: " ▼";
+    opacity: 1;
+    color: var(--color-accent);
+  }
 </style>
