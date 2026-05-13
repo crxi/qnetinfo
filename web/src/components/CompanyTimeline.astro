@@ -1,13 +1,12 @@
 ---
 /**
- * Horizontal timeline combining past milestones and forward roadmap.
- * Year ticks on the axis, a vertical 'today' marker, and labelled
- * dots — past = filled, future = outline. Labels use a 4-level
- * vertical stagger (above-far / below-near / above-near / below-far)
- * so adjacent items don't collide, and wrap to 2 lines instead of
- * truncating with ellipsis.
+ * Year-cell timeline. One box per year between the first event and
+ * two years past today. Cells with events "light up"; events stack
+ * vertically inside the cell, so a dense year (e.g. IBM 2025) reads
+ * as a list, not a pile of colliding axis dots.
  *
- * Pure SVG, no JS.
+ * Past = filled, current year = highlighted, future = dashed outline.
+ * Pure HTML/CSS — no SVG, no JS.
  */
 import type { Milestone, RoadmapItem } from "../lib/companies.ts";
 
@@ -19,140 +18,114 @@ interface Props {
 
 const { milestones, roadmap, foundedYear } = Astro.props;
 
-/** Parse "2024-09", "Q3 2024", or 2024 (number) into a fractional year. */
-function parseToFracYear(input: string | number | Date): number {
-  if (input instanceof Date) return input.getFullYear() + input.getMonth() / 12;
-  const s = String(input).trim();
-  const qMatch = s.match(/^Q([1-4])\s+(\d{4})$/i);
-  if (qMatch) {
-    return parseInt(qMatch[2], 10) + (parseInt(qMatch[1], 10) - 1) * 0.25;
-  }
-  const parts = s.split("-").map((n) => parseInt(n, 10));
-  return parts[0] + ((parts[1] ?? 6) - 1) / 12;
-}
+const nowYear = new Date().getFullYear();
 
-type Point = {
-  fracYear: number;
+type CellItem = {
   label: string;
   kind: "milestone" | "roadmap";
+  date: string;
 };
 
-const nowFrac = (() => {
-  const d = new Date();
-  return d.getFullYear() + d.getMonth() / 12;
-})();
+function parseYear(input: string | number): number {
+  if (typeof input === "number") return input;
+  const s = String(input).trim();
+  const qm = s.match(/^Q([1-4])\s+(\d{4})$/i);
+  if (qm) return parseInt(qm[2], 10);
+  return parseInt(s.split("-")[0], 10);
+}
 
-const points: Point[] = [
+const items: CellItem[] = [
   ...milestones.map((m) => ({
-    fracYear: parseToFracYear(m.date),
     label: m.headline,
     kind: "milestone" as const,
+    date: String(m.date),
   })),
   ...roadmap.map((r) => ({
-    fracYear: parseToFracYear(r.target),
     label: r.item,
     kind: "roadmap" as const,
+    date: String(r.target),
   })),
-].sort((a, b) => a.fracYear - b.fracYear);
+];
 
-const hasContent = points.length > 0;
+// Anchor the timeline to the events, not to foundedYear — IBM (1911) or
+// Cisco (1984) would otherwise produce a 100-cell-wide strip with one
+// lit cell. Founded year is shown in the dossier header.
+const itemYears = items.map((i) => parseYear(i.date));
+const earliestItem = itemYears.length ? Math.min(...itemYears) : nowYear - 5;
+const latestItem = itemYears.length ? Math.max(...itemYears) : nowYear + 2;
+const yearStart = Math.min(earliestItem, nowYear - 3);
+const yearEnd = Math.max(latestItem, nowYear + 2);
 
-let yearStart = foundedYear;
-let yearEnd = Math.ceil(nowFrac) + 2;
-if (hasContent) {
-  yearStart = Math.min(yearStart, Math.floor(points[0].fracYear));
-  yearEnd = Math.max(yearEnd, Math.ceil(points[points.length - 1].fracYear) + 1);
+const years: number[] = [];
+for (let y = yearStart; y <= yearEnd; y++) years.push(y);
+
+const byYear = new Map<number, CellItem[]>();
+for (const it of items) {
+  const y = parseYear(it.date);
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(it);
 }
+for (const [, arr] of byYear) arr.sort((a, b) => a.date.localeCompare(b.date));
 
-const W = 880;
-const H = 280;
-const PAD_L = 30;
-const PAD_R = 30;
-const AXIS_Y = 140;
-const AXIS_W = W - PAD_L - PAD_R;
-
-function xForYear(y: number): number {
-  return PAD_L + ((y - yearStart) / (yearEnd - yearStart)) * AXIS_W;
-}
-
-const yearTicks: number[] = [];
-for (let y = yearStart; y <= yearEnd; y++) yearTicks.push(y);
-
-/** Word-wrap into at most 2 lines, ~22 chars per line. Final line gets
- *  '…' if the headline is longer than the 2-line budget. */
-function wrap(text: string, maxLen = 24): [string, string] {
-  if (text.length <= maxLen) return [text, ""];
-  let cut = text.lastIndexOf(" ", maxLen);
-  if (cut < maxLen * 0.5) cut = maxLen; // forced cut on a long word
-  const line1 = text.slice(0, cut);
-  let line2 = text.slice(cut).trim();
-  const maxLine2 = Math.round(maxLen * 1.4);
-  if (line2.length > maxLine2) line2 = line2.slice(0, maxLine2 - 1).trimEnd() + "…";
-  return [line1, line2];
-}
-
-/** 4-level stagger. Returns the y-coords for the connector-line top
- *  and label baseline; line1 sits at labelY, line2 1.1em below. */
-type Placement = { lineYEnd: number; labelY: number; above: boolean };
-function placement(i: number): Placement {
-  const level = i % 4;
-  if (level === 0) return { lineYEnd: AXIS_Y - 74, labelY: AXIS_Y - 80, above: true };
-  if (level === 1) return { lineYEnd: AXIS_Y + 30, labelY: AXIS_Y + 42, above: false };
-  if (level === 2) return { lineYEnd: AXIS_Y - 34, labelY: AXIS_Y - 40, above: true };
-  return /* level 3 */ { lineYEnd: AXIS_Y + 68, labelY: AXIS_Y + 82, above: false };
-}
+const hasContent = items.length > 0;
+const showFoundedTag = foundedYear < yearStart;
 ---
 
 {hasContent ? (
   <figure class="ct">
+    {showFoundedTag && (
+      <p class="ct-founded">
+        <span class="ct-founded-label">Founded</span> {foundedYear}
+        <span class="ct-founded-gap"> · timeline starts at first public milestone</span>
+      </p>
+    )}
     <div class="ct-scroll">
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Company milestone and roadmap timeline">
-      {/* Past/future axis band shading */}
-      <rect x={PAD_L} y={AXIS_Y - 1} width={xForYear(nowFrac) - PAD_L} height={2}
-            fill="var(--color-accent)"/>
-      <rect x={xForYear(nowFrac)} y={AXIS_Y - 1} width={W - PAD_R - xForYear(nowFrac)} height={2}
-            fill="var(--color-text-soft)" opacity="0.4"/>
-
-      {/* Year ticks */}
-      {yearTicks.map((y) => (
-        <g>
-          <line x1={xForYear(y)} y1={AXIS_Y - 4} x2={xForYear(y)} y2={AXIS_Y + 4}
-                stroke="var(--color-text-soft)" stroke-width="1"/>
-          <text x={xForYear(y)} y={AXIS_Y + 18} text-anchor="middle" class="ct-year">{y}</text>
-        </g>
-      ))}
-
-      {/* 'Today' vertical line */}
-      <line x1={xForYear(nowFrac)} y1={20} x2={xForYear(nowFrac)} y2={H - 20}
-            stroke="var(--color-accent-2)" stroke-width="1.2" stroke-dasharray="3,3"/>
-      <text x={xForYear(nowFrac)} y={H - 6} text-anchor="middle" class="ct-now">today</text>
-
-      {/* Points */}
-      {points.map((p, i) => {
-        const x = xForYear(p.fracYear);
-        const place = placement(i);
-        const [line1, line2] = wrap(p.label, 24);
-        return (
-          <g>
-            <line x1={x} y1={AXIS_Y} x2={x} y2={place.lineYEnd}
-                  stroke="var(--color-text-soft)" stroke-width="0.8"/>
-            {p.kind === "milestone" ? (
-              <circle cx={x} cy={AXIS_Y} r="5" fill="var(--color-accent)" stroke="var(--color-bg)" stroke-width="1.5"/>
-            ) : (
-              <circle cx={x} cy={AXIS_Y} r="5" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="2"/>
-            )}
-            <text x={x} y={place.labelY} text-anchor="middle" class="ct-label">
-              <tspan x={x}>{line1}</tspan>
-              {line2 && <tspan x={x} dy="1.1em">{line2}</tspan>}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
+      <ol class="ct-row" role="list">
+        {years.map((y) => {
+          const cellItems = byYear.get(y) ?? [];
+          const lit = cellItems.length > 0;
+          const isPast = y < nowYear;
+          const isNow = y === nowYear;
+          const isFuture = y > nowYear;
+          const cls = ["ct-cell"];
+          if (lit) cls.push("is-lit");
+          if (isPast) cls.push("is-past");
+          if (isNow) cls.push("is-now");
+          if (isFuture) cls.push("is-future");
+          return (
+            <li class={cls.join(" ")}>
+              <div class="ct-year-label">{y}</div>
+              {cellItems.length > 0 && (
+                <ul class="ct-items" role="list">
+                  {cellItems.map((it) => (
+                    <li
+                      class={`ct-item ct-item--${it.kind}`}
+                      title={`${it.date} — ${it.label}`}
+                    >
+                      <span class="ct-dot" aria-hidden="true"></span>
+                      <span class="ct-text">{it.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ol>
     </div>
     <figcaption>
-      <span class="ct-legend"><span class="ct-dot ct-dot--past"></span> shipped milestone</span>
-      <span class="ct-legend"><span class="ct-dot ct-dot--future"></span> public roadmap</span>
+      <span class="ct-legend">
+        <span class="ct-legend-dot ct-legend-dot--past"></span>
+        shipped milestone
+      </span>
+      <span class="ct-legend">
+        <span class="ct-legend-dot ct-legend-dot--future"></span>
+        public roadmap
+      </span>
+      <span class="ct-legend ct-legend--now">
+        <span class="ct-legend-now-box"></span>
+        current year ({nowYear})
+      </span>
     </figcaption>
   </figure>
 ) : (
@@ -160,44 +133,155 @@ function placement(i: number): Placement {
 )}
 
 <style>
-  .ct { margin: 0; display: grid; gap: var(--space-2); }
-  /* The SVG fills the container on desktop. At phone width the viewBox
-     (880×280) would scale to ~25% and the hardcoded 10px text would
-     become unreadable (~3-4px effective). Below 36rem the SVG wrapper
-     gets horizontal scroll with a min-width so the user pans the
-     timeline at legible size. Figcaption stays in normal flow. */
-  .ct-scroll { inline-size: 100%; }
-  .ct svg { inline-size: 100%; block-size: auto; display: block; }
-  @media (max-width: 36rem) {
-    .ct-scroll {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .ct svg { min-inline-size: 720px; }
+  .ct {
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
   }
-  :global(.ct-year) {
+  .ct-founded {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-mute);
+  }
+  .ct-founded-label {
     font-family: var(--font-mono);
-    font-size: 10px;
-    fill: var(--color-text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text);
+    margin-inline-end: 4px;
   }
-  :global(.ct-now) {
-    font-size: 10px;
-    fill: var(--color-accent-2);
-    font-style: italic;
+  .ct-founded-gap { opacity: 0.7; }
+
+  /* Horizontal scroll on narrow viewports; cells keep a minimum width
+     so the year labels and item text stay legible. */
+  .ct-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  :global(.ct-label) {
+  .ct-row {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(96px, 1fr);
+    gap: 4px;
+  }
+
+  /* Cell */
+  .ct-cell {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 6px;
+    padding: 8px 7px 9px;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    background: transparent;
+    min-block-size: 96px;
+    transition: border-color 120ms ease, background 120ms ease;
+  }
+  /* Lit past cells: filled with the accent tint */
+  .ct-cell.is-lit.is-past {
+    background: color-mix(in srgb, var(--color-accent) 9%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--card-border));
+  }
+  /* Lit current-year cell: highlighted */
+  .ct-cell.is-lit.is-now {
+    background: color-mix(in srgb, var(--color-accent-2) 14%, transparent);
+    border-color: var(--color-accent-2);
+  }
+  /* Unlit current-year cell: still mark it */
+  .ct-cell.is-now {
+    box-shadow: inset 0 -3px 0 var(--color-accent-2);
+  }
+  /* Lit future cells: dashed accent border */
+  .ct-cell.is-lit.is-future {
+    background: transparent;
+    border-color: var(--color-accent);
+    border-style: dashed;
+  }
+
+  .ct-year-label {
+    font-family: var(--font-mono);
     font-size: 10.5px;
-    fill: var(--color-text);
+    color: var(--color-text-mute);
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
+  .ct-cell.is-lit.is-past .ct-year-label,
+  .ct-cell.is-lit.is-future .ct-year-label {
+    color: var(--color-text);
+  }
+  .ct-cell.is-now .ct-year-label { color: var(--color-accent-2); }
+
+  /* Items inside a cell */
+  .ct-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+    align-content: start;
+  }
+  .ct-item {
+    display: grid;
+    grid-template-columns: 6px 1fr;
+    column-gap: 5px;
+    align-items: start;
+    font-size: 10.5px;
+    line-height: 1.32;
+    color: var(--color-text);
+  }
+  .ct-item .ct-dot {
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 50%;
+    margin-block-start: 5px;
+    background: var(--color-accent);
+  }
+  .ct-item--roadmap .ct-dot {
+    background: transparent;
+    border: 1.5px solid var(--color-accent);
+    box-sizing: border-box;
+  }
+  .ct-item--roadmap .ct-text { color: var(--color-text-mute); }
+  .ct-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* Legend */
   .ct figcaption {
     display: flex;
     gap: var(--space-3);
+    flex-wrap: wrap;
     font-size: var(--text-xs);
     color: var(--color-text-mute);
   }
   .ct-legend { display: inline-flex; align-items: center; gap: 6px; }
-  .ct-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-  .ct-dot--past   { background: var(--color-accent); }
-  .ct-dot--future { background: var(--color-bg); border: 2px solid var(--color-accent); }
+  .ct-legend-dot {
+    inline-size: 10px;
+    block-size: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .ct-legend-dot--past { background: var(--color-accent); }
+  .ct-legend-dot--future {
+    background: transparent;
+    border: 2px solid var(--color-accent);
+    box-sizing: border-box;
+  }
+  .ct-legend-now-box {
+    inline-size: 12px;
+    block-size: 10px;
+    background: color-mix(in srgb, var(--color-accent-2) 14%, transparent);
+    border: 1px solid var(--color-accent-2);
+    display: inline-block;
+    border-radius: 2px;
+  }
   .empty { color: var(--color-text-mute); }
 </style>
