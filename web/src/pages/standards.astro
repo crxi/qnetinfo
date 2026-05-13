@@ -122,18 +122,18 @@ const totalBodies = BODIES.length;
           <input type="search" id="std-search" placeholder="Search ID, title, body…" class="std-search" />
           <div class="filter-chips" data-filter-group="tag">
             {TAG_ORDER.map((t) => (
-              <button class={`chip chip-${t}`} data-filter-value={t} aria-pressed="false">
+              <button class={`chip tag-pill tag-${t}`} data-filter-value={t} aria-pressed="false">
                 {TAG_LABEL[t]}
                 <span class="chip-count">{tagCounts[t]}</span>
               </button>
             ))}
           </div>
           <div class="filter-chips" data-filter-group="status">
-            <button class="chip chip-status" data-filter-value="in-force" aria-pressed="false">In force</button>
-            <button class="chip chip-status" data-filter-value="draft" aria-pressed="false">Draft</button>
-            <button class="chip chip-status" data-filter-value="planned" aria-pressed="false">Planned</button>
-            <button class="chip chip-status" data-filter-value="informational" aria-pressed="false">Informational</button>
-            <button class="chip chip-status" data-filter-value="superseded" aria-pressed="false">Superseded</button>
+            <button class="chip status-pill status-in-force"      data-filter-value="in-force"      aria-pressed="false">In force</button>
+            <button class="chip status-pill status-draft"         data-filter-value="draft"         aria-pressed="false">Draft</button>
+            <button class="chip status-pill status-planned"       data-filter-value="planned"       aria-pressed="false">Planned</button>
+            <button class="chip status-pill status-informational" data-filter-value="informational" aria-pressed="false">Informational</button>
+            <button class="chip status-pill status-superseded"    data-filter-value="superseded"    aria-pressed="false">Superseded</button>
           </div>
           <button id="std-reset" class="std-reset" type="button">Reset</button>
         </div>
@@ -422,25 +422,35 @@ const totalBodies = BODIES.length;
     flex-wrap: wrap;
     gap: 4px;
   }
+  /* Filter chips reuse the .tag-pill / .status-pill colour classes so the
+     selector and the rendered table cells share a colour language. The
+     chip-specific rules below override only what's needed for the
+     interactive widget (cursor, gap, pressed state). */
   .chip {
     font: inherit;
     font-size: var(--text-xs);
     padding: 3px 8px;
     border-radius: 999px;
-    border: 1px solid var(--color-rule);
-    background: transparent;
-    color: var(--color-text-mute);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-  }
-  .chip[aria-pressed="true"] {
     color: var(--color-text);
-    border-color: var(--color-text);
-    background: color-mix(in srgb, var(--color-link) 12%, transparent);
+    opacity: 0.65;
+    transition: opacity 0.15s, outline-color 0.15s;
+    outline: 1px solid transparent;
+    outline-offset: 1px;
   }
-  .chip:hover { color: var(--color-text); }
+  .chip:hover { opacity: 0.9; }
+  .chip[aria-pressed="true"] {
+    opacity: 1;
+    outline-color: var(--color-text);
+    font-weight: 600;
+  }
+  .chip[aria-pressed="true"]::before {
+    content: "✓ ";
+    font-weight: 700;
+  }
   .chip-count {
     font-variant-numeric: tabular-nums;
     color: var(--color-text-faint);
