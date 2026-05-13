@@ -90,6 +90,38 @@ milestones:
     source_url: https://ionq.com/...
     source_type: press             # paper | preprint | press | blog | conf-talk | filing
 
+# Major shareholders / control. Ordered most-significant first. Skip
+# this block for fully-private companies without disclosed positions;
+# for SPAC / public / acquired entities the controlling holder is
+# mandatory. Stake numbers are point-in-time and decay quickly — every
+# row carries an `as_of` date and a `source_url` to the primary filing
+# (10-K, 13D/G, SEC S-1, equivalent EU/UK/JP/CH filing) or vendor
+# press release announcing the position.
+
+shareholders:
+  - holder: Honeywell
+    stake_percent: 54          # null when only stake_class is known
+    stake_class: controlling   # controlling | minority | strategic | founder
+    as_of: 2024-12
+    source_url: https://www.sec.gov/...
+    note: ""                   # optional one-liner (e.g. "post-merger lockup")
+
+# Key personnel. Roles are open-ended; include any of CEO, CTO, CFO,
+# COO, Chief Scientist, Chief Quantum Officer, Founder, Principal
+# Investigator. Every entry needs `since` (year or YYYY-MM) and a
+# `source_url` — vendor's About page is acceptable here because
+# leadership rosters are routinely refreshed.
+
+key_personnel:
+  - role: CEO
+    name: Peter Chapman
+    since: 2019
+    source_url: https://ionq.com/team/peter-chapman
+  - role: Founder & Chief Scientist
+    name: Christopher Monroe
+    since: 2015
+    source_url: https://ionq.com/team/christopher-monroe
+
 # Forward roadmap with target dates (best-effort; vendors are notorious for
 # rolling these). Always cite a source.
 
@@ -112,8 +144,17 @@ references:
     note: 36 algorithmic qubits demo
 
 # Fields the skill couldn't verify on the last run — rendered with a "—"
-# and an "unverified" tag on the per-vendor page.
-partial: [coherence_t1_ms, coherence_t2_ms, ec_code]
+# and an "unverified" tag on the per-vendor page. Each entry is either
+# a bare dotted path (treated as "unverified as of last_verified") or a
+# `{ field, as_of, note }` object when a value IS present in the dossier
+# but its provenance is weak. Use the second form when a value is the
+# best-available guess and you want reviewers to know it's a guess.
+partial:
+  - modalities.qc.coherence_t1_ms                                  # bare path = no value
+  - modalities.qc.coherence_t2_ms
+  - field: modalities.qc.ec_code                                   # value present but unverified
+    as_of: 2026-05-13
+    note: announced as qLDPC in vendor press; no code-paper citation yet
 
 last_verified: 2026-05-12
 verification_method: web           # web | reference-library | mixed

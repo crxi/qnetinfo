@@ -46,6 +46,108 @@ milestones:
     source_url: https://aws.amazon.com/blogs/quantum-computing/amazon-braket-launches-aquila-the-first-neutral-atom-quantum-processor-from-quera-computing/
     source_type: press
 
+shareholders:
+  - holder: Google (Google Quantum AI)
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-02
+    source_url: https://www.quera.com/press-releases/quera-computing-completes-230m-financing-to-accelerate-development-of-large-scale-fault-tolerant-quantum-computers
+    note: New investor in Feb 2025 $230M convertible-note financing; led the round per TechCrunch reporting
+  - holder: SoftBank Vision Fund 2
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-02
+    source_url: https://www.bloomberg.com/news/articles/2025-02-11/google-softbank-back-quantum-startup-quera-in-230-million-deal
+    note: New investor in Feb 2025 $230M financing alongside Google
+  - holder: Valor Equity Partners
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-02
+    source_url: https://www.quera.com/press-releases/quera-computing-completes-230m-financing-to-accelerate-development-of-large-scale-fault-tolerant-quantum-computers
+    note: New investor in Feb 2025 $230M financing
+  - holder: QVT Family Office
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-02
+    source_url: https://www.quera.com/press-releases/quera-computing-completes-230m-financing-to-accelerate-development-of-large-scale-fault-tolerant-quantum-computers
+    note: Existing investor; participated in Feb 2025 round
+  - holder: Safar Partners
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-02
+    source_url: https://www.quera.com/press-releases/quera-computing-completes-230m-financing-to-accelerate-development-of-large-scale-fault-tolerant-quantum-computers
+    note: Existing investor; participated in Feb 2025 round
+  - holder: Mikhail Lukin
+    stake_percent: null
+    stake_class: founder
+    as_of: 2025-02
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Co-founder equity; Harvard PI behind the neutral-atom platform
+  - holder: Vladan Vuletić
+    stake_percent: null
+    stake_class: founder
+    as_of: 2025-02
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Co-founder equity (MIT)
+  - holder: Markus Greiner
+    stake_percent: null
+    stake_class: founder
+    as_of: 2025-02
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Co-founder equity (Harvard)
+  - holder: Dirk Englund
+    stake_percent: null
+    stake_class: founder
+    as_of: 2025-02
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Co-founder equity (MIT)
+  - holder: Nathan Gemelke
+    stake_percent: null
+    stake_class: founder
+    as_of: 2025-02
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Co-founder equity; CTO/Chief Strategy roles
+
+key_personnel:
+  - role: CEO
+    name: Andy Ory
+    since: 2024-07
+    source_url: https://www.quera.com/press-releases/quera-announces-leadership-transition-as-ceo-alex-keesling-to-focus-on-high-volume-production-and-technology-enhancements
+    note: Appointed acting CEO July 2024; subsequently confirmed as CEO
+  - role: President
+    name: Takuya Kitagawa
+    since: 2024
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+  - role: CTO
+    name: Vladan Vuletić
+    since: 2018
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Co-founder (MIT)
+  - role: Founder & Chief Scientist
+    name: Mikhail Lukin
+    since: 2018
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Harvard; principal investigator behind the Rydberg-array platform
+  - role: Co-founder
+    name: Markus Greiner
+    since: 2018
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: Harvard
+  - role: Co-founder
+    name: Dirk Englund
+    since: 2018
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+    note: MIT
+  - role: Co-founder
+    name: Nathan Gemelke
+    since: 2018
+    source_url: https://en.wikipedia.org/wiki/QuEra_Computing_Inc.
+  - role: Chief Product Officer (previously CEO)
+    name: Alex Keesling
+    since: 2024-07
+    source_url: https://www.quera.com/press-releases/quera-announces-leadership-transition-as-ceo-alex-keesling-to-focus-on-high-volume-production-and-technology-enhancements
+    note: Stepped down as CEO July 2024 to lead production scale-up
+
 roadmap:
   - target: 2025
     item: Gemini — ~30 logical qubits with magic-state distillation, >3,000 physical qubits (digital mode)
@@ -89,4 +191,5 @@ partial:
   - modalities.qc.gate_set
 
 last_verified: 2026-05-13
+
 verification_method: web

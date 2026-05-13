@@ -73,6 +73,87 @@ milestones:
     source_url: https://thequantuminsider.com/2019/09/26/qc-startup-aliro-gets-multi-million-dollar-cash-injection-2/
     source_type: press
 
+shareholders:
+  - holder: Gutbrain Ventures
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-02
+    source_url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    note: Lead investor in the Feb 2026 $15M Series B; founder Bob Davoli serves as Aliro's Chairman.
+  - holder: Cisco Investments
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-02
+    source_url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    note: Existing investor; participated in the 2026 Series B.
+  - holder: Argon Ventures
+    stake_percent: null
+    stake_class: minority
+    as_of: 2026-02
+    source_url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    note: New investor in the 2026 Series B.
+  - holder: Wonderstone Ventures (Murata)
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-02
+    source_url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    note: Murata Manufacturing's corporate VC arm; new investor in the 2026 Series B.
+  - holder: Flybridge Capital Partners
+    stake_percent: null
+    stake_class: minority
+    as_of: 2019-09
+    source_url: https://www.prnewswire.com/news-releases/aliro-raises-2-7-million-spun-out-of-harvard-universitys-quantum-computing-lab-300921728.html
+    note: Lead investor in the 2019 $2.7M seed round.
+  - holder: Crosslink Capital
+    stake_percent: null
+    stake_class: minority
+    as_of: 2019-09
+    source_url: https://www.crosslinkcapital.com/news/aliro-comes-out-of-stealth-with-2-7m-to-democratize-quantum-computing-with-developer-tools/
+    note: Participated in the 2019 seed round.
+  - holder: Samsung NEXT Q Fund
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2019-09
+    source_url: https://www.prnewswire.com/news-releases/aliro-raises-2-7-million-spun-out-of-harvard-universitys-quantum-computing-lab-300921728.html
+    note: Participated in the 2019 seed round.
+  - holder: Accenture Ventures
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2023-10
+    source_url: https://newsroom.accenture.com/news/2023/accenture-invests-in-aliro-quantum-to-establish-secure-quantum-networks
+    note: Strategic investment announced October 2023.
+  - holder: Founders (Narang, Cubeddu, Finigan)
+    stake_percent: null
+    stake_class: founder
+    as_of: 2026-02
+    source_url: https://techcrunch.com/2019/09/18/aliro-comes-out-of-stealth-with-2-7m-to-democratize-quantum-computing-with-developer-tools/
+    note: Harvard (Narang Lab) spin-out; founder equity assumed retained, exact split not disclosed.
+
+key_personnel:
+  - role: Chief Executive Officer
+    name: Jim Ricotta
+    since: 2019
+    source_url: https://thequantuminsider.com/2019/09/26/qc-startup-aliro-gets-multi-million-dollar-cash-injection-2/
+  - role: Chairman
+    name: Bob Davoli
+    since: 2026
+    source_url: https://thequantuminsider.com/2026/02/18/aliro-raises-15-million-in-oversubscribed-round/
+    note: Gutbrain Ventures founder; named Chairman alongside the Feb 2026 Series B.
+  - role: Co-founder & CTO
+    name: Michael Cubeddu
+    since: 2019
+    source_url: https://www.aliroquantum.com/company/michael-cubeddu
+    note: Leads research, IP, and customer/partner relations; board member.
+  - role: Co-founder & VP
+    name: Will Finigan
+    since: 2019
+    source_url: https://theorg.com/org/aliro-quantum/teams/leadership-team
+  - role: Co-founder
+    name: Prineha Narang
+    since: 2019
+    source_url: https://en.wikipedia.org/wiki/Prineha_Narang
+    note: Academic co-founder (Narang Lab, originally Harvard, now UCLA Howard Reiss Chair); historically listed as Aliro CTO/Chief Scientist but operational CTO role is now held by Cubeddu — current Aliro title not confirmed on a live vendor page.
+
 roadmap:
   - target: 2027
     item: Pre-configured satellite modules (with hardware specifications and cost models) for the Aliro Simulator, enabling design of fibre+satellite hybrid QKD networks
@@ -121,6 +202,12 @@ partial:
   - modalities.network.role  # "orchestrator" is the closest schema value, but Aliro also supplies simulation and emulation tooling
   - revenue
   - headcount
+  - field: key_personnel
+    as_of: 2026-05-13
+    note: Aliro's public /team page returns 404; roles cross-checked against TheOrg, Crunchbase, and vendor press releases. Prineha Narang's current Aliro title is unverified — historic press lists her as Co-Founder & CTO, but Michael Cubeddu now holds the operational CTO role.
+  - field: shareholders
+    as_of: 2026-05-13
+    note: Aliro is private; no equity percentages disclosed. Holder list compiled from announced round participation; founder equity split not public.
 
 last_verified: 2026-05-13
 verification_method: web

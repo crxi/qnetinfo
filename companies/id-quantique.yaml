@@ -80,6 +80,62 @@ milestones:
     source_url: https://www.idquantique.com/about-us/history/
     source_type: blog
 
+shareholders:
+  - holder: IonQ
+    stake_percent: null
+    stake_class: controlling
+    as_of: 2025-05
+    source_url: https://www.ionq.com/news/ionq-completes-acquisition-of-id-quantique-cementing-leadership-in-quantum
+    note: >
+      Acquired the 56.9% block jointly held by SK Telecom and SK Square via all-stock
+      swap (4,215,740 IonQ common shares, ~$228M / KRW 330B); closed 6 May 2025.
+      Remaining ~43% held by founders, Swisscom and other historical minority investors.
+  - holder: SK Telecom
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-02
+    source_url: https://www.ionq.com/news/ionq-to-acquire-id-quantique-enter-into-strategic-partnership-with-sk
+    note: >
+      Held majority of IDQ from 2018 to 2025; swapped entire 56.9% stake (with SK Square)
+      for ~3.1% of IonQ. No longer an IDQ shareholder — relationship is now an MoU-based
+      global quantum strategic partnership (distribution, joint commercial/technical work).
+
+key_personnel:
+  - role: CEO & Co-founder
+    name: Grégoire Ribordy
+    since: 2001
+    source_url: https://www.idquantique.com/about-idq/management-team/
+  - role: Vice-Chairman of the Board
+    name: Grégoire Ribordy
+    since: 2025-05
+    source_url: https://www.idquantique.com/about-idq/management-team/
+    note: Post-IonQ-acquisition board structure; IonQ CEO Niccolo de Masi chairs.
+  - role: Chairman of the Board
+    name: Niccolo de Masi
+    since: 2025-05
+    source_url: https://www.idquantique.com/about-idq/management-team/
+    note: CEO of IonQ; took the IDQ chair on close of acquisition.
+  - role: Chief Operating Officer
+    name: Christophe Gaillard
+    since: 2020
+    source_url: https://www.idquantique.com/about-idq/management-team/
+  - role: Chief Revenue Officer
+    name: Marc Nikles
+    since: 2020
+    source_url: https://www.idquantique.com/about-idq/management-team/
+  - role: Chief Financial Officer
+    name: Benoît Lamamy
+    since: 2020
+    source_url: https://www.idquantique.com/about-idq/management-team/
+  - role: Co-founder
+    name: Nicolas Gisin
+    since: 2001
+    source_url: https://www.idquantique.com/about-us/history/
+    note: >
+      Co-founder and former Chief Scientist; emeritus professor at UNIGE. No longer
+      listed on the current IDQ management team or board page (post-2025); retains
+      historical co-founder status.
+
 roadmap:
   - target: 2026
     item: Continued EuroQCI rollouts and integration with IonQ's quantum-networking stack

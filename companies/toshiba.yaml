@@ -1,21 +1,37 @@
 slug: toshiba
-name: Toshiba (Cambridge Research Laboratory)
+name: Toshiba (Quantum Technology Division)
 categories: [qkd]
-hq: Cambridge, UK
+hq: Cambridge, UK / Kawasaki, Japan
 founded: 1991
-status: public
-parent: toshiba
+status: private
+parent: null
 logo:
   domain: toshiba.eu
 
 positioning: >
-  Quantum Key Distribution business unit of Toshiba Europe Ltd, run out of the
-  Cambridge Research Laboratory (CRL) and led by Andrew Shields. Scope of this
-  dossier is the QKD product line and Twin-Field QKD research programme — not
-  the wider Toshiba Corporation conglomerate. Ships two commercial QKD systems
-  (Multiplexed MU and Long Distance LD) for metro and inter-city deployments,
-  with the BT London quantum-secured metro network and the JPMorgan Chase /
-  Ciena 800 Gbps co-existence trial as its flagship references.
+  This dossier covers Toshiba's quantum business across both Toshiba Europe's
+  Cambridge Research Laboratory (CRL) and Toshiba Corporation's R&D Center in
+  Kawasaki, with Cambridge serving as the product-shipping hub. The Cambridge
+  site, led by Andrew Shields, runs the commercial QKD product line — the
+  Multiplexed MU and Long Distance LD systems — and the Twin-Field QKD research
+  programme behind the Nature / Nature Photonics demonstrations; the Kawasaki
+  parent contributes quantum-information theory and protocol work and provides
+  the corporate vehicle (Toshiba Corporation, taken private by Japan Industrial
+  Partners in December 2023). Flagship references are the BT–Toshiba London
+  quantum-secured metro network and the JPMorgan Chase / Ciena 800 Gbps
+  co-existence trial.
+
+business_units:
+  - name: Toshiba Cambridge (Toshiba Europe Ltd, Cambridge Research Laboratory)
+    scope: QKD product engineering (MU + LD systems), Twin-Field QKD demonstrations, BT London quantum-secured metro deployment, EuroQCI integration
+    hq: Cambridge, UK
+    lead: Andrew Shields (Head of Quantum Information Technologies)
+    source_url: https://www.toshiba.eu/pages/eu/Cambridge-Research-Laboratory/quantum-information
+  - name: Toshiba Corporate R&D Center (Toshiba Corporation)
+    scope: Parent R&D; quantum-information theory and protocol work, corporate ownership of the Cambridge programme
+    hq: Kawasaki, Japan
+    lead: ""
+    source_url: https://www.global.toshiba/ww/outline/corporate/rdc.html
 
 modalities:
   qkd:
@@ -59,6 +75,58 @@ milestones:
     headline: 600 km Twin-Field QKD with dual-band phase stabilisation, Nature Photonics (Pittaluga et al.)
     source_url: https://www.nature.com/articles/s41566-021-00811-0
     source_type: paper
+
+shareholders:
+  - holder: Japan Industrial Partners (JIP)-led consortium
+    stake_percent: 100
+    stake_class: controlling
+    as_of: 2023-12
+    source_url: https://www.global.toshiba/ww/news/corporate/2023/12/news-20231220-01.html
+    note: Tender offer completed Sept 2023; Toshiba delisted from Tokyo Stock Exchange 20 Dec 2023 and taken fully private by the JIP consortium
+  - holder: Rohm Co., Ltd.
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2023-12
+    source_url: https://www.reuters.com/markets/deals/japan-consortium-takes-toshiba-private-ending-its-74-years-tokyo-bourse-2023-12-20/
+    note: Co-investor in the JIP-led take-private consortium
+  - holder: Orix Corporation
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2023-12
+    source_url: https://www.reuters.com/markets/deals/japan-consortium-takes-toshiba-private-ending-its-74-years-tokyo-bourse-2023-12-20/
+    note: Co-investor in the JIP-led take-private consortium
+  - holder: Chubu Electric Power
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2023-12
+    source_url: https://www.reuters.com/markets/deals/japan-consortium-takes-toshiba-private-ending-its-74-years-tokyo-bourse-2023-12-20/
+    note: Co-investor in the JIP-led take-private consortium
+
+key_personnel:
+  - role: Head of Quantum Information Technologies, Toshiba Europe CRL (Cambridge)
+    name: Andrew Shields
+    since: 1999
+    source_url: https://www.toshiba.eu/pages/eu/Cambridge-Research-Laboratory/quantum-information
+  - role: President & CEO, Toshiba Corporation (parent)
+    name: Taro Shimada
+    since: 2022-03
+    source_url: https://www.global.toshiba/ww/outline/corporate/executive.html
+  - role: Chief Technology Officer, Toshiba Corporation
+    name: Hiroaki Tezuka
+    since: 2024-04
+    source_url: https://www.global.toshiba/ww/outline/corporate/executive.html
+  - role: Principal Research Scientist, QKD systems (Cambridge)
+    name: Marco Lucamarini
+    since: 2014
+    source_url: https://www.nature.com/articles/s41566-021-00811-0
+  - role: Principal Research Scientist, Twin-Field QKD (Cambridge)
+    name: Mirko Pittaluga
+    since: 2018
+    source_url: https://www.nature.com/articles/s41566-021-00811-0
+  - role: Principal Research Scientist, QKD networking (Cambridge)
+    name: James Dynes
+    since: 2005
+    source_url: https://www.toshiba.eu/pages/eu/Cambridge-Research-Laboratory/quantum-information
 
 roadmap:
   - target: 2026

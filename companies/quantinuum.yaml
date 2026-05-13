@@ -64,9 +64,111 @@ milestones:
     source_url: https://www.quantinuum.com/press-releases/honeywell-announces-the-closing-of-300-million-equity-investment-round-for-quantinuum-at-5b-pre-money-valuation
     source_type: press
 
+shareholders:
+  - holder: Honeywell
+    stake_percent: 54
+    stake_class: controlling
+    as_of: 2025-09
+    source_url: https://www.honeywell.com/us/en/press/2025/09/honeywell-announces-600-million-capital-raise-for-quantinuum-at-10b-pre-money-equity-valuation-to-advance-quantum-computing-at-scale
+    note: majority owner since the 2021 merger; reaffirmed ~54% at the Sep 2025 $600M raise; Quantinuum publicly filed Form S-1 on 8 May 2026, no per-shareholder breakdown disclosed yet
+  - holder: Cambridge Quantum Holdings (incl. Ilyas Khan and former CQ shareholders)
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: legacy Cambridge Quantum equity rolled at the 2021 merger; participated in the Aug 2025 round alongside Honeywell
+  - holder: JPMorgan Chase
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: entered Jan 2024 round; followed-on in Aug 2025
+  - holder: Mitsui & Co.
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: Japan distribution partner; entered Jan 2024 round; followed-on in Aug 2025
+  - holder: Amgen
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: strategic biotech customer; entered Jan 2024 round
+  - holder: Quanta Computer
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: new strategic investor in the Aug 2025 $600M round
+  - holder: NVentures (NVIDIA)
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: NVIDIA's corporate venture arm; new investor Aug 2025
+  - holder: QED Investors
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: new investor Aug 2025
+  - holder: Serendipity Capital
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-08
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-announces-600-million-capital-raise-at-10-billion-pre-money-valuation
+    note: follow-on investor Aug 2025
+
+key_personnel:
+  - role: President & CEO
+    name: Rajeeb (Raj) Hazra
+    since: 2023-02
+    source_url: https://www.quantinuum.com/press-releases/quantinuum-names-rajeeb-raj-hazra-chief-executive-officer
+  - role: Founder, Board Vice Chair & Head of Special Projects
+    name: Ilyas Khan
+    since: 2021-11
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chairman of the Board
+    name: Vimal Kapur
+    since: 2023
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Financial Officer
+    name: Nitesh Sharan
+    since: 2024
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Strategy Officer & GM, Quantinuum Consulting Services
+    name: Kevin Dehoff
+    since: 2024
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Commercial Officer
+    name: Larry Stack
+    since: 2024
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Marketing Officer
+    name: Lawrence Schwartz
+    since: 2024
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Legal Counsel & SVP Government Relations
+    name: Kaniah Konkoly-Thege
+    since: 2022
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Scientist for Algorithms and Innovation
+    name: Harry Buhrman
+    since: 2024
+    source_url: https://www.quantinuum.com/company/about
+  - role: Chief Scientist for Hardware Technology Development
+    name: Patty Lee
+    since: 2021
+    source_url: https://www.quantinuum.com/company/about
+  - role: VP & GM, Compute Platforms Group
+    name: Jenni Strabley
+    since: 2023
+    source_url: https://www.quantinuum.com/company/about
+
 roadmap:
   - target: 2026
-    item: Quantinuum Nasdaq IPO (draft S-1 confidentially submitted April 2026; reported >$20B target valuation)
+    item: Quantinuum Nasdaq IPO (Form S-1 publicly filed 8 May 2026; ticker QNT; previously confidentially submitted April 2026)
     source_url: https://thequantuminsider.com/2026/04/22/honeywell-announces-quantinuums-confidential-submission-of-draft-registration-statement-for-proposed-ipo/
     tag: qc
   - target: 2027
@@ -108,6 +210,9 @@ partial:
   - modalities.qc.coherence_t1_ms
   - modalities.qc.coherence_t2_ms
   - modalities.qc.gate_set
+  - field: modalities.qc.ec_code
+    as_of: 2026-05-13
+    note: announced as qLDPC in Helios press; no code-paper citation yet
 
 last_verified: 2026-05-13
 verification_method: web

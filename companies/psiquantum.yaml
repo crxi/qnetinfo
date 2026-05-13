@@ -61,6 +61,85 @@ milestones:
     source_url: https://www.nature.com/articles/s41467-023-36493-1
     source_type: paper
 
+shareholders:
+  - holder: Commonwealth of Australia & Queensland State Government
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2024-04
+    source_url: https://www.psiquantum.com/news-import/psiquantum-to-build-worlds-first-utility-scale-fault-tolerant-quantum-computer-in-australia
+    note: A$940 M joint commitment (equity + grants + loans) tied to siting the Brisbane utility-scale system; structure includes an equity stake alongside grants and loans
+  - holder: BlackRock (funds and accounts managed by affiliates)
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    note: Lead investor of US$1 B Series E (Sep 2025); also led the US$450 M Series D in July 2021
+  - holder: Temasek
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    note: Co-lead of Series E (Sep 2025); existing investor since Series D
+  - holder: Baillie Gifford
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    note: Co-lead of Series E (Sep 2025); existing investor since Series D
+  - holder: NVentures (NVIDIA)
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-09
+    source_url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    note: New Series E investor; strategic given NVIDIA's CUDA-Q hybrid HPC-quantum stack
+  - holder: Qatar Investment Authority
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.psiquantum.com/news-import/psiquantum-1b-fundraise
+    note: New Series E investor (sovereign wealth)
+  - holder: Jeremy O'Brien, Terry Rudolph, Pete Shadbolt, Mark Thompson
+    stake_percent: null
+    stake_class: founder
+    as_of: 2016
+    source_url: https://www.psiquantum.com/about
+    note: Four co-founders; specific founder equity not disclosed
+
+key_personnel:
+  - role: Interim CEO
+    name: Victor Peng
+    since: 2026-02
+    source_url: https://www.psiquantum.com/news-import/psiquantum-appoints-victor-peng
+  - role: Co-Founder & Executive Chairman
+    name: Jeremy O'Brien
+    since: 2016
+    source_url: https://www.psiquantum.com/about
+    note: Co-founder; CEO 2016–Feb 2026, moved to Executive Chairman as the company runs a search for a permanent CEO
+  - role: Co-Founder & Chief Architect
+    name: Terry Rudolph
+    since: 2016
+    source_url: https://www.psiquantum.com/about
+  - role: Co-Founder & Chief Scientific Officer
+    name: Pete Shadbolt
+    since: 2016
+    source_url: https://www.psiquantum.com/about
+  - role: Co-Founder & Chief Technology Officer
+    name: Mark Thompson
+    since: 2016
+    source_url: https://www.psiquantum.com/about
+  - role: Chief Operating Officer
+    name: Fariba Danesh
+    since: 2024
+    source_url: https://www.psiquantum.com/about
+  - role: Chief Financial Officer
+    name: Susan Kim
+    since: 2024
+    source_url: https://www.psiquantum.com/about
+  - role: Chief People Officer
+    name: Dani Kleinman
+    since: 2024
+    source_url: https://www.psiquantum.com/about
+
 roadmap:
   - target: 2027
     item: Brisbane utility-scale Quantum Compute Center operational

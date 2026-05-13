@@ -43,6 +43,90 @@ milestones:
     source_url: https://ionq.com/news/october-01-2021-ionq-completes-business-combination
     source_type: filing
 
+shareholders:
+  - holder: Vanguard Group
+    stake_percent: 9.89
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.holdingschannel.com/institutional/holders-of-ionq/
+    note: Largest institutional holder per Q3 2025 13F filings (29.35M shares)
+  - holder: Morgan Stanley
+    stake_percent: 8.87
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.holdingschannel.com/institutional/holders-of-ionq/
+    note: 26.34M shares per Q3 2025 13F
+  - holder: BlackRock
+    stake_percent: 7.58
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://finance.yahoo.com/news/blackrock-owns-24-3-million-144000661.html
+    note: 22.48M shares per Q3 2025 13F; raised to ~24.3M by Q4 2025
+  - holder: Geode Capital Management
+    stake_percent: 2.23
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.holdingschannel.com/institutional/holders-of-ionq/
+    note: 6.62M shares
+  - holder: State Street
+    stake_percent: 2.12
+    stake_class: minority
+    as_of: 2025-09
+    source_url: https://www.holdingschannel.com/institutional/holders-of-ionq/
+    note: 6.30M shares
+  - holder: Peter Chapman (former CEO)
+    stake_percent: 2.7
+    stake_class: founder
+    as_of: 2025-03
+    source_url: https://www.stocktitan.net/sec-filings/IONQ/form-4-ion-q-inc-insider-trading-activity-93cc2e75f131.html
+    note: 6.84M shares including deep-ITM options; largely sold down by mid-2025 (Form 4 filings)
+  - holder: ID Quantique selling shareholders
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-05
+    source_url: https://ionq.com/news/ionq-completes-acquisition-of-id-quantique
+    note: Received 4,215,740 IonQ shares (~1.4%) as consideration in May 2025 IDQ acquisition
+
+key_personnel:
+  - role: Chairman & CEO
+    name: Niccolo de Masi
+    since: 2025-02
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+  - role: COO & CFO
+    name: Inder M. Singh
+    since: 2025-09
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+  - role: President, Quantum Computing
+    name: Chris Ballance
+    since: 2025
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+    note: Joined via Oxford Ionics acquisition
+  - role: President & GM, Quantum Platform
+    name: Jordan Shapiro
+    since: 2025
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+  - role: Chief Scientific Advisor & Co-founder
+    name: Christopher Monroe
+    since: 2015
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+  - role: Co-founder
+    name: Jungsang Kim
+    since: 2015
+    source_url: https://www.insidequantumtechnology.com/news-archive/ionq-co-founder-and-cto-jungsang-kim-departing-firm/
+    note: Co-founder and former CTO; departed executive role in 2024 to return to academia
+  - role: CEO, IonQ Italy & SVP Special Projects
+    name: Marco Pistoia
+    since: 2025
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+  - role: Executive Chairman, IonQ Federal
+    name: Robert Cardillo
+    since: 2025
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+  - role: Chief Legal Officer
+    name: Paul Dacier
+    since: 2025
+    source_url: https://investors.ionq.com/governance/executive-management/default.aspx
+
 roadmap:
   - target: 2025
     item: Tempo system — 64 algorithmic qubits, networked-cell architecture
@@ -76,6 +160,17 @@ partial:
   - modalities.qc.coherence_t2_ms
   - modalities.qc.ec_code
   - modalities.qc.gate_set
+  - field: shareholders
+    as_of: 2026-05-13
+    note: institutional stakes sourced from Q3 2025 13F aggregators (holdingschannel); not yet cross-checked against the 2026 DEF 14A proxy
+  - field: shareholders.5.stake_percent
+    as_of: 2026-05-13
+    note: IDQ-seller share count known (4,215,740) but exact percent depends on share count at issuance
+  - key_personnel.2.since
+  - key_personnel.3.since
+  - key_personnel.6.since
+  - key_personnel.7.since
+  - key_personnel.8.since
 
-last_verified: 2026-05-12
+last_verified: 2026-05-13
 verification_method: web

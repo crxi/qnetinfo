@@ -78,6 +78,118 @@ milestones:
     source_url: https://www.pasqal.com/newsroom/pasqal-raises-e100-million-series-b-funding-to-advance-neutral-atoms-quantum-computing/
     source_type: press
 
+shareholders:
+  - holder: Quantonation
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-03
+    source_url: https://techcrunch.com/2026/03/06/quantum-scale-up-pasqal-plans-2b-spac-listing-promises-to-remain-french/
+    note: Seed/Series A lead; co-founder Christophe Jurczak (Managing Partner) sits on the board
+  - holder: Temasek
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-03
+    source_url: https://www.pasqal.com/newsroom/pasqal-raises-e100-million-series-b-funding-to-advance-neutral-atoms-quantum-computing/
+    note: Led EUR 100M Series B (Jan 2023); Maynard Kang (Director of Emerging Technologies) sits on the board
+  - holder: BPIfrance Large Venture
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-03
+    source_url: https://www.pasqal.com/newsroom/pasqal-a-global-leader-in-neutral-atom-quantum-computing-to-go-public-via-business-combination-with-bleichroeder-acquisition-corp-ii/
+    note: Existing anchor investor; participating in USD 200M convertible financing for the SPAC merger
+  - holder: Saudi Aramco Entrepreneurship Ventures (Wa'ed)
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-03
+    source_url: https://www.businesswire.com/news/home/20260304923225/en/Pasqal-A-Global-Leader-in-Neutral-Atom-Quantum-Computing-to-Go-Public-via-Business-Combination-with-Bleichroeder-Acquisition-Corp-II
+    note: Aramco's venture arm; tied to the 200-qubit Dhahran deployment
+  - holder: European Innovation Council Fund
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2026-03
+    source_url: https://www.businesswire.com/news/home/20260304923225/en/Pasqal-A-Global-Leader-in-Neutral-Atom-Quantum-Computing-to-Go-Public-via-Business-Combination-with-Bleichroeder-Acquisition-Corp-II
+    note: EU equity investor (EIC accelerator equity track)
+  - holder: ISAI
+    stake_percent: null
+    stake_class: minority
+    as_of: 2026-03
+    source_url: https://www.businesswire.com/news/home/20260304923225/en/Pasqal-A-Global-Leader-in-Neutral-Atom-Quantum-Computing-to-Go-Public-via-Business-Combination-with-Bleichroeder-Acquisition-Corp-II
+    note: French VC; cited as Pasqal backer in SPAC announcement
+  - holder: Addax Holding
+    stake_percent: null
+    stake_class: minority
+    as_of: 2026-03
+    source_url: https://www.pasqal.com/company/leadership/
+    note: Jean-Jacques Joulié (CEO, Addax) sits on the Pasqal board
+  - holder: Founders (Aspect, Browaeys, Lahaye, Jurczak, Reymond)
+    stake_percent: null
+    stake_class: founder
+    as_of: 2026-03
+    source_url: https://www.pasqal.com/about-us/
+    note: Institut d'Optique co-founders + Jurczak; rolling 100% of equity into the post-SPAC NewCo per "remain French" pledge
+  - holder: Inflection Point
+    stake_percent: null
+    stake_class: minority
+    as_of: 2026-03
+    source_url: https://www.pasqal.com/newsroom/pasqal-a-global-leader-in-neutral-atom-quantum-computing-to-go-public-via-business-combination-with-bleichroeder-acquisition-corp-ii/
+    note: Bleichroeder sponsor-affiliated investor anchoring the USD 200M convertible PIPE
+  - holder: Bleichroeder Acquisition Corp. II (SPAC public shareholders)
+    stake_percent: null
+    stake_class: minority
+    as_of: 2026-03
+    source_url: https://www.stocktitan.net/sec-filings/BBCQ/10-q-bleichroeder-acquisition-corp-ii-quarterly-earnings-report-3924e7538819.html
+    note: SPAC trust ~USD 289M as of Feb 28 2026; will roll into NewCo at deal close (H2 2026), subject to redemptions
+
+key_personnel:
+  - role: CEO & Executive Chairman
+    name: Wasiq Bokhari
+    since: 2026
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: CTO & Managing Director
+    name: Loïc Henriet
+    since: 2025-03
+    source_url: https://www.pasqal.com/about-us/leadership/loic-henriet/
+  - role: Co-Founder & Chief Scientific Officer
+    name: Antoine Browaeys
+    since: 2019
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Co-Founder & Chief Strategic Alliances Officer
+    name: Georges-Olivier Reymond
+    since: 2025-03
+    source_url: https://www.pasqal.com/newsroom/pasqal-announces-a-new-management-structure-with-the-appointment-of-loic-henriet-as-ceo-and-wasiq-bokhari-as-executive-chairman/
+  - role: Chief Operating Officer
+    name: Barbara Bonneau
+    since: 2024
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Chief Production & Project Officer
+    name: Véronique Dentan
+    since: 2024
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Chief Hardware Officer
+    name: Adrien Signoles
+    since: 2024
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Chief Software Officer
+    name: Mourad Beji
+    since: 2024
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Chief Financial Officer
+    name: Jean-Yves Quentel
+    since: 2024
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Co-Founder & Board Member
+    name: Christophe Jurczak
+    since: 2019
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Co-Founder & Chair, Scientific Advisory Board
+    name: Alain Aspect
+    since: 2019
+    source_url: https://www.pasqal.com/company/leadership/
+  - role: Co-Founder (Institut d'Optique)
+    name: Thierry Lahaye
+    since: 2019
+    source_url: https://www.pasqal.com/about-us/
+
 roadmap:
   - target: 2025
     item: >

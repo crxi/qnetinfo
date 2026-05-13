@@ -84,6 +84,102 @@ milestones:
     source_url: https://www.rfsuny.org/rf-news/sbu-qunnect-quantum/sbu-qunnect.html
     source_type: press
 
+shareholders:
+  - holder: Airbus Ventures
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-06
+    source_url: https://www.qunnect.inc/press-release-2025-06-24
+    note: Led the 2022 $8M Series A and the June 2025 $10M Series A extension
+  - holder: Cisco Investments
+    stake_percent: null
+    stake_class: strategic
+    as_of: 2025-06
+    source_url: https://www.qunnect.inc/press-release-2025-06-24
+    note: Joined the June 2025 Series A extension
+  - holder: Quantonation
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-06
+    source_url: https://www.qunnect.inc/press-release-2025-06-24
+    note: Participated in both the 2022 Series A and the 2025 extension
+  - holder: Medina Capital
+    stake_percent: null
+    stake_class: minority
+    as_of: 2025-06
+    source_url: https://www.qunnect.inc/press-release-2025-06-24
+    note: Joined the June 2025 Series A extension
+  - holder: SandboxAQ
+    stake_percent: null
+    stake_class: minority
+    as_of: 2022-10
+    source_url: https://www.prnewswire.com/news-releases/qunnect-raises-8m-in-series-a-funding-led-by-airbus-ventures-301641331.html
+    note: 2022 Series A participant
+  - holder: NY Ventures
+    stake_percent: null
+    stake_class: minority
+    as_of: 2022-10
+    source_url: https://www.prnewswire.com/news-releases/qunnect-raises-8m-in-series-a-funding-led-by-airbus-ventures-301641331.html
+    note: 2022 Series A participant (Empire State Development venture arm)
+  - holder: Impact Science Ventures
+    stake_percent: null
+    stake_class: minority
+    as_of: 2022-10
+    source_url: https://www.prnewswire.com/news-releases/qunnect-raises-8m-in-series-a-funding-led-by-airbus-ventures-301641331.html
+    note: 2022 Series A participant
+  - holder: Motus Ventures
+    stake_percent: null
+    stake_class: minority
+    as_of: 2022-10
+    source_url: https://www.prnewswire.com/news-releases/qunnect-raises-8m-in-series-a-funding-led-by-airbus-ventures-301641331.html
+    note: 2022 Series A participant
+  - holder: Eden Figueroa
+    stake_percent: null
+    stake_class: founder
+    as_of: 2017
+    source_url: https://www.rfsuny.org/rf-news/sbu-qunnect-quantum/sbu-qunnect.html
+    note: Co-founder; presumed retained equity (private company, undisclosed)
+  - holder: Mehdi Namazi
+    stake_percent: null
+    stake_class: founder
+    as_of: 2017
+    source_url: https://www.rfsuny.org/rf-news/sbu-qunnect-quantum/sbu-qunnect.html
+    note: Co-founder; presumed retained equity (private company, undisclosed)
+  - holder: Mael Flament
+    stake_percent: null
+    stake_class: founder
+    as_of: 2017
+    source_url: https://www.rfsuny.org/rf-news/sbu-qunnect-quantum/sbu-qunnect.html
+    note: Co-founder; presumed retained equity (private company, undisclosed)
+  - holder: Ari Brill
+    stake_percent: null
+    stake_class: founder
+    as_of: 2017
+    source_url: https://www.rfsuny.org/rf-news/sbu-qunnect-quantum/sbu-qunnect.html
+    note: Co-founder; presumed retained equity (private company, undisclosed)
+
+key_personnel:
+  - role: CEO
+    name: Noel Goddard
+    since: 2020
+    source_url: https://www.qunnect.inc/team
+  - role: CTO & Co-founder
+    name: Mehdi Namazi
+    since: 2017
+    source_url: https://www.qunnect.inc/team
+  - role: Chief Scientist & Co-founder
+    name: Eden Figueroa
+    since: 2017
+    source_url: https://www.qunnect.inc/team
+  - role: Co-founder
+    name: Mael Flament
+    since: 2017
+    source_url: https://www.qunnect.inc/team
+  - role: Co-founder
+    name: Ari Brill
+    since: 2017
+    source_url: https://www.qunnect.inc/team
+
 roadmap:
   - target: 2026
     item: Carina deployments at additional university and national-lab testbeds; integration with DWDM classical channels
