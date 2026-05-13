@@ -172,7 +172,7 @@ roadmap:
 
 current_flagship:
   name: IBM Quantum Nighthawk
-  generation: 120-qubit transmon (square lattice, 218 tunable couplers) — released alongside latest Heron r2 generation, January 2026
+  generation: 120-qubit transmon (square lattice, 218 tunable couplers)
 
 references:
   - kind: paper

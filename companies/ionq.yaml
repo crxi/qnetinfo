@@ -16,7 +16,7 @@ positioning: >
 modalities:
   qc:
     qubit_type: trapped-ion
-    physical_qubits_current: 36
+    physical_qubits_current: 64
     logical_qubits_current: 0
     one_q_fidelity: 0.99962
     two_q_fidelity: 0.9943
@@ -27,6 +27,11 @@ modalities:
     gate_set: []
 
 milestones:
+  - date: 2025-12
+    tag: qc
+    headline: Tempo commercial launch — 64 algorithmic qubits, networked-cell trapped-ion architecture (Ba+)
+    source_url: https://www.ionq.com/quantum-systems/tempo
+    source_type: press
   - date: 2024-09
     tag: qc
     headline: Forte Enterprise launched commercially — 36 algorithmic qubits target
@@ -76,7 +81,7 @@ shareholders:
     note: 6.30M shares
   - holder: Peter Chapman (former CEO)
     stake_percent: 2.7
-    stake_class: founder
+    stake_class: insider
     as_of: 2025-03
     source_url: https://www.stocktitan.net/sec-filings/IONQ/form-4-ion-q-inc-insider-trading-activity-93cc2e75f131.html
     note: 6.84M shares including deep-ITM options; largely sold down by mid-2025 (Form 4 filings)
@@ -128,18 +133,14 @@ key_personnel:
     source_url: https://investors.ionq.com/governance/executive-management/default.aspx
 
 roadmap:
-  - target: 2025
-    item: Tempo system — 64 algorithmic qubits, networked-cell architecture
-    source_url: https://www.ionq.com/quantum-systems/tempo
-    tag: qc
   - target: 2028
     item: Modular networked-ion systems, early error correction
     source_url: https://www.ionq.com/roadmap
     tag: qc
 
 current_flagship:
-  name: Forte Enterprise
-  generation: trapped-ion gen-3
+  name: Tempo
+  generation: trapped-ion networked-cell (Ba+, 64 algorithmic qubits)
 
 references:
   - kind: blog
@@ -160,6 +161,9 @@ partial:
   - modalities.qc.coherence_t2_ms
   - modalities.qc.ec_code
   - modalities.qc.gate_set
+  - field: modalities.qc.physical_qubits_current
+    as_of: 2026-05-14
+    note: 64 reflects IonQ's headline algorithmic-qubits number for Tempo (their preferred metric); the underlying physical-ion count is higher and not separately disclosed
   - field: shareholders
     as_of: 2026-05-13
     note: institutional stakes sourced from Q3 2025 13F aggregators (holdingschannel); not yet cross-checked against the 2026 DEF 14A proxy

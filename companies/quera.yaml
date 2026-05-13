@@ -28,6 +28,13 @@ modalities:
     gate_set: []
 
 milestones:
+  - date: 2025-02
+    tag: qc
+    headline: >
+      $230M convertible-note financing led by Google Quantum AI with SoftBank
+      Vision Fund 2 — accelerates path to large-scale fault-tolerant systems
+    source_url: https://www.quera.com/press-releases/quera-computing-completes-230m-financing-to-accelerate-development-of-large-scale-fault-tolerant-quantum-computers
+    source_type: press
   - date: 2024-02
     tag: qc
     headline: >

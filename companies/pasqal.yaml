@@ -19,7 +19,7 @@ modalities:
   qc:
     qubit_type: neutral-atom
     physical_qubits_current: 200
-    logical_qubits_current: 0
+    logical_qubits_current: 2
     one_q_fidelity: null
     two_q_fidelity: null
     coherence_t1_ms: null
@@ -191,12 +191,6 @@ key_personnel:
     source_url: https://www.pasqal.com/about-us/
 
 roadmap:
-  - target: 2025
-    item: >
-      Orion Gamma — 140+ physical qubits, third Orion generation; 2 logical
-      qubits demonstrated
-    source_url: https://www.pasqal.com/newsroom/pasqal-releases-2025-roadmap/
-    tag: qc
   - target: 2026
     item: >
       250-qubit QPU targeted at quantum advantage on an industry-relevant
@@ -222,8 +216,8 @@ roadmap:
     tag: qc
 
 current_flagship:
-  name: Orion Beta
-  generation: neutral-atom Orion (Rb-87, programmable tweezer array)
+  name: Orion Gamma
+  generation: neutral-atom Orion gen-3 (Rb-87, 140+ qubits, 2 logical qubits demonstrated)
 
 references:
   - kind: press
