@@ -303,16 +303,20 @@ const sections = [
         <div class="tp-pauli-table-wrap">
         <table class="tp-pauli-table">
           <thead>
-            <tr><th>(a, b)</th><th>Bell outcome</th><th>State at Bob before correction</th><th>Pauli <Math tex="P^{-1}" /> to apply</th></tr>
+            <tr><th>(a, b)</th><th>BSM outcome</th><th>State at Bob (<Math tex="P|\\psi\\rangle" />)</th><th>Bob applies <Math tex="P^{-1}" /></th></tr>
           </thead>
           <tbody>
-            <tr><td>(0, 0)</td><td><Math tex="|\\Phi^+\\rangle" /></td><td><Math tex="|\\psi\\rangle" /></td><td><Math tex="I" /></td></tr>
-            <tr><td>(0, 1)</td><td><Math tex="|\\Psi^+\\rangle" /></td><td><Math tex="X|\\psi\\rangle" /></td><td><Math tex="X" /></td></tr>
-            <tr><td>(1, 0)</td><td><Math tex="|\\Phi^-\\rangle" /></td><td><Math tex="Z|\\psi\\rangle" /></td><td><Math tex="Z" /></td></tr>
-            <tr><td>(1, 1)</td><td><Math tex="|\\Psi^-\\rangle" /></td><td><Math tex="ZX|\\psi\\rangle" /></td><td><Math tex="ZX" /></td></tr>
+            <tr><td>(0, 0)</td><td><Math tex="|\\Phi^+\\rangle" /></td><td><Math tex="|\\psi\\rangle" /></td><td><Math tex="I^{-1} = I" /></td></tr>
+            <tr><td>(0, 1)</td><td><Math tex="|\\Psi^+\\rangle" /></td><td><Math tex="X|\\psi\\rangle" /></td><td><Math tex="X^{-1} = X" /></td></tr>
+            <tr><td>(1, 0)</td><td><Math tex="|\\Phi^-\\rangle" /></td><td><Math tex="Z|\\psi\\rangle" /></td><td><Math tex="Z^{-1} = Z" /></td></tr>
+            <tr><td>(1, 1)</td><td><Math tex="|\\Psi^-\\rangle" /></td><td><Math tex="ZX|\\psi\\rangle" /></td><td><Math tex="(ZX)^{-1} = XZ" /></td></tr>
           </tbody>
         </table>
         </div>
+        <p class="tp-pauli-note">
+          <Math tex="I" />, <Math tex="X" />, <Math tex="Z" /> are each their own inverse
+          (<Math tex="X^2 = Z^2 = I" />); <Math tex="(ZX)^{-1} = X^{-1} Z^{-1} = XZ" />.
+        </p>
 
         <Callout label="Does Bob already have |ψ⟩ after Alice's measurement?">
           <p>
@@ -641,11 +645,14 @@ const sections = [
     // Bell outcome (a,b) → state ket, Pauli operator. Matches the
     // (a,b) → P table in the prose. Bob applies P⁻¹ which equals P
     // for I, X, Z (self-inverse) and equals XZ for ZX (up to sign).
+    // `P` is the residual operator on Bob's qubit (state = P|ψ⟩);
+    // `inv` is what Bob actually applies, i.e. P⁻¹. For I/X/Z the
+    // Paulis are self-inverse so inv === P; for ZX, inv = XZ.
     const OUTCOMES = [
-      { a: 0, b: 0, ket: "|Φ⁺⟩", P: "I"  },
-      { a: 0, b: 1, ket: "|Ψ⁺⟩", P: "X"  },
-      { a: 1, b: 0, ket: "|Φ⁻⟩", P: "Z"  },
-      { a: 1, b: 1, ket: "|Ψ⁻⟩", P: "ZX" },
+      { a: 0, b: 0, ket: "|Φ⁺⟩", P: "I",  inv: "I"  },
+      { a: 0, b: 1, ket: "|Ψ⁺⟩", P: "X",  inv: "X"  },
+      { a: 1, b: 0, ket: "|Φ⁻⟩", P: "Z",  inv: "Z"  },
+      { a: 1, b: 1, ket: "|Ψ⁻⟩", P: "ZX", inv: "XZ" },
     ];
 
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -705,7 +712,7 @@ const sections = [
         bitsText.textContent  = `(${outcome.a}, ${outcome.b})`;
         bellOut.textContent   = outcome.ket;
         lockLetter.textContent = outcome.P;
-        inverseText.textContent = outcome.P === "I" ? "I" : outcome.P + "⁻¹";
+        inverseText.textContent = outcome.inv;
         statement.textContent = `C is teleported to Bob as ${outcome.P}(C)`;
         bCloud.setAttribute("fill", "url(#tp-cloud-std)");
         setPos(photonC, C_HOME.x, C_HOME.y);
@@ -848,6 +855,12 @@ const sections = [
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
     background: var(--card-bg);
+    margin: 0 auto var(--space-3);
+  }
+  .tp-pauli-note {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-mute);
     margin-block-end: var(--space-3);
   }
   .tp-pauli-table {

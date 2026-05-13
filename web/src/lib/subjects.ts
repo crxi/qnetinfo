@@ -183,6 +183,14 @@ export const SUBJECTS: Subject[] = [
     status: "shipped",
     tier: "E",
   },
+  {
+    slug: "standards",
+    title: "Standards — QKD, QKDN, and quantum-network specifications",
+    navLabel: "Standards",
+    blurb: "A live catalogue of quantum-tech standards and standardisation work across ITU-T, ETSI, IETF, IEEE, ISO/IEC, GSMA, and national bodies. Filterable by topic (QKD protocol, QKD network, entanglement-based quantum network, security, sensing, QRNG, crypto, policy) and status.",
+    status: "shipped",
+    tier: "E",
+  },
 ];
 
 export const SHIPPED_SUBJECTS = SUBJECTS.filter((s) => s.status === "shipped");

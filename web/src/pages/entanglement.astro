@@ -811,22 +811,23 @@ const sections = [
           <article class="bell-card">
             <h3 class="bell-card__name">|Φ⁻⟩</h3>
             <Math display tex="\\tfrac{1}{\\sqrt{2}}\\bigl(|00\\rangle - |11\\rangle\\bigr)" />
-            <p>Even parity, opposite phase. Reached from |Φ⁺⟩ by applying <Math tex="Z" /> to
-              either qubit.</p>
+            <p>Even parity, opposite phase. Reached from <Math tex="|\\Phi^+\\rangle" /> by
+              applying <Math tex="Z" /> to either qubit.</p>
           </article>
 
           <article class="bell-card">
             <h3 class="bell-card__name">|Ψ⁺⟩</h3>
             <Math display tex="\\tfrac{1}{\\sqrt{2}}\\bigl(|01\\rangle + |10\\rangle\\bigr)" />
-            <p>Odd parity, symmetric phase. From |Φ⁺⟩ by applying <Math tex="X" /> to either
-              qubit.</p>
+            <p>Odd parity, symmetric phase. From <Math tex="|\\Phi^+\\rangle" /> by applying
+              <Math tex="X" /> to either qubit.</p>
           </article>
 
           <article class="bell-card">
             <h3 class="bell-card__name">|Ψ⁻⟩</h3>
             <Math display tex="\\tfrac{1}{\\sqrt{2}}\\bigl(|01\\rangle - |10\\rangle\\bigr)" />
             <p>The <strong>singlet</strong> — antisymmetric, the unique rotationally invariant
-              Bell state. From |Φ⁺⟩ by applying <Math tex="XZ" /> to either qubit.</p>
+              Bell state. From <Math tex="|\\Phi^+\\rangle" /> by applying <Math tex="XZ" />
+              to either qubit.</p>
           </article>
         </div>
 
@@ -996,17 +997,18 @@ const sections = [
           </figure>
 
           <p>
-            <strong>(b) Heralded — one-node, photonic carrier.</strong> A linear-optical
-            circuit at a single node routes some photons to <strong>ancilla</strong>
-            detectors that herald; the rest exit as target modes carrying the entangled
-            state forward. The standard photonic state-preparation
-            picture <SourceNote id="forbes-rpp-2025" />.
+            <strong>(b) Heralded, one-way.</strong> A linear-optical circuit routes some
+            photons to <strong>ancilla</strong> detectors that herald; the rest exit as
+            target modes carrying the entangled state forward in the same direction. No
+            backward classical message is needed — the heralded photons simply continue,
+            so the surviving state lives in optical modes downstream. The standard photonic
+            state-preparation picture <SourceNote id="forbes-rpp-2025" />.
           </p>
 
           <figure class="hf hf--solo">
             <svg viewBox="360 0 280 220" role="img"
-                 aria-label="One-node heralding — ancilla photons signal, target photons survive">
-              <text x="370" y="22" class="hf-title">(b) heralding — one node</text>
+                 aria-label="One-way heralding — ancilla photons signal, target photons continue forward">
+              <text x="370" y="22" class="hf-title">(b) heralding — one way</text>
 
               {/* 4 input photons */}
               <g fill="var(--color-accent)">
@@ -1075,20 +1077,21 @@ const sections = [
           </figure>
 
           <p>
-            <strong>(c) Heralded — two-node, memory carrier.</strong> Two distant memories
-            each emit a photon that travels to a midpoint Bell-state measurement; a click
-            pattern there projects the two memories into a Bell state. Every photon is
-            consumed at the midpoint — the surviving state lives in the memories at the
-            two endpoints, not in any photonic mode. This is the heralded entanglement
-            generation in Azuma's worked example (RMP 95.045006
-            §II.B) <SourceNote id="azuma-rmp-95" /> and the primitive that every
-            memory-based repeater is built on.
+            <strong>(c) Heralded, two-way.</strong> Two distant matter qubits (memories)
+            each emit a photon; the photons travel to a midpoint Bell-state measurement,
+            and the click pattern there is announced back to both endpoints over a
+            classical channel. Every photon is consumed at the midpoint, so the only
+            place the entangled state survives is in the matter qubits at the two
+            endpoints — and they only know they are entangled after the back-pointing
+            classical message arrives. This is the heralded entanglement generation in
+            Azuma's worked example (RMP 95.045006 §II.B) <SourceNote id="azuma-rmp-95" />
+            and the primitive every memory-based repeater is built on.
           </p>
 
           <figure class="hf hf--solo">
             <svg viewBox="650 0 305 220" role="img"
-                 aria-label="Two-node heralding — memories at distant nodes, photons converge to midpoint BSM">
-              <text x="665" y="22" class="hf-title">(c) heralding — two nodes</text>
+                 aria-label="Two-way heralding — memories at distant nodes, photons converge to midpoint BSM whose result is announced back">
+              <text x="665" y="22" class="hf-title">(c) heralding — two way</text>
 
               {/* Memory X at left */}
               <rect x="666" y="78" width="30" height="32" rx="3"
@@ -1100,40 +1103,42 @@ const sections = [
                     fill="var(--color-bg)" stroke="var(--color-rule)" stroke-width="1.2"/>
               <text x="933" y="100" text-anchor="middle" class="hf-mem">Y</text>
 
-              {/* Photon flow lines (X → BSM, Y → BSM, both converging) */}
-              <line x1="696" y1="94" x2="797" y2="94"
+              {/* Photon flow lines (X → BSM, Y → BSM). Stop exactly at
+                  the BSM box edges so no orange penetrates the box. */}
+              <line x1="696" y1="94" x2="795" y2="94"
                     stroke="var(--color-accent)" stroke-width="1.4"/>
-              <line x1="918" y1="94" x2="822" y2="94"
+              <line x1="918" y1="94" x2="823" y2="94"
                     stroke="var(--color-accent)" stroke-width="1.4"/>
 
-              {/* Small photon dots along the flow lines to denote direction */}
+              {/* Small photon dots along the flow lines to denote direction.
+                  Spaced so the inboard ones clear the BSM box by ≥20px. */}
               <g fill="var(--color-accent)">
-                <circle cx="722" cy="94" r="2.5"/>
-                <circle cx="750" cy="94" r="2.5"/>
-                <circle cx="775" cy="94" r="2.5"/>
-                <circle cx="892" cy="94" r="2.5"/>
-                <circle cx="867" cy="94" r="2.5"/>
-                <circle cx="842" cy="94" r="2.5"/>
+                <circle cx="720" cy="94" r="2.5"/>
+                <circle cx="748" cy="94" r="2.5"/>
+                <circle cx="772" cy="94" r="2.5"/>
+                <circle cx="894" cy="94" r="2.5"/>
+                <circle cx="870" cy="94" r="2.5"/>
+                <circle cx="846" cy="94" r="2.5"/>
               </g>
 
-              {/* BSM box at midpoint */}
+              {/* BSM box at midpoint (centred at x=809) */}
               <rect x="795" y="80" width="28" height="28" rx="3"
                     fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.4"/>
               <text x="809" y="124" text-anchor="middle" class="hf-bsm">BSM</text>
 
-              {/* Click marks above BSM (●●) */}
-              <g class="hf-click hf-click--herald">
-                <text x="803" y="73">●</text>
-                <text x="813" y="73">●</text>
-              </g>
+              {/* Click marks above BSM — single text element so anchor="middle"
+                  centres the dot pair on the BSM column. */}
+              <text x="809" y="73" text-anchor="middle"
+                    class="hf-click hf-click--herald">● ●</text>
 
-              {/* Resulting Bell-pair wave between memories — built as a
-                  series of repeating short curves, dashed-feel. */}
-              <path d="M 696 155 q 6 -7 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0
+              {/* Resulting Bell-pair wave between memories X and Y.
+                  Endpoints sit just inside the memory rects (697 → 917)
+                  so the wave doesn't penetrate either box. */}
+              <path d="M 697 165 q 6 -7 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0
                        t 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0 t 13 0
                        t 13 0 t 13 0 t 13 0"
                     fill="none" stroke="#7d57b1" stroke-width="1.4"/>
-              <text x="810" y="150" text-anchor="middle" class="hf-target">|Ψ⁺⟩<tspan baseline-shift="sub" font-size="9">XY</tspan></text>
+              <text x="810" y="148" text-anchor="middle" class="hf-target">|Ψ⁺⟩<tspan baseline-shift="sub" font-size="9">XY</tspan></text>
 
               {/* Panel caption */}
               <text x="810" y="190" text-anchor="middle" class="hf-caption">
@@ -1147,8 +1152,9 @@ const sections = [
               Two distant memories <Math tex="X" /> and <Math tex="Y" /> each emit a
               photon that converges at a midpoint Bell-state measurement; a click pattern
               projects the memories into <Math tex="|\\Psi^+\\rangle_{XY}" />. The
-              surviving state lives in matter — the same heralding principle as panel
-              (b), but with a different carrier.
+              surviving state lives in matter and is only useful after the BSM result
+              is announced back to both nodes — the same heralding principle as panel
+              (b), but two-way rather than one-way and with matter as the carrier.
             </figcaption>
           </figure>
 
@@ -1322,20 +1328,20 @@ const sections = [
             {/* ===== Outcome readout (top-left): clicks → state → bits ===== */}
             <text x="30" y="40" class="bsm-outcome-label">this shot</text>
 
-            <text x="95"  y="64" text-anchor="middle" class="bsm-flow-tag">clicks</text>
-            <text x="205" y="64" text-anchor="middle" class="bsm-flow-tag">state</text>
-            <text x="300" y="64" text-anchor="middle" class="bsm-flow-tag">bits</text>
+            <text x="65"  y="64" text-anchor="middle" class="bsm-flow-tag">clicks</text>
+            <text x="175" y="64" text-anchor="middle" class="bsm-flow-tag">state</text>
+            <text x="270" y="64" text-anchor="middle" class="bsm-flow-tag">bits</text>
 
-            <g data-bsm-clicks transform="translate(95 100)">
+            <g data-bsm-clicks transform="translate(65 100)">
               <rect data-bsm-clicks-bg x="-60" y="-20" width="120" height="40" rx="3"
                     fill="var(--color-text)" opacity="0"/>
               <text data-bsm-clicks-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
                     class="bsm-flow-text">—</text>
             </g>
-            <text x="165" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
-            <text data-bsm-state x="205" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-state">—</text>
-            <text x="245" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
-            <g data-bsm-bits transform="translate(300 100)">
+            <text x="135" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
+            <text data-bsm-state x="175" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-state">—</text>
+            <text x="215" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
+            <g data-bsm-bits transform="translate(270 100)">
               <rect data-bsm-bits-bg x="-28" y="-20" width="56" height="40" rx="3"
                     fill="var(--color-text)" opacity="0"/>
               <text data-bsm-bits-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
@@ -1490,6 +1496,9 @@ const sections = [
             <strong>clicks → state → bits</strong> for the current outcome; the history
             pane on the right keeps a running log
             <SourceNote id="azuma-rmp-95" /><SourceNote id="lo-prl-mdi-2012" />.
+            The demo is <em>not</em> randomised — it iterates deterministically through
+            the eight physically valid click patterns (2 each for Ψ⁺, Ψ⁻, Φ⁺, Φ⁻) so a
+            viewer sees every case in turn rather than a noisy sample.
             <br/><br/>
             <strong>The four outcomes.</strong> A full BSM resolves all four Bell-basis
             projections — one 2-bit code per Bell state, mapping directly to the Pauli
@@ -1506,8 +1515,13 @@ const sections = [
                 <tr><td>antibunched</td><td>different ports, opposite pol</td><td>1<sub>H</sub>+2<sub>V</sub> or 1<sub>V</sub>+2<sub>H</sub></td><td>|Ψ⁻⟩</td><td>11</td><td>XZ</td></tr>
               </tbody>
             </table>
-            The 2 bits literally are Bob's gate switches — bit 1 toggles X, bit 2 toggles
-            Z, so the receiver wires them straight to hardware.
+            The (a, b) labelling is chosen so the bits are the exponents in
+            <Math tex="X^b Z^a" />. By construction this product equals
+            <Math tex="P^{-1}" />, the inverse of the residual Pauli on Bob's qubit — so
+            applying <Math tex="X^b Z^a" /> directly is the correction. When a bit is 1,
+            the matching Pauli gets applied; when 0, it's skipped. Bob's classical-control
+            logic reads the bits over a classical channel and triggers the gates
+            accordingly — no separate <Math tex="^{-1}" /> needs to be computed.
             <br/><br/>
             <strong>The linear-optics catch.</strong> The four states are projected
             identically by an ideal BSM, but linear-optics hardware can only
@@ -1651,17 +1665,26 @@ const sections = [
               stateLabel.classList.toggle("bsm-flow-state--fail",    active && !isSuccess(state));
             }
 
+            // The eight physically realisable click patterns. Two per
+            // Bell state. Cycled through deterministically so a viewer
+            // sees every case in turn, not a noisy random subset.
+            const ALL_OUTCOMES = [
+              { state: "Ψ+", a: "H1", b: "V1" },
+              { state: "Ψ+", a: "H2", b: "V2" },
+              { state: "Ψ-", a: "H1", b: "V2" },
+              { state: "Ψ-", a: "V1", b: "H2" },
+              // Φ⁺ bunches at the H ports only.
+              { state: "Φ+", a: "H1", b: "H1" },
+              { state: "Φ+", a: "H2", b: "H2" },
+              // Φ⁻ bunches at the V ports only.
+              { state: "Φ-", a: "V1", b: "V1" },
+              { state: "Φ-", a: "V2", b: "V2" },
+            ];
+            let outcomeIdx = 0;
             function pickOutcome() {
-              const state = ["Ψ+", "Ψ-", "Φ+", "Φ-"][Math.floor(Math.random() * 4)];
-              const coin = Math.random() < 0.5;
-              if (state === "Ψ+") {
-                return coin ? { state, a: "H1", b: "V1" } : { state, a: "H2", b: "V2" };
-              }
-              if (state === "Ψ-") {
-                return coin ? { state, a: "H1", b: "V2" } : { state, a: "V1", b: "H2" };
-              }
-              const det = DET_KEYS[Math.floor(Math.random() * 4)];
-              return { state, a: det, b: det };
+              const o = ALL_OUTCOMES[outcomeIdx];
+              outcomeIdx = (outcomeIdx + 1) % ALL_OUTCOMES.length;
+              return o;
             }
 
             const log = [];
@@ -1673,8 +1696,8 @@ const sections = [
               if (success) identified += 1;
               log.unshift({
                 clicks: clicksFor(o),
-                state:  ketFor(o.state),
-                bits:   bitsFor(o),
+                state:  success ? ketFor(o.state) : "—",
+                bits:   success ? bitsFor(o)      : "—",
                 success,
               });
               if (log.length > HISTORY_ROWS) log.length = HISTORY_ROWS;
@@ -1819,10 +1842,17 @@ const sections = [
                     hide(photon.A); hide(photon.B);
                     lockDet(keys);
                     setFlowCell(clicksCell, clicksFor(outcome), true);
-                    // Φ rows show the projected bits but muted — those
-                    // outcomes are post-selected out in real LO BSM.
-                    setFlowCell(bitsCell, bitsFor(outcome), success);
-                    setStateLabel(outcome.state, true);
+                    // Linear-optics BSM cannot distinguish Φ⁺ from Φ⁻
+                    // (both bunch identically), so on a Φ shot the state
+                    // and bits cells read "—" — the clicks happened, but
+                    // they don't identify a Bell state.
+                    if (success) {
+                      setFlowCell(bitsCell, bitsFor(outcome), true);
+                      setStateLabel(outcome.state, true);
+                    } else {
+                      setFlowCell(bitsCell, "—", false);
+                      setStateLabel(null, false);
+                    }
                     for (const k of keys) pulseEnd[k] = now + PULSE_DUR;
                     pulseActive = true;
                     pushHistory(outcome);
@@ -2087,7 +2117,9 @@ const sections = [
   }
   .bsm-click-table {
     border-collapse: collapse;
-    margin: var(--space-2) 0;
+    margin: var(--space-2) auto;
+    inline-size: max-content;
+    max-inline-size: 100%;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
   }
@@ -2305,8 +2337,10 @@ const sections = [
   }
   .bell-card__name {
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--text-lg);
+    font-family: "KaTeX_Math", "Cambria Math", "Times New Roman", serif;
+    font-style: italic;
+    font-size: var(--text-xl);
+    font-weight: 500;
     color: var(--color-text);
   }
   .bell-card p {
@@ -2386,6 +2420,7 @@ const sections = [
      single panel doesn't grow comically large; full width on mobile. */
   .hf--solo {
     max-inline-size: 480px;
+    margin-inline: auto;
   }
   .hf figcaption {
     margin: 0;

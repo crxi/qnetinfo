@@ -28,6 +28,26 @@ modalities:
     products: [QU-SRC, QU-APC, QU-MEM, Carina, GothamQ]
 
 milestones:
+  - date: 2026-04
+    tag: network
+    headline: "Investor Cisco unveils Universal Quantum Switch — a room-temperature photonic switch that translates between polarization / time-bin / frequency / path encodings with <=4% fidelity degradation and ~1 ns electro-optic reconfiguration. Frames Cisco moving up the quantum-networking stack on top of partners like Qunnect."
+    source_url: https://investor.cisco.com/news/news-details/2026/Cisco-Introduces-Universal-Quantum-Switch-Advancing-the-Path-to-a-Quantum-Network/default.aspx
+    source_type: press
+  - date: 2026-02
+    tag: network
+    headline: "Qunnect + Cisco demonstrate first metro-scale entanglement swapping over commercial fibre on GothamQ — 17.6 km Brooklyn-to-Manhattan via QTD's 60 Hudson Street datacentre, ~5,400 swapped pairs/hour over deployed fibre at >99% polarization fidelity (~10,000x prior benchmarks); Carina + Cisco Software Orchestrator stack, validates a spoke-and-hub model"
+    source_url: https://www.qunnect.inc/press-releases/2026-02-18
+    source_type: press
+  - date: 2026-01
+    tag: network
+    headline: Scott Faris appointed to Qunnect Board of Directors
+    source_url: https://thequantuminsider.com/2026/01/22/qunnect-scott-faris-board-appointment/
+    source_type: press
+  - date: 2025-11
+    tag: network
+    headline: "Investor Cisco announces IBM x Cisco x Fermilab/SQMS quantum-networking partnership targeting microwave-to-optical transducers and networked fault-tolerant QCs by early 2030s. Frames Cisco's expanding networking-stack ambitions; Qunnect remains the rubidium-vapour-memory layer of that strategy."
+    source_url: https://newsroom.ibm.com/2025-11-20-ibm-and-cisco-announce-plans-to-build-a-network-of-large-scale,-fault-tolerant-quantum-computers
+    source_type: press
   - date: 2025-09
     tag: network
     headline: Carina turnkey quantum-networking suite deployed at Montana State University — first entanglement-distribution network in the US Northwest
@@ -179,8 +199,16 @@ key_personnel:
     name: Ari Brill
     since: 2017
     source_url: https://www.qunnect.inc/team
+  - role: Board of Directors
+    name: Scott Faris
+    since: 2026-01
+    source_url: https://thequantuminsider.com/2026/01/22/qunnect-scott-faris-board-appointment/
 
 roadmap:
+  - target: 2026
+    item: "Open Series B round — stated purpose: deeper government funding, product-roadmap advance, scalable manufacturing"
+    source_url: https://pulse2.com/qunnect-profile-noel-goddard-interview/
+    tag: network
   - target: 2026
     item: Carina deployments at additional university and national-lab testbeds; integration with DWDM classical channels
     source_url: https://www.qunnect.inc/posts/2025-07-31
@@ -188,6 +216,10 @@ roadmap:
   - target: 2026
     item: Extend entangled-pair telecom-wavelength reach to ~100 km fibre spans via the Carina suite
     source_url: https://www.qunnect.inc/posts/2025-07-31
+    tag: network
+  - target: 2026
+    item: Expand spoke-and-hub GothamQ topology via 60 Hudson Street carrier-hotel datacentre, scaling Carina + Cisco Software Orchestrator entanglement-swapping demonstrations
+    source_url: https://www.qunnect.inc/press-releases/2026-02-18
     tag: network
 
 current_flagship:
@@ -215,6 +247,14 @@ references:
     citation_key: null
     url: https://physics.aps.org/articles/v17/125
     note: APS Physics commentary on the GothamQ PRX Quantum paper
+  - kind: press
+    citation_key: null
+    url: https://www.qunnect.inc/press-releases/2026-02-18
+    note: First metro-scale entanglement swapping on GothamQ over commercial fibre with Cisco Software Orchestrator (Feb 2026)
+  - kind: press
+    citation_key: null
+    url: https://investor.cisco.com/news/news-details/2026/Cisco-Introduces-Universal-Quantum-Switch-Advancing-the-Path-to-a-Quantum-Network/default.aspx
+    note: Cisco Universal Quantum Switch announcement (April 2026) — context milestone, investor moving up the network stack
 
 partial:
   - modalities.memory.storage_time_ms
@@ -222,4 +262,4 @@ partial:
   - modalities.memory.mode_capacity
 
 last_verified: 2026-05-13
-verification_method: web
+verification_method: mixed
