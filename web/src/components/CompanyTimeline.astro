@@ -1,12 +1,17 @@
 ---
 /**
- * Year-cell timeline. One box per year between the first event and
- * two years past today. Cells with events "light up"; events stack
- * vertically inside the cell, so a dense year (e.g. IBM 2025) reads
- * as a list, not a pile of colliding axis dots.
+ * Horizontal timeline. A single time axis runs across the figure with
+ * year ticks and a "today" marker; each event sits on the axis as a
+ * dot, and a connector arrow points to a card off the axis with the
+ * date and headline. Cards stagger above/below (two levels each side)
+ * so adjacent events don't collide, and they hold a real line-and-a-
+ * half of text instead of the old SVG-text 22-character truncation.
  *
- * Past = filled, current year = highlighted, future = dashed outline.
- * Pure HTML/CSS — no SVG, no JS.
+ * Past events = filled accent dot + tinted card.
+ * Future (roadmap) events = outlined dot + dashed-border card.
+ *
+ * Pure SVG, no JS. HTML rendering inside the SVG uses foreignObject
+ * so the card text wraps naturally.
  */
 import type { Milestone, RoadmapItem } from "../lib/companies.ts";
 import { formatDateLabel } from "../lib/companies.ts";
@@ -19,113 +24,229 @@ interface Props {
 
 const { milestones, roadmap, foundedYear } = Astro.props;
 
-const nowYear = new Date().getFullYear();
+// --- Date parsing ----------------------------------------------------------
+function parseFracYear(input: string | number | Date): number {
+  if (input instanceof Date) {
+    return input.getUTCFullYear() + input.getUTCMonth() / 12;
+  }
+  const s = String(input).trim();
+  const q = s.match(/^Q([1-4])\s+(\d{4})$/i);
+  if (q) return parseInt(q[2], 10) + (parseInt(q[1], 10) - 1) * 0.25;
+  const parts = s.split("-").map((n) => parseInt(n, 10));
+  return parts[0] + ((parts[1] ?? 6) - 1) / 12;
+}
 
-type CellItem = {
+const nowFrac = (() => {
+  const d = new Date();
+  return d.getUTCFullYear() + d.getUTCMonth() / 12;
+})();
+
+type Point = {
+  fracYear: number;
+  dateLabel: string;
   label: string;
   kind: "milestone" | "roadmap";
-  date: string;
 };
 
-function parseYear(input: string | number): number {
-  if (typeof input === "number") return input;
-  const s = String(input).trim();
-  const qm = s.match(/^Q([1-4])\s+(\d{4})$/i);
-  if (qm) return parseInt(qm[2], 10);
-  return parseInt(s.split("-")[0], 10);
-}
-
-const items: CellItem[] = [
+const points: Point[] = [
   ...milestones.map((m) => ({
+    fracYear: parseFracYear(m.date),
+    dateLabel: formatDateLabel(m.date),
     label: m.headline,
     kind: "milestone" as const,
-    date: formatDateLabel(m.date),
   })),
   ...roadmap.map((r) => ({
+    fracYear: parseFracYear(r.target),
+    dateLabel: formatDateLabel(r.target),
     label: r.item,
     kind: "roadmap" as const,
-    date: formatDateLabel(r.target),
   })),
+].sort((a, b) => a.fracYear - b.fracYear);
+
+const hasContent = points.length > 0;
+
+// --- Canvas geometry -------------------------------------------------------
+// Anchor to events, not founding year, so vendors with deep histories
+// (IBM 1911, Cisco 1984) don't stretch the axis over a century.
+const itemFracs = points.map((p) => p.fracYear);
+const earliest = itemFracs.length ? Math.min(...itemFracs) : nowFrac - 3;
+const latest = itemFracs.length ? Math.max(...itemFracs) : nowFrac + 2;
+const yearStart = Math.floor(Math.min(earliest, nowFrac - 2));
+const yearEnd = Math.ceil(Math.max(latest, nowFrac + 2));
+
+const W = 980;
+const PAD_L = 40;
+const PAD_R = 40;
+const AXIS_Y = 260;
+const AXIS_W = W - PAD_L - PAD_R;
+
+const BOX_W = 170;
+const BOX_H = 78;
+// Vertical placement of card *top edge* for each stagger level.
+const LEVEL_Y = [
+  AXIS_Y - 60 - BOX_H, // above near (card just above axis)
+  AXIS_Y + 60,         // below near
+  AXIS_Y - 180 - BOX_H, // ABOVE FAR was unused if too tall; use moderate
+  AXIS_Y + 180,        // below far
 ];
+// Trim: with these constants the SVG needs H ≈ above_far_top + room → recompute.
+const SVG_TOP = Math.min(...LEVEL_Y) - 8;
+const SVG_BOTTOM = Math.max(LEVEL_Y[1] + BOX_H, LEVEL_Y[3] + BOX_H) + 28;
+const H = SVG_BOTTOM - SVG_TOP;
 
-// Anchor the timeline to the events, not to foundedYear — IBM (1911) or
-// Cisco (1984) would otherwise produce a 100-cell-wide strip with one
-// lit cell. Founded year is shown in the dossier header.
-const itemYears = items.map((i) => parseYear(i.date));
-const earliestItem = itemYears.length ? Math.min(...itemYears) : nowYear - 5;
-const latestItem = itemYears.length ? Math.max(...itemYears) : nowYear + 2;
-const yearStart = Math.min(earliestItem, nowYear - 3);
-const yearEnd = Math.max(latestItem, nowYear + 2);
-
-const years: number[] = [];
-for (let y = yearStart; y <= yearEnd; y++) years.push(y);
-
-const byYear = new Map<number, CellItem[]>();
-for (const it of items) {
-  const y = parseYear(it.date);
-  if (!byYear.has(y)) byYear.set(y, []);
-  byYear.get(y)!.push(it);
+function xForYear(y: number): number {
+  return PAD_L + ((y - yearStart) / (yearEnd - yearStart)) * AXIS_W;
 }
-for (const [, arr] of byYear) arr.sort((a, b) => a.date.localeCompare(b.date));
 
-const hasContent = items.length > 0;
-const showFoundedTag = foundedYear < yearStart;
+const yearTicks: number[] = [];
+for (let y = yearStart; y <= yearEnd; y++) yearTicks.push(y);
+
+// Clamp card x so the box never spills off the SVG horizontally.
+function clampBoxLeft(centerX: number): number {
+  const halfW = BOX_W / 2;
+  return Math.max(PAD_L - 4, Math.min(W - PAD_R + 4 - BOX_W, centerX - halfW));
+}
+
+// Stagger pattern: above-near, below-near, above-near, below-near, ...
+// For runs longer than 2 in a row at the same level, push to the far slot.
+type Placed = Point & {
+  x: number;
+  boxLeft: number;
+  boxTop: number;
+  above: boolean;
+};
+const placements: Placed[] = [];
+for (const p of points) {
+  const x = xForYear(p.fracYear);
+  // Try levels in priority order, alternating which side we hit first
+  // so consecutive items don't pile up on the same side of the axis.
+  const order = [0, 1, 2, 3];
+  const startIdx = placements.length % 2;
+  const tryOrder = [...order.slice(startIdx), ...order.slice(0, startIdx)];
+  let chosen = tryOrder[0];
+  for (const lvl of tryOrder) {
+    chosen = lvl;
+    const conflict = placements.some((q) => {
+      if (q.boxTop !== LEVEL_Y[lvl]) return false;
+      return Math.abs(q.x - x) < BOX_W + 8;
+    });
+    if (!conflict) break;
+  }
+  const boxTop = LEVEL_Y[chosen];
+  placements.push({
+    ...p,
+    x,
+    boxLeft: clampBoxLeft(x),
+    boxTop,
+    above: boxTop < AXIS_Y,
+  });
+}
 ---
 
 {hasContent ? (
   <figure class="ct">
-    {showFoundedTag && (
-      <p class="ct-founded">
-        <span class="ct-founded-label">Founded</span> {foundedYear}
-        <span class="ct-founded-gap"> · timeline starts at first public milestone</span>
-      </p>
-    )}
     <div class="ct-scroll">
-      <ol class="ct-row" role="list">
-        {years.map((y) => {
-          const cellItems = byYear.get(y) ?? [];
-          const lit = cellItems.length > 0;
-          const isPast = y < nowYear;
-          const isNow = y === nowYear;
-          const isFuture = y > nowYear;
-          const cls = ["ct-cell"];
-          if (lit) cls.push("is-lit");
-          if (isPast) cls.push("is-past");
-          if (isNow) cls.push("is-now");
-          if (isFuture) cls.push("is-future");
+      <svg
+        viewBox={`0 ${SVG_TOP} ${W} ${H}`}
+        role="img"
+        aria-label="Vendor timeline of past milestones and public roadmap"
+      >
+        {/* Past portion of axis */}
+        <line
+          x1={PAD_L}
+          y1={AXIS_Y}
+          x2={xForYear(nowFrac)}
+          y2={AXIS_Y}
+          class="ct-axis ct-axis--past"
+        />
+        {/* Future portion */}
+        <line
+          x1={xForYear(nowFrac)}
+          y1={AXIS_Y}
+          x2={W - PAD_R}
+          y2={AXIS_Y}
+          class="ct-axis ct-axis--future"
+        />
+
+        {/* Year ticks */}
+        {yearTicks.map((y) => (
+          <g>
+            <line
+              x1={xForYear(y)}
+              y1={AXIS_Y - 4}
+              x2={xForYear(y)}
+              y2={AXIS_Y + 4}
+              class="ct-tick"
+            />
+            <text x={xForYear(y)} y={AXIS_Y + 20} class="ct-year">{y}</text>
+          </g>
+        ))}
+
+        {/* 'Today' marker */}
+        <line
+          x1={xForYear(nowFrac)}
+          y1={SVG_TOP + 4}
+          x2={xForYear(nowFrac)}
+          y2={SVG_BOTTOM - 22}
+          class="ct-today"
+        />
+        <text
+          x={xForYear(nowFrac)}
+          y={SVG_BOTTOM - 6}
+          class="ct-today-label"
+        >today</text>
+
+        {/* Events: connector + dot + card */}
+        {placements.map((p) => {
+          const connTop = p.above ? p.boxTop + BOX_H : AXIS_Y;
+          const connBot = p.above ? AXIS_Y : p.boxTop;
           return (
-            <li class={cls.join(" ")}>
-              <div class="ct-year-label">{y}</div>
-              {cellItems.length > 0 && (
-                <ul class="ct-items" role="list">
-                  {cellItems.map((it) => (
-                    <li
-                      class={`ct-item ct-item--${it.kind}`}
-                      title={`${it.date} — ${it.label}`}
-                    >
-                      <span class="ct-dot" aria-hidden="true"></span>
-                      <span class="ct-text">{it.label}</span>
-                    </li>
-                  ))}
-                </ul>
+            <g class={`ct-event ct-event--${p.kind}`}>
+              <line
+                x1={p.x}
+                y1={connTop}
+                x2={p.x}
+                y2={connBot}
+                class="ct-connector"
+              />
+              {p.kind === "milestone" ? (
+                <circle cx={p.x} cy={AXIS_Y} r="5.5" class="ct-dot ct-dot--past" />
+              ) : (
+                <circle cx={p.x} cy={AXIS_Y} r="5.5" class="ct-dot ct-dot--future" />
               )}
-            </li>
+              <foreignObject
+                x={p.boxLeft}
+                y={p.boxTop}
+                width={BOX_W}
+                height={BOX_H}
+              >
+                <div
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  class={`ct-card ct-card--${p.kind}`}
+                  title={`${p.dateLabel} — ${p.label}`}
+                >
+                  <div class="ct-card-date">{p.dateLabel}</div>
+                  <div class="ct-card-headline">{p.label}</div>
+                </div>
+              </foreignObject>
+            </g>
           );
         })}
-      </ol>
+      </svg>
     </div>
     <figcaption>
+      {foundedYear < yearStart && (
+        <span class="ct-legend ct-legend--founded">
+          Founded {foundedYear}
+        </span>
+      )}
       <span class="ct-legend">
-        <span class="ct-legend-dot ct-legend-dot--past"></span>
+        <span class="ct-legend-dot ct-legend-dot--past" aria-hidden="true"></span>
         shipped milestone
       </span>
       <span class="ct-legend">
-        <span class="ct-legend-dot ct-legend-dot--future"></span>
+        <span class="ct-legend-dot ct-legend-dot--future" aria-hidden="true"></span>
         public roadmap
-      </span>
-      <span class="ct-legend ct-legend--now">
-        <span class="ct-legend-now-box"></span>
-        current year ({nowYear})
       </span>
     </figcaption>
   </figure>
@@ -139,120 +260,114 @@ const showFoundedTag = foundedYear < yearStart;
     display: grid;
     gap: var(--space-2);
   }
-  .ct-founded {
-    margin: 0;
-    font-size: var(--text-xs);
-    color: var(--color-text-mute);
-  }
-  .ct-founded-label {
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text);
-    margin-inline-end: 4px;
-  }
-  .ct-founded-gap { opacity: 0.7; }
-
-  /* Horizontal scroll on narrow viewports; cells keep a minimum width
-     so the year labels and item text stay legible. */
   .ct-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .ct-row {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(96px, 1fr);
-    gap: 4px;
+  .ct svg {
+    inline-size: 100%;
+    block-size: auto;
+    display: block;
+  }
+  @media (max-width: 64rem) {
+    .ct svg { min-inline-size: 900px; }
   }
 
-  /* Cell */
-  .ct-cell {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    gap: 6px;
-    padding: 8px 7px 9px;
-    border: 1px solid var(--card-border);
-    border-radius: 5px;
-    background: transparent;
-    min-block-size: 96px;
-    transition: border-color 120ms ease, background 120ms ease;
+  /* Axis */
+  :global(.ct-axis) { stroke-width: 2; fill: none; }
+  :global(.ct-axis--past) { stroke: var(--color-accent); }
+  :global(.ct-axis--future) {
+    stroke: var(--color-text-soft);
+    stroke-dasharray: 4 3;
+    opacity: 0.7;
   }
-  /* Lit past cells: filled with the accent tint */
-  .ct-cell.is-lit.is-past {
-    background: color-mix(in srgb, var(--color-accent) 9%, transparent);
-    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--card-border));
+  :global(.ct-tick) {
+    stroke: var(--color-text-soft);
+    stroke-width: 1;
   }
-  /* Lit current-year cell: highlighted */
-  .ct-cell.is-lit.is-now {
-    background: color-mix(in srgb, var(--color-accent-2) 14%, transparent);
-    border-color: var(--color-accent-2);
-  }
-  /* Unlit current-year cell: still mark it */
-  .ct-cell.is-now {
-    box-shadow: inset 0 -3px 0 var(--color-accent-2);
-  }
-  /* Lit future cells: dashed accent border */
-  .ct-cell.is-lit.is-future {
-    background: transparent;
-    border-color: var(--color-accent);
-    border-style: dashed;
-  }
-
-  .ct-year-label {
+  :global(.ct-year) {
     font-family: var(--font-mono);
     font-size: 10.5px;
+    fill: var(--color-text-mute);
+    text-anchor: middle;
+  }
+  :global(.ct-today) {
+    stroke: var(--color-accent-2);
+    stroke-width: 1.4;
+    stroke-dasharray: 3 3;
+  }
+  :global(.ct-today-label) {
+    fill: var(--color-accent-2);
+    font-size: 10.5px;
+    font-style: italic;
+    text-anchor: middle;
+  }
+
+  /* Dots on the axis */
+  :global(.ct-dot) {
+    stroke: var(--color-bg);
+    stroke-width: 1.5;
+  }
+  :global(.ct-dot--past) { fill: var(--color-accent); }
+  :global(.ct-dot--future) {
+    fill: var(--color-bg);
+    stroke: var(--color-accent);
+    stroke-width: 2;
+  }
+
+  /* Connectors (arrows) */
+  :global(.ct-connector) {
+    stroke: var(--color-text-soft);
+    stroke-width: 1;
+  }
+  :global(.ct-event--milestone .ct-connector) {
+    stroke: color-mix(in srgb, var(--color-accent) 60%, var(--color-text-soft));
+  }
+  :global(.ct-event--roadmap .ct-connector) {
+    stroke: color-mix(in srgb, var(--color-accent) 50%, var(--color-text-soft));
+    stroke-dasharray: 3 2;
+  }
+
+  /* Cards (foreignObject content) */
+  :global(.ct-card) {
+    box-sizing: border-box;
+    block-size: 100%;
+    padding: 6px 8px 7px;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    background: var(--card-bg);
+    display: grid;
+    gap: 3px;
+    align-content: start;
+    font-family: var(--font-sans, system-ui);
+  }
+  :global(.ct-card--milestone) {
+    background: color-mix(in srgb, var(--color-accent) 9%, var(--card-bg));
+    border-color: color-mix(in srgb, var(--color-accent) 45%, var(--card-border));
+  }
+  :global(.ct-card--roadmap) {
+    background: var(--card-bg);
+    border-style: dashed;
+    border-color: var(--color-accent);
+  }
+  :global(.ct-card:hover) {
+    border-color: var(--color-accent);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-accent) 50%, transparent);
+  }
+  :global(.ct-card-date) {
+    font-family: var(--font-mono);
+    font-size: 10px;
     color: var(--color-text-mute);
-    font-weight: 600;
     letter-spacing: 0.04em;
   }
-  .ct-cell.is-lit.is-past .ct-year-label,
-  .ct-cell.is-lit.is-future .ct-year-label {
-    color: var(--color-text);
-  }
-  .ct-cell.is-now .ct-year-label { color: var(--color-accent-2); }
-
-  /* Items inside a cell */
-  .ct-items {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 4px;
-    align-content: start;
-  }
-  .ct-item {
-    display: grid;
-    grid-template-columns: 6px 1fr;
-    column-gap: 5px;
-    align-items: start;
-    font-size: 10.5px;
+  :global(.ct-card-headline) {
+    font-size: 11px;
     line-height: 1.32;
     color: var(--color-text);
-  }
-  .ct-item .ct-dot {
-    inline-size: 6px;
-    block-size: 6px;
-    border-radius: 50%;
-    margin-block-start: 5px;
-    background: var(--color-accent);
-  }
-  .ct-item--roadmap .ct-dot {
-    background: transparent;
-    border: 1.5px solid var(--color-accent);
-    box-sizing: border-box;
-  }
-  .ct-item--roadmap .ct-text { color: var(--color-text-mute); }
-  .ct-text {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    word-break: normal;
-    overflow-wrap: anywhere;
   }
 
   /* Legend */
@@ -264,6 +379,12 @@ const showFoundedTag = foundedYear < yearStart;
     color: var(--color-text-mute);
   }
   .ct-legend { display: inline-flex; align-items: center; gap: 6px; }
+  .ct-legend--founded {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text);
+  }
   .ct-legend-dot {
     inline-size: 10px;
     block-size: 10px;
@@ -275,14 +396,6 @@ const showFoundedTag = foundedYear < yearStart;
     background: transparent;
     border: 2px solid var(--color-accent);
     box-sizing: border-box;
-  }
-  .ct-legend-now-box {
-    inline-size: 12px;
-    block-size: 10px;
-    background: color-mix(in srgb, var(--color-accent-2) 14%, transparent);
-    border: 1px solid var(--color-accent-2);
-    display: inline-block;
-    border-radius: 2px;
   }
   .empty { color: var(--color-text-mute); }
 </style>
