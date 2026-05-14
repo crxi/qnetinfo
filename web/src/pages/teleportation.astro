@@ -95,7 +95,7 @@ const sections = [
         </p>
 
         <figure class="tp" id="tp-fig" data-tp>
-          <svg viewBox="0 0 720 340" role="img"
+          <svg viewBox="0 0 720 270" role="img"
                aria-label="Quantum teleportation animation: C and A photons drop into Alice's BSM box; bits travel to Bob who unlocks the Pauli-locked qubit B."
                data-tp-svg>
             <defs>
@@ -109,29 +109,33 @@ const sections = [
                 <stop offset="40%"  stop-color="var(--tp-purple)" stop-opacity="0.55"/>
                 <stop offset="100%" stop-color="var(--tp-purple)" stop-opacity="0"/>
               </radialGradient>
+              <radialGradient id="tp-cloud-spent" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%"   stop-color="#7a8390" stop-opacity="0.9"/>
+                <stop offset="40%"  stop-color="#7a8390" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#7a8390" stop-opacity="0"/>
+              </radialGradient>
             </defs>
 
             {/* Endpoint labels */}
             <text x="170" y="22" text-anchor="middle" class="tp-label">Alice</text>
             <text x="560" y="22" text-anchor="middle" class="tp-label">Bob</text>
 
-            <rect x="20"  y="32" width="300" height="300" rx="6"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <rect x="420" y="32" width="280" height="300" rx="6"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            {/* Subtle dashed region labels — just enough to delineate Alice's
+                lab from Bob's, without a solid surface block dominating the
+                figure. Sized to enclose only the actual content. */}
+            <rect x="50"  y="34" width="240" height="220" rx="6"
+                  fill="none" stroke="var(--color-rule)" stroke-width="1"
+                  stroke-dasharray="4,3" opacity="0.55"/>
+            <rect x="500" y="34" width="120" height="100" rx="6"
+                  fill="none" stroke="var(--color-rule)" stroke-width="1"
+                  stroke-dasharray="4,3" opacity="0.55"/>
 
             {/* Photon labels above clouds */}
             <text x="130" y="54" text-anchor="middle" class="tp-slot-label">C</text>
             <text x="210" y="54" text-anchor="middle" class="tp-slot-label">A</text>
             <text x="560" y="54" text-anchor="middle" class="tp-slot-label">B</text>
 
-            {/* Photons */}
-            <g data-tp-c transform="translate(130 95)">
-              <circle r="17" fill="url(#tp-cloud-psi)"/>
-            </g>
-            <g data-tp-a transform="translate(210 95)">
-              <circle r="17" fill="url(#tp-cloud-std)"/>
-            </g>
+            {/* Bob's qubit B sits in its endpoint, awaiting correction. */}
             <g data-tp-b transform="translate(560 95)">
               <circle data-tp-b-cloud r="20" fill="url(#tp-cloud-std)"/>
             </g>
@@ -140,49 +144,82 @@ const sections = [
             <path data-tp-bellpair d="M 0 0" fill="none"
                   stroke="var(--tp-teal)" stroke-width="1.4" opacity="0.9"/>
 
-            {/* BSM box — ALWAYS visible. Dotted vertical channels from
-                C and A drop straight down into the top ports. Box border
-                thickens during measurement; bell-outcome ket appears at
-                that moment. */}
-            <line x1="130" y1="112" x2="130" y2="180"
-                  stroke="var(--color-text-soft)" stroke-width="1"
-                  stroke-dasharray="3,3" opacity="0.6"/>
-            <line x1="210" y1="112" x2="210" y2="180"
-                  stroke="var(--color-text-soft)" stroke-width="1"
-                  stroke-dasharray="3,3" opacity="0.6"/>
-            <rect data-tp-bsm-rect x="90" y="180" width="160" height="70" rx="6"
-                  fill="var(--color-bg)" stroke="var(--tp-teal)" stroke-width="1.6"/>
-            <circle cx="130" cy="180" r="3" fill="var(--tp-teal)"/>
-            <circle cx="210" cy="180" r="3" fill="var(--tp-teal)"/>
-            <circle cx="150" cy="250" r="3" fill="var(--tp-teal)"/>
-            <circle cx="190" cy="250" r="3" fill="var(--tp-teal)"/>
-            <text x="170" y="172" text-anchor="middle" class="tp-bsm-title">BSM</text>
-            {/* Bell-outcome ket, BIG font, hidden until measurement */}
-            <text data-tp-bell-out x="170" y="225" text-anchor="middle"
-                  class="tp-bell-out" opacity="0">|Φ⁺⟩</text>
-            {/* Vertical output lines from BSM bottom ports to bit-pair row */}
-            <line x1="150" y1="250" x2="150" y2="280"
-                  stroke="var(--color-text-soft)" stroke-width="1"
-                  stroke-dasharray="2,2" opacity="0.6"/>
-            <line x1="190" y1="250" x2="190" y2="280"
-                  stroke="var(--color-text-soft)" stroke-width="1"
-                  stroke-dasharray="2,2" opacity="0.6"/>
+            {/* BSM apparatus — scaled copy of images/BSM.svg geometry
+                (viewBox 640×540).  Scale 197/640 ≈ 0.308 puts the two
+                input ports at outer (130, 95) and (210, 95) — exactly
+                the centres of C and A above.  Diagonals are drawn as
+                dotted strokes because they represent photon paths
+                through the optics, not solid apparatus parts.  Inline
+                stroke/fill attributes (with `currentColor` set on the
+                nested SVG root) instead of a nested <style> tag —
+                Astro's JSX context doesn't evaluate `<style>{`…`}</style>`
+                inside SVG markup. */}
+            <svg data-tp-bsm-rect x="71.54" y="79.62" width="197" height="166"
+                 viewBox="0 0 640 540" overflow="visible" color="var(--color-text)">
+              <defs>
+                <marker id="tp-bsm-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                </marker>
+                <symbol id="tp-bsm-detector" overflow="visible">
+                  <path d="M -22,0 A 22,22 0 0 1 22,0 Z" fill="currentColor"/>
+                </symbol>
+              </defs>
+              {/* Dotted photon-path diagonals through the apparatus. */}
+              <line x1="190" y1="50"  x2="450" y2="310" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10"/>
+              <line x1="450" y1="310" x2="510" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#tp-bsm-arr)"/>
+              <line x1="450" y1="310" x2="390" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#tp-bsm-arr)"/>
+              <line x1="450" y1="50"  x2="190" y2="310" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10"/>
+              <line x1="190" y1="310" x2="130" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#tp-bsm-arr)"/>
+              <line x1="190" y1="310" x2="250" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#tp-bsm-arr)"/>
+              {/* Central 50:50 beam splitter (vertical bar at inner x=320). */}
+              <rect x="312" y="140" width="16" height="80" rx="4" fill="currentColor"/>
+              {/* Two polarising beam splitters — diamonds with vertical coating. */}
+              <polygon points="190,270 230,310 190,350 150,310" fill="#d9eef9" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+              <line x1="190" y1="270" x2="190" y2="350" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="450,270 490,310 450,350 410,310" fill="#d9eef9" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+              <line x1="450" y1="270" x2="450" y2="350" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              {/* Four detectors — D-shapes flat side perpendicular to incoming beam. */}
+              <use href="#tp-bsm-detector" transform="translate(130,370) rotate(-135)"/>
+              <use href="#tp-bsm-detector" transform="translate(250,370) rotate(135)"/>
+              <use href="#tp-bsm-detector" transform="translate(390,370) rotate(-135)"/>
+              <use href="#tp-bsm-detector" transform="translate(510,370) rotate(135)"/>
+            </svg>
 
-            {/* Classical channel */}
-            <text x="370" y="266" text-anchor="middle" class="tp-channel">classical channel · 2 bits</text>
-            <line x1="250" y1="295" x2="560" y2="295"
-                  stroke="var(--color-text-soft)" stroke-width="1"
-                  stroke-dasharray="4,3" opacity="0.65"/>
-
-            {/* Bit-pair (a, b) — sits under BSM, slides right */}
-            <g data-tp-bits opacity="0">
-              <text data-tp-bits-text x="170" y="300" text-anchor="middle" class="tp-bit">(0, 0)</text>
+            {/* C and A photons — rendered AFTER the apparatus so they
+                travel above its beams and optical elements. */}
+            <g data-tp-c transform="translate(130 95)">
+              <circle data-tp-c-cloud r="20" fill="url(#tp-cloud-psi)"/>
+            </g>
+            <g data-tp-a transform="translate(210 95)">
+              <circle data-tp-a-cloud r="20" fill="url(#tp-cloud-std)"/>
             </g>
 
-            {/* Statement that the BSM has teleported C onto B (up to P).
-                Materialises in the middle of the figure once measurement
-                fires, persists until Bob applies P⁻¹. */}
-            <text data-tp-statement x="370" y="148" text-anchor="middle"
+            {/* Classical channel — left end centred under the central BS
+                bar (outer x≈170).  Label runs below the dashed line. */}
+            <line x1="170" y1="222" x2="560" y2="222"
+                  stroke="var(--color-text-soft)" stroke-width="1"
+                  stroke-dasharray="4,3" opacity="0.65"/>
+            <text x="365" y="240" text-anchor="middle" class="tp-channel">classical channel · 2 bits</text>
+
+            {/* Bit-pair (a, b) — rides along the classical channel */}
+            <g data-tp-bits opacity="0">
+              <text data-tp-bits-text x="170" y="217" text-anchor="middle" class="tp-bit">(0, 0)</text>
+            </g>
+
+            {/* Three stacked status lines centred in the gap between Alice
+                and Bob (x≈370), well clear of the apparatus on the left
+                and Bob on the right:
+                 line 1 — "C and A jointly measured → |Ψ⁺⟩"  (fires at BSM)
+                 line 2 — "C is teleported to Bob as P(C)"   (same instant)
+                 line 3 — "so Bob applies P⁻¹ to recover |ψ⟩" (fires when
+                          the inverse chip flies up to cancel P).
+                All three persist through the hold phase so the reader
+                has time to follow the narrative end-to-end. */}
+            <text data-tp-measure x="370" y="114" text-anchor="middle"
+                  class="tp-statement" opacity="0"></text>
+            <text data-tp-statement x="370" y="134" text-anchor="middle"
+                  class="tp-statement" opacity="0"></text>
+            <text data-tp-correction x="370" y="154" text-anchor="middle"
                   class="tp-statement" opacity="0"></text>
 
             {/* Bob's lock — ring around B with a Pauli letter tag. Appears
@@ -221,12 +258,23 @@ const sections = [
             <strong>C</strong> (purple) is the qubit to teleport. <strong>A</strong> and
             <strong>B</strong> (teal) are halves of a shared Bell pair, drawn connected
             by the high-frequency wavy line. <strong>C</strong> and <strong>A</strong>
-            drop into Alice's BSM; the Bell-state outcome appears inside the box and the
-            two bits emerge below. At that same instant <strong>B</strong> turns purple,
-            marked with the Pauli <em>P</em> the BSM outcome left on it — its state is
-            now <Math tex="P|\\psi\\rangle" />. When the bits arrive at Bob, the matching
-            <Math tex="P^{-1}" /> chip rises to meet that <em>P</em> badge and the two
-            cancel. <strong>B</strong> is now in <Math tex="|\\psi\\rangle" />.
+            travel through Alice's BSM apparatus and arrive at two detectors; the path
+            changes each cycle to match which pair of detectors fired. The two clouds
+            turn grey because the original states are gone the moment the measurement
+            begins. Two classical bits emerge on the channel below. At that same
+            instant <strong>B</strong> turns purple, marked with the Pauli <em>P</em>
+            the BSM outcome left on it — its state is now <Math tex="P(C)" />.
+            When the bits arrive at Bob, the matching <Math tex="P^{-1}" /> chip rises
+            to meet that <em>P</em> badge and the two cancel. <strong>B</strong> now
+            holds <strong>C</strong>'s state.
+            <br/><br/>
+            <em>Only the <Math tex="|\\Psi^\\pm\\rangle" /> outcomes are animated — the
+            two cases where the linear-optics BSM fires two distinct detectors and
+            unambiguously identifies the Bell state. The <Math tex="|\\Phi^\\pm\\rangle" />
+            outcomes bunch both photons onto one detector and are indistinguishable
+            from each other; in a real linear-optics BSM they are the "failed"
+            outcomes that consume the Bell pair without delivering a usable teleport,
+            and are not shown here.</em>
           </figcaption>
         </figure>
 
@@ -522,16 +570,21 @@ const sections = [
             any time <SourceNote id="wootters-nature-1982" />.
           </li>
         </ul>
-        <p>
-          Two consequences follow from this resource ledger. First, teleportation
-          degrades with the fidelity of the Bell pair: a noisy pair gives Bob a noisy
-          copy of <Math tex="|\\psi\\rangle" />, and the cleaner the pair, the cleaner
-          the teleported state — which is why distillation exists, to take noisy pairs
-          and produce cleaner ones. Second, the protocol is one-shot per Bell pair;
-          teleporting many qubits requires many Bell pairs, which is why
-          entanglement-distribution rate (Bell pairs per second) is a headline network
-          metric.
-        </p>
+        <p>Two consequences follow from this resource ledger:</p>
+        <ul>
+          <li>
+            <strong>Teleportation inherits the Bell pair's fidelity.</strong> A noisy
+            pair gives Bob a noisy copy of <strong>C</strong>'s state; the cleaner the
+            pair, the cleaner the teleported state. This is why distillation exists —
+            to take noisy pairs and produce cleaner ones.
+          </li>
+          <li>
+            <strong>One Bell pair per qubit, no reuse.</strong> The protocol is one-shot:
+            each teleport consumes its Bell pair entirely. Teleporting many qubits
+            requires many Bell pairs, which is why entanglement-distribution rate
+            (Bell pairs per second) is a headline network metric.
+          </li>
+        </ul>
       </section>
 
       <section id="role" data-nav-section>
@@ -573,29 +626,29 @@ const sections = [
   //   1. Setup — Alice has C (purple cloud = |ψ⟩) and A (standard
   //      cloud, Bell half). Bob has B (standard cloud, Bell half).
   //      Entangled-wave connects A and B.
-  //   2. BSM — BSM box wraps C and A. Bell outcome ket appears
-  //      between them; bits (a, b) emerge below. At the same instant,
+  //   2. BSM — C and A travel along the apparatus beams (C through
+  //      the BS to the far-right detector; A symmetrically to the
+  //      far-left detector). Their clouds turn grey on entry — the
+  //      original states are gone once they touch the apparatus.
+  //      Bits (a, b) emerge from the apparatus. At the same instant,
   //      B picks up a purple tint with a "P" badge — physically it's
   //      now in P|ψ⟩, even though Bob doesn't know which P.
   //   3. Classical send — (a, b) travels along the classical line.
   //   4. Correction — bits arrive at Bob; the P badge drops, B turns
   //      fully purple = |ψ⟩ on Bob.
   //   5. Hold final state, reset.
-  //
-  // No bar rotations: state equivalence is shown by cloud colour.
-  // C and A do not disappear during BSM — they dim and the Bell-
-  // outcome ket overlays them, reflecting the projection onto a
-  // known Bell state rather than annihilation.
   const fig = document.querySelector("[data-tp]");
   if (fig) {
     const svg          = fig.querySelector("[data-tp-svg]");
     const photonC      = svg.querySelector("[data-tp-c]");
     const photonA      = svg.querySelector("[data-tp-a]");
+    const cCloud       = svg.querySelector("[data-tp-c-cloud]");
+    const aCloud       = svg.querySelector("[data-tp-a-cloud]");
     const bCloud       = svg.querySelector("[data-tp-b-cloud]");
     const bellLine     = svg.querySelector("[data-tp-bellpair]");
-    const bsmRect      = svg.querySelector("[data-tp-bsm-rect]");
-    const bellOut      = svg.querySelector("[data-tp-bell-out]");
+    const measureLine  = svg.querySelector("[data-tp-measure]");
     const statement    = svg.querySelector("[data-tp-statement]");
+    const correction   = svg.querySelector("[data-tp-correction]");
     const lock         = svg.querySelector("[data-tp-lock]");
     const lockLetter   = svg.querySelector("[data-tp-lock-letter]");
     const inverse      = svg.querySelector("[data-tp-inverse]");
@@ -604,12 +657,24 @@ const sections = [
     const bitsText     = svg.querySelector("[data-tp-bits-text]");
     const stepEls      = Array.from(fig.querySelectorAll("[data-tp-step]"));
 
-    // Photon homes (vertical drop into BSM box).
+    // Photon paths through the BSM apparatus. Starts coincide with
+    // the apparatus input ports (= cloud centres at y=95). The path
+    // is two legs: input → BS centre → one of four detectors. Which
+    // detector depends on the cycle's outcome (Ψ⁺ or Ψ⁻ only — see
+    // OUTCOMES and the figcaption note).
     const C_HOME = { x: 130, y: 95 };
     const A_HOME = { x: 210, y: 95 };
-    const C_BSM  = { x: 130, y: 180 };  // top-left BSM port (vertical descent)
-    const A_BSM  = { x: 210, y: 180 };  // top-right BSM port (vertical descent)
     const B_HOME = { x: 560, y: 95 };
+    const BS_POS = { x: 170, y: 135 };       // central beam-splitter centre, outer coords
+    const DET = {
+      H1: { x: 111.5, y: 193.6 },           // far-left detector
+      V1: { x: 148.6, y: 193.6 },           // left-inner detector
+      V2: { x: 191.7, y: 193.6 },           // right-inner detector
+      H2: { x: 228.7, y: 193.6 },           // far-right detector
+    };
+    // Set per cycle by pickCycleParams() based on the outcome.
+    const C_END = { x: DET.H2.x, y: DET.H2.y };
+    const A_END = { x: DET.H1.x, y: DET.H1.y };
     const LOCK_POS    = { x: 560, y: 138 };  // P-badge centre, not cloud centre
     const BIT_X_START = 170;
     const BIT_X_END   = LOCK_POS.x;          // aligned so the chip flies STRAIGHT UP
@@ -648,12 +713,20 @@ const sections = [
     // `P` is the residual operator on Bob's qubit (state = P|ψ⟩);
     // `inv` is what Bob actually applies, i.e. P⁻¹. For I/X/Z the
     // Paulis are self-inverse so inv === P; for ZX, inv = XZ.
+    // We animate only the Ψ⁺ and Ψ⁻ outcomes — the two cases where the
+    // BSM produces two clicks at distinct detectors (the success cases
+    // of a linear-optics photonic BSM).  Φ⁺ and Φ⁻ bunch both photons
+    // at a single detector and are not resolvable here; see the
+    // figcaption.  Each Ψ outcome has two click variants — the photons
+    // are indistinguishable after the BS, so each variant is equally
+    // physical.  The cycle iterates through all four variants in order.
     const OUTCOMES = [
-      { a: 0, b: 0, ket: "|Φ⁺⟩", P: "I",  inv: "I"  },
-      { a: 0, b: 1, ket: "|Ψ⁺⟩", P: "X",  inv: "X"  },
-      { a: 1, b: 0, ket: "|Φ⁻⟩", P: "Z",  inv: "Z"  },
-      { a: 1, b: 1, ket: "|Ψ⁻⟩", P: "ZX", inv: "XZ" },
+      { a: 0, b: 1, ket: "|Ψ⁺⟩", P: "X",  inv: "X",  clicks: ["H1", "V1"] },
+      { a: 0, b: 1, ket: "|Ψ⁺⟩", P: "X",  inv: "X",  clicks: ["H2", "V2"] },
+      { a: 1, b: 1, ket: "|Ψ⁻⟩", P: "ZX", inv: "XZ", clicks: ["H1", "V2"] },
+      { a: 1, b: 1, ket: "|Ψ⁻⟩", P: "ZX", inv: "XZ", clicks: ["V1", "H2"] },
     ];
+    let outcomeIndex = -1;
 
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -668,8 +741,6 @@ const sections = [
     if (reducedMotion) {
       const o = OUTCOMES[1];
       bitsText.textContent  = `(${o.a}, ${o.b})`;
-      bellOut.textContent   = o.ket;
-      setOpacity(bellOut, 1);
       setOpacity(photonC, 0);
       setOpacity(photonA, 0);
       setOpacity(bellLine, 0.15);
@@ -679,46 +750,53 @@ const sections = [
       highlightStep(5);
     } else {
       const T_SETUP   = 1000;
-      const T_DROP    = 900;   // C, A drop vertically into BSM box
-      const T_MEASURE = 1100;  // box pulse, Bell ket reveal, bits emerge, lock appears on B
+      const T_DROP    = 1100;  // C and A traverse the BSM apparatus
+      const T_MEASURE = 1100;  // bits emerge, lock appears on B
       const T_SEND    = 1700;  // bits slide along classical channel
       const T_UNLOCK  = 1100;  // inverse tag flies up to lock, both vanish
-      const T_HOLD    = 1000;
-      const T_PAUSE   = 300;
+      const T_HOLD    = 2400;  // long enough to read the 3-line narrative
+      const T_PAUSE   = 400;
       const T_TOTAL   = T_SETUP + T_DROP + T_MEASURE + T_SEND + T_UNLOCK + T_HOLD + T_PAUSE;
 
       let cycleStart = 0;
       let outcome = OUTCOMES[0];
-      let firedMeasure = false;
-
-      // BSM-box border pulse: thickens briefly on measurement.
-      const PULSE_DUR = 360;
-      let pulseEnd = 0;
-      function updateBorder(now) {
-        const remaining = pulseEnd - now;
-        if (remaining > 0) {
-          const t = remaining / PULSE_DUR;
-          bsmRect.setAttribute("stroke-width", String(1.6 + 2.4 * t));
-        } else {
-          bsmRect.setAttribute("stroke-width", "1.6");
-        }
-      }
       function ease(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
+      // Two-leg interpolation: first 40 % runs start → mid, remaining
+      // 60 % runs mid → end.  Photons take an explicit kink at the BS
+      // for outcomes that send them to the opposite side of the apparatus.
+      function twoLeg(start, mid, end, t) {
+        if (t < 0.4) {
+          const k = t / 0.4;
+          return { x: start.x + (mid.x - start.x) * k, y: start.y + (mid.y - start.y) * k };
+        }
+        const k = (t - 0.4) / 0.6;
+        return { x: mid.x + (end.x - mid.x) * k, y: mid.y + (end.y - mid.y) * k };
+      }
 
       function pickCycleParams() {
-        outcome = OUTCOMES[Math.floor(Math.random() * 4)];
+        // Cycle through all four Ψ-outcome variants deterministically.
+        outcomeIndex = (outcomeIndex + 1) % OUTCOMES.length;
+        outcome = OUTCOMES[outcomeIndex];
         bitsText.textContent  = `(${outcome.a}, ${outcome.b})`;
-        bellOut.textContent   = outcome.ket;
         lockLetter.textContent = outcome.P;
         inverseText.textContent = outcome.inv;
+        measureLine.textContent = `C and A jointly measured`;
         statement.textContent = `C is teleported to Bob as ${outcome.P}(C)`;
+        correction.textContent = `so Bob applies ${outcome.inv} to recover C`;
         bCloud.setAttribute("fill", "url(#tp-cloud-std)");
+        cCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+        aCloud.setAttribute("fill", "url(#tp-cloud-std)");
+        // C goes to the first detector in the click pair, A to the second.
+        // (Photons are indistinguishable after the BS; this fixes a
+        // labelling so each cycle looks deterministic.)
+        const cClick = outcome.clicks[0];
+        const aClick = outcome.clicks[1];
+        C_END.x = DET[cClick].x;  C_END.y = DET[cClick].y;
+        A_END.x = DET[aClick].x;  A_END.y = DET[aClick].y;
         setPos(photonC, C_HOME.x, C_HOME.y);
         setPos(photonA, A_HOME.x, A_HOME.y);
-        firedMeasure = false;
-        pulseEnd = 0;
       }
 
       function frame(now) {
@@ -732,44 +810,70 @@ const sections = [
           setOpacity(photonA, 1);
           setPos(photonC, C_HOME.x, C_HOME.y);
           setPos(photonA, A_HOME.x, A_HOME.y);
+          cCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+          aCloud.setAttribute("fill", "url(#tp-cloud-std)");
           rebuildBellLine(A_HOME.x + 20, A_HOME.y, B_HOME.x - 22, B_HOME.y);
           setOpacity(bellLine, 0.9);
-          setOpacity(bellOut, 0);
           setOpacity(bitsGroup, 0);
           setOpacity(lock, 0);
           setOpacity(inverse, 0);
+          setOpacity(measureLine, 0);
           setOpacity(statement, 0);
+          setOpacity(correction, 0);
           bCloud.setAttribute("fill", "url(#tp-cloud-std)");
         } else if (elapsed < (t0 += T_DROP)) {
-          // Phase 2a — vertical drop. C and A move from home y=95 → 180.
-          // Wavy line tracks A's right edge as it descends.
+          // Phase 2a — C and A traverse the BSM apparatus in two legs:
+          // input port → BS centre, then BS → their assigned detector.
+          // Which detectors fire is set by the cycle's outcome, so the
+          // photon paths change from cycle to cycle.  Clouds turn grey
+          // on entry: the original states are gone the moment they
+          // touch the apparatus.
           highlightStep(2);
           const t = (elapsed - (t0 - T_DROP)) / T_DROP;
           const e = ease(t);
-          const cy = C_HOME.y + (C_BSM.y - C_HOME.y) * e;
-          const ay = A_HOME.y + (A_BSM.y - A_HOME.y) * e;
-          setPos(photonC, C_HOME.x, cy);
-          setPos(photonA, A_HOME.x, ay);
-          rebuildBellLine(A_HOME.x + 20, ay, B_HOME.x - 22, B_HOME.y);
-          setOpacity(bellLine, 0.9);
+          // Two legs: first 40 % of the eased timeline takes the photon
+          // from its input port to the BS centre, remaining 60 % from
+          // BS to the assigned detector.
+          const cPos = twoLeg(C_HOME, BS_POS, C_END, e);
+          const aPos = twoLeg(A_HOME, BS_POS, A_END, e);
+          setPos(photonC, cPos.x, cPos.y);
+          setPos(photonA, aPos.x, aPos.y);
+          // First ~20 % of the traversal: fade the clouds from their
+          // original colours to grey.
+          if (e < 0.2) {
+            const k = e / 0.2;
+            if (k > 0.5) {
+              cCloud.setAttribute("fill", "url(#tp-cloud-spent)");
+              aCloud.setAttribute("fill", "url(#tp-cloud-spent)");
+            }
+          } else {
+            cCloud.setAttribute("fill", "url(#tp-cloud-spent)");
+            aCloud.setAttribute("fill", "url(#tp-cloud-spent)");
+          }
+          // Bell pair line stays anchored at the A↔B start positions
+          // (don't rebuild) and simply fades — moving photons no longer
+          // drag the wave across the figure and overlay the captions.
+          setOpacity(bellLine, Math.max(0, 0.9 * (1 - e * 1.4)));
+          // "C and A jointly measured → |Ψ±⟩" fades in as the photons
+          // start moving — the BSM is happening now, not after they
+          // land at the detectors.
+          setOpacity(measureLine, Math.min(1, e * 2));
         } else if (elapsed < (t0 += T_MEASURE)) {
-          // Phase 2b — measurement. Box pulses, Bell ket appears, the
-          // entanglement wave dies, the statement "C is teleported to
-          // Bob as P(C)" fades in, B turns purple with the Pauli badge.
+          // Phase 2b — measurement. Photons fade out at the detectors,
+          // bits emerge under the apparatus, B picks up the Pauli badge,
+          // the statement "C is teleported to Bob as P(C)" fades in.
           highlightStep(2);
-          if (!firedMeasure) { pulseEnd = now + PULSE_DUR; firedMeasure = true; }
           const t = (elapsed - (t0 - T_MEASURE)) / T_MEASURE;
           const e = ease(t);
           setOpacity(photonC, Math.max(0, 1 - e * 2));
           setOpacity(photonA, Math.max(0, 1 - e * 2));
-          setOpacity(bellOut, Math.min(1, e * 3));
-          setOpacity(bellLine, Math.max(0, 0.9 * (1 - e * 3)));
-          setOpacity(bitsGroup, Math.max(0, (e - 0.5) * 2));
+          setOpacity(bellLine, 0);
+          setOpacity(bitsGroup, Math.max(0, (e - 0.3) * 2));
           setBitsX(BIT_X_START);
           // B turns purple and Pauli badge appears as soon as BSM fires.
           bCloud.setAttribute("fill", "url(#tp-cloud-psi)");
           setOpacity(lock, Math.min(1, e * 2.5));
-          // Statement fades in over first half of measurement.
+          setOpacity(measureLine, 1);            // already faded in during phase 2a
           setOpacity(statement, Math.min(1, e * 2));
         } else if (elapsed < (t0 += T_SEND)) {
           // Phase 3 — bits slide right along classical channel.
@@ -777,11 +881,11 @@ const sections = [
           const t = (elapsed - (t0 - T_SEND)) / T_SEND;
           setOpacity(photonC, 0);
           setOpacity(photonA, 0);
-          setOpacity(bellOut, 1);
           setOpacity(bitsGroup, 1);
           setBitsX(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
           setOpacity(lock, 1);
           setOpacity(inverse, 0);
+          setOpacity(measureLine, 1);
           setOpacity(statement, 1);
         } else if (elapsed < (t0 += T_UNLOCK)) {
           // Phase 4 — bits arrive; an inverse tag materialises at the
@@ -792,33 +896,48 @@ const sections = [
           setBitsX(BIT_X_END);
           // Inverse appears at the bit position, flies up to the lock.
           const ix = BIT_X_END;
-          const iy_start = 300;  // bits row
+          const iy_start = 222;  // bits row (now lifted up under the BSM)
           const iy_end   = LOCK_POS.y;  // lock centre
           const ix_end   = LOCK_POS.x;
           const ix_now   = ix + (ix_end - ix) * e;
           const iy_now   = iy_start + (iy_end - iy_start) * e;
           setPos(inverse, ix_now, iy_now);
-          // Inverse visible during the flight; both chip and lock
-          // fade together once the chip reaches the badge (e ≈ 0.85).
+          // The "so Bob applies P⁻¹" line fades in as the inverse chip
+          // takes off — same time the reader needs the prompt.
+          setOpacity(correction, Math.min(1, e * 2));
+          // Inverse visible during the flight; chip and lock fade
+          // together once the chip reaches the badge (e ≈ 0.85).  The
+          // three narrative lines stay up — they describe what just
+          // happened, and need the hold phase to be readable.
           const fadeT = Math.max(0, (e - 0.85) / 0.15);
           setOpacity(inverse, 1 - fadeT);
           setOpacity(lock,    1 - fadeT);
-          setOpacity(statement, 1 - fadeT);
+          setOpacity(measureLine, 1);
+          setOpacity(statement, 1);
           // Bits dissolve as they're "consumed".
           setOpacity(bitsGroup, Math.max(0, 1 - e * 1.5));
         } else if (elapsed < T_TOTAL - T_PAUSE) {
-          // Phase 5 — hold. B is purple, no lock, no badges.
+          // Phase 5 — hold.  B is purple, lock and bits gone; the three
+          // narrative lines stay visible for the entire hold so the
+          // reader has time to read them before the cycle resets.
           highlightStep(5);
-          setOpacity(bellOut, 0.5);
           setOpacity(bitsGroup, 0);
           setOpacity(lock, 0);
           setOpacity(inverse, 0);
-          setOpacity(statement, 0);
+          setOpacity(measureLine, 1);
+          setOpacity(statement, 1);
+          setOpacity(correction, 1);
+        } else if (elapsed < T_TOTAL) {
+          // Brief fade-out tail so the lines don't blink off on reset.
+          const t = (elapsed - (T_TOTAL - T_PAUSE)) / T_PAUSE;
+          const a = Math.max(0, 1 - t);
+          setOpacity(measureLine, a);
+          setOpacity(statement, a);
+          setOpacity(correction, a);
         } else if (elapsed >= T_TOTAL) {
           cycleStart = now;
           pickCycleParams();
         }
-        updateBorder(now);
         requestAnimationFrame(frame);
       }
 
@@ -976,21 +1095,6 @@ const sections = [
     font-size: 17px;
     font-weight: 700;
     fill: var(--color-text);
-  }
-  :global(.tp-bell-out) {
-    /* Dirac notation: | and ⟩ are upright delimiters and uppercase
-       Greek is upright by convention. KaTeX_Main is the upright
-       serif used by KaTeX for these glyphs in inline math. */
-    font-family: "KaTeX_Main", "Cambria Math", "Times New Roman", serif;
-    font-size: 30px;
-    font-weight: 500;
-    fill: var(--tp-purple);
-  }
-  :global(.tp-bsm-title) {
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    fill: var(--tp-teal);
   }
   :global(.tp-statement) {
     font-size: 17px;

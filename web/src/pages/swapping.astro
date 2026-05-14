@@ -25,8 +25,7 @@ import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",   label: "Overview" },
-  { id: "setup",      label: "The setup" },
-  { id: "protocol",   label: "The protocol" },
+  { id: "protocol",   label: "The setup and protocol" },
   { id: "chains",     label: "Chained swapping for reach" },
   { id: "role",       label: "Network role" },
 ];
@@ -72,35 +71,20 @@ const sections = [
         </p>
       </header>
 
-      <section id="setup" data-nav-section>
-        <h2>The setup</h2>
-        <p>
-          Three parties: Alice, a relay station, and Bob. Two Bell pairs already exist:
-        </p>
-        <ul>
-          <li>
-            <strong>Pair 1:</strong> Alice's qubit <Math tex="A" /> and the relay's qubit
-            <Math tex="R_1" /> are entangled in <Math tex="|\\Phi^+\\rangle_{A R_1}" />.
-          </li>
-          <li>
-            <strong>Pair 2:</strong> the relay's qubit <Math tex="R_2" /> and Bob's qubit
-            <Math tex="B" /> are entangled in <Math tex="|\\Phi^+\\rangle_{R_2 B}" />.
-          </li>
-        </ul>
-        <p>
-          The relay holds two qubits, <Math tex="R_1" /> and <Math tex="R_2" />, one
-          drawn from each pair. The relay is just a station that <strong>mediates</strong>; the
-          qubits at Alice and Bob are never touched by anything other than their original
-          entanglement-generation event and (eventually) the local Pauli correction.
-        </p>
-      </section>
-
       <section id="protocol" data-nav-section>
-        <h2>The protocol</h2>
+        <h2>The setup and protocol</h2>
         <p>
-          Three steps, structurally identical to teleportation — except that what's being
-          "teleported" is Alice's half of Pair 1 onto Bob's qubit, with the relay
-          performing the BSM in the middle.
+          Three parties: Alice, a relay R, and Bob. Two Bell pairs already exist:
+          <strong>A</strong> at Alice paired with <strong>A′</strong> at R, and
+          <strong>B′</strong> at R paired with <strong>B</strong> at Bob. The relay
+          holds <strong>A′</strong> and <strong>B′</strong>, one qubit from each
+          pre-shared pair; the qubits at Alice and Bob are never touched until the
+          final Pauli correction.
+        </p>
+        <p>
+          Three steps follow, structurally identical to teleportation — except that
+          what's being "teleported" is Alice's half of the first pair onto Bob's
+          qubit, with the relay performing the BSM in the middle.
         </p>
 
         <ol class="sw-steps">
@@ -128,115 +112,154 @@ const sections = [
         </ol>
 
         <figure class="sw" id="sw-fig" data-sw>
-          <svg viewBox="0 0 720 280" role="img"
-               aria-label="Entanglement swapping animation: two Bell pairs Alice-Relay and Relay-Bob joined via a BSM at the relay"
+          <svg viewBox="0 0 800 460" role="img"
+               aria-label="Entanglement-swapping animation. Top row: two short Bell pairs A↔A′ and B′↔B. The relay performs a BSM on A′ and B′; two classical bits travel to Bob; Bob applies a Pauli correction. Bottom row: the resulting long Bell pair A↔B."
                data-sw-svg>
-            {/* ─── Endpoint and relay labels ───────────────────── */}
-            <text x="80"  y="22" text-anchor="middle" class="sw-label">Alice</text>
-            <text x="360" y="22" text-anchor="middle" class="sw-label">Relay</text>
-            <text x="640" y="22" text-anchor="middle" class="sw-label">Bob</text>
+            <defs>
+              <radialGradient id="sw-cloud-teal" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%"   stop-color="var(--tp-teal, #4cc8c0)" stop-opacity="0.95"/>
+                <stop offset="40%"  stop-color="var(--tp-teal, #4cc8c0)" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="var(--tp-teal, #4cc8c0)" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="sw-cloud-spent" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%"   stop-color="#7a8390" stop-opacity="0.9"/>
+                <stop offset="40%"  stop-color="#7a8390" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#7a8390" stop-opacity="0"/>
+              </radialGradient>
+              <marker id="sw-arr" viewBox="0 0 10 10" refX="9" refY="5"
+                      markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="var(--color-text-soft)"/>
+              </marker>
+            </defs>
 
-            {/* ─── Three node boxes ────────────────────────────── */}
-            <rect x="20"  y="32" width="120" height="216" rx="6"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <rect x="280" y="32" width="160" height="216" rx="6"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <rect x="580" y="32" width="120" height="216" rx="6"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
+            {/* Endpoint labels */}
+            <text x="50"  y="20" text-anchor="middle" class="sw-label">Alice</text>
+            <text x="400" y="20" text-anchor="middle" class="sw-label">Relay R</text>
+            <text x="750" y="20" text-anchor="middle" class="sw-label">Bob</text>
 
-            {/* ─── Bell-pair line 1: Alice ↔ R1 ────────────────── */}
-            <path data-sw-pair="1"
-                  d="M 80 140 Q 200 70 320 140"
-                  fill="none" stroke="var(--color-text)" stroke-width="1.5"
-                  stroke-dasharray="6,3" opacity="0.85"/>
+            {/* Dashed relay box around A′ and B′ — same physical location. */}
+            <rect x="325" y="32" width="150" height="56" rx="4"
+                  fill="none" stroke="var(--color-rule)" stroke-width="1"
+                  stroke-dasharray="4,3" opacity="0.55"/>
 
-            {/* ─── Bell-pair line 2: R2 ↔ Bob ─────────────────── */}
-            <path data-sw-pair="2"
-                  d="M 400 140 Q 520 70 640 140"
-                  fill="none" stroke="var(--color-text)" stroke-width="1.5"
-                  stroke-dasharray="6,3" opacity="0.85"/>
+            {/* ---- Top row: Alice (A), relay (A′, B′), Bob (B) ---- */}
+            <circle cx="50"  cy="60" r="18" fill="var(--color-bg)"
+                    stroke="var(--color-text)" stroke-width="1.5"/>
+            <text x="50"  y="65" text-anchor="middle" class="sw-node-lbl">A</text>
+            <circle cx="750" cy="60" r="18" fill="var(--color-bg)"
+                    stroke="var(--color-text)" stroke-width="1.5"/>
+            <text x="750" y="65" text-anchor="middle" class="sw-node-lbl">B</text>
 
-            {/* ─── End-to-end Bell pair (revealed in phase 4) ─── */}
-            <path data-sw-pair-final
-                  d="M 80 140 Q 360 30 640 140"
-                  fill="none" stroke="var(--color-accent)" stroke-width="2"
-                  stroke-dasharray="6,3" opacity="0"/>
+            {/* A′ and B′ photonic clouds — the relay's two qubits that
+                get consumed by the BSM. */}
+            <g data-sw-aprime transform="translate(359 60)">
+              <circle data-sw-aprime-cloud r="18" fill="url(#sw-cloud-teal)"/>
+              <text y="5" text-anchor="middle" class="sw-node-lbl">A′</text>
+            </g>
+            <g data-sw-bprime transform="translate(441 60)">
+              <circle data-sw-bprime-cloud r="18" fill="url(#sw-cloud-teal)"/>
+              <text y="5" text-anchor="middle" class="sw-node-lbl">B′</text>
+            </g>
 
-            {/* ─── Classical channel from relay to Bob ─────────── */}
-            <line x1="440" y1="220" x2="640" y2="220"
+            {/* Bell-pair wavy lines (A↔A′ and B′↔B). Magenta, same
+                wavelength/amp as the bottom result line. */}
+            <path data-sw-pair-aa class="sw-ent"
+                  d="M 68,60 q 17,-9 34,0 t 34,0 t 34,0 t 34,0 t 34,0 t 34,0 t 34,0 t 34,0"/>
+            <path data-sw-pair-bb class="sw-ent"
+                  d="M 459,60 q 17,-9 34,0 t 34,0 t 34,0 t 34,0 t 34,0 t 34,0 t 34,0 t 34,0"/>
+
+            {/* ---- BSM apparatus (same geometry as images/BSM.svg).
+                Greyed out until the BSM phase fires. ---- */}
+            <svg data-sw-bsm x="300" y="62" width="200" height="169"
+                 viewBox="0 0 640 540" overflow="visible"
+                 color="var(--color-text)" opacity="0.22">
+              <defs>
+                <marker id="sw-bsm-arr" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="5" markerHeight="5" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/>
+                </marker>
+                <symbol id="sw-bsm-detector" overflow="visible">
+                  <path d="M -14,0 A 14,14 0 0 1 14,0 Z" fill="currentColor"/>
+                </symbol>
+              </defs>
+              <line x1="190" y1="50"  x2="450" y2="310" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10"/>
+              <line x1="450" y1="310" x2="510" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#sw-bsm-arr)"/>
+              <line x1="450" y1="310" x2="390" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#sw-bsm-arr)"/>
+              <line x1="450" y1="50"  x2="190" y2="310" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10"/>
+              <line x1="190" y1="310" x2="130" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#sw-bsm-arr)"/>
+              <line x1="190" y1="310" x2="250" y2="370" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="14,10" marker-end="url(#sw-bsm-arr)"/>
+              <rect x="312" y="140" width="16" height="80" rx="4" fill="currentColor"/>
+              <polygon points="190,270 230,310 190,350 150,310" fill="#d9eef9" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+              <line x1="190" y1="270" x2="190" y2="350" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="450,270 490,310 450,350 410,310" fill="#d9eef9" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+              <line x1="450" y1="270" x2="450" y2="350" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <use href="#sw-bsm-detector" transform="translate(130,370) rotate(-135)"/>
+              <use href="#sw-bsm-detector" transform="translate(250,370) rotate(135)"/>
+              <use href="#sw-bsm-detector" transform="translate(390,370) rotate(-135)"/>
+              <use href="#sw-bsm-detector" transform="translate(510,370) rotate(135)"/>
+            </svg>
+
+            {/* ---- Classical channel (dashed line + bit pair) ---- */}
+            <text x="590" y="230" text-anchor="middle" class="sw-channel">2 classical bits</text>
+            <line x1="455" y1="240" x2="720" y2="240"
                   stroke="var(--color-text-soft)" stroke-width="1"
-                  stroke-dasharray="4,3" opacity="0.65"/>
+                  stroke-dasharray="4,3" opacity="0.6"
+                  marker-end="url(#sw-arr)"/>
 
-            {/* ─── Qubit slots ─────────────────────────────────── */}
-            {/* Alice */}
-            <g transform="translate(80 140)" data-sw-slot="A">
-              <circle r="18" fill="var(--color-bg)"
+            <g data-sw-bits opacity="0">
+              <text data-sw-bits-text x="475" y="235" text-anchor="middle" class="sw-bit">(0, 1)</text>
+            </g>
+
+            {/* Pauli badge that lands on B during the correction phase. */}
+            <g data-sw-lock opacity="0" transform="translate(750 100)">
+              <rect x="-20" y="-14" width="40" height="28" rx="4"
+                    fill="var(--color-bg)" stroke="var(--tp-purple, #a866c8)" stroke-width="1.5"/>
+              <text data-sw-lock-letter x="0" y="6" text-anchor="middle" class="sw-pauli-badge">X</text>
+            </g>
+
+            {/* ---- Bottom row: the resulting long Bell pair A↔B ---- */}
+            <g data-sw-result opacity="0.18">
+              <circle cx="50"  cy="370" r="18" fill="var(--color-bg)"
                       stroke="var(--color-text)" stroke-width="1.5"/>
-              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">A</text>
-            </g>
-
-            {/* Relay's two halves */}
-            <g transform="translate(320 140)" data-sw-slot="R1">
-              <circle r="16" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.2"/>
-              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">R₁</text>
-            </g>
-            <g transform="translate(400 140)" data-sw-slot="R2">
-              <circle r="16" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.2"/>
-              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">R₂</text>
-            </g>
-
-            {/* Bob */}
-            <g transform="translate(640 140)" data-sw-slot="B">
-              <circle r="18" fill="var(--color-bg)"
+              <text x="50"  y="375" text-anchor="middle" class="sw-node-lbl">A</text>
+              <circle cx="750" cy="370" r="18" fill="var(--color-bg)"
                       stroke="var(--color-text)" stroke-width="1.5"/>
-              <text x="0" y="4" text-anchor="middle" class="sw-slot-mark">B</text>
+              <text x="750" y="375" text-anchor="middle" class="sw-node-lbl">B</text>
+              <path data-sw-pair-ab class="sw-ent" pathLength="1"
+                    stroke-dasharray="1 1" stroke-dashoffset="1"
+                    d="M 68,370 q 17.5,-10 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0"/>
             </g>
 
-            {/* ─── BSM box at the relay (phase 2) ──────────────── */}
-            <g data-sw-bsm opacity="0">
-              <rect x="296" y="120" width="128" height="40" rx="4"
-                    fill="none" stroke="var(--color-accent)" stroke-width="2"
-                    stroke-dasharray="3,2"/>
-              <text x="360" y="113" text-anchor="middle" class="sw-action-label">BSM</text>
-            </g>
-
-            {/* ─── Correction box at Bob (phase 4) ─────────────── */}
-            <g data-sw-corr opacity="0">
-              <rect x="600" y="170" width="80" height="40" rx="4"
-                    fill="none" stroke="var(--color-accent)" stroke-width="2"
-                    stroke-dasharray="3,2"/>
-              <text x="640" y="163" text-anchor="middle" class="sw-action-label">X<tspan baseline-shift="super" font-size="9">a</tspan> Z<tspan baseline-shift="super" font-size="9">b</tspan></text>
-            </g>
-
-            {/* ─── BSM result bits travelling to Bob ──────────── */}
-            <text data-sw-bit="0" x="440" y="225" class="sw-bit" opacity="0">0</text>
-            <text data-sw-bit="1" x="452" y="225" class="sw-bit" opacity="0">0</text>
-
-            {/* ─── Channel labels ─────────────────────────────── */}
-            <text x="200" y="56" text-anchor="middle" class="sw-channel">pre-shared Bell pair (Alice ↔ R₁)</text>
-            <text x="520" y="56" text-anchor="middle" class="sw-channel">pre-shared Bell pair (R₂ ↔ Bob)</text>
-            <text x="540" y="240" text-anchor="middle" class="sw-channel">classical channel · 2 bits</text>
-            <text data-sw-final-label x="360" y="20" text-anchor="middle" class="sw-final-label" opacity="0">end-to-end Bell pair (Alice ↔ Bob)</text>
+            {/* Status lines — one per phase, stack between BSM and the
+                bottom result row, fade in as their phase fires. */}
+            <text data-sw-msg1 x="400" y="270" text-anchor="middle"
+                  class="sw-statement" opacity="0">Two Bell pairs: A–A′ and B′–B</text>
+            <text data-sw-msg2 x="400" y="290" text-anchor="middle"
+                  class="sw-statement" opacity="0">R measures A′ and B′ jointly (BSM)</text>
+            <text data-sw-msg3 x="400" y="310" text-anchor="middle"
+                  class="sw-statement" opacity="0">2 classical bits travel to Bob</text>
+            <text data-sw-msg4 x="400" y="330" text-anchor="middle"
+                  class="sw-statement" opacity="0">Bob applies the matching Pauli correction</text>
+            <text data-sw-msg5 x="400" y="420" text-anchor="middle"
+                  class="sw-result" opacity="0">⇒ A and B are now entangled</text>
           </svg>
 
           <ol class="sw-step-list" data-sw-steps>
-            <li data-sw-step="1"><strong>1.</strong> Two pre-shared Bell pairs: Alice↔R₁ and R₂↔Bob</li>
-            <li data-sw-step="2"><strong>2.</strong> Relay performs BSM on R₁, R₂ → 2 classical bits</li>
-            <li data-sw-step="3"><strong>3.</strong> Bits travel to Bob</li>
-            <li data-sw-step="4"><strong>4.</strong> Bob applies <Math tex="X^a Z^b" /> correction</li>
-            <li data-sw-step="5"><strong>5.</strong> Alice and Bob now share a Bell pair</li>
+            <li data-sw-step="1"><strong>1.</strong> Two pre-shared Bell pairs: A↔A′ at Alice and B′↔B at Bob, meeting at relay R</li>
+            <li data-sw-step="2"><strong>2.</strong> R performs a Bell-state measurement on A′ and B′</li>
+            <li data-sw-step="3"><strong>3.</strong> The 2-bit BSM outcome travels to Bob over a classical channel</li>
+            <li data-sw-step="4"><strong>4.</strong> Bob applies the matching Pauli correction (<em>I</em>, <em>X</em>, <em>Z</em>, or <em>XZ</em>)</li>
+            <li data-sw-step="5"><strong>5.</strong> A and B share a fresh Bell pair — they never interacted</li>
           </ol>
 
           <figcaption>
-            Two pre-shared Bell pairs — Alice with R₁ at the relay, R₂ at the relay with
-            Bob — are stitched together by the relay's BSM. After the relay measures
-            its two qubits and Bob applies the corresponding Pauli correction, Alice and
-            Bob's qubits are in the Bell state <Math tex="|\\Phi^+\\rangle_{AB}" />, even
-            though they were never operated on together. The end-to-end pair (top accent
-            curve) emerges from the two original pairs (which are consumed in the
-            process).
+            Top row: two short Bell pairs (magenta wavy lines) sit on either side of
+            the relay. The relay's BSM consumes <strong>A′</strong> and
+            <strong>B′</strong> — their clouds turn grey the moment they enter the
+            apparatus. Two classical bits emerge on the channel and travel to Bob,
+            who reads them and applies the matching Pauli. Bottom row: the resulting
+            long <strong>A</strong>↔<strong>B</strong> Bell pair traces in as the
+            correction lands. The cycle iterates through the four Bell outcomes.
           </figcaption>
         </figure>
       </section>
@@ -341,202 +364,251 @@ const sections = [
 </Infographic>
 
 <script type="module" is:inline>
-  // Entanglement-swapping animation. Five-phase loop:
-  //   1. Setup — two pre-shared Bell pairs (Alice-R1 and R2-Bob)
-  //      visible as wavy dashed curves between the slots.
-  //   2. BSM at relay — labelled box appears around R1 and R2;
-  //      both relay slots fade as their qubits are consumed; 2
-  //      classical bits emerge at the relay's classical-channel output.
-  //   3. Send — bits travel along the dashed classical channel to Bob.
-  //   4. Correction at Bob — labelled box appears at Bob;
-  //      bits are absorbed; the original two Bell-pair lines fade
-  //      out and a new end-to-end Bell-pair curve from Alice to Bob
-  //      appears (with its descriptive label).
-  //   5. Hold — final state visible, then reset.
+  // Entanglement-swapping animation. Five phases:
+  //   1. SETUP    — two Bell pairs (A↔A′, B′↔B) bright; BSM,
+  //                 classical channel, bottom result dimmed.
+  //   2. BSM      — A′ and B′ photons drop into the apparatus
+  //                 along its two diagonals; clouds turn grey;
+  //                 top entanglement lines fade; BSM brightens.
+  //   3. SEND     — bits (a, b) slide right along the classical
+  //                 channel to Bob.
+  //   4. CORRECT  — Pauli badge drops onto B; bottom result row
+  //                 brightens and the long A↔B wave traces in.
+  //   5. HOLD     — everything visible, narrative lines stacked,
+  //                 then a short fade-out before the cycle resets.
   const fig = document.querySelector("[data-sw]");
   if (fig) {
-    const svg       = fig.querySelector("[data-sw-svg]");
-    const pair1     = svg.querySelector('[data-sw-pair="1"]');
-    const pair2     = svg.querySelector('[data-sw-pair="2"]');
-    const pairFinal = svg.querySelector("[data-sw-pair-final]");
-    const finalLab  = svg.querySelector("[data-sw-final-label]");
-    const slotR1    = svg.querySelector('[data-sw-slot="R1"]');
-    const slotR2    = svg.querySelector('[data-sw-slot="R2"]');
-    const bsmBox    = svg.querySelector("[data-sw-bsm]");
-    const corrBox   = svg.querySelector("[data-sw-corr]");
-    const bsmRect   = bsmBox.querySelector("rect");
-    const corrRect  = corrBox.querySelector("rect");
-    const bit0      = svg.querySelector('[data-sw-bit="0"]');
-    const bit1      = svg.querySelector('[data-sw-bit="1"]');
-    const stepEls   = Array.from(fig.querySelectorAll("[data-sw-step]"));
+    const svg     = fig.querySelector("[data-sw-svg]");
+    const aPrime  = svg.querySelector("[data-sw-aprime]");
+    const bPrime  = svg.querySelector("[data-sw-bprime]");
+    const aCloud  = svg.querySelector("[data-sw-aprime-cloud]");
+    const bCloud  = svg.querySelector("[data-sw-bprime-cloud]");
+    const pairAA  = svg.querySelector("[data-sw-pair-aa]");
+    const pairBB  = svg.querySelector("[data-sw-pair-bb]");
+    const pairAB  = svg.querySelector("[data-sw-pair-ab]");
+    const bsm     = svg.querySelector("[data-sw-bsm]");
+    const bits    = svg.querySelector("[data-sw-bits]");
+    const bitsTx  = svg.querySelector("[data-sw-bits-text]");
+    const lock    = svg.querySelector("[data-sw-lock]");
+    const lockTx  = svg.querySelector("[data-sw-lock-letter]");
+    const result  = svg.querySelector("[data-sw-result]");
+    const msg1    = svg.querySelector("[data-sw-msg1]");
+    const msg2    = svg.querySelector("[data-sw-msg2]");
+    const msg3    = svg.querySelector("[data-sw-msg3]");
+    const msg4    = svg.querySelector("[data-sw-msg4]");
+    const msg5    = svg.querySelector("[data-sw-msg5]");
+    const stepEls = Array.from(fig.querySelectorAll("[data-sw-step]"));
+
+    const AP_HOME = { x: 359, y: 60 };
+    const BP_HOME = { x: 441, y: 60 };
+    // BSM apparatus has its own viewBox 640×540 mapped to outer
+    // rect (300, 62) → (500, 231). Inner→outer scaling factor:
+    // x: 200/640 = 0.3125, y: 169/540 ≈ 0.3130.
+    const SX = 200 / 640, SY = 169 / 540;
+    const DET = {
+      H1: { x: 300 + 130 * SX, y: 62 + 370 * SY },
+      V1: { x: 300 + 250 * SX, y: 62 + 370 * SY },
+      V2: { x: 300 + 390 * SX, y: 62 + 370 * SY },
+      H2: { x: 300 + 510 * SX, y: 62 + 370 * SY },
+    };
+    const BS_POS = { x: 300 + 320 * SX, y: 62 + 180 * SY };
+    const BIT_X_START = 475;
+    const BIT_X_END   = 700;
+    const LOCK_HOME   = { x: 750, y: 100 };
+
+    // The four Bell-outcome variants. Click-pair labels match the
+    // two photon paths through the apparatus; (a, b) is the 2-bit
+    // code R sends to Bob; inv is the Pauli Bob applies. Cycled
+    // through deterministically.
+    const OUTCOMES = [
+      { a: 0, b: 0, inv: "I",  clicks: ["H1", "H2"] },
+      { a: 1, b: 0, inv: "Z",  clicks: ["V1", "V2"] },
+      { a: 0, b: 1, inv: "X",  clicks: ["H1", "V1"] },
+      { a: 1, b: 1, inv: "XZ", clicks: ["H1", "V2"] },
+    ];
+    let outcomeIndex = -1;
+    let outcome = OUTCOMES[0];
+
+    function setOpacity(el, op) { el.setAttribute("opacity", String(op)); }
+    function setPos(g, x, y) { g.setAttribute("transform", `translate(${x} ${y})`); }
+    function setBitsX(x) { bitsTx.setAttribute("x", String(x)); }
+    function highlightStep(n) {
+      for (const el of stepEls) {
+        el.classList.toggle("sw-step--active", Number(el.dataset.swStep) === n);
+      }
+    }
+    function ease(t) {
+      return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    }
+    function twoLeg(start, mid, end, t) {
+      if (t < 0.4) {
+        const k = t / 0.4;
+        return { x: start.x + (mid.x - start.x) * k, y: start.y + (mid.y - start.y) * k };
+      }
+      const k = (t - 0.4) / 0.6;
+      return { x: mid.x + (end.x - mid.x) * k, y: mid.y + (end.y - mid.y) * k };
+    }
+
+    function pickCycleParams() {
+      outcomeIndex = (outcomeIndex + 1) % OUTCOMES.length;
+      outcome = OUTCOMES[outcomeIndex];
+      bitsTx.textContent = `(${outcome.a}, ${outcome.b})`;
+      lockTx.textContent = outcome.inv;
+      aCloud.setAttribute("fill", "url(#sw-cloud-teal)");
+      bCloud.setAttribute("fill", "url(#sw-cloud-teal)");
+      setPos(aPrime, AP_HOME.x, AP_HOME.y);
+      setPos(bPrime, BP_HOME.x, BP_HOME.y);
+    }
 
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    function setOpacity(el, op) { el.setAttribute("opacity", String(op)); }
-    function setBitsAt(x) {
-      bit0.setAttribute("x", String(x));
-      bit1.setAttribute("x", String(x + 12));
-    }
-    function highlightStep(n) {
-      for (const el of stepEls) {
-        const isActive = Number(el.dataset.swStep) === n;
-        el.classList.toggle("sw-step--active", isActive);
-      }
-    }
-
     if (reducedMotion) {
-      setOpacity(pair1, 0.15);
-      setOpacity(pair2, 0.15);
-      setOpacity(pairFinal, 1);
-      setOpacity(finalLab, 1);
-      setOpacity(slotR1, 0);
-      setOpacity(slotR2, 0);
-      setOpacity(bsmBox, 0);
-      setOpacity(corrBox, 1);
-      bit0.textContent = "0";
-      bit1.textContent = "1";
-      setBitsAt(620);
-      setOpacity(bit0, 0);
-      setOpacity(bit1, 0);
+      pickCycleParams();
+      setOpacity(aPrime, 0); setOpacity(bPrime, 0);
+      setOpacity(pairAA, 0); setOpacity(pairBB, 0);
+      setOpacity(bsm, 0.22);
+      setOpacity(bits, 0); setOpacity(lock, 0);
+      setOpacity(result, 1);
+      pairAB.setAttribute("stroke-dashoffset", "0");
+      setOpacity(msg1, 1); setOpacity(msg2, 1);
+      setOpacity(msg3, 1); setOpacity(msg4, 1);
+      setOpacity(msg5, 1);
       highlightStep(5);
     } else {
-      const T_SETUP = 1500;
-      const T_BSM   = 1800;
-      const T_SEND  = 2100;
-      const T_CORR  = 1650;
-      const T_HOLD  = 1500;
-      const T_PAUSE = 375;
-      const T_TOTAL = T_SETUP + T_BSM + T_SEND + T_CORR + T_HOLD + T_PAUSE;
-      const BIT_X_START = 440;
-      const BIT_X_END   = 620;
+      const T_SETUP   = 1400;
+      const T_DROP    = 1300;
+      const T_MEASURE =  900;
+      const T_SEND    = 1700;
+      const T_UNLOCK  = 1100;
+      const T_TRACE   = 1100;
+      const T_HOLD    = 2600;
+      const T_PAUSE   =  400;
+      const T_TOTAL = T_SETUP + T_DROP + T_MEASURE + T_SEND + T_UNLOCK + T_TRACE + T_HOLD + T_PAUSE;
 
       let running = false;
       let cycleStart = 0;
-      let bsmA = 0, bsmB = 0;
-      let firedBSM = false, firedCorr = false;
-
-      // Border-pulse state. When a relay BSM or Bob's correction
-      // fires we set the rect's pulseEnd; updateBorders() interpolates
-      // the stroke-width back to its base over PULSE_DUR ms.
-      const PULSE_DUR = 280;
-      const flash = { BSM: 0, CORR: 0 };
-      function pulse(key, now) { flash[key] = now + PULSE_DUR; }
-      function updateBorders(now) {
-        for (const [key, rect] of [["BSM", bsmRect], ["CORR", corrRect]]) {
-          const remaining = flash[key] - now;
-          if (remaining > 0) {
-            const t = remaining / PULSE_DUR;
-            rect.setAttribute("stroke-width", String(2 + 2.5 * t));
-          } else {
-            rect.setAttribute("stroke-width", "2");
-          }
-        }
-      }
-
-      function ease(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      }
-
-      function pickCycle() {
-        bsmA = Math.random() < 0.5 ? 0 : 1;
-        bsmB = Math.random() < 0.5 ? 0 : 1;
-        bit0.textContent = String(bsmA);
-        bit1.textContent = String(bsmB);
-      }
 
       function frame(now) {
         if (!running) return;
         const elapsed = now - cycleStart;
+        let t0 = T_SETUP;
 
-        if (elapsed < T_SETUP) {
-          // Phase 1: setup — both Bell pairs visible.
+        if (elapsed < t0) {
+          // Phase 1 — setup
           highlightStep(1);
-          setOpacity(pair1, 0.85);
-          setOpacity(pair2, 0.85);
-          setOpacity(pairFinal, 0);
-          setOpacity(finalLab, 0);
-          setOpacity(slotR1, 1);
-          setOpacity(slotR2, 1);
-          setOpacity(bsmBox, 0);
-          setOpacity(corrBox, 0);
-          setOpacity(bit0, 0);
-          setOpacity(bit1, 0);
-        } else if (elapsed < T_SETUP + T_BSM) {
-          // Phase 2: BSM at relay.
+          setOpacity(aPrime, 1); setOpacity(bPrime, 1);
+          setPos(aPrime, AP_HOME.x, AP_HOME.y);
+          setPos(bPrime, BP_HOME.x, BP_HOME.y);
+          aCloud.setAttribute("fill", "url(#sw-cloud-teal)");
+          bCloud.setAttribute("fill", "url(#sw-cloud-teal)");
+          setOpacity(pairAA, 0.95);
+          setOpacity(pairBB, 0.95);
+          setOpacity(bsm, 0.22);
+          setOpacity(bits, 0);
+          setOpacity(lock, 0);
+          setOpacity(result, 0.18);
+          pairAB.setAttribute("stroke-dashoffset", "1");
+          const t = elapsed / T_SETUP;
+          setOpacity(msg1, Math.min(1, t * 2));
+          setOpacity(msg2, 0); setOpacity(msg3, 0);
+          setOpacity(msg4, 0); setOpacity(msg5, 0);
+        } else if (elapsed < (t0 += T_DROP)) {
+          // Phase 2a — A′ and B′ drop into BSM apparatus
           highlightStep(2);
-          if (!firedBSM) { pulse("BSM", now); firedBSM = true; }
-          const t = (elapsed - T_SETUP) / T_BSM;
+          const t = (elapsed - (t0 - T_DROP)) / T_DROP;
           const e = ease(t);
-          setOpacity(bsmBox, Math.min(1, e * 2));
-          setOpacity(slotR1, 1 - e);
-          setOpacity(slotR2, 1 - e);
-          // Pair lines fade somewhat; they're still there until
-          // BSM is fully consumed.
-          setOpacity(pair1, 0.85 * (1 - e * 0.5));
-          setOpacity(pair2, 0.85 * (1 - e * 0.5));
-          // Bits emerge in second half.
-          const bitOpacity = Math.max(0, (e - 0.5) * 2);
-          setOpacity(bit0, bitOpacity);
-          setOpacity(bit1, bitOpacity);
-          setBitsAt(BIT_X_START);
-        } else if (elapsed < T_SETUP + T_BSM + T_SEND) {
-          // Phase 3: bits travel to Bob.
+          const cClick = outcome.clicks[0];
+          const bClick = outcome.clicks[1];
+          const aEnd = DET[cClick];
+          const bEnd = DET[bClick];
+          const aPos = twoLeg(AP_HOME, BS_POS, aEnd, e);
+          const bPos = twoLeg(BP_HOME, BS_POS, bEnd, e);
+          setPos(aPrime, aPos.x, aPos.y);
+          setPos(bPrime, bPos.x, bPos.y);
+          setOpacity(bsm, 0.22 + 0.78 * Math.min(1, e * 1.5));
+          setOpacity(pairAA, 0.95 * Math.max(0, 1 - e * 1.6));
+          setOpacity(pairBB, 0.95 * Math.max(0, 1 - e * 1.6));
+          if (e > 0.15) {
+            aCloud.setAttribute("fill", "url(#sw-cloud-spent)");
+            bCloud.setAttribute("fill", "url(#sw-cloud-spent)");
+          }
+          setOpacity(msg1, 1);
+          setOpacity(msg2, Math.min(1, e * 2));
+        } else if (elapsed < (t0 += T_MEASURE)) {
+          // Phase 2b — measurement clicks
+          highlightStep(2);
+          const t = (elapsed - (t0 - T_MEASURE)) / T_MEASURE;
+          const e = ease(t);
+          setOpacity(aPrime, Math.max(0, 1 - e * 2));
+          setOpacity(bPrime, Math.max(0, 1 - e * 2));
+          setOpacity(pairAA, 0); setOpacity(pairBB, 0);
+          setOpacity(bsm, 1);
+          setOpacity(bits, Math.min(1, (e - 0.2) * 2));
+          setBitsX(BIT_X_START);
+          setOpacity(msg2, 1);
+        } else if (elapsed < (t0 += T_SEND)) {
+          // Phase 3 — bits slide along classical channel
           highlightStep(3);
-          const t = (elapsed - T_SETUP - T_BSM) / T_SEND;
-          const e = ease(t);
-          setOpacity(bsmBox, 1 - e * 0.6);
-          setOpacity(slotR1, 0);
-          setOpacity(slotR2, 0);
-          // Pair lines continue fading.
-          setOpacity(pair1, 0.4 * (1 - e));
-          setOpacity(pair2, 0.4 * (1 - e));
-          setOpacity(bit0, 1);
-          setOpacity(bit1, 1);
-          // Linear in time: classical bits travel at constant speed.
-          setBitsAt(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
-        } else if (elapsed < T_SETUP + T_BSM + T_SEND + T_CORR) {
-          // Phase 4: correction at Bob, end-to-end pair appears.
+          const t = (elapsed - (t0 - T_SEND)) / T_SEND;
+          setOpacity(aPrime, 0); setOpacity(bPrime, 0);
+          setOpacity(bsm, 0.5);
+          setOpacity(bits, 1);
+          setBitsX(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
+          setOpacity(msg3, Math.min(1, t * 2));
+        } else if (elapsed < (t0 += T_UNLOCK)) {
+          // Phase 4a — Pauli badge drops onto B
           highlightStep(4);
-          if (!firedCorr) { pulse("CORR", now); firedCorr = true; }
-          const t = (elapsed - T_SETUP - T_BSM - T_SEND) / T_CORR;
+          const t = (elapsed - (t0 - T_UNLOCK)) / T_UNLOCK;
           const e = ease(t);
-          setOpacity(bit0, 1 - e);
-          setOpacity(bit1, 1 - e);
-          setBitsAt(BIT_X_END);
-          setOpacity(corrBox, Math.min(1, e * 2));
-          setOpacity(bsmBox, 0.4 * (1 - e));
-          // Old pair lines fade out, new end-to-end fades in.
-          setOpacity(pair1, 0);
-          setOpacity(pair2, 0);
-          setOpacity(pairFinal, e);
-          setOpacity(finalLab, e);
-        } else if (elapsed < T_TOTAL - T_PAUSE) {
-          // Phase 5: hold final state.
+          setBitsX(BIT_X_END);
+          setOpacity(bits, Math.max(0, 1 - e * 1.4));
+          const ix_start = BIT_X_END, iy_start = 235;
+          const ix_end = LOCK_HOME.x, iy_end = LOCK_HOME.y;
+          const ix = ix_start + (ix_end - ix_start) * e;
+          const iy = iy_start + (iy_end - iy_start) * e;
+          setPos(lock, ix, iy);
+          setOpacity(lock, Math.min(1, e * 2));
+          setOpacity(msg4, Math.min(1, e * 2));
+        } else if (elapsed < (t0 += T_TRACE)) {
+          // Phase 4b — long A↔B Bell pair traces in
           highlightStep(5);
-          setOpacity(bsmBox, 0);
-          setOpacity(corrBox, 1);
-          setOpacity(pairFinal, 1);
-          setOpacity(finalLab, 1);
-          setOpacity(bit0, 0);
-          setOpacity(bit1, 0);
-        } else if (elapsed >= T_TOTAL) {
+          const t = (elapsed - (t0 - T_TRACE)) / T_TRACE;
+          const e = ease(t);
+          setOpacity(result, 0.18 + 0.82 * e);
+          pairAB.setAttribute("stroke-dashoffset", String(1 - e));
+          setOpacity(lock, Math.max(0, 1 - e * 1.6));
+          setOpacity(msg5, Math.min(1, (e - 0.3) * 2));
+          setOpacity(bsm, 0.5 - 0.28 * e);
+        } else if (elapsed < T_TOTAL - T_PAUSE) {
+          // Phase 5 — hold final state
+          highlightStep(5);
+          setOpacity(result, 1);
+          pairAB.setAttribute("stroke-dashoffset", "0");
+          setOpacity(lock, 0);
+          setOpacity(bsm, 0.22);
+          setOpacity(msg1, 1); setOpacity(msg2, 1);
+          setOpacity(msg3, 1); setOpacity(msg4, 1);
+          setOpacity(msg5, 1);
+        } else if (elapsed < T_TOTAL) {
+          const t = (elapsed - (T_TOTAL - T_PAUSE)) / T_PAUSE;
+          const a = Math.max(0, 1 - t);
+          setOpacity(msg1, a); setOpacity(msg2, a);
+          setOpacity(msg3, a); setOpacity(msg4, a);
+          setOpacity(msg5, a);
+        } else {
           cycleStart = now;
-          firedBSM = false;
-          firedCorr = false;
-          pickCycle();
+          pickCycleParams();
         }
-
-        updateBorders(now);
         requestAnimationFrame(frame);
       }
 
-      pickCycle();
+      pickCycleParams();
       const observer = new IntersectionObserver((entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting && !running) {
             running = true;
             cycleStart = performance.now();
-            pickCycle();
+            pickCycleParams();
             requestAnimationFrame(frame);
           } else if (!entry.isIntersecting) {
             running = false;
@@ -621,41 +693,38 @@ const sections = [
     font-weight: 700;
     fill: var(--color-text);
   }
-  :global(.sw-channel) {
-    font-size: 10px;
-    fill: var(--color-text-mute);
-    font-style: italic;
-  }
-  :global(.sw-final-label) {
-    font-size: 11px;
+  :global(.sw-node-lbl) {
+    font-size: 13px;
     font-weight: 600;
-    fill: var(--color-accent);
-  }
-  :global(.sw-slot-mark) {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
     fill: var(--color-text);
   }
-  :global(.sw-action-label) {
+  :global(.sw-channel) {
     font-size: 11px;
-    font-weight: 700;
-    fill: var(--color-accent);
-    letter-spacing: 0.05em;
+    fill: var(--color-text-mute);
   }
   :global(.sw-bit) {
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
     fill: var(--color-text);
   }
-
-  @keyframes sw-flow {
-    to { stroke-dashoffset: -18; }
+  :global(.sw-pauli-badge) {
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--tp-purple, #a866c8);
   }
-  [data-sw-pair="1"],
-  [data-sw-pair="2"],
-  [data-sw-pair-final] {
-    animation: sw-flow 1.6s linear infinite;
+  :global(.sw-statement) {
+    font-size: 13px;
+    fill: var(--color-text);
+  }
+  :global(.sw-result) {
+    font-size: 14px;
+    font-style: italic;
+    fill: var(--color-text);
+  }
+  :global(.sw-ent) {
+    stroke: #c84a9b;
+    stroke-width: 2.4;
+    fill: none;
   }
 </style>

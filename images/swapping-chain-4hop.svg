@@ -28,7 +28,7 @@
       <path d="M0,0 L10,5 L0,10 z" fill="#5a6472"/>
     </marker>
     <symbol id="bsm-detector" overflow="visible">
-      <path class="bsm-det" d="M -14,0 A 14,14 0 0 0 14,0 Z"/>
+      <path class="bsm-det" d="M -14,0 A 14,14 0 0 1 14,0 Z"/>
     </symbol>
     <!-- Scaled BSM.svg apparatus for the EG-row midpoints. Geometry matches images/BSM.svg. -->
     <symbol id="ph-bsm" viewBox="0 0 640 540" overflow="visible">

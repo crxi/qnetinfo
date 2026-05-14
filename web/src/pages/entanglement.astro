@@ -1246,11 +1246,10 @@ const sections = [
           <article class="use-card">
             <h3>Entanglement swapping</h3>
             <p>
-              Alice and a relay station share a Bell pair; the relay and Bob share another.
-              The relay performs a Bell-state measurement on its two qubits and sends the
-              2-bit result to one of the endpoints, who applies a Pauli correction. Alice
-              and Bob now share a Bell pair, even though their qubits never interacted.
-              Proposed in <strong>1993</strong>
+              A relay between Alice and Bob holds one half of each of two short Bell
+              pairs; a Bell-state measurement at the relay extends the entanglement to
+              the two distant endpoints. See the <a href={url("/swapping")}>swapping</a>
+              subject for the full protocol. Proposed in <strong>1993</strong>
               <SourceNote id="zukowski-prl-1993" />; the primitive every memory-based
               quantum repeater is built on.
             </p>
@@ -1268,6 +1267,7 @@ const sections = [
             </p>
           </article>
         </Grid>
+
       </section>
 
       <section id="bsm" data-nav-section>

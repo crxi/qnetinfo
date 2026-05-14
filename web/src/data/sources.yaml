@@ -104,6 +104,14 @@
   type: paper
   doi: "10.1103/RevModPhys.83.33"
 
+- id: bdcz-prl-1998
+  title: "Quantum repeaters: The role of imperfect local operations in quantum communication"
+  authors: ["H.-J. Briegel", "W. Dür", "J. I. Cirac", "P. Zoller"]
+  publisher: "Physical Review Letters"
+  year: 1998
+  type: paper
+  doi: "10.1103/PhysRevLett.81.5932"
+
 - id: azuma-natcomm-2015
   title: "All-photonic quantum repeaters"
   authors: ["Koji Azuma", "Kiyoshi Tamaki", "Hoi-Kwong Lo"]
