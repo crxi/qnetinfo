@@ -90,12 +90,35 @@ const nextSubject =
     </footer>
 
     <style is:global>
+      /* Viewport-overflow safety net. Without these, a wide SVG /
+         table / long-URL anywhere on the page lets <body> scroll
+         horizontally on mobile, which in turn forces every element
+         (including paragraphs) to be laid out against the wider
+         scroll-width rather than the visible viewport. `clip` is
+         like `hidden` but doesn't establish a scroll container,
+         so position:sticky still works inside. */
+      html, body { overflow-x: clip; }
       body {
         background: var(--color-bg);
         color: var(--color-text);
         font-family: var(--font-sans);
         font-size: var(--text-base);
         line-height: var(--leading-body);
+      }
+      /* Replaced media on narrow viewports never exceed their column. */
+      img, svg, video, canvas { max-inline-size: 100%; block-size: auto; }
+      /* Tables, <pre>, <code> blocks: cap at column width and scroll
+         internally rather than pushing the viewport wider. Pages that
+         already wrap their tables/SVGs in a scroll container still
+         work; this is just the safety floor. */
+      table { max-inline-size: 100%; }
+      pre, code { max-inline-size: 100%; overflow-x: auto; }
+      pre { word-wrap: normal; }
+      /* On narrow viewports any unwrapped table flips to a block
+         scroll container so its columns can keep their natural widths
+         without overflowing the page. */
+      @media (max-width: 50rem) {
+        table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       }
       main {
         max-inline-size: var(--wide-width);
@@ -129,11 +152,27 @@ const nextSubject =
         .page-main--with-nav {
           grid-template-columns: minmax(0, 1fr);
           max-inline-size: var(--wide-width);
+          /* Reserve space at the top for the fixed nav bar (~48px
+             nav + ~16px breathing). Without this the page H1 hides
+             behind the nav on initial load. */
+          padding-block-start: 56px;
         }
+        /* Mobile nav is a *fixed* top bar, not a sticky element.
+           Position:sticky inside a static <aside> doesn't work because
+           the aside is the same height as the nav — there's no scroll
+           range to stick within. Going fixed means the bar is always
+           visible regardless of scroll. */
         .page-main--with-nav .page-nav-rail {
-          position: static;
+          position: fixed;
+          inset-block-start: 0;
+          inset-inline: 0;
+          z-index: 30;
+          background: var(--color-bg);
+          border-block-end: 1px solid var(--color-rule);
           max-block-size: none;
           overflow: visible;
+          padding-block: var(--space-2);
+          box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
       }
       @media print {
