@@ -467,12 +467,15 @@ const sections = [
               <text class="g1-lbl-mu" x="740" y="355" text-anchor="middle">Bell measurement</text>
               <circle class="g1-matter" cx="938" cy="325" r="11"/>
               <text class="g1-lbl" x="938" y="329" text-anchor="middle">B</text>
-              {/* Classical-bit pulse lines: both bits converge inward
-                  at R₂. R₁'s outcome corrects R₂'s left qubit; R₃'s
-                  outcome corrects R₂'s right qubit — so the next swap
-                  at R₂ operates on clean Bell pairs. */}
-              <line class="g1-cb-line" x1="354" y1="325" x2="510" y2="325"/>
-              <line class="g1-cb-line" x1="714" y1="325" x2="558" y2="325"/>
+              {/* Classical-bit pulse lines: both flow forward.
+                  R₁'s bit goes one hop to R₂ (correcting R₂'s left
+                  qubit); R₃'s bit goes one hop forward to B (no
+                  relay sits beyond R₃, so the next-forward node is
+                  the endpoint). Start at the end of "Bell measurement"
+                  to give the visual sense the message leaves the BSM
+                  apparatus. */}
+              <line class="g1-cb-line" x1="362" y1="355" x2="510" y2="355"/>
+              <line class="g1-cb-line" x1="774" y1="355" x2="920" y2="355"/>
               <text class="g1-lbl-ann" x="1040" y="363">Repeat</text>
               <text class="g1-lbl-ann" x="1040" y="380">until</text>
               <text class="g1-lbl-ann" x="1040" y="397">success</text>
@@ -501,8 +504,10 @@ const sections = [
               <text class="g1-lbl-mu" x="534" y="485" text-anchor="middle">Bell measurement</text>
               <circle class="g1-matter" cx="938" cy="455" r="11"/>
               <text class="g1-lbl" x="938" y="459" text-anchor="middle">B</text>
-              {/* Classical-bit pulse line: R₂ → B (rightward, long). */}
-              <line class="g1-cb-line" x1="560" y1="455" x2="927" y2="455"/>
+              {/* Classical-bit pulse line: R₂ → B (rightward, long).
+                  Starts at the end of "Bell measurement"; horizontal
+                  travel emphasises the long-distance latency. */}
+              <line class="g1-cb-line" x1="568" y1="485" x2="920" y2="485"/>
               <text class="g1-lbl-ann" x="1040" y="493">Repeat</text>
               <text class="g1-lbl-ann" x="1040" y="510">until</text>
               <text class="g1-lbl-ann" x="1040" y="527">success</text>
@@ -556,15 +561,15 @@ const sections = [
             of a 1G chain is therefore bounded not by photon loss alone but by how
             long each memory can hold while the slowest classical message is in
             flight. <br/><br/>
-            <strong>Where the swap bits go.</strong> In the 1st E Swap, both R₁
-            and R₃ ship their 2-bit outcomes <strong>inward to R₂</strong> — R₁'s
-            bits correct R₂'s left qubit, R₃'s bits correct R₂'s right qubit, so
-            R₂'s upcoming BSM operates on a clean pair of Bell states. R₂ then
-            performs its swap and sends its own 2-bit outcome rightward to B,
-            which applies the final Pauli correction. (Either endpoint of a Bell
-            pair can in principle hold the correction; the simplest pedagogical
-            flow is to apply each one as soon as the bits arrive so the next swap
-            sees clean inputs.) Each row is a <em>repeat-until-success</em> loop — EG retries
+            <strong>Where the swap bits go.</strong> Every classical bit flows
+            <strong>forward</strong> (rightward in this figure), to the next-forward
+            node that holds a qubit it can act on. R₁ ships its outcome one hop to
+            R₂ (correcting R₂'s left qubit); R₃ ships its outcome one hop to B
+            (the endpoint, since no relay sits beyond R₃); R₂ ships its outcome
+            the long way to B for the final Pauli correction. All pulses travel
+            at the <strong>same horizontal speed</strong>, so the long R₂→B leg
+            visibly takes longer than the short ones — that's the latency story
+            the memory has to wait through. Each row is a <em>repeat-until-success</em> loop — EG retries
             until the herald fires, every swap retries until its BSM succeeds
             (currently shown deterministic; loss retries can be toggled on).
           </figcaption>
@@ -1004,30 +1009,52 @@ const sections = [
       { x: 826.72, y: 152.03 }, { x: 863.28, y: 152.03 },
     ];
 
-    // Classical-bit pulse geometry. EG: from each pBSM midpoint up to
-    // y=120 (just below the matter row). ES1: R₁ → A (rightward to
-    // leftward), R₃ → B. ES2: R₂ → B.
+    // Classical-bit pulse geometry. All swap-row pulses flow
+    // forward (rightward, toward B) at the same speed — so a long
+    // R₂→B leg visibly takes more time than a short R₁→R₂ leg.
+    // That's the latency story: classical-message time scales with
+    // distance, and the matter qubits hold while it's in flight.
+    //
+    // EG row: short vertical hops from each pBSM up to the matter
+    // row. ES1 and ES2: horizontal hops starting at the right edge
+    // of each "Bell measurement" label, ending at the next-forward
+    // node (R₂ for R₁; B for R₃; B for R₂).
     const CB_PATHS = {
       ph0: { from: { x: 223, y: 145 }, to: { x: 223, y: 120 } },
       ph1: { from: { x: 431, y: 145 }, to: { x: 431, y: 120 } },
       ph2: { from: { x: 637, y: 145 }, to: { x: 637, y: 120 } },
       ph3: { from: { x: 845, y: 145 }, to: { x: 845, y: 120 } },
-      // Both 1st-ES bits converge at R₂: R₁ ships rightward to
-      // correct R₂'s left qubit; R₃ ships leftward to correct R₂'s
-      // right qubit. After both corrections land, R₂ can do its own
-      // BSM on a clean Bell pair.
-      r1:  { from: { x: 354, y: 325 }, to: { x: 510, y: 325 } },
-      r3:  { from: { x: 714, y: 325 }, to: { x: 558, y: 325 } },
-      r2:  { from: { x: 560, y: 455 }, to: { x: 927, y: 455 } },
+      r1:  { from: { x: 362, y: 355 }, to: { x: 510, y: 355 } },
+      r3:  { from: { x: 774, y: 355 }, to: { x: 920, y: 355 } },
+      r2:  { from: { x: 568, y: 485 }, to: { x: 920, y: 485 } },
     };
+    // Pre-compute path lengths so the swap-row pulses can travel at
+    // a fixed speed (px/ms). EG heralds don't share the budget.
+    for (const k of Object.keys(CB_PATHS)) {
+      const p = CB_PATHS[k];
+      p.len = Math.hypot(p.to.x - p.from.x, p.to.y - p.from.y);
+    }
+    const CB_SPEED = 0.20;  // px/ms — picked so R₂→B takes ~1.8 s
+    const CB_DUR = {
+      r1: CB_PATHS.r1.len / CB_SPEED,
+      r3: CB_PATHS.r3.len / CB_SPEED,
+      r2: CB_PATHS.r2.len / CB_SPEED,
+    };
+    const CB_DUR_MAX_ES1 = Math.max(CB_DUR.r1, CB_DUR.r3);
+    // Original 0..1 form, used for the EG-herald short vertical hops.
     function moveCbAlong(key, t) {
       const el = key.startsWith("ph") ? cbPh[Number(key.slice(2))] :
                  key === "r1" ? cbR1 : key === "r3" ? cbR3 : cbR2;
       const p = CB_PATHS[key];
-      const x = p.from.x + (p.to.x - p.from.x) * t;
-      const y = p.from.y + (p.to.y - p.from.y) * t;
-      el.setAttribute("cx", String(x));
-      el.setAttribute("cy", String(y));
+      const tc = Math.max(0, Math.min(1, t));
+      el.setAttribute("cx", String(p.from.x + (p.to.x - p.from.x) * tc));
+      el.setAttribute("cy", String(p.from.y + (p.to.y - p.from.y) * tc));
+    }
+    // Constant-speed form: move pulse by elapsed ms × CB_SPEED.
+    // Clamps at the destination once it arrives.
+    function moveCbBySpeed(key, elapsedMs) {
+      const p = CB_PATHS[key];
+      moveCbAlong(key, (elapsedMs * CB_SPEED) / p.len);
     }
 
     function ease(t) {
@@ -1049,10 +1076,15 @@ const sections = [
       const T_EG_CLASS  = 1200;   // classical herald travels back up
       const T_ES1_PREP  =  600;   // entanglement curves trace in (row 2)
       const T_ES1_BSM   =  900;   // BM boxes at R₁, R₃ pulse
-      const T_ES1_CLASS = 1500;   // 2 classical bits travel outward
+      // Classical-bit budgets are derived from CB_SPEED + path length
+      // so all pulses move at the same px/ms. R₁→R₂ and R₃→B are
+      // similar length (~150 px); R₂→B is much longer (~350 px). The
+      // budget = max-path-time + 200 ms tail so the longest pulse can
+      // finish and linger briefly before the phase advances.
+      const T_ES1_CLASS = Math.ceil(CB_DUR_MAX_ES1) + 200;
       const T_ES2_PREP  =  600;   // entanglement curves trace in (row 3)
       const T_ES2_BSM   =  900;   // BM box at R₂ pulses
-      const T_ES2_CLASS = 1500;   // classical bit travels to B
+      const T_ES2_CLASS = Math.ceil(CB_DUR.r2) + 200;
       const T_RESULT    = 1400;   // long A↔B Bell pair traces in
       const T_HOLD      = 2200;
       const T_PAUSE     =  400;
@@ -1194,12 +1226,15 @@ const sections = [
             if (bmR1) bmR1.setAttribute("stroke-width", String(w));
             if (bmR3) bmR3.setAttribute("stroke-width", String(w));
           } else {
+            // Constant horizontal speed. R₁'s short hop arrives first;
+            // R₃'s short hop arrives at nearly the same time. Each
+            // pulse clamps at its destination once it gets there.
             if (bmR1) bmR1.setAttribute("stroke-width", "1.2");
             if (bmR3) bmR3.setAttribute("stroke-width", "1.2");
-            const t = (local - T_ES1_PREP - T_ES1_BSM) / T_ES1_CLASS;
+            const elapsedMs = local - T_ES1_PREP - T_ES1_BSM;
             setOpacity(cbR1, 1); setOpacity(cbR3, 1);
-            moveCbAlong("r1", t);
-            moveCbAlong("r3", t);
+            moveCbBySpeed("r1", elapsedMs);
+            moveCbBySpeed("r3", elapsedMs);
           }
         }
         // -------- Phase 3 — 2nd ES --------
@@ -1224,10 +1259,12 @@ const sections = [
             const w = 1.2 + 2.8 * pulse;
             if (bmR2) bmR2.setAttribute("stroke-width", String(w));
           } else {
+            // Long forward hop at the same speed as the 1st-ES bits.
+            // Visibly takes longer because the path is ~2× as long.
             if (bmR2) bmR2.setAttribute("stroke-width", "1.2");
-            const t = (local - T_ES2_PREP - T_ES2_BSM) / T_ES2_CLASS;
+            const elapsedMs = local - T_ES2_PREP - T_ES2_BSM;
             setOpacity(cbR2, 1);
-            moveCbAlong("r2", t);
+            moveCbBySpeed("r2", elapsedMs);
           }
         }
         // -------- Phase 4 — Result --------
