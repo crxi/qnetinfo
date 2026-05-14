@@ -291,6 +291,12 @@ const sections = [
         </p>
 
         <figure class="onegen" data-1g>
+          <div class="onegen-controls" data-1g-controls>
+            <button type="button" data-1g-ctl="back" aria-label="Step back" title="Step back">⏮</button>
+            <button type="button" data-1g-ctl="play" aria-label="Pause" title="Play / pause">⏸</button>
+            <button type="button" data-1g-ctl="fwd" aria-label="Step forward" title="Step forward">⏭</button>
+            <span class="onegen-phase" data-1g-phase>EG</span>
+          </div>
           <svg viewBox="0 0 1100 700" role="img"
                aria-label="Canonical 1G repeater across A — R₁ — R₂ — R₃ — B. EG: each adjacent pair emits matter–photon Bell pairs whose photons meet at a midpoint photonic Bell-state analyser; a successful herald collapses the two distant matter qubits into a Bell pair. 1st ES: parallel local Bell measurements at R₁ and R₃ extend the entanglement to A↔R₂ and R₂↔B. 2nd ES: a final Bell measurement at R₂ delivers one long A↔B Bell pair. Each row is a 'repeat until success' loop."
                data-1g-svg>
@@ -315,10 +321,10 @@ const sections = [
                 .g1-bsm-bs      { fill: #1a1f2a; stroke: none; }
                 .g1-bsm-beam    { stroke: #5a6472; stroke-width: 6; fill: none; stroke-linecap: round; }
                 .g1-bsm-det     { fill: #1a1f2a; stroke: #1a1f2a; stroke-width: 0.5; }
-                .g1-cb-pulse    { fill: var(--color-text); }
+                .g1-cb-pulse    { fill: #f97316; }
                 .g1-cb-line     { stroke: var(--color-text-mute); stroke-width: 1; stroke-dasharray: 3 2; fill: none; opacity: 0.55; }
-                .g1-herald      { fill: #fbbf24; stroke: #b45309; stroke-width: 0.8; }
-                .g1-pulse-box   { fill: none; stroke: #fbbf24; stroke-width: 2.5; rx: 4; }
+                .g1-herald      { fill: #f97316; stroke: #9a3412; stroke-width: 0.8; }
+                .g1-pulse-box   { fill: none; stroke: #f97316; stroke-width: 2.5; rx: 4; }
               `}</style>
               <marker id="g1-arr" viewBox="0 0 10 10" refX="8" refY="5"
                       markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -378,14 +384,14 @@ const sections = [
               <circle class="g1-photon" data-1g-photon="6" cx="752" cy="105" r="4.5"/>
               <circle class="g1-photon" data-1g-photon="7" cx="938" cy="105" r="4.5"/>
               {/* Matter–photon mp-waves */}
-              <path class="g1-mp-wave" d="M 130,82 q 3,2.5 0,4.75 t 0,4.75 t 0,4.75 t 0,4.75"/>
-              <path class="g1-mp-wave" d="M 316,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
-              <path class="g1-mp-wave" d="M 340,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
-              <path class="g1-mp-wave" d="M 522,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
-              <path class="g1-mp-wave" d="M 546,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
-              <path class="g1-mp-wave" d="M 728,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
-              <path class="g1-mp-wave" d="M 752,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
-              <path class="g1-mp-wave" d="M 938,82 q 3,2.5 0,4.75 t 0,4.75 t 0,4.75 t 0,4.75"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="0" d="M 130,82 q 3,2.5 0,4.75 t 0,4.75 t 0,4.75 t 0,4.75"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="1" d="M 316,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="2" d="M 340,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="3" d="M 522,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="4" d="M 546,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="5" d="M 728,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="6" d="M 752,78 q 3,3 0,5.875 t 0,5.875 t 0,5.875 t 0,5.875"/>
+              <path class="g1-mp-wave" data-1g-mp-wave="7" d="M 938,82 q 3,2.5 0,4.75 t 0,4.75 t 0,4.75 t 0,4.75"/>
               {/* Four photonic BSMs */}
               <use href="#g1-ph-bsm" x="178" y="145" width="90" height="76"/>
               <use href="#g1-ph-bsm" x="386" y="145" width="90" height="76"/>
@@ -1041,7 +1047,27 @@ const sections = [
       const T_TOTAL = PHASE1 + PHASE2 + PHASE3 + PHASE4 + T_HOLD + T_PAUSE;
 
       let running = false;
+      let paused = false;
       let cycleStart = 0;
+      let pausedAt = 0;
+
+      // mp-wave handles (matter-photon entanglement at top of EG row).
+      // Tagged via data-1g-mp-wave="0".."7" — they fade out as the
+      // photons are consumed by their respective pBSMs.
+      const mpWaves = Array.from({ length: 8 }, (_, i) =>
+        svg.querySelector(`[data-1g-mp-wave="${i}"]`));
+
+      // Phase boundaries used by the step controls. Stepping snaps the
+      // virtual clock to one of these; the user gets four discrete
+      // "frames" of the protocol — start of EG, start of 1st ES,
+      // start of 2nd ES, start of Result — plus the hold state.
+      const PHASE_STARTS = [
+        0,
+        PHASE1,
+        PHASE1 + PHASE2,
+        PHASE1 + PHASE2 + PHASE3,
+        PHASE1 + PHASE2 + PHASE3 + PHASE4,
+      ];
 
       function pickCycleParams() {
         resetSegs();
@@ -1050,11 +1076,20 @@ const sections = [
         rollPhase3();
       }
 
-      function frame(now) {
-        if (!running) return;
-        const elapsed = now - cycleStart;
-        let t0 = 0;
+      function phaseAt(elapsed) {
+        if (elapsed < PHASE1) return "EG";
+        if (elapsed < PHASE1 + PHASE2) return "1st ES";
+        if (elapsed < PHASE1 + PHASE2 + PHASE3) return "2nd ES";
+        if (elapsed < PHASE1 + PHASE2 + PHASE3 + PHASE4) return "Result";
+        return "Hold";
+      }
 
+      // Pure render — sets element states based on a virtual elapsed
+      // time in [0, T_TOTAL]. No requestAnimationFrame, no time math
+      // beyond what's needed for sub-phase interpolation. The transport
+      // controls call this with arbitrary clock positions.
+      function renderAt(elapsed) {
+        let t0 = 0;
         // -------- Phase 1 — EG --------
         if (elapsed < (t0 += PHASE1)) {
           highlightStep(1);
@@ -1062,7 +1097,6 @@ const sections = [
           setOpacity(rows[1], 0.22);
           setOpacity(rows[2], 0.22);
           setOpacity(rows[3], 0.22);
-          // Reset entanglement curves
           ent2.forEach((e) => e && e.setAttribute("stroke-dashoffset", "1"));
           ent3.forEach((e) => e && e.setAttribute("stroke-dashoffset", "1"));
           entFinal && entFinal.setAttribute("stroke-dashoffset", "1");
@@ -1078,19 +1112,21 @@ const sections = [
               setPos(ph, h.x + (en.x - h.x) * e, h.y + (en.y - h.y) * e);
               setOpacity(ph, 1);
             });
+            mpWaves.forEach((w) => setOpacity(w, 1));
             pbsmPulse.forEach((p) => setOpacity(p, 0));
             heralds.forEach((h) => setOpacity(h, 0));
             cbPh.forEach((c) => setOpacity(c, 0));
           } else if (local < T_EG_EMIT + T_EG_MEAS) {
             // 1b: photons consumed at pBSMs; pulse boxes flash;
-            // herald bulbs fade in.
+            // mp-waves fade (photons gone, matter–photon entanglement
+            // collapsed); herald bulbs fade in.
             const t = (local - T_EG_EMIT) / T_EG_MEAS;
             photons.forEach((ph, i) => {
               setOpacity(ph, Math.max(0, 1 - t * 2));
               const en = PHOTON_END[i];
               setPos(ph, en.x, en.y);
             });
-            // Pulse on a quick rise/fall envelope.
+            mpWaves.forEach((w) => setOpacity(w, Math.max(0, 1 - t * 2)));
             const pulse = Math.sin(t * Math.PI);
             pbsmPulse.forEach((p, i) => {
               if (!egSegs[i].heralded) return;
@@ -1104,6 +1140,7 @@ const sections = [
             // 1c: classical herald travels from pBSM up toward matter row.
             const t = (local - T_EG_EMIT - T_EG_MEAS) / T_EG_CLASS;
             photons.forEach((ph) => setOpacity(ph, 0));
+            mpWaves.forEach((w) => setOpacity(w, 0));
             pbsmPulse.forEach((p) => setOpacity(p, 0));
             heralds.forEach((h, i) => {
               if (!egSegs[i].heralded) return;
@@ -1123,27 +1160,24 @@ const sections = [
           setOpacity(rows[1], 1);
           setOpacity(rows[2], 0.22);
           setOpacity(rows[3], 0.22);
+          mpWaves.forEach((w) => setOpacity(w, 0));
           cbPh.forEach((c) => setOpacity(c, 0));
           heralds.forEach((h) => setOpacity(h, 0));
 
           const local = elapsed - (t0 - PHASE2);
           if (local < T_ES1_PREP) {
-            // 2a: row-2 entanglement curves trace in (EG result).
             const t = local / T_ES1_PREP;
             const e = ease(t);
             ent2.forEach((p) => p && p.setAttribute("stroke-dashoffset", String(1 - e)));
             setOpacity(cbR1, 0); setOpacity(cbR3, 0);
           } else if (local < T_ES1_PREP + T_ES1_BSM) {
-            // 2b: BM boxes at R₁ and R₃ pulse (parallel).
             ent2.forEach((p) => p && p.setAttribute("stroke-dashoffset", "0"));
             const t = (local - T_ES1_PREP) / T_ES1_BSM;
             const pulse = Math.sin(t * Math.PI);
-            // Stroke-width pulse via attribute (CSS class width is 1.2).
             const w = 1.2 + 2.8 * pulse;
             if (bmR1) bmR1.setAttribute("stroke-width", String(w));
             if (bmR3) bmR3.setAttribute("stroke-width", String(w));
           } else {
-            // 2c: 2 classical bits travel — R₁ → A and R₃ → B.
             if (bmR1) bmR1.setAttribute("stroke-width", "1.2");
             if (bmR3) bmR3.setAttribute("stroke-width", "1.2");
             const t = (local - T_ES1_PREP - T_ES1_BSM) / T_ES1_CLASS;
@@ -1198,15 +1232,93 @@ const sections = [
           rows.forEach((r) => setOpacity(r, 1));
           entFinal && entFinal.setAttribute("stroke-dashoffset", "0");
         } else if (elapsed < T_TOTAL) {
-          // Brief fade tail on rows 1–3 before reset, so the result row
-          // is the last thing the eye lingers on.
           const t = (elapsed - (T_TOTAL - T_PAUSE)) / T_PAUSE;
           setOpacity(rows[0], 1 - t * 0.8);
           setOpacity(rows[1], 1 - t * 0.8);
           setOpacity(rows[2], 1 - t * 0.8);
+        }
+        updatePhaseLabel(elapsed);
+      }
+
+      // -------- Transport controls --------
+      const btnPlay = fig.querySelector('[data-1g-ctl="play"]');
+      const btnBack = fig.querySelector('[data-1g-ctl="back"]');
+      const btnFwd  = fig.querySelector('[data-1g-ctl="fwd"]');
+      const phaseLbl = fig.querySelector('[data-1g-phase]');
+
+      function updatePhaseLabel(elapsed) {
+        if (phaseLbl) phaseLbl.textContent = phaseAt(elapsed);
+      }
+      function setPlayIcon() {
+        if (btnPlay) {
+          btnPlay.textContent = paused ? "▶" : "⏸";
+          btnPlay.setAttribute("aria-label", paused ? "Play" : "Pause");
+        }
+      }
+      function currentElapsed(now) {
+        if (paused) return pausedAt;
+        let e = now - cycleStart;
+        if (e >= T_TOTAL) {
+          // wrap inside frame() — but if asked here, normalise.
+          e = e % T_TOTAL;
+        }
+        return e;
+      }
+      function togglePlay() {
+        if (paused) {
+          // Resume: shift cycleStart so elapsed reads pausedAt now.
+          paused = false;
+          cycleStart = performance.now() - pausedAt;
         } else {
-          cycleStart = now;
-          pickCycleParams();
+          // Pause: freeze the current elapsed value.
+          paused = true;
+          pausedAt = performance.now() - cycleStart;
+          if (pausedAt < 0) pausedAt = 0;
+          if (pausedAt >= T_TOTAL) pausedAt = T_TOTAL - 1;
+        }
+        setPlayIcon();
+      }
+      function seekTo(t) {
+        paused = true;
+        pausedAt = Math.max(0, Math.min(T_TOTAL - 1, t));
+        renderAt(pausedAt);
+        setPlayIcon();
+      }
+      function stepForward() {
+        const cur = currentElapsed(performance.now());
+        const eps = 50;  // skip past the current boundary if we're right on one
+        for (const b of PHASE_STARTS) {
+          if (b > cur + eps) return seekTo(b);
+        }
+        // already past last phase start — wrap to start.
+        seekTo(0);
+      }
+      function stepBackward() {
+        const cur = currentElapsed(performance.now());
+        const eps = 50;
+        for (let i = PHASE_STARTS.length - 1; i >= 0; i--) {
+          if (PHASE_STARTS[i] < cur - eps) return seekTo(PHASE_STARTS[i]);
+        }
+        seekTo(PHASE_STARTS[PHASE_STARTS.length - 1]);
+      }
+      if (btnPlay) btnPlay.addEventListener("click", togglePlay);
+      if (btnFwd)  btnFwd.addEventListener("click", stepForward);
+      if (btnBack) btnBack.addEventListener("click", stepBackward);
+      setPlayIcon();
+
+      function frame(now) {
+        if (paused) {
+          // Hold the paused frame; keep ticking so unpausing resumes
+          // cleanly without a stale render.
+          renderAt(pausedAt);
+        } else if (running) {
+          let elapsed = now - cycleStart;
+          if (elapsed >= T_TOTAL) {
+            cycleStart = now;
+            pickCycleParams();
+            elapsed = 0;
+          }
+          renderAt(elapsed);
         }
         requestAnimationFrame(frame);
       }
@@ -1220,7 +1332,9 @@ const sections = [
             pickCycleParams();
             requestAnimationFrame(frame);
           } else if (!entry.isIntersecting) {
-            running = false;
+            // Don't fully stop — user may have paused intentionally.
+            // Only halt the auto-advance when the user hasn't paused.
+            if (!paused) running = false;
           }
         }
       });
@@ -1287,6 +1401,41 @@ const sections = [
     border-radius: var(--radius);
     display: grid;
     gap: var(--space-3);
+    position: relative;
+  }
+  .onegen-controls {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 2;
+    background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm, 4px);
+    padding: 2px 4px;
+  }
+  .onegen-controls button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--color-text);
+    font-size: 14px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .onegen-controls button:hover { background: color-mix(in srgb, var(--color-text) 8%, transparent); }
+  .onegen-controls button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .onegen-phase {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 11px;
+    color: var(--color-text-mute);
+    padding: 0 6px;
+    min-width: 4ch;
+    text-align: center;
   }
   .onegen svg {
     inline-size: 100%;
@@ -1320,10 +1469,10 @@ const sections = [
   :global(.g1-bsm-bs)      { fill: #1a1f2a; stroke: none; }
   :global(.g1-bsm-beam)    { stroke: #5a6472; stroke-width: 6; fill: none; stroke-linecap: round; }
   :global(.g1-bsm-det)     { fill: #1a1f2a; stroke: #1a1f2a; stroke-width: 0.5; }
-  :global(.g1-cb-pulse)    { fill: var(--color-text); }
+  :global(.g1-cb-pulse)    { fill: #f97316; }
   :global(.g1-cb-line)     { stroke: var(--color-text-mute); stroke-width: 1; stroke-dasharray: 3 2; fill: none; opacity: 0.55; }
-  :global(.g1-herald)      { fill: #fbbf24; stroke: #b45309; stroke-width: 0.8; }
-  :global(.g1-pulse-box)   { fill: none; stroke: #fbbf24; stroke-width: 2.5; }
+  :global(.g1-herald)      { fill: #f97316; stroke: #9a3412; stroke-width: 0.8; }
+  :global(.g1-pulse-box)   { fill: none; stroke: #f97316; stroke-width: 2.5; }
 
 
   ol.sw-step-list {
