@@ -69,3 +69,37 @@ standards:
     summary: >
       RBG framework that QRNG vendors target for entropy-source claims.
       Under revision to add explicit quantum-entropy-source guidance.
+
+  # ----- Merged from _private/QStds.csv on 2026-05-15 (4 entries) -----
+
+  - id: ISO/IEC 23837-1:2023
+    title: "Security requirements, test and evaluation methods for quantum key distribution Part 1: Requirements"
+    type: recommendation
+    group: ISO/IEC JTC1/SC27
+    tags: [qkdn, security]
+    status: in-force
+    url: https://www.iso.org/standard/77097.html
+
+  - id: ISO/IEC 23837-2:2023
+    title: "Security requirements, test and evaluation methods for quantum key distribution Part 2: Evaluation and testing methods"
+    type: recommendation
+    group: ISO/IEC JTC1/SC27
+    tags: [qkdn, security]
+    status: in-force
+    url: https://www.iso.org/standard/77309.html
+
+  - id: ISO/IEC 4879:2024
+    title: Information technology — Quantum computing — Vocabulary
+    type: recommendation
+    group: ISO/IEC JTC1
+    tags: [qkdn]
+    status: in-force
+    url: https://www.iso.org/standard/80432.html
+
+  - id: ISO/IEC AWI TR 18157
+    title: Introduction to quantum computing
+    type: draft
+    group: ISO/IEC JTC1
+    tags: [qkdn]
+    status: draft
+    url: https://www.iso.org/standard/85203.html

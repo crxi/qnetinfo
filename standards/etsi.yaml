@@ -228,3 +228,133 @@ standards:
       quantum networks, satellite quantum comms, quantum sensing, QRNG,
       security. Expected to absorb / supersede some ISG-QKD work.
     note: Charter only; first deliverables pending as of May 2026.
+
+  # ----- Merged from _private/QStds.csv on 2026-05-15 (16 entries) -----
+
+  - id: GR QSC 001
+    title: Quantum-safe cryptography (QSC); Quantum-safe algorithmic framework
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=GR%20QSC%20001&title=0&content=0&version=1
+
+  - id: GR QSC 003
+    title: Quantum safe cryptography; Case studies and deployment scenarios
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=GR%20QSC%20003&title=0&content=0&version=1
+
+  - id: GR QSC 004
+    title: Quantum-safe cryptography; Quantum-safe threat assessment
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=GR%20QSC%20004&title=0&content=0&version=1
+
+  - id: GR QSC 006
+    title: Quantum-safe cryptography (QSC); Limits to quantum computing applied to symmetric key sizes
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=GR%20QSC%20006&title=0&content=0&version=1
+
+  - id: TR 103 570
+    title: CYBER; Quantum-safe key exchanges
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20570&title=0&content=0&version=1
+
+  - id: TR 103 616
+    title: CYBER; Quantum-safe signatures
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20616&title=0&content=0&version=1
+
+  - id: TR 103 618
+    title: CYBER; Quantum-safe identity-based encryption
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20618&title=0&content=0&version=1
+
+  - id: TR 103 692
+    title: CYBER; State management for stateful authentication mechanisms
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [security]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20692&title=0&content=0&version=1
+
+  - id: TR 103 744
+    title: CYBER; Quantum-safe hybrid key exchanges
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TS%20103%20744&title=0&content=0&version=1
+
+  - id: TR 103 823
+    title: CYBER; Quantum-safe public-key encryption and key encapsulation
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20823&title=0&content=0&version=1
+
+  - id: TR 103 949
+    title: Quantum-safe cryptography (QSC) migration; ITS and C-ITS migration study
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20949&title=0&content=0&version=1
+
+  - id: TR 103 965
+    title: CYBER; Quantum-safe cryptography (QSC); Impact of quantum computing on cryptographic security proofs
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta, security]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20965&title=0&content=0&version=1
+
+  - id: TR 103 966
+    title: CYBER Security (CYBER); Quantum-safe cryptography (QSC); Deployment considerations for hybrid schemes
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta, security]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20966&title=0&content=0&version=1
+
+  - id: TR 103 967
+    title: Cyber Security (CYBER); Quantum-Safe Cryptography (QSC); Impact of Quantum Computing on Symmetric Cryptography
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta, security]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20103%20967&title=0&content=0&version=1
+
+  - id: TR 104 016
+    title: CYBER; Quantum-safe cryptography (QSC); A repeatable framework for quantum-safe migrations
+    type: technical-report
+    group: TC CYBER QSC
+    tags: [crypto-meta]
+    status: in-force
+    url: https://www.etsi.org/standards-search#search=TR%20104%20016&title=0&content=0&version=1
+
+  - id: TS 104 015
+    title: Cyber Security (CYBER); Quantum-Safe Cryptography (QSC); Efficient Quantum-Safe Hybrid Key Exchanges with Hidden Access Policies
+    type: recommendation
+    group: TC CYBER QSC
+    tags: [crypto-meta, security]
+    status: in-force
+    url: https://www.etsi.org/standards-search#page=1&search=TS%20104%20015&title=0&etsiNumber=1&content=0&version=1&onApproval=1&published=1&withdrawn=1&histo
