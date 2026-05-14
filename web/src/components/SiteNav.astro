@@ -274,49 +274,17 @@ const groupedTiers = TIER_ORDER
     font-weight: 600;
   }
 
-  /* Narrow viewports: collapse to a sticky horizontal strip. Tier
-     dividers and the sections sub-list both hide on mobile —
-     subjects flatten into a single horizontal scroll, sections
-     would be unreadable in this layout. Readers on narrow viewports
-     can still hash-jump from anchor links inside the page copy. */
+  /* Narrow viewports: the rail renders inside the slide-in drawer
+     (layout-level). The vertical tier tree + sections are the right
+     UI in that context, so the only mobile tweak is to bump tap
+     targets a notch for finger-friendly hit areas. */
   @media (max-width: 60rem) {
-    .site-nav {
-      /* The parent .page-nav-rail is position:fixed on mobile, so
-         the nav itself just lays out normally. Fade-edge swipe
-         affordance — a soft right gradient signals that the strip
-         scrolls horizontally when the subject list overflows. */
-      gap: var(--space-1);
-      mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-      -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-    }
-    .site-nav__title,
-    .site-nav__group-label,
-    .site-nav__sections {
-      display: none;
-    }
-    .site-nav__group {
-      gap: 0;
-    }
-    .site-nav__list {
-      display: flex;
-      gap: var(--space-1);
-      overflow-x: auto;
-      border-inline-start: none;
-      padding-inline: var(--space-2);
-      scrollbar-width: none;
-    }
-    .site-nav__list::-webkit-scrollbar { display: none; }
     .site-nav__list a,
     .site-nav__list .is-planned {
-      white-space: nowrap;
-      border-inline-start: none;
-      border-block-end: 2px solid transparent;
-      padding: var(--space-1) var(--space-2);
+      padding-block: var(--space-2);
     }
-    .site-nav__list a.is-current,
-    .site-nav__list a.is-active {
-      border-inline-start: none;
-      border-block-end-color: var(--color-accent);
+    .site-nav__sections a {
+      padding-block: 6px;
     }
   }
 
