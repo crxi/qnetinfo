@@ -70,6 +70,15 @@
         />
         <span class="bloch3d__slider-readout" data-bloch-phi-readout>0</span>
       </label>
+      <label class="bloch3d__slider">
+        <span class="bloch3d__slider-name">F</span>
+        <input
+          type="range" min="0" max="1" step="0.01" value="1"
+          data-bloch-fidelity
+          aria-label="Fidelity cap"
+        />
+        <span class="bloch3d__slider-readout" data-bloch-fidelity-readout>1.00</span>
+      </label>
     </div>
 
     <p class="bloch3d__hint">
@@ -105,8 +114,10 @@ if (figure) {
   const canvas = figure.querySelector("[data-bloch-canvas]");
   const thetaIn  = figure.querySelector("[data-bloch-theta]");
   const phiIn    = figure.querySelector("[data-bloch-phi]");
+  const fidIn    = figure.querySelector("[data-bloch-fidelity]");
   const thetaOut = figure.querySelector("[data-bloch-theta-readout]");
   const phiOut   = figure.querySelector("[data-bloch-phi-readout]");
+  const fidOut   = figure.querySelector("[data-bloch-fidelity-readout]");
   const alphaOut = figure.querySelector("[data-bloch-alpha]");
   const betaOut  = figure.querySelector("[data-bloch-beta]");
 
@@ -250,6 +261,94 @@ if (figure) {
   );
   dot.position.set(0, 0, 1);
   scene.add(dot);
+
+  // Fidelity cap — translucent spherical patch centred on the
+  // current state vector. For F = 1 the cap collapses to a point and
+  // is hidden. For F < 1 the cap is the set of states ρ with
+  // F(|T⟩, ρ) ≥ F_slider: a spherical-cap chunk of the Bloch ball
+  // with half-angle θ_cap = acos(2F − 1).
+  const capGroup = new THREE.Group();
+  capGroup.visible = false;
+  const capSurfaceGeom = new THREE.BufferGeometry();
+  const capSurfaceMat = new THREE.MeshBasicMaterial({
+    transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false,
+  });
+  const capSurface = new THREE.Mesh(capSurfaceGeom, capSurfaceMat);
+  capSurface.renderOrder = 3;
+  capGroup.add(capSurface);
+  scene.add(capGroup);
+
+  const _capZHat = new THREE.Vector3(0, 0, 1);
+  const _capN    = new THREE.Vector3();
+  const _capQ    = new THREE.Quaternion();
+  let fidelityF = 1.0;
+
+  function buildCapPatch(thetaCap, nTheta, nPhi, rOver) {
+    // Cap-local frame: +z = target axis. θ ∈ [0, thetaCap] sweeps
+    // polar angle from the target point outward. Apex vertex avoids
+    // the degenerate ring and gives a clean fan there.
+    const positions = new Float32Array((1 + nTheta * nPhi) * 3);
+    positions[0] = 0; positions[1] = 0; positions[2] = rOver;
+    let p = 3;
+    for (let i = 1; i <= nTheta; i++) {
+      const t = (i / nTheta) * thetaCap;
+      const s = Math.sin(t), c = Math.cos(t);
+      for (let j = 0; j < nPhi; j++) {
+        const a = (j / nPhi) * Math.PI * 2;
+        positions[p++] = rOver * s * Math.cos(a);
+        positions[p++] = rOver * s * Math.sin(a);
+        positions[p++] = rOver * c;
+      }
+    }
+    const triCount = nPhi + (nTheta - 1) * nPhi * 2;
+    const indices = new Uint16Array(triCount * 3);
+    let k = 0;
+    for (let j = 0; j < nPhi; j++) {
+      indices[k++] = 0;
+      indices[k++] = 1 + j;
+      indices[k++] = 1 + ((j + 1) % nPhi);
+    }
+    for (let i = 1; i < nTheta; i++) {
+      const ringA = 1 + (i - 1) * nPhi;
+      const ringB = 1 + i * nPhi;
+      for (let j = 0; j < nPhi; j++) {
+        const jn = (j + 1) % nPhi;
+        indices[k++] = ringA + j;  indices[k++] = ringB + j;  indices[k++] = ringB + jn;
+        indices[k++] = ringA + j;  indices[k++] = ringB + jn; indices[k++] = ringA + jn;
+      }
+    }
+    return { positions, indices };
+  }
+
+  function capColorForF(F) {
+    // F=1 → green (120°), 0.75 → yellow (60°), 0.5 → orange (30°),
+    // ≤0.25 → red (0°). Piecewise linear in hue.
+    let h;
+    if (F >= 0.75)      h = 60  + (F - 0.75) * 240;
+    else if (F >= 0.5)  h = 30  + (F - 0.5)  * 120;
+    else                h = Math.max(0, (F / 0.5) * 30);
+    return new THREE.Color().setHSL(h / 360, 0.6, 0.55);
+  }
+
+  function updateFidelityCap(vx, vy, vz) {
+    if (fidelityF >= 0.999) { capGroup.visible = false; return; }
+    _capN.set(vx, vy, vz);
+    if (_capN.lengthSq() < 1e-8) { capGroup.visible = false; return; }
+    _capN.normalize();
+
+    capGroup.visible = true;
+    const Fc = Math.max(0, Math.min(1, fidelityF));
+    const thetaCap = Math.acos(2 * Fc - 1);
+    const { positions, indices } = buildCapPatch(thetaCap, 12, 64, 1.003);
+    capSurfaceGeom.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    capSurfaceGeom.setIndex(new THREE.BufferAttribute(indices, 1));
+    capSurfaceGeom.attributes.position.needsUpdate = true;
+    capSurfaceGeom.computeBoundingSphere();
+
+    _capQ.setFromUnitVectors(_capZHat, _capN);
+    capGroup.quaternion.copy(_capQ);
+    capSurfaceMat.color.copy(capColorForF(fidelityF));
+  }
 
   // Depth occluder: an invisible sphere slightly inside the unit
   // sphere (radius 0.99). It writes to the depth buffer but not
@@ -416,6 +515,7 @@ if (figure) {
     const sz = Math.cos(theta);
     arrow.setDirection(new THREE.Vector3(sx, sy, sz));
     dot.position.set(sx, sy, sz);
+    updateFidelityCap(sx, sy, sz);
     thetaOut.textContent = fmtAngle(theta);
     phiOut.textContent   = fmtAngle(phi);
     // |ψ⟩ = cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩
@@ -443,6 +543,11 @@ if (figure) {
     // changes — visible at any θ, including the poles.
     setPhiPath(parseFloat(phiIn.value));
     bumpFade("phi");
+    update();
+  });
+  fidIn.addEventListener("input", () => {
+    fidelityF = parseFloat(fidIn.value);
+    fidOut.textContent = fidelityF.toFixed(2);
     update();
   });
   update();
