@@ -547,31 +547,18 @@ const sections = [
           </svg>
 
           <ol class="sw-step-list" data-1g-steps>
-            <li data-1g-step="1"><strong>1. EG.</strong> Each adjacent pair emits matter–photon Bell pairs; the photons meet at a midpoint photonic BSM; a successful herald collapses the two distant matter qubits into a Bell pair</li>
-            <li data-1g-step="2"><strong>2. 1st ES.</strong> Parallel matter-qubit Bell measurements at R₁ and R₃ extend the entanglement to A↔R₂ and R₂↔B; the 2-bit outcomes travel back to A and B</li>
-            <li data-1g-step="3"><strong>3. 2nd ES.</strong> A final Bell measurement at R₂ delivers a single A↔B Bell pair; its 2-bit outcome travels to one endpoint to fix the Pauli correction</li>
-            <li data-1g-step="4"><strong>4. Result.</strong> One long A↔B Bell pair ready to consume — for teleportation, for QKD key extraction, or for any other Bell-pair-consuming protocol</li>
+            <li data-1g-step="1"><strong>1. EG.</strong> Adjacent matter qubits emit photons; the midpoint photonic BSM heralds a Bell pair across the link.</li>
+            <li data-1g-step="2"><strong>2. 1st ES.</strong> R₁ and R₃ run their swaps in parallel; outcomes go forward to R₂ and B.</li>
+            <li data-1g-step="3"><strong>3. 2nd ES.</strong> R₂ swaps and ships its outcome to B for the final Pauli correction.</li>
+            <li data-1g-step="4"><strong>4. Result.</strong> One long A↔B Bell pair — ready for teleportation or QKD.</li>
           </ol>
 
           <figcaption>
-            Every BSM in this diagram broadcasts <strong>two classical bits</strong>
-            (orange herald in EG; orange travelling pulses in the swap rows) and the
-            matter qubits must hold their state until those bits arrive — the local
-            Pauli correction can only be applied once the outcome is known. The reach
-            of a 1G chain is therefore bounded not by photon loss alone but by how
-            long each memory can hold while the slowest classical message is in
-            flight. <br/><br/>
-            <strong>Where the swap bits go.</strong> Every classical bit flows
-            <strong>forward</strong> (rightward in this figure), to the next-forward
-            node that holds a qubit it can act on. R₁ ships its outcome one hop to
-            R₂ (correcting R₂'s left qubit); R₃ ships its outcome one hop to B
-            (the endpoint, since no relay sits beyond R₃); R₂ ships its outcome
-            the long way to B for the final Pauli correction. All pulses travel
-            at the <strong>same horizontal speed</strong>, so the long R₂→B leg
-            visibly takes longer than the short ones — that's the latency story
-            the memory has to wait through. Each row is a <em>repeat-until-success</em> loop — EG retries
-            until the herald fires, every swap retries until its BSM succeeds
-            (currently shown deterministic; loss retries can be toggled on).
+            Classical bits flow <strong>forward</strong>, one hop at a time. All
+            pulses travel at the same horizontal speed, so the long R₂→B leg takes
+            visibly longer than the short ones — the latency the memories wait
+            through. Each row is a <em>repeat-until-success</em> loop (currently
+            shown deterministic; loss retries can be toggled on).
           </figcaption>
         </figure>
 
