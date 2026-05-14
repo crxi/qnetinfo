@@ -45,12 +45,12 @@ modalities:
       - Quantum Networking Unit (QNU) — microwave-optical transducer + entanglement-distribution stack (with Cisco, Fermilab/SQMS)
 
 milestones:
-  - date: 2025-11-20
+  - date: "2025-11-20"
     tag: network
     headline: IBM and Cisco announce plan to build networked fault-tolerant quantum computers; Quantum Networking Units (QNUs) co-developed with Fermilab/SQMS
     source_url: https://newsroom.ibm.com/2025-11-20-ibm-and-cisco-announce-plans-to-build-a-network-of-large-scale,-fault-tolerant-quantum-computers
     source_type: press
-  - date: 2025-11-12
+  - date: "2025-11-12"
     tag: qc
     headline: Nighthawk (120 qubits, square lattice, 218 tunable couplers, median T1 350 µs) and Loon (qLDPC-prototype chip with c-couplers) unveiled at IBM Quantum Developer Conference
     source_url: https://newsroom.ibm.com/2025-11-12-ibm-delivers-new-quantum-processors,-software,-and-algorithm-breakthroughs-on-path-to-advantage-and-fault-tolerance
@@ -60,7 +60,7 @@ milestones:
     headline: Jay Gambetta succeeds Darío Gil as Director of IBM Research (Gil departs for US DOE Under Secretary for Science)
     source_url: https://newsroom.ibm.com/blog-ibm-names-new-director-of-ibm-research
     source_type: press
-  - date: 2025-06-10
+  - date: "2025-06-10"
     tag: qc
     headline: IBM publishes roadmap to Quantum Starling (200 logical qubits, 100 M gate operations by 2029) at new Poughkeepsie quantum data centre; intermediate processors Loon, Kookaburra, Cockatoo named
     source_url: https://newsroom.ibm.com/2025-06-10-IBM-Sets-the-Course-to-Build-Worlds-First-Large-Scale,-Fault-Tolerant-Quantum-Computer-at-New-IBM-Quantum-Data-Center

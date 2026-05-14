@@ -179,3 +179,30 @@ export function daysSinceVerified(company: Company): number {
 }
 
 export const STALE_THRESHOLD_DAYS = 90;
+
+/**
+ * Format a milestone / roadmap date for display.
+ *
+ * YAML parses an unquoted `YYYY-MM-DD` literal into a JS Date, and
+ * `String(date)` then yields "Thu Nov 20 2025 00:00:00 GMT+0000 (UTC)"
+ * — h:m:s noise nobody wants in a timeline. Coerce everything back to
+ * a tidy "YYYY-MM-DD", "YYYY-MM", or "YYYY" depending on what we have.
+ */
+export function formatDateLabel(input: string | number | Date | null | undefined): string {
+  if (input == null) return "";
+  if (input instanceof Date) {
+    const y = input.getUTCFullYear();
+    const m = String(input.getUTCMonth() + 1).padStart(2, "0");
+    const d = String(input.getUTCDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+  if (typeof input === "number") return String(input);
+  const s = String(input).trim();
+  if (/^Q[1-4]\s+\d{4}$/i.test(s)) return s;
+  const isoMatch = s.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+  if (isoMatch) {
+    const [, y, m, d] = isoMatch;
+    return d ? `${y}-${m}-${d}` : `${y}-${m}`;
+  }
+  return s;
+}

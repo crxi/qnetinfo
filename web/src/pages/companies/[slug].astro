@@ -18,6 +18,7 @@ import {
   CATEGORY_LABEL,
   STALE_THRESHOLD_DAYS,
   daysSinceVerified,
+  formatDateLabel,
   type Company,
   type Milestone,
 } from "../../lib/companies.ts";
@@ -115,7 +116,7 @@ const milestones: Milestone[] = [...company.milestones].sort(
           <ol class="timeline">
             {milestones.map((m) => (
               <li>
-                <div class="timeline-date">{m.date}</div>
+                <div class="timeline-date">{formatDateLabel(m.date)}</div>
                 <div class="timeline-body">
                   <div class="timeline-headline">{m.headline}</div>
                   <div class="timeline-meta">

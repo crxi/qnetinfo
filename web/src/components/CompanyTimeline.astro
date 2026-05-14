@@ -9,6 +9,7 @@
  * Pure HTML/CSS — no SVG, no JS.
  */
 import type { Milestone, RoadmapItem } from "../lib/companies.ts";
+import { formatDateLabel } from "../lib/companies.ts";
 
 interface Props {
   milestones: Milestone[];
@@ -38,12 +39,12 @@ const items: CellItem[] = [
   ...milestones.map((m) => ({
     label: m.headline,
     kind: "milestone" as const,
-    date: String(m.date),
+    date: formatDateLabel(m.date),
   })),
   ...roadmap.map((r) => ({
     label: r.item,
     kind: "roadmap" as const,
-    date: String(r.target),
+    date: formatDateLabel(r.target),
   })),
 ];
 
