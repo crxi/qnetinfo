@@ -1315,42 +1315,18 @@ const sections = [
                 Grid: 45° beams throughout.
                   src1 (340,80)   src2 (620,80)
                   BS   (480,220)
-                  PBS₁ (240,460)  PBS₂ (720,460)
-                  D_H1 (100,600)  D_V1 (380,600)
-                  D_V2 (580,600)  D_H2 (860,600)
-                Every beam segment runs at exactly 45° between two
-                grid points. The optical elements (BS plate, PBS
-                squares, detector Ds) are drawn axis-aligned on top
-                of the beams — the lines pass through each element
-                centre without bending.
+                  PBS₁ (340,360)  PBS₂ (620,360)
+                  D_H1 (270,430)  D_V1 (410,430)
+                  D_V2 (550,430)  D_H2 (690,430)
+                Input legs (src→BS) and output legs (BS→PBS) are
+                equal length so the apparatus reads as a compact
+                relay; short PBS→detector legs match the BSM.svg
+                icon used elsewhere on the site.
                 -------------------------------------------------------- */}
 
-            {/* ===== Outcome readout (top-left): clicks → state → bits ===== */}
-            <text x="30" y="40" class="bsm-outcome-label">this shot</text>
-
-            <text x="65"  y="64" text-anchor="middle" class="bsm-flow-tag">clicks</text>
-            <text x="175" y="64" text-anchor="middle" class="bsm-flow-tag">state</text>
-            <text x="270" y="64" text-anchor="middle" class="bsm-flow-tag">bits</text>
-
-            <g data-bsm-clicks transform="translate(65 100)">
-              <rect data-bsm-clicks-bg x="-60" y="-20" width="120" height="40" rx="3"
-                    fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-clicks-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
-                    class="bsm-flow-text">—</text>
-            </g>
-            <text x="135" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
-            <text data-bsm-state x="175" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-state">—</text>
-            <text x="215" y="100" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
-            <g data-bsm-bits transform="translate(270 100)">
-              <rect data-bsm-bits-bg x="-28" y="-20" width="56" height="40" rx="3"
-                    fill="var(--color-text)" opacity="0"/>
-              <text data-bsm-bits-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
-                    class="bsm-flow-text">—</text>
-            </g>
-
             {/* ===== Source labels and dots (top of schematic) ===== */}
-            <text x="340" y="56" text-anchor="middle" class="bsm-label">qubit 1</text>
-            <text x="620" y="56" text-anchor="middle" class="bsm-label">qubit 2</text>
+            <text x="340" y="56" text-anchor="middle" class="bsm-label">Qubit P</text>
+            <text x="620" y="56" text-anchor="middle" class="bsm-label">Qubit Q</text>
             <circle cx="340" cy="80" r="3.5" fill="var(--color-text)"/>
             <circle cx="620" cy="80" r="3.5" fill="var(--color-text)"/>
 
@@ -1363,88 +1339,116 @@ const sections = [
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
             {/* BS → PBSes */}
-            <line x1="480" y1="220" x2="240" y2="460"
+            <line x1="480" y1="220" x2="340" y2="360"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
-            <line x1="480" y1="220" x2="720" y2="460"
+            <line x1="480" y1="220" x2="620" y2="360"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
             {/* PBS₁ → D_H1 (outer, down-left) and D_V1 (inner, down-right) */}
-            <line x1="240" y1="460" x2="100" y2="600"
+            <line x1="340" y1="360" x2="270" y2="430"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
-            <line x1="240" y1="460" x2="380" y2="600"
+            <line x1="340" y1="360" x2="410" y2="430"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
             {/* PBS₂ → D_V2 (inner, down-left) and D_H2 (outer, down-right) */}
-            <line x1="720" y1="460" x2="580" y2="600"
+            <line x1="620" y1="360" x2="550" y2="430"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
-            <line x1="720" y1="460" x2="860" y2="600"
+            <line x1="620" y1="360" x2="690" y2="430"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="3,3" opacity="0.6"/>
 
-            {/* ===== BS: thin vertical plate (physically vertical for
-                this 45°-from-above geometry; reflects each input by 90°). ===== */}
-            <rect x="476" y="204" width="8" height="32"
-                  fill="var(--color-accent)" stroke="var(--color-accent)" stroke-width="1"/>
-            <text x="480" y="260" text-anchor="middle" class="bsm-elem-label">BS</text>
-            <text x="480" y="276" text-anchor="middle" class="bsm-elem-label">50:50</text>
+            {/* ===== BS: solid black vertical bar, sized to match the
+                BSM.svg icon used elsewhere on the site. ===== */}
+            <rect x="471" y="180" width="18" height="80" rx="3"
+                  fill="var(--color-text)" stroke="none"/>
+            <text x="480" y="290" text-anchor="middle" class="bsm-elem-label">BS</text>
+            <text x="480" y="306" text-anchor="middle" class="bsm-elem-label">50:50</text>
 
-            {/* ===== PBS₁: square with \\ diagonal (entanglement-page style) ===== */}
+            {/* ===== PBS₁: 45°-rotated square (diamond) with a
+                vertical coating line through the centre.  Same style
+                as the BSM.svg icon. ===== */}
             <g>
-              <rect x="230" y="450" width="20" height="20"
-                    fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.5"/>
-              <line x1="230" y1="450" x2="250" y2="470"
+              <polygon points="340,330 370,360 340,390 310,360"
+                       fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.5"
+                       stroke-linejoin="round"/>
+              <line x1="340" y1="330" x2="340" y2="390"
                     stroke="var(--color-text)" stroke-width="1.5"/>
-              <text x="216" y="446" text-anchor="end" class="bsm-elem-label">PBS₁</text>
+              <text x="295" y="364" text-anchor="end" class="bsm-elem-label">PBS₁</text>
             </g>
 
             {/* ===== PBS₂: same style, mirrored ===== */}
             <g>
-              <rect x="710" y="450" width="20" height="20"
-                    fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.5"/>
-              <line x1="710" y1="450" x2="730" y2="470"
+              <polygon points="620,330 650,360 620,390 590,360"
+                       fill="var(--color-bg)" stroke="var(--color-text)" stroke-width="1.5"
+                       stroke-linejoin="round"/>
+              <line x1="620" y1="330" x2="620" y2="390"
                     stroke="var(--color-text)" stroke-width="1.5"/>
-              <text x="744" y="446" class="bsm-elem-label">PBS₂</text>
+              <text x="665" y="364" class="bsm-elem-label">PBS₂</text>
             </g>
 
             {/* ===== Four detectors. D-shape, flat side facing the
                 incoming beam from above. Rotations chosen so the flat
                 normal points back along the beam towards the PBS. ===== */}
             {/* D_H1: beam from upper-right (PBS₁); flat normal points upper-right → rotate 45° */}
-            <g data-bsm-det="H1" transform="translate(100 600) rotate(45)">
+            <g data-bsm-det="H1" transform="translate(270 430) rotate(45)">
               <path data-bsm-result="H1"
-                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    d="M -10,0 L 10,0 A 10,10 0 0 1 -10,0 Z"
                     fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
                     stroke-linejoin="round" opacity="0.2"/>
             </g>
             {/* D_V1: beam from upper-left (PBS₁); flat normal upper-left → rotate -45° */}
-            <g data-bsm-det="V1" transform="translate(380 600) rotate(-45)">
+            <g data-bsm-det="V1" transform="translate(410 430) rotate(-45)">
               <path data-bsm-result="V1"
-                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    d="M -10,0 L 10,0 A 10,10 0 0 1 -10,0 Z"
                     fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
                     stroke-linejoin="round" opacity="0.2"/>
             </g>
             {/* D_V2: beam from upper-right (PBS₂); flat normal upper-right → rotate 45° */}
-            <g data-bsm-det="V2" transform="translate(580 600) rotate(45)">
+            <g data-bsm-det="V2" transform="translate(550 430) rotate(45)">
               <path data-bsm-result="V2"
-                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    d="M -10,0 L 10,0 A 10,10 0 0 1 -10,0 Z"
                     fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
                     stroke-linejoin="round" opacity="0.2"/>
             </g>
             {/* D_H2: beam from upper-left (PBS₂); flat normal upper-left → rotate -45° */}
-            <g data-bsm-det="H2" transform="translate(860 600) rotate(-45)">
+            <g data-bsm-det="H2" transform="translate(690 430) rotate(-45)">
               <path data-bsm-result="H2"
-                    d="M -7,0 L 7,0 A 7,7 0 0 1 -7,0 Z"
+                    d="M -10,0 L 10,0 A 10,10 0 0 1 -10,0 Z"
                     fill="var(--color-text)" stroke="var(--color-text)" stroke-width="1.5"
                     stroke-linejoin="round" opacity="0.2"/>
             </g>
 
-            <text x="100" y="640" text-anchor="middle" class="bsm-det-name">1<tspan class="bsm-det-sub">H</tspan></text>
-            <text x="380" y="640" text-anchor="middle" class="bsm-det-name">1<tspan class="bsm-det-sub">V</tspan></text>
-            <text x="580" y="640" text-anchor="middle" class="bsm-det-name">2<tspan class="bsm-det-sub">V</tspan></text>
-            <text x="860" y="640" text-anchor="middle" class="bsm-det-name">2<tspan class="bsm-det-sub">H</tspan></text>
+            <text x="270" y="470" text-anchor="middle" class="bsm-det-name">1<tspan class="bsm-det-sub">H</tspan></text>
+            <text x="410" y="470" text-anchor="middle" class="bsm-det-name">1<tspan class="bsm-det-sub">V</tspan></text>
+            <text x="550" y="470" text-anchor="middle" class="bsm-det-name">2<tspan class="bsm-det-sub">V</tspan></text>
+            <text x="690" y="470" text-anchor="middle" class="bsm-det-name">2<tspan class="bsm-det-sub">H</tspan></text>
+
+            {/* ===== This-shot outcome readout, single row below the
+                BSM diagram: this shot → [clicks] → [state] → [bits] ===== */}
+            <text x="340" y="540" text-anchor="end" dominant-baseline="central" class="bsm-outcome-label">this shot</text>
+
+            <g data-bsm-clicks transform="translate(420 540)">
+              <rect data-bsm-clicks-bg x="-60" y="-20" width="120" height="40" rx="3"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-clicks-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
+                    class="bsm-flow-text">—</text>
+            </g>
+            <text x="505" y="540" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
+            <text data-bsm-state x="540" y="540" text-anchor="middle" dominant-baseline="central" class="bsm-flow-state">—</text>
+            <text x="575" y="540" text-anchor="middle" dominant-baseline="central" class="bsm-flow-arrow">→</text>
+            <g data-bsm-bits transform="translate(625 540)">
+              <rect data-bsm-bits-bg x="-28" y="-20" width="56" height="40" rx="3"
+                    fill="var(--color-text)" opacity="0"/>
+              <text data-bsm-bits-text x="0" y="0" text-anchor="middle" dominant-baseline="central"
+                    class="bsm-flow-text">—</text>
+            </g>
+
+            <text x="420" y="578" text-anchor="middle" class="bsm-flow-tag">clicks</text>
+            <text x="540" y="578" text-anchor="middle" class="bsm-flow-tag">state</text>
+            <text x="625" y="578" text-anchor="middle" class="bsm-flow-tag">bits</text>
 
             {/* ===== Animated photons. Cloud for the undefined-
                 polarisation segments (source → BS → PBS); replaced
@@ -1482,7 +1486,7 @@ const sections = [
 
             <text x="1075" y="510" text-anchor="middle" class="bsm-rate-label">identified (Ψ outcomes)</text>
             <text data-bsm-rate x="1075" y="538" text-anchor="middle" class="bsm-rate-value">0 / 0</text>
-            <text data-bsm-rate-pct x="1075" y="562" text-anchor="middle" class="bsm-rate-pct">—</text>
+            <text data-bsm-rate-pct x="1075" y="585" text-anchor="middle" class="bsm-rate-pct">—</text>
             <text x="1075" y="620" text-anchor="middle" class="bsm-rate-note">long-run limit:</text>
             <text x="1075" y="638" text-anchor="middle" class="bsm-rate-note bsm-rate-note--em">50% (linear optics)</text>
           </svg>
@@ -1609,14 +1613,14 @@ const sections = [
             const SRC_B = { x: 620, y: 80  };
             const BS    = { x: 480, y: 220 };
             const PBS = {
-              1: { x: 240, y: 460 },
-              2: { x: 720, y: 460 },
+              1: { x: 340, y: 360 },
+              2: { x: 620, y: 360 },
             };
             const DET = {
-              H1: { x: 100, y: 600 },
-              V1: { x: 380, y: 600 },
-              V2: { x: 580, y: 600 },
-              H2: { x: 860, y: 600 },
+              H1: { x: 270, y: 430 },
+              V1: { x: 410, y: 430 },
+              V2: { x: 550, y: 430 },
+              H2: { x: 690, y: 430 },
             };
             const DET_KEYS = ["H1", "V1", "H2", "V2"];
             const polOf = (k) => k[0];                  // "H" or "V"

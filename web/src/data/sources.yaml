@@ -120,6 +120,17 @@
   type: paper
   doi: "10.1126/sciadv.adf4080"
 
+- id: hauser-npjqi-2025
+  title: "Boosted Bell-state measurements for photonic quantum computation"
+  authors: ["Nico Hauser", "Matthias J. Bayerbach", "Simone E. D'Aurelio", "Raphael Weber", "Matteo Santandrea", "Shreya P. Kumar", "Ish Dhand", "Stefanie Barz"]
+  publisher: "npj Quantum Information"
+  year: 2025
+  volume: "11"
+  pages: "41"
+  type: paper
+  doi: "10.1038/s41534-025-00986-2"
+  note: "Boosted-BSM scheme using ancillary photon pairs and a 4×4 multiport interferometer raises the linear-optics BSM ceiling from 50 % to 75 % in theory; experimentally demonstrates (69.3 ± 0.3) %. Companion to Bayerbach SciAdv 2023; relevant to LOI §1a(vii) on going beyond the linear-optics ceiling."
+
 - id: calsamiglia-aphysb-2001
   title: "Maximum efficiency of a linear-optical Bell-state analyzer"
   authors: ["Jordi Calsamiglia", "Norbert Lütkenhaus"]
