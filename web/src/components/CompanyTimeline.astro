@@ -219,10 +219,12 @@ for (const p of points) {
                 y={p.boxTop}
                 width={BOX_W}
                 height={BOX_H}
+                overflow="visible"
               >
                 <div
                   xmlns="http://www.w3.org/1999/xhtml"
-                  class={`ct-card ct-card--${p.kind}`}
+                  class={`ct-card ct-card--${p.kind} ct-card--${p.above ? "above" : "below"}`}
+                  tabindex="0"
                   title={`${p.dateLabel} — ${p.label}`}
                 >
                   <div class="ct-card-date">{p.dateLabel}</div>
@@ -329,6 +331,9 @@ for (const p of points) {
   }
 
   /* Cards (foreignObject content) */
+  /* Let the hover-scaled card paint outside its foreignObject viewport. */
+  :global(.ct-event foreignObject) { overflow: visible; }
+
   :global(.ct-card) {
     box-sizing: border-box;
     block-size: 100%;
@@ -340,7 +345,20 @@ for (const p of points) {
     gap: 3px;
     align-content: start;
     font-family: var(--font-sans, system-ui);
+    position: relative;
+    cursor: default;
+    transition:
+      transform 140ms ease,
+      border-color 140ms ease,
+      box-shadow 140ms ease,
+      background 140ms ease;
   }
+  /* Cards above the axis should grow upward when hovered so the bottom
+     edge (which the connector touches) stays anchored. Cards below the
+     axis grow downward for the same reason. */
+  :global(.ct-card--above) { transform-origin: bottom center; }
+  :global(.ct-card--below) { transform-origin: top center; }
+
   :global(.ct-card--milestone) {
     background: color-mix(in srgb, var(--color-accent) 9%, var(--card-bg));
     border-color: color-mix(in srgb, var(--color-accent) 45%, var(--card-border));
@@ -350,9 +368,16 @@ for (const p of points) {
     border-style: dashed;
     border-color: var(--color-accent);
   }
-  :global(.ct-card:hover) {
+  :global(.ct-card:hover),
+  :global(.ct-card:focus-visible) {
     border-color: var(--color-accent);
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-accent) 50%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 16%, var(--card-bg));
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.16),
+      0 0 0 1px var(--color-accent);
+    transform: scale(1.22);
+    z-index: 10;
+    outline: none;
   }
   :global(.ct-card-date) {
     font-family: var(--font-mono);
@@ -368,6 +393,14 @@ for (const p of points) {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  /* On hover, drop the clamp so the full text can show alongside the
+     scaled-up font. The card's transform-scale handles the visible
+     font growth without reflowing the surrounding layout. */
+  :global(.ct-card:hover .ct-card-headline),
+  :global(.ct-card:focus-visible .ct-card-headline) {
+    -webkit-line-clamp: unset;
+    overflow: visible;
   }
 
   /* Legend */
