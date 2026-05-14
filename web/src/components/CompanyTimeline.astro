@@ -85,21 +85,14 @@ const BOX_H = 78;                  // visible card height in default state
 const BOX_H_OUTER = 150;           // foreignObject height — gives the card
                                    // room to grow on hover without clipping
 const HOVER_SLACK = BOX_H_OUTER - BOX_H;
-// Vertical placement of card *top edge* (default state) for each level.
+const STACK_GAP = 8;
+// Base vertical placement of card *top edge* (depth 0) for each level.
 const LEVEL_Y = [
-  AXIS_Y - 60 - BOX_H,  // above-near (card just above axis)
+  AXIS_Y - 60 - BOX_H,  // above-near
   AXIS_Y + 60,          // below-near
   AXIS_Y - 180 - BOX_H, // above-far
   AXIS_Y + 180,         // below-far
 ];
-// SVG must include hover-slack room: above-axis cards can grow upward
-// (foreignObject extends above the visible card by HOVER_SLACK px), and
-// below-axis cards can grow downward by the same amount.
-const SVG_TOP =
-  Math.min(LEVEL_Y[0], LEVEL_Y[2]) - HOVER_SLACK - 8;
-const SVG_BOTTOM =
-  Math.max(LEVEL_Y[1] + BOX_H, LEVEL_Y[3] + BOX_H) + HOVER_SLACK + 28;
-const H = SVG_BOTTOM - SVG_TOP;
 
 // foreignObject Y per card. Above-axis cards anchor to the foreignObject
 // bottom edge so the connector-facing edge stays put; below-axis cards
@@ -129,32 +122,68 @@ type Placed = Point & {
   boxTop: number;
   above: boolean;
 };
+/**
+ * Pack the events into the 4 stagger levels. If all 4 conflict at the
+ * given x (a dense cluster — IBM 2025 has six events within ~40 px),
+ * stack the card *away from the axis* along the same level (depth=1, 2,
+ * …). The connector line still runs from the axis dot to the card edge,
+ * just longer. Final SVG height is recomputed from the actual y-extent.
+ */
 const placements: Placed[] = [];
 for (const p of points) {
   const x = xForYear(p.fracYear);
-  // Try levels in priority order, alternating which side we hit first
-  // so consecutive items don't pile up on the same side of the axis.
   const order = [0, 1, 2, 3];
   const startIdx = placements.length % 2;
   const tryOrder = [...order.slice(startIdx), ...order.slice(0, startIdx)];
-  let chosen = tryOrder[0];
-  for (const lvl of tryOrder) {
-    chosen = lvl;
-    const conflict = placements.some((q) => {
-      if (q.boxTop !== LEVEL_Y[lvl]) return false;
-      return Math.abs(q.x - x) < BOX_W + 8;
-    });
-    if (!conflict) break;
+
+  let chosenTop = LEVEL_Y[tryOrder[0]];
+  let chosenAbove = chosenTop < AXIS_Y;
+  let placed = false;
+
+  for (let depth = 0; depth < 8 && !placed; depth++) {
+    for (const lvl of tryOrder) {
+      const baseTop = LEVEL_Y[lvl];
+      const above = baseTop < AXIS_Y;
+      const candidateTop = above
+        ? baseTop - depth * (BOX_H + STACK_GAP)
+        : baseTop + depth * (BOX_H + STACK_GAP);
+      const conflict = placements.some((q) => {
+        const xOverlap = Math.abs(q.x - x) < BOX_W + 4;
+        if (!xOverlap) return false;
+        return !(
+          candidateTop + BOX_H + 4 < q.boxTop ||
+          candidateTop > q.boxTop + BOX_H + 4
+        );
+      });
+      if (!conflict) {
+        chosenTop = candidateTop;
+        chosenAbove = above;
+        placed = true;
+        break;
+      }
+    }
   }
-  const boxTop = LEVEL_Y[chosen];
+
   placements.push({
     ...p,
     x,
     boxLeft: clampBoxLeft(x),
-    boxTop,
-    above: boxTop < AXIS_Y,
+    boxTop: chosenTop,
+    above: chosenAbove,
   });
 }
+
+// Compute SVG bounds from where the placements actually landed, including
+// hover-slack room on the connector-far side.
+const minTopActual = placements.length
+  ? Math.min(...placements.map((p) => p.boxTop))
+  : LEVEL_Y[0];
+const maxBotActual = placements.length
+  ? Math.max(...placements.map((p) => p.boxTop + BOX_H))
+  : LEVEL_Y[1] + BOX_H;
+const SVG_TOP = minTopActual - HOVER_SLACK - 8;
+const SVG_BOTTOM = maxBotActual + HOVER_SLACK + 28;
+const H = SVG_BOTTOM - SVG_TOP;
 ---
 
 {hasContent ? (
