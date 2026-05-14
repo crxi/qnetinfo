@@ -81,18 +81,32 @@ const AXIS_Y = 260;
 const AXIS_W = W - PAD_L - PAD_R;
 
 const BOX_W = 170;
-const BOX_H = 78;
-// Vertical placement of card *top edge* for each stagger level.
+const BOX_H = 78;                  // visible card height in default state
+const BOX_H_OUTER = 150;           // foreignObject height — gives the card
+                                   // room to grow on hover without clipping
+const HOVER_SLACK = BOX_H_OUTER - BOX_H;
+// Vertical placement of card *top edge* (default state) for each level.
 const LEVEL_Y = [
-  AXIS_Y - 60 - BOX_H, // above near (card just above axis)
-  AXIS_Y + 60,         // below near
-  AXIS_Y - 180 - BOX_H, // ABOVE FAR was unused if too tall; use moderate
-  AXIS_Y + 180,        // below far
+  AXIS_Y - 60 - BOX_H,  // above-near (card just above axis)
+  AXIS_Y + 60,          // below-near
+  AXIS_Y - 180 - BOX_H, // above-far
+  AXIS_Y + 180,         // below-far
 ];
-// Trim: with these constants the SVG needs H ≈ above_far_top + room → recompute.
-const SVG_TOP = Math.min(...LEVEL_Y) - 8;
-const SVG_BOTTOM = Math.max(LEVEL_Y[1] + BOX_H, LEVEL_Y[3] + BOX_H) + 28;
+// SVG must include hover-slack room: above-axis cards can grow upward
+// (foreignObject extends above the visible card by HOVER_SLACK px), and
+// below-axis cards can grow downward by the same amount.
+const SVG_TOP =
+  Math.min(LEVEL_Y[0], LEVEL_Y[2]) - HOVER_SLACK - 8;
+const SVG_BOTTOM =
+  Math.max(LEVEL_Y[1] + BOX_H, LEVEL_Y[3] + BOX_H) + HOVER_SLACK + 28;
 const H = SVG_BOTTOM - SVG_TOP;
+
+// foreignObject Y per card. Above-axis cards anchor to the foreignObject
+// bottom edge so the connector-facing edge stays put; below-axis cards
+// anchor to the top edge for the same reason.
+function foreignObjectY(boxTop: number, above: boolean): number {
+  return above ? boxTop + BOX_H - BOX_H_OUTER : boxTop;
+}
 
 function xForYear(y: number): number {
   return PAD_L + ((y - yearStart) / (yearEnd - yearStart)) * AXIS_W;
@@ -216,19 +230,23 @@ for (const p of points) {
               )}
               <foreignObject
                 x={p.boxLeft}
-                y={p.boxTop}
+                y={foreignObjectY(p.boxTop, p.above)}
                 width={BOX_W}
-                height={BOX_H}
+                height={BOX_H_OUTER}
                 overflow="visible"
               >
                 <div
                   xmlns="http://www.w3.org/1999/xhtml"
-                  class={`ct-card ct-card--${p.kind} ct-card--${p.above ? "above" : "below"}`}
-                  tabindex="0"
-                  title={`${p.dateLabel} — ${p.label}`}
+                  class={`ct-card-frame ct-card-frame--${p.above ? "above" : "below"}`}
                 >
-                  <div class="ct-card-date">{p.dateLabel}</div>
-                  <div class="ct-card-headline">{p.label}</div>
+                  <div
+                    class={`ct-card ct-card--${p.kind} ct-card--${p.above ? "above" : "below"}`}
+                    tabindex="0"
+                    title={`${p.dateLabel} — ${p.label}`}
+                  >
+                    <div class="ct-card-date">{p.dateLabel}</div>
+                    <div class="ct-card-headline">{p.label}</div>
+                  </div>
                 </div>
               </foreignObject>
             </g>
@@ -331,12 +349,33 @@ for (const p of points) {
   }
 
   /* Cards (foreignObject content) */
-  /* Let the hover-scaled card paint outside its foreignObject viewport. */
+  /* foreignObject is sized to BOX_H_OUTER so an expanded hover card has
+     room to grow inside it without clipping. */
   :global(.ct-event foreignObject) { overflow: visible; }
+
+  /* Frame fills the foreignObject. Card is absolutely positioned and
+     anchored to the connector-side edge, so when it grows on hover
+     it expands away from the axis instead of pushing the connector
+     point. */
+  :global(.ct-card-frame) {
+    position: relative;
+    block-size: 100%;
+    inline-size: 100%;
+  }
+  :global(.ct-card-frame--above .ct-card) {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+  }
+  :global(.ct-card-frame--below .ct-card) {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+  }
 
   :global(.ct-card) {
     box-sizing: border-box;
-    block-size: 100%;
+    block-size: 78px;
     padding: 6px 8px 7px;
     border: 1px solid var(--card-border);
     border-radius: 5px;
@@ -345,20 +384,14 @@ for (const p of points) {
     gap: 3px;
     align-content: start;
     font-family: var(--font-sans, system-ui);
-    position: relative;
     cursor: default;
     transition:
-      transform 140ms ease,
+      block-size 160ms ease,
+      padding 160ms ease,
       border-color 140ms ease,
       box-shadow 140ms ease,
       background 140ms ease;
   }
-  /* Cards above the axis should grow upward when hovered so the bottom
-     edge (which the connector touches) stays anchored. Cards below the
-     axis grow downward for the same reason. */
-  :global(.ct-card--above) { transform-origin: bottom center; }
-  :global(.ct-card--below) { transform-origin: top center; }
-
   :global(.ct-card--milestone) {
     background: color-mix(in srgb, var(--color-accent) 9%, var(--card-bg));
     border-color: color-mix(in srgb, var(--color-accent) 45%, var(--card-border));
@@ -370,12 +403,17 @@ for (const p of points) {
   }
   :global(.ct-card:hover),
   :global(.ct-card:focus-visible) {
+    /* Grow to fit the full text + the bumped font. The card's
+       connector-side edge is anchored, so the growth direction is
+       always away from the axis. */
+    block-size: auto;
+    min-block-size: 78px;
+    padding: 8px 10px 9px;
     border-color: var(--color-accent);
     background: color-mix(in srgb, var(--color-accent) 16%, var(--card-bg));
     box-shadow:
       0 6px 18px rgba(0, 0, 0, 0.16),
       0 0 0 1px var(--color-accent);
-    transform: scale(1.22);
     z-index: 10;
     outline: none;
   }
@@ -384,6 +422,7 @@ for (const p of points) {
     font-size: 10px;
     color: var(--color-text-mute);
     letter-spacing: 0.04em;
+    transition: font-size 160ms ease;
   }
   :global(.ct-card-headline) {
     font-size: 11px;
@@ -393,14 +432,21 @@ for (const p of points) {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: font-size 160ms ease, line-height 160ms ease;
   }
-  /* On hover, drop the clamp so the full text can show alongside the
-     scaled-up font. The card's transform-scale handles the visible
-     font growth without reflowing the surrounding layout. */
+  /* Hover: bump font + reveal full headline. The card grows in height
+     to accommodate, anchored on the connector side. */
+  :global(.ct-card:hover .ct-card-date),
+  :global(.ct-card:focus-visible .ct-card-date) {
+    font-size: 11.5px;
+  }
   :global(.ct-card:hover .ct-card-headline),
   :global(.ct-card:focus-visible .ct-card-headline) {
+    font-size: 13.5px;
+    line-height: 1.42;
     -webkit-line-clamp: unset;
     overflow: visible;
+    display: block;
   }
 
   /* Legend */
