@@ -1300,6 +1300,32 @@ const sections = [
     color: var(--color-text-mute);
   }
 
+  /* Classes used inside the inline 1G repeater SVG. */
+  :global(.g1-matter)      { fill: #22c55e; stroke: #1a1f2a; stroke-width: 1.2; }
+  :global(.g1-matter-used) { fill: #c9ced6; stroke: #aab0ba; stroke-width: 1.0; }
+  :global(.g1-photon)      { fill: #2f6fd6; stroke: #1a1f2a; stroke-width: 1.0; }
+  :global(.g1-ent)         { stroke: #c84a9b; stroke-width: 2; fill: none; stroke-linecap: round; }
+  :global(.g1-mp-wave)     { stroke: #c84a9b; stroke-width: 1.6; fill: none; }
+  :global(.g1-photon-path) { stroke: #6a7180; stroke-width: 0.9; fill: none; stroke-dasharray: 3 3; }
+  :global(.g1-bm-box)      { fill: none; stroke: #5a6472; stroke-width: 1.2; stroke-dasharray: 4 3; }
+  :global(.g1-dev-box)     { fill: none; stroke: #5a6472; stroke-width: 1.2; stroke-dasharray: 4 3; }
+  :global(.g1-lbl)         { font-size: 13px; fill: var(--color-text); font-weight: 600; }
+  :global(.g1-lbl-relay)   { font-size: 14px; fill: var(--color-text-mute); font-style: italic; }
+  :global(.g1-lbl-mu)      { font-size: 10.5px; fill: var(--color-text-mute); }
+  :global(.g1-lbl-stage)   { font-size: 12px; fill: var(--color-text); font-weight: 700; letter-spacing: 0.04em; }
+  :global(.g1-lbl-ann)     { font-size: 14px; fill: var(--color-text); font-weight: 600; text-anchor: middle; }
+  :global(.g1-lbl-ann-sm)  { font-size: 9.5px; fill: var(--color-text-mute); }
+  :global(.g1-bsm-glass)   { fill: #d9eef9; stroke: #1a1f2a; stroke-width: 4; stroke-linejoin: round; }
+  :global(.g1-bsm-coat)    { stroke: #1a1f2a; stroke-width: 3; stroke-linecap: round; }
+  :global(.g1-bsm-bs)      { fill: #1a1f2a; stroke: none; }
+  :global(.g1-bsm-beam)    { stroke: #5a6472; stroke-width: 6; fill: none; stroke-linecap: round; }
+  :global(.g1-bsm-det)     { fill: #1a1f2a; stroke: #1a1f2a; stroke-width: 0.5; }
+  :global(.g1-cb-pulse)    { fill: var(--color-text); }
+  :global(.g1-cb-line)     { stroke: var(--color-text-mute); stroke-width: 1; stroke-dasharray: 3 2; fill: none; opacity: 0.55; }
+  :global(.g1-herald)      { fill: #fbbf24; stroke: #b45309; stroke-width: 0.8; }
+  :global(.g1-pulse-box)   { fill: none; stroke: #fbbf24; stroke-width: 2.5; }
+
+
   ol.sw-step-list {
     margin: 0;
     padding: 0;
