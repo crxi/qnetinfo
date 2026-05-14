@@ -467,13 +467,12 @@ const sections = [
               <text class="g1-lbl-mu" x="740" y="355" text-anchor="middle">Bell measurement</text>
               <circle class="g1-matter" cx="938" cy="325" r="11"/>
               <text class="g1-lbl" x="938" y="329" text-anchor="middle">B</text>
-              {/* Classical-bit pulse lines: both R₁ and R₃ ship their
-                  2-bit outcomes rightward to B so all corrections
-                  compose at one endpoint. R₁'s line is offset to
-                  y=345 so the long flight is visually distinct from
-                  R₃'s shorter one at y=325. */}
-              <line class="g1-cb-line" x1="354" y1="345" x2="927" y2="345"/>
-              <line class="g1-cb-line" x1="766" y1="325" x2="927" y2="325"/>
+              {/* Classical-bit pulse lines: both bits converge inward
+                  at R₂. R₁'s outcome corrects R₂'s left qubit; R₃'s
+                  outcome corrects R₂'s right qubit — so the next swap
+                  at R₂ operates on clean Bell pairs. */}
+              <line class="g1-cb-line" x1="354" y1="325" x2="510" y2="325"/>
+              <line class="g1-cb-line" x1="714" y1="325" x2="558" y2="325"/>
               <text class="g1-lbl-ann" x="1040" y="363">Repeat</text>
               <text class="g1-lbl-ann" x="1040" y="380">until</text>
               <text class="g1-lbl-ann" x="1040" y="397">success</text>
@@ -557,14 +556,15 @@ const sections = [
             of a 1G chain is therefore bounded not by photon loss alone but by how
             long each memory can hold while the slowest classical message is in
             flight. <br/><br/>
-            <strong>Where the swap bits go.</strong> Physically, either qubit in a
-            swapped Bell pair can carry the Pauli correction, so the bits can flow
-            either way. The convention drawn here — and the one most 1G protocols
-            adopt — is to <strong>compose all corrections at one endpoint</strong>
-            (B in this figure), so every swap's 2-bit outcome flows rightward and B
-            applies a single composed Pauli at the end. Sending some bits to A and
-            some to B would work too, but composing at one end keeps the bookkeeping
-            simpler. Each row is a <em>repeat-until-success</em> loop — EG retries
+            <strong>Where the swap bits go.</strong> In the 1st E Swap, both R₁
+            and R₃ ship their 2-bit outcomes <strong>inward to R₂</strong> — R₁'s
+            bits correct R₂'s left qubit, R₃'s bits correct R₂'s right qubit, so
+            R₂'s upcoming BSM operates on a clean pair of Bell states. R₂ then
+            performs its swap and sends its own 2-bit outcome rightward to B,
+            which applies the final Pauli correction. (Either endpoint of a Bell
+            pair can in principle hold the correction; the simplest pedagogical
+            flow is to apply each one as soon as the bits arrive so the next swap
+            sees clean inputs.) Each row is a <em>repeat-until-success</em> loop — EG retries
             until the herald fires, every swap retries until its BSM succeeds
             (currently shown deterministic; loss retries can be toggled on).
           </figcaption>
@@ -1012,11 +1012,12 @@ const sections = [
       ph1: { from: { x: 431, y: 145 }, to: { x: 431, y: 120 } },
       ph2: { from: { x: 637, y: 145 }, to: { x: 637, y: 120 } },
       ph3: { from: { x: 845, y: 145 }, to: { x: 845, y: 120 } },
-      // Both r1 and r3 ship rightward to B; r1 at y=345 (long path)
-      // sits below r3 at y=325 so the two travelling pulses don't
-      // overlap. Matches the "compose all corrections at B" convention.
-      r1:  { from: { x: 354, y: 345 }, to: { x: 927, y: 345 } },
-      r3:  { from: { x: 766, y: 325 }, to: { x: 927, y: 325 } },
+      // Both 1st-ES bits converge at R₂: R₁ ships rightward to
+      // correct R₂'s left qubit; R₃ ships leftward to correct R₂'s
+      // right qubit. After both corrections land, R₂ can do its own
+      // BSM on a clean Bell pair.
+      r1:  { from: { x: 354, y: 325 }, to: { x: 510, y: 325 } },
+      r3:  { from: { x: 714, y: 325 }, to: { x: 558, y: 325 } },
       r2:  { from: { x: 560, y: 455 }, to: { x: 927, y: 455 } },
     };
     function moveCbAlong(key, t) {
