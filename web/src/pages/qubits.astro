@@ -84,18 +84,14 @@ const sections = [
           page covers what those trade-offs are.
         </p>
 
-        <Callout label="Superposition">
+        <Callout label="Superposition vs. classical mixture">
           <p>
-            <strong>Superposition</strong> is the technical name for the state
-            <Math tex="\\alpha|0\\rangle + \\beta|1\\rangle" />: the qubit is in a coherent
-            combination of <Math tex="|0\\rangle" /> and <Math tex="|1\\rangle" />, not in
-            either one yet, and not in a classical mixture of the two either. The
-            difference matters: a classical mixture would mean <q>the qubit is 0 or 1, we
-            just don't know which</q>; a superposition is genuinely both at once,
-            interfering with itself in ways no classical mixture can reproduce. Measurement
-            in the computational basis collapses the superposition to <Math tex="|0\\rangle" />
-            or <Math tex="|1\\rangle" /> with probabilities <Math tex="|\\alpha|^2" /> and
-            <Math tex="|\\beta|^2" />.
+            The distinction matters: a <strong>classical mixture</strong> would mean
+            <q>the qubit is 0 or 1, we just don't know which</q> — ignorance about a state
+            that is one of the two. A <strong>superposition</strong> is genuinely both at
+            once, interfering with itself in ways no classical mixture can reproduce. The
+            two are statistically distinguishable in any basis other than the
+            computational one.
           </p>
           <p>
             Superposition is the single-qubit version of the resource quantum networks
