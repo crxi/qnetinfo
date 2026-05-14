@@ -568,6 +568,10 @@ if (figure) {
       thetaIn.value = String(p.theta);
       phiIn.value   = String(p.phi);
       update();
+      // Drop focus so a later Space/Enter (commonly used to scroll
+      // the page) doesn't re-trigger this button and surprise-reset
+      // the demo.
+      btn.blur();
     });
   });
 
@@ -578,7 +582,12 @@ if (figure) {
   controls.saveState();
   const resetViewBtn = figure.querySelector("[data-bloch-reset-view]");
   if (resetViewBtn) {
-    resetViewBtn.addEventListener("click", () => controls.reset());
+    resetViewBtn.addEventListener("click", () => {
+      controls.reset();
+      // Same focus-trap fix — pressing Space to scroll after using
+      // this button would otherwise reset the camera again.
+      resetViewBtn.blur();
+    });
   }
 
   // ---- Resize / render loop ----
