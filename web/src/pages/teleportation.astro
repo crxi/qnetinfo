@@ -130,14 +130,17 @@ const sections = [
                   fill="none" stroke="var(--color-rule)" stroke-width="1"
                   stroke-dasharray="4,3" opacity="0.55"/>
 
-            {/* Photon labels above clouds */}
-            <text x="130" y="54" text-anchor="middle" class="tp-slot-label">C</text>
-            <text x="210" y="54" text-anchor="middle" class="tp-slot-label">A</text>
-            <text x="560" y="54" text-anchor="middle" class="tp-slot-label">B</text>
+            {/* Photon labels are inside each photon's <g> so they
+                translate with the qubit during the animation — when
+                C and A fly into the BSM apparatus, their labels go
+                with them. */}
 
-            {/* Bob's qubit B sits in its endpoint, awaiting correction. */}
+            {/* Bob's qubit B sits in its endpoint, awaiting correction.
+                Label rides with the group even though Bob doesn't move,
+                for consistency. */}
             <g data-tp-b transform="translate(560 95)">
               <circle data-tp-b-cloud r="20" fill="url(#tp-cloud-std)"/>
+              <text y="-41" text-anchor="middle" class="tp-slot-label">B</text>
             </g>
 
             {/* Entangled-pair wave A ↔ B */}
@@ -189,9 +192,11 @@ const sections = [
                 travel above its beams and optical elements. */}
             <g data-tp-c transform="translate(130 95)">
               <circle data-tp-c-cloud r="20" fill="url(#tp-cloud-psi)"/>
+              <text y="-41" text-anchor="middle" class="tp-slot-label">C</text>
             </g>
             <g data-tp-a transform="translate(210 95)">
               <circle data-tp-a-cloud r="20" fill="url(#tp-cloud-std)"/>
+              <text y="-41" text-anchor="middle" class="tp-slot-label">A</text>
             </g>
 
             {/* Classical channel — left end centred under the central BS
