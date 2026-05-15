@@ -1271,15 +1271,30 @@ const sections = [
           entFinal && entFinal.setAttribute("stroke-dashoffset", String(1 - e));
         }
         // -------- Hold --------
+        // Phase 4 leaves the three upper rows dimmed to 0.45 (history)
+        // and the final A↔B row at 1. Keep that state — restoring the
+        // upper rows to full opacity would erase the visual story of
+        // which rows have been consumed by the time we reach the result.
+        // The upper rows only come back to full opacity at the start
+        // of the next round, when Phase 1 fires (rows[0]=1 etc).
         else if (elapsed < T_TOTAL - T_PAUSE) {
           highlightStep(4);
-          rows.forEach((r) => setOpacity(r, 1));
+          setOpacity(rows[0], 0.45);
+          setOpacity(rows[1], 0.45);
+          setOpacity(rows[2], 0.45);
+          setOpacity(rows[3], 1);
           entFinal && entFinal.setAttribute("stroke-dashoffset", "0");
         } else if (elapsed < T_TOTAL) {
+          // T_PAUSE fade-out before the next cycle wraps to elapsed=0.
+          // Fade from the held 0.45 down to ~0.2 so the transition feels
+          // continuous with the start of the next round (where Phase 1
+          // sets the lower three rows to 0.22).
           const t = (elapsed - (T_TOTAL - T_PAUSE)) / T_PAUSE;
-          setOpacity(rows[0], 1 - t * 0.8);
-          setOpacity(rows[1], 1 - t * 0.8);
-          setOpacity(rows[2], 1 - t * 0.8);
+          const dim = 0.45 - t * 0.23;
+          setOpacity(rows[0], dim);
+          setOpacity(rows[1], dim);
+          setOpacity(rows[2], dim);
+          setOpacity(rows[3], 1 - t * 0.5);
         }
         updatePhaseLabel(elapsed);
       }
