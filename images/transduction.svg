@@ -72,8 +72,8 @@
 
   <!-- Communication qubit -->
   <circle class="comm" cx="200" cy="293" r="20"/>
-  <text class="blk-lbl" x="200" y="340">communication qubit</text>
-  <text class="blk-sub" x="200" y="356">SiV in diamond · native 737 nm</text>
+  <text class="blk-lbl" x="200" y="340">communication / memory qubit</text>
+  <text class="blk-sub" x="200" y="356">SiV — electron spin emits; nuclear spin stores</text>
 
   <!-- Down to QFC -->
   <line class="conn" x1="200" y1="367" x2="200" y2="388"/>
@@ -107,8 +107,8 @@
 
   <line class="conn" x1="900" y1="240" x2="900" y2="270"/>
   <circle class="comm" cx="900" cy="293" r="20"/>
-  <text class="blk-lbl" x="900" y="340">communication qubit</text>
-  <text class="blk-sub" x="900" y="356">SiV in diamond · native 737 nm</text>
+  <text class="blk-lbl" x="900" y="340">communication / memory qubit</text>
+  <text class="blk-sub" x="900" y="356">SiV — electron spin emits; nuclear spin stores</text>
 
   <line class="conn" x1="900" y1="367" x2="900" y2="388"/>
   <rect class="qfc-blk" x="815" y="388" width="170" height="48" rx="6"/>
