@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-labelledby="td-title td-desc">
   <title id="td-title">End-to-end pipeline for moving a qubit between two quantum computers</title>
-  <desc id="td-desc">Two nodes A and B, each with compute qubits (transmons), an M-O transducer, a communication qubit (SiV at 737 nm), and a quantum frequency converter (QFC, 737 to 1550 nm). The QFCs connect to telecom fibre that meets at a midpoint photonic Bell-state measurement (pBSM). Phase 1 entangles the two communication qubits via photons that converge at the pBSM. Phase 2 teleports a transmon state by performing a local Bell measurement between transmon and communication qubit at A, sending two classical bits to B, and applying a correction at B. The quantum channel is used only in Phase 1.</desc>
+  <desc id="td-desc">Two nodes A and B, each with compute qubits (transmons), an M-O transducer, a communication qubit (SiV at 737 nm), and a quantum frequency converter (QFC, 737 to 1550 nm). The figure shows one hop in detail: Node A's outgoing fibre meets a photonic Bell-state measurement (pBSM) immediately after A. An ellipsis represents the further hops, pBSMs, and swap relays that complete the chain before reaching Node B. Phase 1 generates entanglement via photons that converge at the pBSMs; Phase 2 teleports a transmon state via local operations at A, classical bits across the chain, and a correction at B. The quantum channel is used only in Phase 1.</desc>
 
   <defs>
     <style>
@@ -121,39 +121,48 @@
   <circle class="photon" cx="765" cy="470" r="6"/>
   <text class="sub" x="830" y="490">1550 nm photon</text>
 
-  <!-- ════════════════════════════════ MIDPOINT pBSM ════════════════════════════════ -->
-  <rect class="bsm-blk" x="490" y="440" width="120" height="60" rx="6"/>
-  <text class="blk-lbl" x="550" y="465">pBSM</text>
-  <text class="blk-sub" x="550" y="483">50:50 BS + 2 SNSPDs</text>
+  <!-- ════════════════════════════════ pBSM (Node A's local, immediately after A's fibre) ════════════════════════════════ -->
+  <rect class="bsm-blk" x="370" y="440" width="120" height="60" rx="6"/>
+  <text class="blk-lbl" x="430" y="465">pBSM</text>
+  <text class="blk-sub" x="430" y="483">50:50 BS + 2 SNSPDs</text>
+  <text class="sub" x="430" y="514" font-style="italic">A's local pBSM</text>
 
-  <!-- ════════════════════════════════ PHASE 1 FLOW: photons → pBSM ════════════════════════════════ -->
-  <!-- Photon from A flows right into pBSM -->
-  <line class="q-arrow" x1="345" y1="470" x2="490" y2="470" marker-end="url(#qhead)"/>
-  <!-- Photon from B flows left into pBSM -->
-  <line class="q-arrow" x1="755" y1="470" x2="610" y2="470" marker-end="url(#qhead)"/>
-  <!-- Fibre label -->
-  <text class="sub" x="420" y="513">telecom fibre</text>
-  <text class="sub" x="680" y="513">telecom fibre</text>
+  <!-- ════════════════════════════════ PHASE 1 FLOW ════════════════════════════════ -->
+  <!-- Photon from A flows right into A's local pBSM -->
+  <line class="q-arrow" x1="345" y1="470" x2="370" y2="470" marker-end="url(#qhead)"/>
+  <!-- Second photon converges at A's local pBSM from the next hop (which is in the ellipsis) -->
+  <line class="q-arrow" x1="620" y1="470" x2="490" y2="470" marker-end="url(#qhead)"/>
+  <!-- B's outgoing photon flows left into B's local pBSM (hidden in the ellipsis) -->
+  <line class="q-arrow" x1="755" y1="470" x2="720" y2="470" marker-end="url(#qhead)"/>
 
-  <!-- Phase-1 tag chips on the arrows -->
+  <!-- Fibre labels -->
+  <text class="sub" x="357" y="535">telecom fibre</text>
+  <text class="sub" x="737" y="535">telecom fibre</text>
+
+  <!-- ════════════════════════════════ ELLIPSIS — chain continues ════════════════════════════════ -->
+  <text x="630" y="478" text-anchor="middle" font-size="38" font-weight="700" fill="#7a808b">…</text>
+  <text class="sub" x="630" y="510" font-style="italic">further hops, swap relays,</text>
+  <text class="sub" x="630" y="525" font-style="italic">and their own pBSMs</text>
+
+  <!-- Phase-1 tag chip on A's emission arrow -->
   <g>
-    <circle cx="412" cy="470" r="9" fill="#2272dd"/>
-    <text class="phase-tag" x="412" y="474">1</text>
+    <circle cx="357" cy="470" r="9" fill="#2272dd"/>
+    <text class="phase-tag" x="357" y="474">1</text>
   </g>
   <g>
-    <circle cx="688" cy="470" r="9" fill="#2272dd"/>
-    <text class="phase-tag" x="688" y="474">1</text>
+    <circle cx="737" cy="470" r="9" fill="#2272dd"/>
+    <text class="phase-tag" x="737" y="474">1</text>
   </g>
 
   <!-- ════════════════════════════════ BELL PAIR (wavy line — workspace convention) ════════════════════════════════ -->
   <!-- 20 quadratic segments × 33 px = 660 px span, from right edge of comm-A (220,293) to left edge of comm-B (880,293) -->
   <path class="bell" d="M 220,293 q 16.5,-9 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0"/>
-  <text class="bell-lbl" x="550" y="270">comm-A ↔ comm-B entangled  (after Phase 1)</text>
+  <text class="bell-lbl" x="550" y="270">comm-A ↔ comm-B entangled — end-to-end after the swap chain completes</text>
 
   <!-- ════════════════════════════════ CLASSICAL CHANNEL BUS ════════════════════════════════ -->
   <!-- Horizontal classical bus at the bottom; branches up to each node and up to the pBSM -->
   <path class="c-arrow" d="M 200 560 L 200 615 L 900 615 L 900 560" marker-end="url(#chead)"/>
-  <line class="c-arrow" x1="550" y1="500" x2="550" y2="615"/>
+  <line class="c-arrow" x1="430" y1="500" x2="430" y2="615"/>
   <text class="sub" x="550" y="640" font-weight="600">classical channel — herald (Phase 1) + BSM outcome bits (Phase 2)</text>
 
   <!-- Phase-2 chips on the classical channel (one at A going down, one at the bus going right, one at B going up) -->
