@@ -40,6 +40,7 @@ const sections = [
   { id: "qfc",          label: "QFC: visible to telecom" },
   { id: "mo",           label: "Microwave-to-optical" },
   { id: "bottleneck",   label: "Why M-O is the bottleneck" },
+  { id: "progress",     label: "Progress on the cross-modality pipeline" },
   { id: "encodings",    label: "Encoding translation" },
   { id: "forward",      label: "Forward references" },
 ];
@@ -425,6 +426,79 @@ const sections = [
           transduction as the precondition for connecting microwave processors to a
           quantum internet <SourceNote id="lauk-qst-2020" />.
         </p>
+      </section>
+
+      <section id="progress" data-nav-section>
+        <h2>Progress on the cross-modality pipeline — what has actually been built</h2>
+        <p>
+          The pipeline figure earlier on this page draws an
+          <em>aspirational</em> system — transmon compute + cross-modality M-O
+          transducer + SiV memory + QFC + fibre + pBSM — assembled from the
+          reference architecture in Awschalom et al. (PRX Quantum 2021) <SourceNote
+          id="awschalom-prxquantum-2021" />. No published experiment yet runs the
+          whole thing end-to-end between two distant computers. What has been
+          published is a sequence of partial demonstrations, each closing one of
+          the boxes in the figure. Worth tracking because together they show how
+          fast (or slow) the engineering is moving.
+        </p>
+
+        <h3>Knaut <em>et&nbsp;al.</em>, Nature 629, 573 (2024)</h3>
+        <p>
+          The <strong>same-modality</strong> reference experiment. Two SiV-in-diamond
+          nodes in Cambridge and Boston, 35&nbsp;km of deployed telecom fibre at
+          1350&nbsp;nm (with PPLN QFC from the SiV's native 737&nbsp;nm), midpoint
+          photonic BSM, and entanglement heralded across the link. Each node carries
+          two qubits inside the <em>same</em> SiV centre — an electron spin
+          (communication, couples to the photon) and a ²⁹Si nuclear spin (memory,
+          stores the entanglement after the herald). No transmon. The whole node
+          fits in one defect. This is the closest thing to a built end-to-end
+          quantum network primitive; it is also the cleanest demonstration that
+          when comm + memory live in the same atom, interface 2 disappears
+          <SourceNote id="knaut-nature-2024" />.
+        </p>
+
+        <h3>Warner <em>et&nbsp;al.</em>, Nature Physics 21, 831 (2025)</h3>
+        <p>
+          The first <strong>interface 2 working at single-photon level on a
+          transmon</strong>. The Lončar group at Harvard, with Rigetti supplying the
+          superconducting qubit, used a thin-film lithium-niobate electro-optic
+          transducer to drive a transmon coherently with optical pulses —
+          optically-driven Rabi oscillations on a real superconducting qubit
+          without measurable degradation of its coherence time. Conversion
+          efficiency up to 1.18%. Single node, no fibre between two QCs, but this
+          closes the box marked "M-O transducer" on the cross-modality node
+          <SourceNote id="warner-natphys-2025" />.
+        </p>
+
+        <h3>Zhou &amp; Tang <em>et&nbsp;al.</em>, Nature Photonics 20, 579 (2026)</h3>
+        <p>
+          The first <strong>kilometre-scale photonic link between two
+          superconducting fridges</strong>. Two AlN electro-optic transducers
+          ("Felix" and "Albert") sit in two separate dilution refrigerators at
+          Yale, each up- and down-converting between ~5&nbsp;GHz microwave
+          and 1573&nbsp;nm telecom optical via a 1&nbsp;km fibre. Reported on-chip
+          transduction efficiency &gt;0.1% per node, end-to-end link transmission
+          &minus;60&nbsp;dB. For comparison, a 1&nbsp;km coaxial cable at 5&nbsp;GHz
+          would lose ~1000&nbsp;dB; a pair of commercial electro-optic modulators
+          would lose &minus;140&nbsp;dB. Same shape as the figure above, but the
+          link is still <em>coherent classical</em>, not yet quantum-enabled.
+          To distribute entanglement, transducer efficiency has to climb from
+          ~0.1% into the percent-to-tens-of-percent range with sub-photon added
+          noise <SourceNote id="zhou-natphoton-2026" />.
+        </p>
+
+        <Callout label="What still hasn't been demonstrated">
+          <p>
+            No paper as of early 2026 shows: transmon-A → M-O → matter memory
+            → QFC → telecom fibre → midpoint pBSM herald → mirrored stack at B
+            → transmon-B, executing a remote operation (e.g. teleported gate)
+            between the two superconducting computers. The pieces above are
+            closing the boxes one by one. The remaining gap is the
+            <em>coordination</em>: a single experiment that runs all of them
+            in series, with quantum-noise-limited transducers replacing the
+            classical-coherent ones in Zhou-Tang.
+          </p>
+        </Callout>
       </section>
 
       <section id="encodings" data-nav-section>

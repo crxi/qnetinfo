@@ -329,6 +329,22 @@
   type: paper
   doi: "10.1103/PRXQuantum.2.017002"
 
+- id: warner-natphys-2025
+  title: "Coherent control of a superconducting qubit using light"
+  authors: ["Hana K. Warner", "Jeffrey Holzgrafe", "Beatriz Yankelevich", "et al.", "Matthew Reagor", "Marko Lončar"]
+  publisher: "Nature Physics"
+  year: 2025
+  type: paper
+  doi: "10.1038/s41567-025-02812-0"
+
+- id: zhou-natphoton-2026
+  title: "A 1-km photonic link connecting superconducting circuits in two dilution refrigerators"
+  authors: ["Yiyu Zhou", "Yufeng Wu", "Chunzhen Li", "Mohan Shen", "Likai Yang", "Jiacheng Xie", "Hong X. Tang"]
+  publisher: "Nature Photonics"
+  year: 2026
+  type: paper
+  doi: "10.1038/s41566-026-01866-7"
+
 - id: jones-njp-2016
   title: "Design and analysis of communication protocols for quantum repeater networks"
   authors: ["Cody Jones", "Danny Kim", "Matthew T. Rakher", "Paul G. Kwiat", "Thaddeus D. Ladd"]

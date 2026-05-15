@@ -55,11 +55,12 @@
   <rect class="frame" x="60" y="60" width="280" height="500" rx="6"/>
   <text class="node-lbl" x="200" y="85">Node A — quantum computer</text>
 
-  <!-- Transmon stack -->
+  <!-- Transmon stack. Label placed to the right of the stack so the photon's
+       future animation along the central x=200 column is clear of text. -->
   <circle class="transmon" cx="150" cy="120" r="14"/>
   <circle class="transmon" cx="200" cy="120" r="14"/>
   <circle class="transmon" cx="250" cy="120" r="14"/>
-  <text class="sub" x="200" y="156">compute qubits — transmons (~5 GHz microwave)</text>
+  <text class="sub" x="275" y="124" text-anchor="start">transmons · 5 GHz</text>
 
   <!-- Down to M-O transducer -->
   <line class="conn" x1="200" y1="172" x2="200" y2="192"/>
@@ -82,14 +83,16 @@
   <!-- Photon emitted from comm-A, drawn just below the comm so the
        matter-photon-entangled-at-emission relationship is visible.
        Sits on the connector to the QFC — the photon is what travels
-       down through QFC and into the fibre. -->
+       down through QFC and into the fibre. The 'A' inside the green
+       dot identifies comm-A; the SiV / electron / nuclear-spin detail
+       lives in the figure caption so the animation column stays clear. -->
   <circle class="photon" cx="200" cy="322" r="6.5"/>
   <text class="blk-sub" x="217" y="326" text-anchor="start" font-style="italic">photon</text>
-  <text class="blk-lbl" x="200" y="346">communication / memory qubit (comm-A)</text>
-  <text class="blk-sub" x="200" y="362">SiV: electron emits, nuclear stores</text>
+  <text class="blk-sub" x="60" y="293" text-anchor="start" font-style="italic">comm-A</text>
+  <text class="blk-sub" x="60" y="308" text-anchor="start" font-style="italic">(SiV)</text>
 
   <!-- Down to QFC -->
-  <line class="conn" x1="200" y1="373" x2="200" y2="388"/>
+  <line class="conn" x1="200" y1="328" x2="200" y2="388"/>
 
   <!-- QFC block -->
   <rect class="qfc-blk" x="115" y="388" width="170" height="48" rx="6"/>
@@ -110,7 +113,7 @@
   <circle class="transmon" cx="850" cy="120" r="14"/>
   <circle class="transmon" cx="900" cy="120" r="14"/>
   <circle class="transmon" cx="950" cy="120" r="14"/>
-  <text class="sub" x="900" y="156">compute qubits — transmons (~5 GHz microwave)</text>
+  <text class="sub" x="825" y="124" text-anchor="end">transmons · 5 GHz</text>
 
   <line class="conn" x1="900" y1="172" x2="900" y2="192"/>
   <rect class="mo-blk" x="815" y="192" width="170" height="48" rx="6"/>
@@ -124,10 +127,10 @@
   <!-- Photon emitted from comm-B (mirror). -->
   <circle class="photon" cx="900" cy="322" r="6.5"/>
   <text class="blk-sub" x="883" y="326" text-anchor="end" font-style="italic">photon</text>
-  <text class="blk-lbl" x="900" y="346">communication / memory qubit (comm-B)</text>
-  <text class="blk-sub" x="900" y="362">SiV: electron emits, nuclear stores</text>
+  <text class="blk-sub" x="1040" y="293" text-anchor="end" font-style="italic">comm-B</text>
+  <text class="blk-sub" x="1040" y="308" text-anchor="end" font-style="italic">(SiV)</text>
 
-  <line class="conn" x1="900" y1="373" x2="900" y2="388"/>
+  <line class="conn" x1="900" y1="328" x2="900" y2="388"/>
   <rect class="qfc-blk" x="815" y="388" width="170" height="48" rx="6"/>
   <text class="blk-lbl" x="900" y="410">QFC (PPLN)</text>
   <text class="blk-sub" x="900" y="427">737 nm → 1550 nm</text>
