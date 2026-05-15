@@ -456,12 +456,16 @@ const sections = [
               <circle class="g1-matter" cx="130" cy="325" r="11"/>
               <text class="g1-lbl" x="130" y="329" text-anchor="middle">A</text>
               <rect data-1g-bm-r1 class="g1-bm-box" x="302" y="312" width="52" height="26" rx="3"/>
+              <rect data-1g-bm-r1-pulse class="g1-pulse-box" x="299" y="309" width="58" height="32" rx="4" opacity="0"/>
+              <circle data-1g-bm-r1-herald class="g1-herald" cx="328" cy="305" r="5" opacity="0"/>
               <circle class="g1-matter" cx="316" cy="325" r="7"/>
               <circle class="g1-matter" cx="340" cy="325" r="7"/>
               <text class="g1-lbl-mu" x="328" y="355" text-anchor="middle">Bell measurement</text>
               <circle class="g1-matter" cx="522" cy="325" r="7"/>
               <circle class="g1-matter" cx="546" cy="325" r="7"/>
               <rect data-1g-bm-r3 class="g1-bm-box" x="714" y="312" width="52" height="26" rx="3"/>
+              <rect data-1g-bm-r3-pulse class="g1-pulse-box" x="711" y="309" width="58" height="32" rx="4" opacity="0"/>
+              <circle data-1g-bm-r3-herald class="g1-herald" cx="740" cy="305" r="5" opacity="0"/>
               <circle class="g1-matter" cx="728" cy="325" r="7"/>
               <circle class="g1-matter" cx="752" cy="325" r="7"/>
               <text class="g1-lbl-mu" x="740" y="355" text-anchor="middle">Bell measurement</text>
@@ -499,6 +503,8 @@ const sections = [
               <circle class="g1-matter" cx="130" cy="455" r="11"/>
               <text class="g1-lbl" x="130" y="459" text-anchor="middle">A</text>
               <rect data-1g-bm-r2 class="g1-bm-box" x="508" y="442" width="52" height="26" rx="3"/>
+              <rect data-1g-bm-r2-pulse class="g1-pulse-box" x="505" y="439" width="58" height="32" rx="4" opacity="0"/>
+              <circle data-1g-bm-r2-herald class="g1-herald" cx="534" cy="435" r="5" opacity="0"/>
               <circle class="g1-matter" cx="522" cy="455" r="7"/>
               <circle class="g1-matter" cx="546" cy="455" r="7"/>
               <text class="g1-lbl-mu" x="534" y="485" text-anchor="middle">Bell measurement</text>
@@ -931,6 +937,12 @@ const sections = [
     const bmR1    = svg.querySelector("[data-1g-bm-r1]");
     const bmR3    = svg.querySelector("[data-1g-bm-r3]");
     const bmR2    = svg.querySelector("[data-1g-bm-r2]");
+    const bmR1Pulse = svg.querySelector("[data-1g-bm-r1-pulse]");
+    const bmR3Pulse = svg.querySelector("[data-1g-bm-r3-pulse]");
+    const bmR2Pulse = svg.querySelector("[data-1g-bm-r2-pulse]");
+    const bmR1Herald = svg.querySelector("[data-1g-bm-r1-herald]");
+    const bmR3Herald = svg.querySelector("[data-1g-bm-r3-herald]");
+    const bmR2Herald = svg.querySelector("[data-1g-bm-r2-herald]");
     const ent2    = ["2a", "2b", "2c", "2d"].map((k) =>
       svg.querySelector(`[data-1g-ent-${k}]`));
     const ent3    = ["3a", "3b"].map((k) =>
@@ -1201,23 +1213,39 @@ const sections = [
 
           const local = elapsed - (t0 - PHASE2);
           if (local < T_ES1_PREP) {
+            // 2a: curves trace in; BSMs not yet fired.
             const t = local / T_ES1_PREP;
             const e = ease(t);
             ent2.forEach((p) => p && p.setAttribute("stroke-dashoffset", String(1 - e)));
             setOpacity(cbR1, 0); setOpacity(cbR3, 0);
+            setOpacity(bmR1Pulse, 0); setOpacity(bmR3Pulse, 0);
+            setOpacity(bmR1Herald, 0); setOpacity(bmR3Herald, 0);
           } else if (local < T_ES1_PREP + T_ES1_BSM) {
+            // BSM firing — same flare treatment as the pBSMs in EG:
+            // orange pulse-box around the dashed BM box plus a herald
+            // bulb that fades in. Stroke-width of the BM box still
+            // bumps slightly as a secondary cue.
             ent2.forEach((p) => p && p.setAttribute("stroke-dashoffset", "0"));
             const t = (local - T_ES1_PREP) / T_ES1_BSM;
             const pulse = Math.sin(t * Math.PI);
-            const w = 1.2 + 2.8 * pulse;
+            const w = 1.2 + 1.6 * pulse;
             if (bmR1) bmR1.setAttribute("stroke-width", String(w));
             if (bmR3) bmR3.setAttribute("stroke-width", String(w));
+            setOpacity(bmR1Pulse, pulse);
+            setOpacity(bmR3Pulse, pulse);
+            setOpacity(bmR1Herald, Math.min(1, t * 2));
+            setOpacity(bmR3Herald, Math.min(1, t * 2));
           } else {
             // Constant horizontal speed. R₁'s short hop arrives first;
-            // R₃'s short hop arrives at nearly the same time. Each
-            // pulse clamps at its destination once it gets there.
+            // R₃'s short hop arrives at nearly the same time.
             if (bmR1) bmR1.setAttribute("stroke-width", "1.2");
             if (bmR3) bmR3.setAttribute("stroke-width", "1.2");
+            setOpacity(bmR1Pulse, 0);
+            setOpacity(bmR3Pulse, 0);
+            // Herald bulbs linger — the BSM outcome IS the herald, and
+            // it sits there as the classical bits travel onward.
+            setOpacity(bmR1Herald, 1);
+            setOpacity(bmR3Herald, 1);
             const elapsedMs = local - T_ES1_PREP - T_ES1_BSM;
             setOpacity(cbR1, 1); setOpacity(cbR3, 1);
             moveCbBySpeed("r1", elapsedMs);
@@ -1239,16 +1267,21 @@ const sections = [
             const e = ease(t);
             ent3.forEach((p) => p && p.setAttribute("stroke-dashoffset", String(1 - e)));
             setOpacity(cbR2, 0);
+            setOpacity(bmR2Pulse, 0); setOpacity(bmR2Herald, 0);
           } else if (local < T_ES2_PREP + T_ES2_BSM) {
+            // Same flare treatment as 1st ES.
             ent3.forEach((p) => p && p.setAttribute("stroke-dashoffset", "0"));
             const t = (local - T_ES2_PREP) / T_ES2_BSM;
             const pulse = Math.sin(t * Math.PI);
-            const w = 1.2 + 2.8 * pulse;
+            const w = 1.2 + 1.6 * pulse;
             if (bmR2) bmR2.setAttribute("stroke-width", String(w));
+            setOpacity(bmR2Pulse, pulse);
+            setOpacity(bmR2Herald, Math.min(1, t * 2));
           } else {
             // Long forward hop at the same speed as the 1st-ES bits.
-            // Visibly takes longer because the path is ~2× as long.
             if (bmR2) bmR2.setAttribute("stroke-width", "1.2");
+            setOpacity(bmR2Pulse, 0);
+            setOpacity(bmR2Herald, 1);
             const elapsedMs = local - T_ES2_PREP - T_ES2_BSM;
             setOpacity(cbR2, 1);
             moveCbBySpeed("r2", elapsedMs);
