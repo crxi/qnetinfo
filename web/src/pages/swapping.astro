@@ -112,7 +112,7 @@ const sections = [
         </ol>
 
         <figure class="sw" id="sw-fig" data-sw>
-          <svg viewBox="0 0 800 460" role="img"
+          <svg viewBox="0 0 800 355" role="img"
                aria-label="Entanglement-swapping animation. Top row: two short Bell pairs A↔A′ and B′↔B. The relay performs a BSM on A′ and B′; two classical bits travel to Bob; Bob applies a Pauli correction. Bottom row: the resulting long Bell pair A↔B."
                data-sw-svg>
             <defs>
@@ -138,7 +138,7 @@ const sections = [
             <text x="750" y="20" text-anchor="middle" class="sw-label">Bob</text>
 
             {/* Dashed relay box around A′ and B′ — same physical location. */}
-            <rect x="325" y="32" width="150" height="56" rx="4"
+            <rect data-sw-relay-box x="325" y="32" width="150" height="56" rx="4"
                   fill="none" stroke="var(--color-rule)" stroke-width="1"
                   stroke-dasharray="4,3" opacity="0.55"/>
 
@@ -217,30 +217,25 @@ const sections = [
               <text data-sw-lock-letter x="0" y="6" text-anchor="middle" class="sw-pauli-badge">X</text>
             </g>
 
-            {/* ---- Bottom row: the resulting long Bell pair A↔B ---- */}
-            <g data-sw-result opacity="0.18">
-              <circle cx="50"  cy="370" r="18" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.5"/>
-              <text x="50"  y="375" text-anchor="middle" class="sw-node-lbl">A</text>
-              <circle cx="750" cy="370" r="18" fill="var(--color-bg)"
-                      stroke="var(--color-text)" stroke-width="1.5"/>
-              <text x="750" y="375" text-anchor="middle" class="sw-node-lbl">B</text>
-              <path data-sw-pair-ab class="sw-ent" pathLength="1"
-                    stroke-dasharray="1 1" stroke-dashoffset="1"
-                    d="M 68,370 q 17.5,-10 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0"/>
-            </g>
+            {/* ---- Final A↔B Bell pair, traced in on the SAME ROW as
+                A and B. After phase 2 the A′/B′ clouds have faded and
+                the relay-R box dissolves (data-sw-relay-box), so the
+                long wavy line spans the row cleanly. ---- */}
+            <path data-sw-pair-ab class="sw-ent" pathLength="1"
+                  stroke-dasharray="1 1" stroke-dashoffset="1" opacity="0"
+                  d="M 68,60 q 17.5,-10 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0"/>
 
-            {/* Status lines — one per phase, stack between BSM and the
-                bottom result row, fade in as their phase fires. */}
-            <text data-sw-msg1 x="400" y="270" text-anchor="middle"
+            {/* Status lines — one per phase, stack below the BSM
+                apparatus; the result line follows them. */}
+            <text data-sw-msg1 x="400" y="258" text-anchor="middle"
                   class="sw-statement" opacity="0">Two Bell pairs: A–A′ and B′–B</text>
-            <text data-sw-msg2 x="400" y="290" text-anchor="middle"
+            <text data-sw-msg2 x="400" y="276" text-anchor="middle"
                   class="sw-statement" opacity="0">R measures A′ and B′ jointly (BSM)</text>
-            <text data-sw-msg3 x="400" y="310" text-anchor="middle"
+            <text data-sw-msg3 x="400" y="294" text-anchor="middle"
                   class="sw-statement" opacity="0">2 classical bits travel to Bob</text>
-            <text data-sw-msg4 x="400" y="330" text-anchor="middle"
+            <text data-sw-msg4 x="400" y="312" text-anchor="middle"
                   class="sw-statement" opacity="0">Bob applies the matching Pauli correction</text>
-            <text data-sw-msg5 x="400" y="420" text-anchor="middle"
+            <text data-sw-msg5 x="400" y="340" text-anchor="middle"
                   class="sw-result" opacity="0">⇒ A and B are now entangled</text>
           </svg>
 
@@ -684,7 +679,7 @@ const sections = [
     const bitsTx  = svg.querySelector("[data-sw-bits-text]");
     const lock    = svg.querySelector("[data-sw-lock]");
     const lockTx  = svg.querySelector("[data-sw-lock-letter]");
-    const result  = svg.querySelector("[data-sw-result]");
+    const relayBox = svg.querySelector("[data-sw-relay-box]");
     const msg1    = svg.querySelector("[data-sw-msg1]");
     const msg2    = svg.querySelector("[data-sw-msg2]");
     const msg3    = svg.querySelector("[data-sw-msg3]");
@@ -761,7 +756,8 @@ const sections = [
       setOpacity(pairAA, 0); setOpacity(pairBB, 0);
       setOpacity(bsm, 0.22);
       setOpacity(bits, 0); setOpacity(lock, 0);
-      setOpacity(result, 1);
+      setOpacity(relayBox, 0);
+      setOpacity(pairAB, 1);
       pairAB.setAttribute("stroke-dashoffset", "0");
       setOpacity(msg1, 1); setOpacity(msg2, 1);
       setOpacity(msg3, 1); setOpacity(msg4, 1);
@@ -799,7 +795,8 @@ const sections = [
           setOpacity(bsm, 0.22);
           setOpacity(bits, 0);
           setOpacity(lock, 0);
-          setOpacity(result, 0.18);
+          setOpacity(relayBox, 0.55);
+          setOpacity(pairAB, 0);
           pairAB.setAttribute("stroke-dashoffset", "1");
           const t = elapsed / T_SETUP;
           setOpacity(msg1, Math.min(1, t * 2));
@@ -863,22 +860,27 @@ const sections = [
           setOpacity(lock, Math.min(1, e * 2));
           setOpacity(msg4, Math.min(1, e * 2));
         } else if (elapsed < (t0 += T_TRACE)) {
-          // Phase 4b — long A↔B Bell pair traces in
+          // Phase 4b — long A↔B Bell pair traces in on the SAME row
+          // as A and B. The dashed relay-R box dissolves at the same
+          // time so the line spans the row cleanly; the BSM apparatus
+          // dims back down too.
           highlightStep(5);
           const t = (elapsed - (t0 - T_TRACE)) / T_TRACE;
           const e = ease(t);
-          setOpacity(result, 0.18 + 0.82 * e);
+          setOpacity(pairAB, 1);
           pairAB.setAttribute("stroke-dashoffset", String(1 - e));
           setOpacity(lock, Math.max(0, 1 - e * 1.6));
           setOpacity(msg5, Math.min(1, (e - 0.3) * 2));
           setOpacity(bsm, 0.5 - 0.28 * e);
+          setOpacity(relayBox, 0.55 * (1 - e));
         } else if (elapsed < T_TOTAL - T_PAUSE) {
           // Phase 5 — hold final state
           highlightStep(5);
-          setOpacity(result, 1);
+          setOpacity(pairAB, 1);
           pairAB.setAttribute("stroke-dashoffset", "0");
           setOpacity(lock, 0);
           setOpacity(bsm, 0.22);
+          setOpacity(relayBox, 0);
           setOpacity(msg1, 1); setOpacity(msg2, 1);
           setOpacity(msg3, 1); setOpacity(msg4, 1);
           setOpacity(msg5, 1);
