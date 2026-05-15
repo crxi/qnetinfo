@@ -61,8 +61,11 @@ const groupedTiers = TIER_ORDER
   </ul>
 
   {groupedTiers.map((group) => (
-    <section class="site-nav__group" aria-label={group.label}>
-      <p class="site-nav__group-label">{group.label}</p>
+    <section class="site-nav__group" aria-label={group.label} data-tier={group.tier}>
+      <p class="site-nav__group-label">
+        <span class="site-nav__group-swatch" aria-hidden="true"></span>
+        {group.label}
+      </p>
       <ul class="site-nav__list site-nav__list--subjects">
         {group.subjects.map((s) => (
           <li>
@@ -176,6 +179,11 @@ const groupedTiers = TIER_ORDER
   /* Tier divider — small uppercase eyebrow above each tier's
      subject list. Thin visual rule only; not interactive. */
   .site-nav__group { display: grid; gap: var(--space-1); }
+  .site-nav__group[data-tier="A"] { --tier-color: var(--tier-a); }
+  .site-nav__group[data-tier="B"] { --tier-color: var(--tier-b); }
+  .site-nav__group[data-tier="C"] { --tier-color: var(--tier-c); }
+  .site-nav__group[data-tier="D"] { --tier-color: var(--tier-d); }
+  .site-nav__group[data-tier="E"] { --tier-color: var(--tier-e); }
   .site-nav__group-label {
     margin: 0;
     padding-inline-start: var(--space-3);
@@ -186,6 +194,19 @@ const groupedTiers = TIER_ORDER
     letter-spacing: var(--tracking-wide);
     color: var(--color-text-mute);
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  /* Small tier-colour swatch next to the group label. 6px square,
+     subtle — colour-codes the tier without dominating the rail. */
+  .site-nav__group-swatch {
+    display: inline-block;
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 1px;
+    background: var(--tier-color, var(--color-rule));
+    flex-shrink: 0;
   }
 
   .site-nav__list {

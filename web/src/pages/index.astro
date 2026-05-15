@@ -59,7 +59,7 @@ import { url } from "../lib/url";
           <h2 id="available-heading" class="group-heading">Available now</h2>
           <Grid min="22rem" gap="var(--space-3)">
             {SHIPPED_SUBJECTS.map((s) => (
-              <a class="subject-card" href={url(`/${s.slug}`)}>
+              <a class="subject-card" href={url(`/${s.slug}`)} data-tier={s.tier}>
                 <p class="subject-card__tier">{TIER_LABEL[s.tier]}</p>
                 <h3>{s.title}</h3>
                 <p>{s.blurb}</p>
@@ -79,7 +79,7 @@ import { url } from "../lib/url";
           </p>
           <Grid min="22rem" gap="var(--space-3)">
             {PLANNED_SUBJECTS.map((s) => (
-              <article class="subject-card subject-card--planned" aria-disabled="true">
+              <article class="subject-card subject-card--planned" aria-disabled="true" data-tier={s.tier}>
                 <p class="subject-card__tier">{TIER_LABEL[s.tier]}</p>
                 <h3>{s.title}</h3>
                 <p>{s.blurb}</p>
@@ -136,7 +136,18 @@ import { url } from "../lib/url";
     text-decoration: none;
     color: inherit;
     transition: border-color 140ms ease, transform 140ms ease;
+    /* Subtle tier hint — a 3px accent strip on the inline-start edge.
+       Default to the rule colour; tier-specific selectors below
+       override it. Sits inside the existing 1px border so the card
+       still has its full outline. */
+    border-inline-start: 3px solid var(--tier-color, var(--color-rule));
   }
+  .subject-card[data-tier="A"] { --tier-color: var(--tier-a); }
+  .subject-card[data-tier="B"] { --tier-color: var(--tier-b); }
+  .subject-card[data-tier="C"] { --tier-color: var(--tier-c); }
+  .subject-card[data-tier="D"] { --tier-color: var(--tier-d); }
+  .subject-card[data-tier="E"] { --tier-color: var(--tier-e); }
+  .subject-card[data-tier] .subject-card__tier { color: var(--tier-color); }
   .subject-card:hover,
   .subject-card:focus-visible {
     border-color: var(--color-accent);

@@ -29,6 +29,17 @@
   --indigo-600:  #5b8def;
   --magenta-600: #a8408d;
 
+  /* Tier accent colours — one per reading-order tier (A–E). Used as
+     subtle hints (thin left border on cards, small dot beside SiteNav
+     tier labels, thin underline on the subject page H1). Chosen to be
+     muted enough to sit comfortably alongside the existing teal accent
+     on the light theme — not full surface washes. */
+  --tier-a: #5fb3b3;  /* Foundations          — soft teal       */
+  --tier-b: #d4a259;  /* Components           — warm amber      */
+  --tier-c: #9b87c4;  /* Mechanisms           — soft violet     */
+  --tier-d: #7fa987;  /* Infrastructure       — sage green      */
+  --tier-e: #c98370;  /* Applications/Market  — muted coral     */
+
   /* Platform colors (verbatim from data.yaml) */
   --platform-superconducting: #5b8def;
   --platform-topological:     #3a7d7d;

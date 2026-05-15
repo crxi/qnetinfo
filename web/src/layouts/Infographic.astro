@@ -32,6 +32,11 @@ const nextSubject =
   currentIdx >= 0 && currentIdx < SHIPPED_SUBJECTS.length - 1
     ? SHIPPED_SUBJECTS[currentIdx + 1]
     : null;
+
+// Tier of the current subject — drives the subtle tier accent on the
+// page (a thin underline beneath the hero <h1>). Undefined on the
+// landing page; left blank so the rule below renders the default.
+const currentTier = currentIdx >= 0 ? SHIPPED_SUBJECTS[currentIdx].tier : null;
 ---
 
 <!doctype html>
@@ -62,7 +67,7 @@ const nextSubject =
         <span class="mobile-topbar__title">{title}</span>
       </header>
     )}
-    <main id="main" class:list={["page-main", { "page-main--with-nav": Astro.slots.has("nav") }]}>
+    <main id="main" class:list={["page-main", { "page-main--with-nav": Astro.slots.has("nav") }]} data-tier={currentTier}>
       {Astro.slots.has("nav") && (
         <>
           <button
@@ -334,6 +339,26 @@ const nextSubject =
         .page-pagination__next { text-align: start; }
       }
       h1 { font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
+
+      /* Tier accent — surfaces the reading-order tier of the current
+         subject as a thin coloured underline beneath the hero <h1>.
+         Subtle by design: the colour is only ~3px tall and sits in
+         the gap below the title, so the reader registers tier after
+         a beat rather than being hit by it. Tier value is set on
+         <main data-tier="…"> by this layout from SHIPPED_SUBJECTS. */
+      .page-main[data-tier="A"] { --tier-color: var(--tier-a); }
+      .page-main[data-tier="B"] { --tier-color: var(--tier-b); }
+      .page-main[data-tier="C"] { --tier-color: var(--tier-c); }
+      .page-main[data-tier="D"] { --tier-color: var(--tier-d); }
+      .page-main[data-tier="E"] { --tier-color: var(--tier-e); }
+      .page-main[data-tier] .hero h1 {
+        padding-block-end: var(--space-2);
+        border-block-end: 3px solid var(--tier-color);
+        /* Underline only spans the text, not the full container —
+           keeps the accent visually tied to the title. */
+        display: inline-block;
+        max-inline-size: 100%;
+      }
       h2 { font-size: var(--text-2xl); margin-block-start: var(--space-7); }
       h3 { font-size: var(--text-xl); margin-block-start: var(--space-5); }
       /* No prose-width cap on paragraphs: the container (`main`) already
