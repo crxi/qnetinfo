@@ -37,6 +37,11 @@ import { url } from "../lib/url";
           distribution and protocols to vendors and TRL. Not authoritative; just
           what we've understood so far. Each page stands alone.
         </p>
+        <p class="hero__contrib">
+          If you spot an error, have more current information, or have ideas for how
+          to animate one of these concepts, please <a
+          href="https://github.com/crxi/qnetinfo/issues">reach out to us</a>.
+        </p>
       </header>
 
       {SHIPPED_SUBJECTS.length > 0 && (
@@ -91,6 +96,10 @@ import { url } from "../lib/url";
   }
   .hero h1 { margin: 0; }
   .hero p  { margin: 0; }
+  .hero__contrib {
+    font-size: var(--text-sm);
+    color: var(--color-text-mute);
+  }
 
   .group-heading {
     font-size: var(--text-2xl);
