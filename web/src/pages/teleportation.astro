@@ -140,7 +140,7 @@ const sections = [
                 for consistency. */}
             <g data-tp-b transform="translate(560 95)">
               <circle data-tp-b-cloud r="20" fill="url(#tp-cloud-std)"/>
-              <text y="-41" text-anchor="middle" class="tp-slot-label">B</text>
+              <text data-tp-b-label y="-26" text-anchor="middle" class="tp-slot-label">B</text>
             </g>
 
             {/* Entangled-pair wave A ↔ B */}
@@ -192,11 +192,11 @@ const sections = [
                 travel above its beams and optical elements. */}
             <g data-tp-c transform="translate(130 95)">
               <circle data-tp-c-cloud r="20" fill="url(#tp-cloud-psi)"/>
-              <text y="-41" text-anchor="middle" class="tp-slot-label">C</text>
+              <text y="-26" text-anchor="middle" class="tp-slot-label">C</text>
             </g>
             <g data-tp-a transform="translate(210 95)">
               <circle data-tp-a-cloud r="20" fill="url(#tp-cloud-std)"/>
-              <text y="-41" text-anchor="middle" class="tp-slot-label">A</text>
+              <text y="-26" text-anchor="middle" class="tp-slot-label">A</text>
             </g>
 
             {/* Classical channel — left end centred under the central BS
@@ -650,6 +650,7 @@ const sections = [
     const cCloud       = svg.querySelector("[data-tp-c-cloud]");
     const aCloud       = svg.querySelector("[data-tp-a-cloud]");
     const bCloud       = svg.querySelector("[data-tp-b-cloud]");
+    const bLabel       = svg.querySelector("[data-tp-b-label]");
     const bellLine     = svg.querySelector("[data-tp-bellpair]");
     const measureLine  = svg.querySelector("[data-tp-measure]");
     const statement    = svg.querySelector("[data-tp-statement]");
@@ -752,6 +753,7 @@ const sections = [
       setOpacity(bitsGroup, 0);
       setOpacity(lock, 0);
       bCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+      if (bLabel) bLabel.textContent = "C";
       highlightStep(5);
     } else {
       const T_SETUP   = 1000;
@@ -826,6 +828,7 @@ const sections = [
           setOpacity(statement, 0);
           setOpacity(correction, 0);
           bCloud.setAttribute("fill", "url(#tp-cloud-std)");
+          if (bLabel) bLabel.textContent = "B";
         } else if (elapsed < (t0 += T_DROP)) {
           // Phase 2a — C and A traverse the BSM apparatus in two legs:
           // input port → BS centre, then BS → their assigned detector.
@@ -875,8 +878,11 @@ const sections = [
           setOpacity(bellLine, 0);
           setOpacity(bitsGroup, Math.max(0, (e - 0.3) * 2));
           setBitsX(BIT_X_START);
-          // B turns purple and Pauli badge appears as soon as BSM fires.
+          // B turns purple, Pauli badge appears, and the label flips
+          // from "B" to the explicit Pauli-twisted state P(C) as soon
+          // as the BSM fires — B is no longer in its original state.
           bCloud.setAttribute("fill", "url(#tp-cloud-psi)");
+          if (bLabel) bLabel.textContent = `${outcome.P}(C)`;
           setOpacity(lock, Math.min(1, e * 2.5));
           setOpacity(measureLine, 1);            // already faded in during phase 2a
           setOpacity(statement, Math.min(1, e * 2));
@@ -917,6 +923,9 @@ const sections = [
           const fadeT = Math.max(0, (e - 0.85) / 0.15);
           setOpacity(inverse, 1 - fadeT);
           setOpacity(lock,    1 - fadeT);
+          // Inverse chip and lock vanish together — at the midpoint of
+          // that fade B has effectively absorbed P⁻¹ and now holds C.
+          if (bLabel && fadeT > 0.5) bLabel.textContent = "C";
           setOpacity(measureLine, 1);
           setOpacity(statement, 1);
           // Bits dissolve as they're "consumed".
@@ -932,6 +941,7 @@ const sections = [
           setOpacity(measureLine, 1);
           setOpacity(statement, 1);
           setOpacity(correction, 1);
+          if (bLabel) bLabel.textContent = "C";
         } else if (elapsed < T_TOTAL) {
           // Brief fade-out tail so the lines don't blink off on reset.
           const t = (elapsed - (T_TOTAL - T_PAUSE)) / T_PAUSE;
