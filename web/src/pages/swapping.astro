@@ -277,6 +277,7 @@ const sections = [
             <button type="button" data-1g-ctl="back" aria-label="Step back" title="Step back">⏮</button>
             <button type="button" data-1g-ctl="play" aria-label="Pause" title="Play / pause">⏸</button>
             <button type="button" data-1g-ctl="fwd" aria-label="Step forward" title="Step forward">⏭</button>
+            <button type="button" data-1g-ctl="loop" aria-label="Loop this phase" title="Loop this phase only" aria-pressed="false">🔂</button>
           </div>
           <svg viewBox="0 -30 1100 730" role="img"
                aria-label="Canonical 1G repeater across A — R₁ — R₂ — R₃ — B. EG: each adjacent pair emits matter–photon Bell pairs whose photons meet at a midpoint photonic Bell-state analyser; a successful herald collapses the two distant matter qubits into a Bell pair. 1st ES: parallel local Bell measurements at R₁ and R₃ extend the entanglement to A↔R₂ and R₂↔B. 2nd ES: a final Bell measurement at R₂ delivers one long A↔B Bell pair. Each row is a 'repeat until success' loop."
@@ -1287,7 +1288,14 @@ const sections = [
       const btnPlay = fig.querySelector('[data-1g-ctl="play"]');
       const btnBack = fig.querySelector('[data-1g-ctl="back"]');
       const btnFwd  = fig.querySelector('[data-1g-ctl="fwd"]');
+      const btnLoop = fig.querySelector('[data-1g-ctl="loop"]');
       const phaseLbl = fig.querySelector('[data-1g-phase]');
+
+      // Loop-this-phase state. When ON, frame() wraps elapsed back to the
+      // start of the phase whose index is loopPhaseIdx instead of advancing
+      // to the next phase. Captured on toggle and updated by step buttons.
+      let loopPhase = false;
+      let loopPhaseIdx = 0;
 
       function updatePhaseLabel(elapsed) {
         if (phaseLbl) phaseLbl.textContent = phaseAt(elapsed);
@@ -1298,6 +1306,11 @@ const sections = [
           btnPlay.setAttribute("aria-label", paused ? "Play" : "Pause");
         }
       }
+      function setLoopIcon() {
+        if (btnLoop) {
+          btnLoop.setAttribute("aria-pressed", loopPhase ? "true" : "false");
+        }
+      }
       function currentElapsed(now) {
         if (paused) return pausedAt;
         let e = now - cycleStart;
@@ -1306,6 +1319,18 @@ const sections = [
           e = e % T_TOTAL;
         }
         return e;
+      }
+      function currentPhaseIndex(elapsed) {
+        // Returns the largest i such that PHASE_STARTS[i] <= elapsed.
+        // 0..3 are the four protocol phases; index 4 (the last entry in
+        // PHASE_STARTS) marks the post-Result hold window.
+        for (let i = PHASE_STARTS.length - 1; i >= 0; i--) {
+          if (elapsed >= PHASE_STARTS[i]) return i;
+        }
+        return 0;
+      }
+      function phaseEnd(idx) {
+        return idx + 1 < PHASE_STARTS.length ? PHASE_STARTS[idx + 1] : T_TOTAL;
       }
       function togglePlay() {
         if (paused) {
@@ -1321,9 +1346,19 @@ const sections = [
         }
         setPlayIcon();
       }
+      function toggleLoop() {
+        loopPhase = !loopPhase;
+        if (loopPhase) {
+          loopPhaseIdx = currentPhaseIndex(currentElapsed(performance.now()));
+        }
+        setLoopIcon();
+      }
       function seekTo(t) {
         paused = true;
         pausedAt = Math.max(0, Math.min(T_TOTAL - 1, t));
+        // Stepping while looping moves the loop to the new phase, so the
+        // user can step then play and watch that phase on repeat.
+        if (loopPhase) loopPhaseIdx = currentPhaseIndex(pausedAt);
         renderAt(pausedAt);
         setPlayIcon();
       }
@@ -1347,7 +1382,9 @@ const sections = [
       if (btnPlay) btnPlay.addEventListener("click", togglePlay);
       if (btnFwd)  btnFwd.addEventListener("click", stepForward);
       if (btnBack) btnBack.addEventListener("click", stepBackward);
+      if (btnLoop) btnLoop.addEventListener("click", toggleLoop);
       setPlayIcon();
+      setLoopIcon();
 
       function frame(now) {
         if (paused) {
@@ -1356,7 +1393,19 @@ const sections = [
           renderAt(pausedAt);
         } else if (running) {
           let elapsed = now - cycleStart;
-          if (elapsed >= T_TOTAL) {
+          if (loopPhase) {
+            // When loop-this-phase is on, wrap elapsed back to the start
+            // of the captured phase instead of advancing to the next one.
+            const pStart = PHASE_STARTS[loopPhaseIdx];
+            const pEnd   = phaseEnd(loopPhaseIdx);
+            if (elapsed >= pEnd) {
+              cycleStart = now - pStart;
+              elapsed = pStart;
+            } else if (elapsed < pStart) {
+              cycleStart = now - pStart;
+              elapsed = pStart;
+            }
+          } else if (elapsed >= T_TOTAL) {
             cycleStart = now;
             pickCycleParams();
             elapsed = 0;
@@ -1472,6 +1521,10 @@ const sections = [
   }
   .onegen-controls button:hover { background: color-mix(in srgb, var(--color-text) 8%, transparent); }
   .onegen-controls button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .onegen-controls button[aria-pressed="true"] {
+    background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+    color: var(--color-accent);
+  }
   .onegen-phase {
     font-family: var(--font-mono, ui-monospace, monospace);
     font-size: 11px;
