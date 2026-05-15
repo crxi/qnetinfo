@@ -31,10 +31,12 @@ import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
 import Callout from "../components/Callout.astro";
 import Math from "../components/Math.astro";
+import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",     label: "Overview" },
   { id: "interfaces",   label: "Two interfaces, not a pipeline" },
+  { id: "pipeline",     label: "The whole pipeline in one figure" },
   { id: "qfc",          label: "QFC: visible to telecom" },
   { id: "mo",           label: "Microwave-to-optical" },
   { id: "bottleneck",   label: "Why M-O is the bottleneck" },
@@ -172,6 +174,42 @@ const sections = [
           only question left is whether <em>that device</em> matches the computer's
           modality — if it doesn't, transduction or QFC is the bridge, and if it does,
           neither is needed.
+        </p>
+      </section>
+
+      <section id="pipeline" data-nav-section>
+        <h2>The whole pipeline in one figure</h2>
+        <p>
+          Putting the two interfaces in one diagram with the rest of the network makes
+          a quiet but important fact visible: the fibre, the QFCs, and the midpoint
+          photonic Bell-state measurement (pBSM) are used <em>only</em> in Phase 1, when
+          comm-A and comm-B are being entangled. Once they are, everything that follows
+          — the local BSM at A that consumes the Bell pair, the two classical bits sent
+          to B, the Pauli correction at B — happens over <a href={url("/entanglement#locc")}>LOCC</a>.
+          The quantum channel goes quiet. The transducer at interface 2 fires only at
+          this second stage, not before.
+        </p>
+        <figure class="pipeline-figure">
+          <img src={url("/images/transduction.svg")}
+               alt="End-to-end pipeline between two quantum computers. Each node has a transmon stack at the top, an M-O transducer (interface 2), a communication qubit at 737 nm, and a QFC (interface 1) at the bottom that drops the photon into 1550 nm telecom fibre. Both fibres converge at a midpoint photonic Bell-state measurement. Phase-1 arrows trace photons inward to the pBSM. The classical channel runs along the bottom of the figure and carries the herald in Phase 1 and the BSM outcome bits in Phase 2." />
+          <figcaption>
+            For an infrastructure planner this is the headline: the only piece of the
+            picture that requires <em>quantum-channel</em> infrastructure — fibre at the
+            right wavelength, QFC, pBSM — is the bit that sets up the Bell pair. Every
+            subsequent use of that pair runs over a normal classical link. Reference
+            architecture in <SourceNote id="awschalom-prxquantum-2021" />.
+          </figcaption>
+        </figure>
+        <p>
+          Two simplifications in the figure to keep it readable. First, real nodes have
+          many comm qubits per node (a multiplexed memory bank), not just one — they
+          fire EG attempts in parallel and the first to herald wins; the picture shows
+          one for clarity. Second, the diagram assumes the cross-modality case
+          (transmon compute + SiV memory), which is the case that most clearly shows
+          both the transducer and the QFC. A same-modality node — say, trapped-ion
+          compute and trapped-ion comm — drops the M-O transducer block entirely and
+          replaces it with a local two-qubit gate inside the same trap, as in
+          Oxford 2025 <SourceNote id="main-nature-2025" />.
         </p>
       </section>
 
@@ -450,6 +488,24 @@ const sections = [
     gap: var(--space-2);
   }
   li { line-height: var(--leading-snug); }
+
+  .pipeline-figure {
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .pipeline-figure img {
+    width: 100%;
+    height: auto;
+    max-width: 1100px;
+    background: #ffffff;
+    border-radius: var(--radius-sm);
+  }
+  .pipeline-figure figcaption {
+    font-size: var(--text-sm);
+    color: var(--color-text-mute);
+    line-height: var(--leading-snug);
+  }
 </style>
 </content>
 </invoke>
