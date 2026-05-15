@@ -1320,16 +1320,25 @@ const sections = [
         }
         return e;
       }
+      // PHASE_STARTS = [0, P1, P1+P2, P1+P2+P3, P1+P2+P3+P4].
+      // Valid loop indices are 0..3 (the four protocol phases).
+      // Index 4 marks the start of the post-Result Hold window — not a
+      // protocol phase, so the loop should never capture it.
+      const LAST_PHASE_IDX = PHASE_STARTS.length - 2;  // 3
       function currentPhaseIndex(elapsed) {
-        // Returns the largest i such that PHASE_STARTS[i] <= elapsed.
-        // 0..3 are the four protocol phases; index 4 (the last entry in
-        // PHASE_STARTS) marks the post-Result hold window.
-        for (let i = PHASE_STARTS.length - 1; i >= 0; i--) {
+        for (let i = LAST_PHASE_IDX; i >= 0; i--) {
           if (elapsed >= PHASE_STARTS[i]) return i;
         }
         return 0;
       }
       function phaseEnd(idx) {
+        // For the last protocol phase (Result), extend the loop window to
+        // include the Hold time. Otherwise the wavy A↔B bell pair would
+        // retrace from invisible the instant it finishes drawing — the
+        // user never sees the finished result before the next iteration
+        // starts. Wrapping at T_TOTAL - T_PAUSE keeps the Hold-state view
+        // visible for a beat before retrace.
+        if (idx === LAST_PHASE_IDX) return T_TOTAL - T_PAUSE;
         return idx + 1 < PHASE_STARTS.length ? PHASE_STARTS[idx + 1] : T_TOTAL;
       }
       function togglePlay() {
