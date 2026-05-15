@@ -72,7 +72,8 @@
 
   <!-- Communication qubit -->
   <circle class="comm" cx="200" cy="293" r="20"/>
-  <text class="blk-lbl" x="200" y="340">communication / memory qubit</text>
+  <text x="200" y="299" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#ffffff">A</text>
+  <text class="blk-lbl" x="200" y="340">communication / memory qubit (comm-A)</text>
   <text class="blk-sub" x="200" y="356">SiV — electron spin emits; nuclear spin stores</text>
 
   <!-- Down to QFC -->
@@ -107,7 +108,8 @@
 
   <line class="conn" x1="900" y1="240" x2="900" y2="270"/>
   <circle class="comm" cx="900" cy="293" r="20"/>
-  <text class="blk-lbl" x="900" y="340">communication / memory qubit</text>
+  <text x="900" y="299" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="700" fill="#ffffff">B</text>
+  <text class="blk-lbl" x="900" y="340">communication / memory qubit (comm-B)</text>
   <text class="blk-sub" x="900" y="356">SiV — electron spin emits; nuclear spin stores</text>
 
   <line class="conn" x1="900" y1="367" x2="900" y2="388"/>
@@ -157,7 +159,7 @@
   <!-- ════════════════════════════════ BELL PAIR (wavy line — workspace convention) ════════════════════════════════ -->
   <!-- 20 quadratic segments × 33 px = 660 px span, from right edge of comm-A (220,293) to left edge of comm-B (880,293) -->
   <path class="bell" d="M 220,293 q 16.5,-9 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0"/>
-  <text class="bell-lbl" x="550" y="270">comm-A ↔ comm-B entangled — end-to-end after the swap chain completes</text>
+  <text class="bell-lbl" x="550" y="270">end-to-end Bell pair, comm-A ↔ comm-B (after the swap chain)</text>
 
   <!-- ════════════════════════════════ CLASSICAL CHANNEL BUS ════════════════════════════════ -->
   <!-- Horizontal classical bus at the bottom; branches up to each node and up to the pBSM -->
@@ -186,6 +188,19 @@
   <!-- Node B: up arrow (state arrives at comm, transduces up to transmon) -->
   <line class="c-arrow" x1="930" y1="270" x2="930" y2="245" marker-end="url(#chead)"/>
   <line class="c-arrow" x1="930" y1="190" x2="930" y2="135" marker-end="url(#chead)"/>
+
+  <!-- ════════════════════════════════ ZONE DIVIDER ════════════════════════════════
+       Horizontal dashed line at y=383 separates the two regimes. Anything ABOVE
+       the line is local to the node (LOCC, no quantum channel needed); anything
+       BELOW the line is the quantum-channel pipeline (QFC + fibre + pBSM, used
+       only in Phase 1). -->
+  <line x1="20" y1="383" x2="1080" y2="383" stroke="#7e5cb4" stroke-width="1" stroke-dasharray="5,4" opacity="0.55"/>
+  <text x="550" y="378" text-anchor="middle" font-size="11" font-style="italic" fill="#7e5cb4">
+    ↑ LOCC zone — Phase 2 runs entirely above this line (no fibre needed)
+  </text>
+  <text x="550" y="402" text-anchor="middle" font-size="11" font-style="italic" fill="#7e5cb4">
+    ↓ Quantum-channel zone — QFC, fibre, pBSM. Used only in Phase 1.
+  </text>
 
   <!-- Phase descriptions at the very bottom (two lines so they fit at viewBox width 1100) -->
   <text class="lbl" x="550" y="680" font-size="12">
