@@ -184,6 +184,14 @@ export const SUBJECTS: Subject[] = [
     tier: "E",
   },
   {
+    slug: "records",
+    title: "Records — quantum-networking distance and time",
+    navLabel: "Records",
+    blurb: "Distance and time records for QKD, entanglement distribution, qubit coherence, and memory storage — sortable tables grounded in primary peer-reviewed sources.",
+    status: "shipped",
+    tier: "E",
+  },
+  {
     slug: "standards",
     title: "Standards — QKD, QKDN, and quantum-network specifications",
     navLabel: "Standards",

@@ -42,6 +42,7 @@ const sections = [
   { id: "bottleneck",   label: "Why M-O is the bottleneck" },
   { id: "progress",     label: "Progress on the cross-modality pipeline" },
   { id: "encodings",    label: "Encoding translation" },
+  { id: "q1-stack",     label: "End-to-end Q1: heterogeneous endpoints" },
   { id: "forward",      label: "Forward references" },
 ];
 ---
@@ -100,7 +101,7 @@ const sections = [
         <p>
           A useful corrective before going further: QFC and microwave-to-optical
           transduction are not mandatory stages every quantum network must contain.
-          They are <strong>mismatch-patches</strong>. They appear precisely and only
+          They are bridges between mismatched layers — they appear precisely and only
           where two adjacent things in the chain don't natively speak the same physical
           language. If every link in the chain is matched, neither is needed.
         </p>
@@ -557,6 +558,53 @@ const sections = [
           not quantum frequency conversion and they do not span the microwave-to-optical
           gap. They sit alongside QFC and M-O transduction as the third axis of
           "make the photon match the next subsystem" the link layer has to handle.
+        </p>
+      </section>
+
+      <section id="q1-stack" data-nav-section>
+        <h2>End-to-end Q1: heterogeneous endpoints in one figure</h2>
+        <p>
+          The cross-modality figure earlier on this page shows the transducer story
+          in isolation. To answer Question&nbsp;1 — <em>what's required, top-down,
+          to move a photon between two quantum computers</em> — the full system
+          needs to be visible at once: surface-code QEC at each endpoint, the role
+          decomposition into <em>data&nbsp;·&nbsp;memory&nbsp;·&nbsp;comm</em>
+          qubits, the appropriate transducer on each side, the fibre with classical
+          and sync co-channels, and the photonic Bell-state measurement at the
+          meeting point. The figure below deliberately picks a <em>heterogeneous</em>
+          pair to make the point: Node&nbsp;A is a superconducting transmon QC,
+          Node&nbsp;B is a Diamond-SiV nanophotonic QC. The asymmetry inside the
+          two node frames is the heterogeneity.
+        </p>
+        <figure class="demo-card q1-stack-figure">
+          <img src={url("/images/q1-stack.svg")}
+               alt="Phase 1 row: Node A (superconducting transmon, far left) with an M-O badge labelled '5 GHz → 1350 nm', three SiV repeater nodes R₁ R₂ R₃ (centre) each with a pair of green matter qubits and blue photons, and Node B (Diamond-SiV, far right) with a QFC badge labelled '737 nm → 1350 nm'. Four photonic Bell-state-measurement apparatuses sit between adjacent nodes, with dashed blue photon paths converging into each. Phase 1 result row: four magenta wavy lines link adjacent matter qubits, marking the four elementary Bell pairs heralded across the chain. Caption notes that entanglement swapping at the relays joins these into one end-to-end A↔B Bell pair. Phase 2 row: a local Bell-state measurement at A (data qubit plus comm-A in a dashed box, A drawn spent-grey) sends two classical bits via an orange dashed arrow to Node B, which applies the Pauli correction onto its data qubit. Footnote cites Knaut et al. Nature 629, 573 (2024) and the IBM × Cisco × Fermilab transducer roadmap (Nov 2025)." />
+          <figcaption>
+            <strong>Q1 end-to-end, grounded in Knaut 2024.</strong> Node&nbsp;A is a
+            superconducting transmon with an M-O transducer (5&nbsp;GHz → 1,350&nbsp;nm);
+            Node&nbsp;B and the three intermediate relays are Diamond-SiV
+            nanophotonic nodes with ²⁹Si nuclear-spin memory and per-node QFC
+            (737&nbsp;nm SiV ZPL → 1,350&nbsp;nm telecom O-band via PPLN pumped at
+            1,623&nbsp;nm). All photons meet at <em>1,350&nbsp;nm</em> (Knaut's
+            wavelength choice, not 1,550&nbsp;nm). Phase&nbsp;1 produces four
+            elementary Bell pairs along the chain; the relays' swap protocol
+            joins them into one end-to-end A↔B Bell pair (see swapping page). Phase&nbsp;2
+            consumes that Bell pair via LOCC — fibre silent.
+          </figcaption>
+        </figure>
+        <p>
+          Two infrastructure realities to read off this figure. <strong>First</strong>,
+          the M-O transducer on Node&nbsp;A is the only component without a deployable
+          device today — everything else either ships or works in the lab. The
+          IBM&nbsp;×&nbsp;Cisco&nbsp;×&nbsp;Fermilab programme announced
+          November&nbsp;2025 names this exact stage as a 10-year build, with
+          proof-of-concept targeted by 2030. <strong>Second</strong>, the fibre
+          stretch is only loss-budget-realistic for ≤50&nbsp;km in standard
+          single-mode fibre or ≤100&nbsp;km in hollow-core fibre; beyond that range
+          the figure becomes Q4 (repeaters), with the pBSM midpoint replaced by a
+          chain of memory-equipped repeater nodes performing entanglement
+          swapping. See the {" "}<a href={url("/swapping")}>swapping</a> page for
+          that primitive.
         </p>
       </section>
 

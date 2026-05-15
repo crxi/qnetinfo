@@ -172,6 +172,16 @@
   type: book
   url: "https://www.wiley.com/en-us/Quantum+Networking-p-9781848215375"
 
+- id: liao-nature-549
+  title: "Satellite-to-ground quantum key distribution"
+  authors: ["Sheng-Kai Liao", "Wen-Qi Cai", "Wei-Yue Liu", "Liang Zhang", "Yang Li", "Ji-Gang Ren", "Juan Yin", "Qi Shen", "Yuan Cao", "Zheng-Ping Li", "Feng-Zhi Li", "Xia-Wei Chen", "Li-Hua Sun", "Jian-Jun Jia", "Jin-Cai Wu", "Xiao-Jun Jiang", "Jian-Feng Wang", "Yong-Mei Huang", "Qiang Wang", "Yi-Lin Zhou", "Lei Deng", "Tao Xi", "Lu Ma", "Tai Hu", "Qiang Zhang", "Yu-Ao Chen", "Nai-Le Liu", "Xiang-Bin Wang", "Zhen-Cai Zhu", "Cheng-Zhi Peng", "Jian-Yu Wang", "Jian-Wei Pan"]
+  publisher: "Nature"
+  year: 2017
+  volume: "549"
+  pages: "43"
+  type: paper
+  doi: "10.1038/nature23655"
+
 - id: yin-science-2017
   title: "Satellite-based entanglement distribution over 1200 kilometers"
   authors: ["Juan Yin", "Yuan Cao", "Yu-Huai Li", "Sheng-Kai Liao", "Liang Zhang", "Ji-Gang Ren", "Wen-Qi Cai", "Wei-Yue Liu", "et al."]
@@ -204,6 +214,15 @@
   year: 2024
   type: misc
   url: "https://blogs.microsoft.com/blog/2022/12/09/microsoft-acquires-lumenisity-an-innovator-in-hollow-core-fiber-hcf-cable/"
+
+- id: huang-prl-2024
+  title: "Vacuum beam guide for large-scale quantum networks"
+  authors: ["Yuexun Huang", "Francisco Salces-Carcoba", "Rana X Adhikari", "Amir H. Safavi-Naeini", "Liang Jiang"]
+  publisher: "Physical Review Letters"
+  year: 2024
+  type: paper
+  doi: "10.1103/PhysRevLett.133.020801"
+  marker: "PRL 133, 020801"
 
 - id: schmitt-manderbach-prl-2007
   title: "Experimental demonstration of free-space decoy-state quantum key distribution over 144 km"
@@ -474,3 +493,170 @@
   type: paper
   doi: "10.1038/srep01984"
   url: "https://doi.org/10.1038/srep01984"
+
+- id: boaron-prl-2018
+  title: "Secure quantum key distribution over 421 km of optical fiber"
+  authors: ["Alberto Boaron", "Gianluca Boso", "Davide Rusca", "Cédric Vulliez", "Claire Autebert", "Misael Caloz", "Matthieu Perrenoud", "Gaëtan Gras", "Félix Bussières", "Ming-Jun Li", "Daniel Nolan", "Anthony Martin", "Hugo Zbinden"]
+  publisher: "Physical Review Letters"
+  year: 2018
+  type: paper
+  doi: "10.1103/PhysRevLett.121.190502"
+
+- id: stephenson-prl-2020
+  title: "High-rate, high-fidelity entanglement of qubits across an elementary quantum network"
+  authors: ["L. J. Stephenson", "D. P. Nadlinger", "B. C. Nichol", "S. An", "P. Drmota", "T. G. Ballance", "K. Thirumalai", "J. F. Goodwin", "D. M. Lucas", "C. J. Ballance"]
+  publisher: "Physical Review Letters"
+  year: 2020
+  type: paper
+  doi: "10.1103/PhysRevLett.124.110501"
+
+- id: vanleent-nature-2022
+  title: "Entangling single atoms over 33 km telecom fibre"
+  authors: ["Tim van Leent", "Matthias Bock", "Florian Fertig", "Robert Garthoff", "Sebastian Eppelt", "Yiru Zhou", "Pooja Malik", "Matthias Seubert", "Tobias Bauer", "Wenjamin Rosenfeld", "Wei Zhang", "Christoph Becher", "Harald Weinfurter"]
+  publisher: "Nature"
+  year: 2022
+  type: paper
+  doi: "10.1038/s41586-022-04764-4"
+
+- id: wang-nature-2021
+  title: "Single ion-qubit exceeding one hour coherence time"
+  authors: ["Pengfei Wang", "Chun-Yang Luan", "Mu Qiao", "Mark Um", "Junhua Zhang", "Ye Wang", "Xiao Yuan", "Mile Gu", "Jingning Zhang", "Kihwan Kim"]
+  publisher: "Nature Communications"
+  year: 2021
+  type: paper
+  doi: "10.1038/s41467-020-20330-w"
+  note: "Ytterbium-171 ground-state qubit: coherence time of 5500 s (~90 min) using dynamical decoupling."
+
+- id: pittaluga-natphoton-2021
+  title: "600-km repeater-like quantum communications with dual-band stabilization"
+  authors: ["Mirko Pittaluga", "Mariella Minder", "Marco Lucamarini", "Mirko Sanzaro", "Robert I. Woodward", "Ming-Jun Li", "Zhiliang Yuan", "Andrew J. Shields"]
+  publisher: "Nature Photonics"
+  year: 2021
+  type: paper
+  doi: "10.1038/s41566-021-00811-0"
+
+- id: liu-prl-2023
+  title: "Experimental twin-field quantum key distribution over 1000-km fiber distance"
+  authors: ["Yang Liu", "Wei-Jun Zhang", "Cong Jiang", "Jiu-Peng Chen", "Chi Zhang", "Wen-Xin Pan", "Di Ma", "Hao Dong", "Jia-Min Xiong", "Cheng-Jun Zhang", "Hao Li", "Rui-Chun Wang", "Jun Wu", "Teng-Yun Chen", "Lixing You", "Xiang-Bin Wang", "Qiang Zhang", "Jian-Wei Pan"]
+  publisher: "Physical Review Letters"
+  year: 2023
+  type: paper
+  doi: "10.1103/PhysRevLett.130.210801"
+
+- id: bland-nature-647
+  title: "Millisecond lifetimes and coherence times in 2D transmon qubits"
+  authors: ["Matthew P. Bland", "Faranak Bahrami", "Nathalie P. de Leon", "Andrew A. Houck"]
+  publisher: "Nature"
+  year: 2025
+  volume: "647"
+  pages: "343"
+  type: paper
+  doi: "10.1038/s41586-025-09687-4"
+  note: "Tantalum-on-silicon 2D transmons; best qubit T1 up to 1.68 ms (quality factor 2.5×10^7), Hahn-echo T2E exceeding T1."
+
+- id: zhong-nature-517
+  title: "Optically addressable nuclear spins in a solid with a six-hour coherence time"
+  authors: ["Manjin Zhong", "Morgan P. Hedges", "Rose L. Ahlefeldt", "John G. Bartholomew", "Sarah E. Beavan", "Sven M. Wittig", "Jevon J. Longdell", "Matthew J. Sellars"]
+  publisher: "Nature"
+  year: 2015
+  volume: "517"
+  pages: "177"
+  type: paper
+  doi: "10.1038/nature14025"
+  note: "151Eu3+:Y2SiO5 ground-state nuclear-spin coherence of 6 h under dynamical decoupling and zero-first-order Zeeman field."
+
+- id: li-nature-2025-jinan
+  title: "Microsatellite-based real-time quantum key distribution"
+  authors: ["Yang Li", "Wen-Qi Cai", "Ji-Gang Ren", "Chao-Zhen Wang", "Mei-Yan Yang", "Liang Zhang", "Hong-Yi Wu", "Yu-Huai Li", "Sheng-Kai Liao", "Cheng-Zhi Peng", "Yuval Gefen", "Charles Feng", "Jian-Wei Pan"]
+  publisher: "Nature"
+  year: 2025
+  type: paper
+  doi: "10.1038/s41586-025-08739-z"
+  note: "Jinan-1 microsatellite (~23 kg, 500 km LEO) demonstrating real-time QKD between Beijing and Stellenbosch ground stations — 12,900 km path, southern-hemisphere first."
+
+- id: liu-nature-652
+  title: "Long-lived remote ion-ion entanglement for scalable quantum repeaters"
+  authors: ["Wen-Zhao Liu", "et al.", "Xiao-Hui Bao", "Qiang Zhang", "Jian-Wei Pan"]
+  publisher: "Nature"
+  year: 2026
+  volume: "652"
+  pages: "51"
+  type: paper
+  doi: "10.1038/s41586-026-10177-4"
+  note: "Heralded remote ion-ion entanglement over 10 km spooled fibre with ~550 ms lifetime — first demonstration where entanglement generation rate exceeds the loss rate."
+
+- id: tittel-arxiv-2501
+  title: "Quantum networks using rare-earth ions"
+  authors: ["Wolfgang Tittel", "Mikael Afzelius", "Hugues de Riedmatten", "Christoph Simon", "Andrei Faraon"]
+  publisher: "arXiv:2501.06110"
+  year: 2025
+  type: preprint
+  url: "https://arxiv.org/abs/2501.06110"
+  note: "Review of rare-earth-ion quantum memories; tabulates AFC-protocol storage-time vs efficiency across Pr/Eu/Yb/Tm:YSO and YGG implementations."
+
+- id: ma-natphys-2021
+  title: "One-hour coherent optical storage in an atomic frequency comb memory"
+  authors: ["Yu Ma", "You-Zhi Ma", "Zong-Quan Zhou", "Chuan-Feng Li", "Guang-Can Guo"]
+  publisher: "Nature Communications"
+  year: 2021
+  type: paper
+  doi: "10.1038/s41467-021-22706-y"
+  note: "Eu:YSO atomic-frequency-comb memory; light storage of one hour."
+
+- id: dudin-natphys-2013
+  title: "Light storage on the time scale of a minute in a cold atomic ensemble"
+  authors: ["Y. O. Dudin", "L. Li", "A. Kuzmich"]
+  publisher: "Physical Review A"
+  year: 2013
+  type: paper
+  doi: "10.1103/PhysRevA.87.031801"
+
+- id: yin-nature-2020
+  title: "Entanglement-based secure quantum cryptography over 1,120 kilometres"
+  authors: ["Juan Yin", "Yu-Huai Li", "Sheng-Kai Liao", "Meng Yang", "Yuan Cao", "Liang Zhang", "Ji-Gang Ren", "Wen-Qi Cai", "Wei-Yue Liu", "Shuang-Lin Li", "Rong Shu", "Yong-Mei Huang", "Lei Deng", "Li Li", "Qiang Zhang", "Nai-Le Liu", "Yu-Ao Chen", "Chao-Yang Lu", "Xiang-Bin Wang", "Feihu Xu", "Jian-Yu Wang", "Cheng-Zhi Peng", "Artur K. Ekert", "Jian-Wei Pan"]
+  publisher: "Nature"
+  year: 2020
+  type: paper
+  doi: "10.1038/s41586-020-2401-y"
+  note: "Micius satellite entanglement-based QKD between Delingha and Nanshan ground stations (1120 km)."
+
+- id: heshami-jmo-2016
+  title: "Quantum memories: emerging applications and recent advances"
+  authors: ["Khabat Heshami", "Duncan G. England", "Peter C. Humphreys", "Philip J. Bustard", "Victor M. Acosta", "Joshua Nunn", "Benjamin J. Sussman"]
+  publisher: "Journal of Modern Optics"
+  year: 2016
+  type: paper
+  doi: "10.1080/09500340.2016.1148212"
+
+- id: bradley-prx-2019
+  title: "A ten-qubit solid-state spin register with quantum memory up to one minute"
+  authors: ["C. E. Bradley", "J. Randall", "M. H. Abobeih", "R. C. Berrevoets", "M. J. Degen", "M. A. Bakker", "M. Markham", "D. J. Twitchen", "T. H. Taminiau"]
+  publisher: "Physical Review X"
+  year: 2019
+  type: paper
+  doi: "10.1103/PhysRevX.9.031045"
+  note: "NV-centre 13C nuclear-spin register: T2 ≥ 75 s (1.5 K), 63 ± 2 s (3.7 K)."
+
+- id: saglamyurek-nature-2011
+  title: "Broadband waveguide quantum memory for entangled photons"
+  authors: ["Erhan Saglamyurek", "Neil Sinclair", "Jeongwan Jin", "Joshua A. Slater", "Daniel Oblak", "Félix Bussières", "Mathew George", "Raimund Ricken", "Wolfgang Sohl", "Wolfgang Tittel"]
+  publisher: "Nature"
+  year: 2011
+  type: paper
+  doi: "10.1038/nature10463"
+
+- id: chou-nature-2018
+  title: "Deterministic teleportation of a quantum gate between two logical qubits"
+  authors: ["Kevin S. Chou", "Jacob Z. Blumoff", "Christopher S. Wang", "Philip C. Reinhold", "Christopher J. Axline", "Yvonne Y. Gao", "Luigi Frunzio", "M. H. Devoret", "Liang Jiang", "R. J. Schoelkopf"]
+  publisher: "Nature"
+  year: 2018
+  type: paper
+  doi: "10.1038/s41586-018-0470-y"
+
+- id: minder-natphoton-2019
+  title: "Experimental quantum key distribution beyond the repeaterless secret key capacity"
+  authors: ["Mariella Minder", "Mirko Pittaluga", "G. L. Roberts", "Marco Lucamarini", "James F. Dynes", "Zhiliang Yuan", "Andrew J. Shields"]
+  publisher: "Nature Photonics"
+  year: 2019
+  type: paper
+  doi: "10.1038/s41566-019-0377-7"

@@ -10,6 +10,7 @@
  *   - lumenisity-microsoft-2024 — commercial HCF deployment.
  *   - schmitt-manderbach-prl-2007 — FSO 144 km decoy QKD.
  *   - yin-science-2017 — Micius 1200 km satellite entanglement.
+ *   - huang-prl-2024 — vacuum beam guide proposal.
  *   - kumar-ijndc-2025 — survey-level reference.
  */
 import Infographic from "../layouts/Infographic.astro";
@@ -23,6 +24,7 @@ const sections = [
   { id: "fibre",     label: "Standard fibre" },
   { id: "hcf",       label: "Hollow-core fibre" },
   { id: "fso",       label: "Free-space optical" },
+  { id: "vbg",       label: "Vacuum beam guide" },
   { id: "satellite", label: "Satellite" },
   { id: "compare",   label: "Side-by-side comparison" },
 ];
@@ -36,6 +38,7 @@ const sections = [
     "jasion-ofc-2022",
     "kumar-ijndc-2025",
     "lumenisity-microsoft-2024",
+    "huang-prl-2024",
     "schmitt-manderbach-prl-2007",
     "yin-science-2017",
   ]}
@@ -48,10 +51,11 @@ const sections = [
       <header class="hero" id="overview" data-nav-section>
         <h1>Links — fibre, hollow-core, free-space, satellite</h1>
         <p>
-          A quantum network's physical layer has four practical choices: standard
+          A quantum network's physical layer has four practical choices today — standard
           single-mode fibre (SMF), hollow-core fibre (HCF), free-space optical (FSO), and
-          satellite. Each has a different loss profile, reach, latency, and operational
-          envelope. Because no-cloning rules out the optical amplifiers that classical
+          satellite — and a fifth proposal on paper: the vacuum beam guide (VBG), an
+          evacuated tube with relay lenses at multi-kilometre spacing. Each has a
+          different loss profile, reach, latency, and operational envelope. Because no-cloning rules out the optical amplifiers that classical
           fibre relies on, the unaided reach of a quantum link is a pure attenuation
           budget — every dB of loss eats directly into the photon-survival
           probability <SourceNote id="kumar-ijndc-2025" />.
@@ -121,6 +125,44 @@ const sections = [
         </p>
       </section>
 
+      <section id="vbg" data-nav-section>
+        <h2>Vacuum beam guide (VBG)</h2>
+        <p>
+          A vacuum beam guide is an evacuated tube with an array of relay lenses spaced
+          kilometres apart, guiding a Gaussian beam between two endpoints without total
+          internal reflection in glass. Huang et al. (Phys Rev Lett 133, 020801, 2024)
+          analyse a confocal design with lens spacing <strong>L<sub>0</sub> = 4 km</strong>,
+          lens radius <strong>R = 10 cm</strong>, and a telecom-band beam waist
+          <strong>w<sub>0</sub> ≈ 3 cm</strong>, in a tube held below ~1 Pa. Under those
+          parameters they project a total attenuation as low as
+          <strong>5 × 10<sup>−5</sup> dB/km</strong> — an effective attenuation length
+          around 80,000 km, roughly three orders of magnitude below the best silica-core
+          fibre (~0.148 dB/km) <SourceNote id="huang-prl-2024" />.
+        </p>
+        <p>
+          The loss budget has three terms: lens absorption / scattering / reflection
+          (kept below 10<sup>−4</sup> dB/km with good AR coatings and R ≥ 10 cm to
+          suppress diffraction), residual-gas absorption (&lt;10<sup>−4</sup> dB/km at 1 Pa
+          for telecom wavelengths, per HITRAN), and misalignment of the lens array.
+          Transverse alignment is the binding constraint: σ<sub>s</sub> &lt; 0.2 mm per
+          lens keeps the misalignment term below 10<sup>−4</sup> dB/km; relaxing to 0.6 mm
+          still beats SMF by an order of magnitude. The authors point to LIGO's
+          kilometre-scale evacuated beam tubes as the existence proof that the supporting
+          civil and vacuum infrastructure is buildable.
+        </p>
+        <p>
+          The strategic claim is that a VBG could carry quantum traffic over thousands of
+          kilometres <em>without</em> repeaters, at a frequency-integrated channel
+          capacity above <strong>10<sup>13</sup> qubit/s</strong> — orders of magnitude
+          above current satellite QKD rates. None of this is built. The open engineering
+          problems are active alignment of an N-thousand-lens array against seismic
+          drift, vacuum-pump spacing and maintenance over continental distances, and the
+          capital cost of an evacuated right-of-way competitive with installing HCF in
+          existing ducts. Treat the VBG as a long-horizon alternative to space-segment
+          backbones rather than a near-term procurement option.
+        </p>
+      </section>
+
       <section id="satellite" data-nav-section>
         <h2>Satellite</h2>
         <p>
@@ -178,6 +220,13 @@ const sections = [
               <td>10s of km terrestrial</td>
               <td>~3.4 µs/km</td>
               <td>Scintillation + weather + daytime background; gaps in service</td>
+            </tr>
+            <tr>
+              <th scope="row">Vacuum beam guide (VBG)</th>
+              <td>~5 × 10<sup>−5</sup> dB/km projected</td>
+              <td>1000s of km (unrepeated, on paper)</td>
+              <td>~3.3 µs/km (vacuum)</td>
+              <td>Not built; needs evacuated right-of-way + sub-mm lens alignment</td>
             </tr>
             <tr>
               <th scope="row">Satellite</th>
