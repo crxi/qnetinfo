@@ -69,7 +69,7 @@
   <rect class="mo-blk" x="115" y="192" width="170" height="48" rx="6"/>
   <text class="blk-lbl" x="200" y="214">M-O transducer</text>
   <text class="blk-sub" x="200" y="231">microwave ↔ optical</text>
-  <text class="iface" x="293" y="220" text-anchor="start">interface 2</text>
+  <text class="iface" x="293" y="220" text-anchor="start">compute–network QuIC</text>
 
   <!-- Down to comm qubit -->
   <line class="conn" x1="200" y1="240" x2="200" y2="270"/>
@@ -98,7 +98,7 @@
   <rect class="qfc-blk" x="115" y="388" width="170" height="48" rx="6"/>
   <text class="blk-lbl" x="200" y="410">QFC (PPLN)</text>
   <text class="blk-sub" x="200" y="427">737 nm → 1550 nm</text>
-  <text class="iface" x="293" y="416" text-anchor="start">interface 1</text>
+  <text class="iface" x="293" y="416" text-anchor="start">spin–photon QuIC</text>
 
   <!-- Photon exit path (out of QFC, exits the node frame to the right).
        No photon dot here — the photon dot is shown at emission next to
@@ -119,7 +119,7 @@
   <rect class="mo-blk" x="815" y="192" width="170" height="48" rx="6"/>
   <text class="blk-lbl" x="900" y="214">M-O transducer</text>
   <text class="blk-sub" x="900" y="231">microwave ↔ optical</text>
-  <text class="iface" x="807" y="220" text-anchor="end">interface 2</text>
+  <text class="iface" x="807" y="220" text-anchor="end">compute–network QuIC</text>
 
   <line class="conn" x1="900" y1="240" x2="900" y2="270"/>
   <circle class="comm" cx="900" cy="293" r="20"/>
@@ -134,7 +134,7 @@
   <rect class="qfc-blk" x="815" y="388" width="170" height="48" rx="6"/>
   <text class="blk-lbl" x="900" y="410">QFC (PPLN)</text>
   <text class="blk-sub" x="900" y="427">737 nm → 1550 nm</text>
-  <text class="iface" x="807" y="416" text-anchor="end">interface 1</text>
+  <text class="iface" x="807" y="416" text-anchor="end">spin–photon QuIC</text>
 
   <line class="conn" x1="900" y1="436" x2="900" y2="470"/>
   <line class="conn" x1="900" y1="470" x2="755" y2="470"/>
