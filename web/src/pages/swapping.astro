@@ -195,15 +195,17 @@ const sections = [
               <use href="#sw-bsm-detector" transform="translate(510,370) rotate(135)"/>
             </svg>
 
-            {/* ---- Classical channel (dashed line + bit pair) ---- */}
-            <text x="590" y="230" text-anchor="middle" class="sw-channel">2 classical bits</text>
+            {/* ---- Classical channel (dashed line + bit pair).
+                 The (0, 1) pulse sits ON the line; the "2 classical bits"
+                 label sits BELOW the line so it doesn't clash with the pulse. ---- */}
             <line x1="455" y1="240" x2="720" y2="240"
                   stroke="var(--color-text-soft)" stroke-width="1"
                   stroke-dasharray="4,3" opacity="0.6"
                   marker-end="url(#sw-arr)"/>
+            <text x="590" y="268" text-anchor="middle" class="sw-channel">2 classical bits</text>
 
             <g data-sw-bits opacity="0">
-              <text data-sw-bits-text x="475" y="235" text-anchor="middle" class="sw-bit">(0, 1)</text>
+              <text data-sw-bits-text x="475" y="244" text-anchor="middle" class="sw-bit">(0, 1)</text>
             </g>
 
             {/* Pauli badge that lands on B during the correction phase. */}
