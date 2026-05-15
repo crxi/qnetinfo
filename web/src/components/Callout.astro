@@ -31,12 +31,13 @@
 interface Props {
   label: string;
   tone?: "note" | "warn" | "muted";
+  id?: string;
 }
 
-const { label, tone = "note" } = Astro.props;
+const { label, tone = "note", id } = Astro.props;
 ---
 
-<aside class:list={["callout", `callout--${tone}`]} aria-label={label}>
+<aside class:list={["callout", `callout--${tone}`]} aria-label={label} id={id}>
   <p class="callout__label">{label}</p>
   <slot />
 </aside>

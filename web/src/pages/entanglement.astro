@@ -1307,6 +1307,43 @@ const sections = [
           </article>
         </Grid>
 
+        <Callout label="LOCC — the operational budget" id="locc">
+          <p>
+            The three primitives above share a structural feature worth naming.
+            <strong>LOCC</strong> stands for <strong>local operations and classical
+            communication</strong>: each node may do anything it wants to the qubits in its
+            own lab (gates, measurements, adding ancillas) and the nodes may exchange as
+            much classical information as they like over an ordinary channel. No quantum
+            channel between them. Almost everything that happens at the network nodes
+            <em>after</em> a Bell pair has been delivered is an LOCC protocol.
+          </p>
+          <p>
+            What makes LOCC interesting is what it <em>cannot</em> do. You cannot create
+            entanglement between two distant qubits by LOCC alone — no amount of local
+            measurement plus phoning each other will produce a shared Bell pair from
+            scratch. Entanglement has to be carried in by a quantum channel (a photon down
+            a fibre, a satellite link) or by physically bringing the qubits together. This
+            is why the network exists in the first place: <em>generating</em> entanglement
+            is the part LOCC can't do, so the network does it, once, and hands the result to
+            applications that thereafter run by LOCC.
+          </p>
+          <ul>
+            <li>
+              <strong>Cannot:</strong> create entanglement between distant nodes from
+              nothing.
+            </li>
+            <li>
+              <strong>Can:</strong> consume a delivered Bell pair to teleport an unknown
+              state (above, "Teleportation").
+            </li>
+            <li>
+              <strong>Can:</strong> distil many noisy Bell pairs into fewer high-fidelity
+              ones (above, "Distillation"; see <a href={url("/distillation")}>distillation</a>
+              for the protocols).
+            </li>
+          </ul>
+        </Callout>
+
       </section>
 
       <section id="bsm" data-nav-section>
