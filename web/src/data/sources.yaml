@@ -321,6 +321,14 @@
   type: paper
   doi: "10.1038/s41586-024-08404-x"
 
+- id: awschalom-prxquantum-2021
+  title: "Development of Quantum Interconnects (QuICs) for Next-Generation Information Technologies"
+  authors: ["David D. Awschalom", "Karl K. Berggren", "Hannes Bernien", "Sunil Bhave", "Lincoln D. Carr", "et al."]
+  publisher: "PRX Quantum"
+  year: 2021
+  type: paper
+  doi: "10.1103/PRXQuantum.2.017002"
+
 - id: jones-njp-2016
   title: "Design and analysis of communication protocols for quantum repeater networks"
   authors: ["Cody Jones", "Danny Kim", "Matthew T. Rakher", "Paul G. Kwiat", "Thaddeus D. Ladd"]
