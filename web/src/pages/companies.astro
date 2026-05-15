@@ -45,9 +45,48 @@ const grouped: { category: typeof CATEGORY_ORDER[number]; companies: Company[] }
 
 const haveDossiers = COMPANIES.length > 0;
 
-// Chip counts: how many dossiers fall under each primary category.
-const dossierCategoryCounts: Partial<Record<typeof CATEGORY_ORDER[number], number>> =
-  Object.fromEntries(grouped.map((g) => [g.category, g.companies.length]));
+// Chip counts: how many dossiers carry each category in their `categories`
+// list (not just as the primary one). A company tagged [memory, network]
+// counts under both 'memory' and 'network', which matches the chip-filter
+// semantics — clicking the chip should show every card with that category,
+// not only those where it's primary.
+const dossierCategoryCounts: Partial<Record<typeof CATEGORY_ORDER[number], number>> = {};
+for (const c of COMPANIES) {
+  for (const cat of c.categories) {
+    dossierCategoryCounts[cat] = (dossierCategoryCounts[cat] ?? 0) + 1;
+  }
+}
+
+// Country chips: extract the country (last comma-separated segment of `hq`)
+// and count dossiers per country, normalising common aliases.
+function extractCountry(hq: string | undefined | null): string {
+  if (!hq) return "Unknown";
+  const parts = hq.split(",").map((s) => s.trim()).filter(Boolean);
+  if (parts.length === 0) return "Unknown";
+  let last = parts[parts.length - 1];
+  // Normalise common variants.
+  const aliases: Record<string, string> = {
+    "US": "USA",
+    "U.S.": "USA",
+    "United States": "USA",
+    "U.S.A.": "USA",
+    "UK": "UK",
+    "United Kingdom": "UK",
+    "PRC": "China",
+    "People's Republic of China": "China",
+  };
+  return aliases[last] ?? last;
+}
+const countryCounts: Record<string, number> = {};
+for (const c of COMPANIES) {
+  const country = extractCountry(c.hq);
+  countryCounts[country] = (countryCounts[country] ?? 0) + 1;
+}
+// Sort countries by count desc, then alphabetically for ties.
+const COUNTRY_ORDER: string[] = Object.keys(countryCounts).sort((a, b) => {
+  const d = (countryCounts[b] ?? 0) - (countryCounts[a] ?? 0);
+  return d !== 0 ? d : a.localeCompare(b);
+});
 
 // Vendors named in surveys but not yet in our dossier set — flat list grouped by family.
 const watchList: { family: string; companies: { name: string; note: string }[] }[] = [
@@ -132,13 +171,27 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
         {haveDossiers && (
           <div class="filter-bar" id="co-filter-bar">
             <input type="search" id="co-search" placeholder="Search name, positioning, location…" class="co-search" />
-            <div class="filter-chips" data-filter-group="category">
-              {CATEGORY_ORDER.filter((c) => (dossierCategoryCounts[c] ?? 0) > 0).map((c) => (
-                <button class="chip cat-chip" data-filter-value={c} aria-pressed="false" type="button">
-                  {CATEGORY_LABEL[c]}
-                  <span class="chip-count">{dossierCategoryCounts[c]}</span>
-                </button>
-              ))}
+            <div class="filter-row">
+              <span class="filter-row-label">Category</span>
+              <div class="filter-chips" data-filter-group="category">
+                {CATEGORY_ORDER.filter((c) => (dossierCategoryCounts[c] ?? 0) > 0).map((c) => (
+                  <button class={`chip cat-pill cat-${c}`} data-filter-value={c} aria-pressed="false" type="button">
+                    {CATEGORY_LABEL[c]}
+                    <span class="chip-count">{dossierCategoryCounts[c]}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div class="filter-row">
+              <span class="filter-row-label">Country</span>
+              <div class="filter-chips" data-filter-group="country">
+                {COUNTRY_ORDER.map((country) => (
+                  <button class="chip country-chip" data-filter-value={country} aria-pressed="false" type="button">
+                    {country}
+                    <span class="chip-count">{countryCounts[country]}</span>
+                  </button>
+                ))}
+              </div>
             </div>
             <button id="co-reset" class="co-reset" type="button">Reset</button>
           </div>
@@ -153,6 +206,7 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
                   <li
                     class="dossier-card"
                     data-categories={c.categories.join(" ")}
+                    data-country={extractCountry(c.hq)}
                     data-search={`${c.name} ${c.positioning ?? ""} ${c.hq ?? ""} ${c.categories.map((cc) => CATEGORY_LABEL[cc]).join(" ")}`.toLowerCase()}
                   >
                     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/companies/${c.slug}`}>
@@ -161,12 +215,12 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
                         <div class="dossier-name">{c.name}</div>
                       </div>
                       <div class="dossier-positioning">{c.positioning}</div>
+                      <div class="dossier-cats">
+                        {c.categories.map((cc) => (
+                          <span class={`cat-pill cat-${cc}`}>{CATEGORY_LABEL[cc]}</span>
+                        ))}
+                      </div>
                       <div class="dossier-meta">
-                        {c.categories.length > 1 && (
-                          <span class="dossier-extra-cats">
-                            also: {c.categories.slice(1).map((cc) => CATEGORY_LABEL[cc]).join(", ")}
-                          </span>
-                        )}
                         <span class="dossier-hq">{c.hq}</span>
                       </div>
                     </a>
@@ -242,21 +296,25 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
     const search = /** @type {HTMLInputElement} */ (document.getElementById("co-search"));
     const reset  = document.getElementById("co-reset");
     const empty  = document.getElementById("co-empty");
-    const chips  = Array.from(bar.querySelectorAll(".cat-chip"));
+    const catChips     = Array.from(bar.querySelectorAll('[data-filter-group="category"] .chip'));
+    const countryChips = Array.from(bar.querySelectorAll('[data-filter-group="country"] .chip'));
     const cards  = Array.from(document.querySelectorAll("#co-dossiers .dossier-card"));
     const groups = Array.from(document.querySelectorAll("#co-dossiers .dossier-group"));
 
-    const activeCats = new Set();
+    const activeCats      = new Set();
+    const activeCountries = new Set();
     let query = "";
 
     function apply() {
       let visibleTotal = 0;
       for (const card of cards) {
         const cats = (card.getAttribute("data-categories") || "").split(/\s+/).filter(Boolean);
+        const country = card.getAttribute("data-country") || "";
         const searchText = card.getAttribute("data-search") || "";
-        const matchesCat = activeCats.size === 0 || cats.some((c) => activeCats.has(c));
-        const matchesQuery = query === "" || searchText.indexOf(query) !== -1;
-        const visible = matchesCat && matchesQuery;
+        const matchesCat     = activeCats.size === 0      || cats.some((c) => activeCats.has(c));
+        const matchesCountry = activeCountries.size === 0 || activeCountries.has(country);
+        const matchesQuery   = query === ""               || searchText.indexOf(query) !== -1;
+        const visible = matchesCat && matchesCountry && matchesQuery;
         card.hidden = !visible;
         if (visible) visibleTotal++;
       }
@@ -269,31 +327,37 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
       if (empty) empty.hidden = visibleTotal !== 0;
     }
 
+    function bindChipGroup(chips, activeSet) {
+      for (const chip of chips) {
+        chip.addEventListener("click", () => {
+          const v = chip.getAttribute("data-filter-value");
+          if (!v) return;
+          if (activeSet.has(v)) {
+            activeSet.delete(v);
+            chip.setAttribute("aria-pressed", "false");
+          } else {
+            activeSet.add(v);
+            chip.setAttribute("aria-pressed", "true");
+          }
+          apply();
+        });
+      }
+    }
+    bindChipGroup(catChips,     activeCats);
+    bindChipGroup(countryChips, activeCountries);
+
     search.addEventListener("input", () => {
       query = search.value.trim().toLowerCase();
       apply();
     });
 
-    for (const chip of chips) {
-      chip.addEventListener("click", () => {
-        const v = chip.getAttribute("data-filter-value");
-        if (!v) return;
-        if (activeCats.has(v)) {
-          activeCats.delete(v);
-          chip.setAttribute("aria-pressed", "false");
-        } else {
-          activeCats.add(v);
-          chip.setAttribute("aria-pressed", "true");
-        }
-        apply();
-      });
-    }
-
     reset?.addEventListener("click", () => {
       activeCats.clear();
+      activeCountries.clear();
       query = "";
       search.value = "";
-      for (const c of chips) c.setAttribute("aria-pressed", "false");
+      for (const c of catChips)     c.setAttribute("aria-pressed", "false");
+      for (const c of countryChips) c.setAttribute("aria-pressed", "false");
       apply();
     });
   })();
@@ -378,20 +442,77 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
     display: flex; gap: var(--space-2); flex-wrap: wrap;
     font-size: var(--text-xs); color: var(--color-text-mute);
   }
-  .dossier-extra-cats { color: var(--color-accent); }
   .empty { color: var(--color-text-mute); }
+
+  /* ─── Category pills (color-coded; used both inside cards and as filter chips) ─── */
+  .cat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: var(--text-xs);
+    line-height: 1;
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .cat-qc            { background: color-mix(in srgb, #3b82f6 18%, transparent); color: #2353c7; border-color: color-mix(in srgb, #3b82f6 40%, transparent); }
+  .cat-qkd           { background: color-mix(in srgb, #8b5cf6 18%, transparent); color: #6c40d9; border-color: color-mix(in srgb, #8b5cf6 40%, transparent); }
+  .cat-memory        { background: color-mix(in srgb, #10b981 18%, transparent); color: #0c8a64; border-color: color-mix(in srgb, #10b981 40%, transparent); }
+  .cat-network       { background: color-mix(in srgb, #06b6d4 18%, transparent); color: #0289a2; border-color: color-mix(in srgb, #06b6d4 40%, transparent); }
+  .cat-source-detect { background: color-mix(in srgb, #f59e0b 18%, transparent); color: #b16e00; border-color: color-mix(in srgb, #f59e0b 40%, transparent); }
+  .cat-sensing       { background: color-mix(in srgb, #ef4444 18%, transparent); color: #c53030; border-color: color-mix(in srgb, #ef4444 40%, transparent); }
+  .cat-software      { background: color-mix(in srgb, #6b7280 18%, transparent); color: #4b5563; border-color: color-mix(in srgb, #6b7280 40%, transparent); }
+  .cat-enabling      { background: color-mix(in srgb, #ec4899 18%, transparent); color: #be1f7a; border-color: color-mix(in srgb, #ec4899 40%, transparent); }
+
+  /* Filter-chip pills (cat-pill used as a button) get the same colour fill,
+     plus pressed state and hover behavior. */
+  button.cat-pill {
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--text-xs);
+    padding: 0.25rem 0.6rem;
+  }
+  button.cat-pill:hover { filter: brightness(0.95); }
+  button.cat-pill[aria-pressed="true"] {
+    box-shadow: inset 0 0 0 2px currentColor;
+    font-weight: 600;
+  }
+
+  /* Per-card pill row */
+  .dossier-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-block-start: 0.2rem;
+  }
 
   /* ─── Filter bar ─────────────────────────────────────────── */
   .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    display: grid;
     gap: var(--space-2);
     margin-block: var(--space-3) var(--space-3);
     padding: var(--space-2) var(--space-3);
     background: var(--color-surface-2);
     border: 1px solid var(--color-rule);
     border-radius: var(--radius-sm);
+  }
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .filter-row-label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-mute);
+    min-width: 5rem;
+  }
+  .country-chip {
+    font: inherit;
+    font-size: var(--text-xs);
   }
   .co-search {
     flex: 1 1 16rem;
