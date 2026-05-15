@@ -136,10 +136,9 @@ import { url } from "../lib/url";
     text-decoration: none;
     color: inherit;
     transition: border-color 140ms ease, transform 140ms ease;
-    /* Tier hint — a chunky 7px accent strip on the inline-start edge
-       plus a tier-tinted top border so the colour reads at a glance. */
-    border-inline-start: 7px solid var(--tier-color, var(--color-rule));
-    border-block-start: 2px solid var(--tier-color, var(--color-rule));
+    /* Tier hint — thin 3px inline-start strip; the main tier signal
+       is the coloured pill on the card title row. */
+    border-inline-start: 3px solid var(--tier-color, var(--color-rule));
   }
   .subject-card[data-tier="A"] { --tier-color: var(--tier-a); }
   .subject-card[data-tier="B"] { --tier-color: var(--tier-b); }

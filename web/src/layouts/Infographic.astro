@@ -357,13 +357,6 @@ const currentTier = currentIdx >= 0 ? SHIPPED_SUBJECTS[currentIdx].tier : null;
         display: inline-block;
         max-inline-size: 100%;
       }
-      /* Tier accent strip running down the inline-start edge of the
-         whole subject body so the colour is visible the entire scroll,
-         not just at the hero. */
-      .page-main[data-tier] {
-        border-inline-start: 4px solid var(--tier-color);
-        padding-inline-start: var(--space-4);
-      }
       h2 { font-size: var(--text-2xl); margin-block-start: var(--space-7); }
       h3 { font-size: var(--text-xl); margin-block-start: var(--space-5); }
       /* No prose-width cap on paragraphs: the container (`main`) already

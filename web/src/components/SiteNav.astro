@@ -62,10 +62,7 @@ const groupedTiers = TIER_ORDER
 
   {groupedTiers.map((group) => (
     <section class="site-nav__group" aria-label={group.label} data-tier={group.tier}>
-      <p class="site-nav__group-label">
-        <span class="site-nav__group-swatch" aria-hidden="true"></span>
-        {group.label}
-      </p>
+      <p class="site-nav__group-label">{group.label}</p>
       <ul class="site-nav__list site-nav__list--subjects">
         {group.subjects.map((s) => (
           <li>
@@ -186,27 +183,17 @@ const groupedTiers = TIER_ORDER
   .site-nav__group[data-tier="E"] { --tier-color: var(--tier-e); }
   .site-nav__group-label {
     margin: 0;
-    padding-inline-start: var(--space-3);
-    padding-block-start: var(--space-2);
-    border-block-start: 2px solid var(--tier-color, var(--color-rule));
+    margin-inline-end: var(--space-2);
+    padding: 3px 10px;
+    background: var(--tier-color, var(--color-rule));
+    color: #fff;
+    border-radius: 3px;
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
-    color: var(--tier-color, var(--color-text-mute));
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.55em;
-  }
-  /* Tier colour swatch — chunky pill next to the group label. */
-  .site-nav__group-swatch {
+    align-self: flex-start;
     display: inline-block;
-    inline-size: 14px;
-    block-size: 14px;
-    border-radius: 3px;
-    background: var(--tier-color, var(--color-rule));
-    flex-shrink: 0;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.06) inset;
   }
 
   .site-nav__list {
