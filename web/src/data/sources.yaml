@@ -313,6 +313,14 @@
   type: paper
   doi: "10.1038/s41586-024-07252-z"
 
+- id: main-nature-2025
+  title: "Distributed quantum computing across an optical network link"
+  authors: ["D. Main", "P. Drmota", "D. P. Nadlinger", "et al."]
+  publisher: "Nature"
+  year: 2025
+  type: paper
+  doi: "10.1038/s41586-024-08404-x"
+
 - id: jones-njp-2016
   title: "Design and analysis of communication protocols for quantum repeater networks"
   authors: ["Cody Jones", "Danny Kim", "Matthew T. Rakher", "Paul G. Kwiat", "Thaddeus D. Ladd"]

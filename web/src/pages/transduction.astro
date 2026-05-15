@@ -34,6 +34,7 @@ import Math from "../components/Math.astro";
 
 const sections = [
   { id: "overview",     label: "Overview" },
+  { id: "interfaces",   label: "Two interfaces, not a pipeline" },
   { id: "qfc",          label: "QFC: visible to telecom" },
   { id: "mo",           label: "Microwave-to-optical" },
   { id: "bottleneck",   label: "Why M-O is the bottleneck" },
@@ -90,6 +91,89 @@ const sections = [
           quantum computer is stuck in its dilution refrigerator.
         </p>
       </header>
+
+      <section id="interfaces" data-nav-section>
+        <h2>Two interfaces, not a pipeline</h2>
+        <p>
+          A useful corrective before going further: QFC and microwave-to-optical
+          transduction are not mandatory stages every quantum network must contain.
+          They are <strong>mismatch-patches</strong>. They appear precisely and only
+          where two adjacent things in the chain don't natively speak the same physical
+          language. If every link in the chain is matched, neither is needed.
+        </p>
+        <p>
+          A repeater node holds matter qubits that do two structurally different jobs,
+          at two different interfaces, and the patches live at different places depending
+          on which interface is mismatched.
+        </p>
+        <Callout label="Interface 1 — matter qubit ↔ flying photon">
+          <p>
+            The matter qubit at the node emits or absorbs the heralding photon that
+            travels down the fibre to the next node. For that photon to survive
+            deployed fibre it has to live near 1550 nm. If the matter qubit's natural
+            emission isn't telecom — a Yb⁺ ion at 369 nm, an NV centre at 637 nm, an
+            SiV at 737 nm — a QFC stage at this interface drags the photon to the
+            C-band. This is the interface most of this page is about.
+          </p>
+        </Callout>
+        <Callout label="Interface 2 — matter qubit ↔ computational qubit">
+          <p>
+            The matter qubit at the node also has to hand its state to (or take state
+            from) the actual quantum computer it serves. Whether this interface needs
+            anything at all depends on whether the network qubit and the computational
+            qubit are the same physical kind of thing.
+          </p>
+        </Callout>
+        <h3>The same-modality case is free</h3>
+        <p>
+          If the computer at A is a trapped-ion machine and the repeater node at A also
+          uses trapped ions, the network qubit and the computational qubit are both ions
+          in the same trap or in neighbouring traps. Interface 2 is just an ordinary
+          local two-qubit gate, or an ion-shuttle — operations the platform already does.
+          No transducer, no QFC inside the box. The Oxford 2025 distributed-gate
+          experiment was exactly this shape: each module carried a <sup>88</sup>Sr⁺
+          "network ion" coupled to a <sup>43</sup>Ca⁺ "circuit ion" by a local
+          two-qubit gate, and the photon path between modules carried the only optical
+          step in the protocol <SourceNote id="main-nature-2025" />.
+        </p>
+        <p>
+          This is the clean case, and it is the reason the localisation-first pattern in
+          the rest of the series holds together. Building the repeater nodes out of the
+          same modality as the computers they serve makes interface 2 disappear — no
+          patch needed, just a native operation.
+        </p>
+        <h3>The cross-modality case is where M-O lives</h3>
+        <p>
+          Now suppose the computer at A is a superconducting transmon at 5 GHz, but the
+          repeater memory at A is an SiV centre with optical access at 737 nm. The
+          transmon has no optical transition at all; the SiV has no microwave one. To
+          move a qubit from the transmon into the SiV memory you have to bridge
+          microwave to optical — and that is where M-O transduction lives. <em>Not at the
+          fibre interface</em> — at the internal interface between the computer's qubit
+          and the repeater's memory qubit. The QFC stage at interface 1 (737 nm → 1550
+          nm) is a separate problem with separate hardware.
+        </p>
+        <p>
+          So M-O transduction shows up in two structurally different places. First, as
+          the way a superconducting computer reaches any photonic interface at all —
+          transmons have no optical transition, full stop, so a superconducting machine
+          that wants to network <em>must</em> transduce somewhere. Second, as the way a
+          repeater node of one modality couples to a computer of another modality at
+          interface 2. QFC, by contrast, shows up only at interface 1, and only when the
+          matter qubit emits optical photons at the wrong colour.
+        </p>
+        <h3>Sometimes one device does both jobs</h3>
+        <p>
+          A subtlety the "two interfaces" picture has to flag: in many repeater designs
+          there is no <em>separate</em> memory qubit and photon-interface qubit. An SiV
+          centre is simultaneously the thing that emits the heralding photon (its
+          electron spin) and the thing that stores the entanglement after the herald
+          (its nuclear spin). Interfaces 1 and 2 collapse onto the same device. The
+          only question left is whether <em>that device</em> matches the computer's
+          modality — if it doesn't, transduction or QFC is the bridge, and if it does,
+          neither is needed.
+        </p>
+      </section>
 
       <section id="qfc" data-nav-section>
         <h2>QFC: visible to telecom</h2>
