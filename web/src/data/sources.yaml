@@ -424,3 +424,21 @@
   year: 2022
   type: misc
   url: "https://github.com/sfc-aqua/quisp/tree/master/Network%20icons"
+
+- id: dur-pra-2000
+  title: "Three qubits can be entangled in two inequivalent ways"
+  authors: ["W. Dür", "G. Vidal", "J. I. Cirac"]
+  publisher: "Physical Review A"
+  year: 2000
+  type: paper
+  doi: "10.1103/PhysRevA.62.062314"
+  url: "https://doi.org/10.1103/PhysRevA.62.062314"
+
+- id: bugu-pra-2013
+  title: "Preparing multiphoton W states with linear optics and single-photon sources"
+  authors: ["S. Bugu", "F. Ozaydin", "T. Ferrus", "T. Kodera"]
+  publisher: "Scientific Reports"
+  year: 2013
+  type: paper
+  doi: "10.1038/srep01984"
+  url: "https://doi.org/10.1038/srep01984"

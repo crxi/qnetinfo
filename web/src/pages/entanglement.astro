@@ -845,22 +845,61 @@ const sections = [
           </p>
         </Callout>
 
-        <Callout label="Beyond two qubits — GHZ states">
+        <Callout label="Beyond two qubits — GHZ and W states">
           <p>
-            Entanglement is not limited to pairs. The
-            <strong>Greenberger-Horne-Zeilinger</strong> state generalises the
-            <Math tex="|\\Phi^+\\rangle" /> Bell state to <Math tex="n \\geq 3" /> qubits:
+            Entanglement is not limited to pairs. For <Math tex="n \\geq 3" /> qubits,
+            two qualitatively different families of genuine multipartite entanglement
+            exist — and crucially, they are <em>not</em> convertible into one another by
+            any local operations and classical communication, even probabilistically.
+            Dür, Vidal and Cirac proved this for <Math tex="n = 3" />
+            in <strong>2000</strong>: the <strong>GHZ class</strong> and the
+            <strong>W class</strong> are SLOCC-inequivalent <SourceNote id="dur-pra-2000" />.
+            Their canonical representatives are
           </p>
-          <Math display tex="|\\mathrm{GHZ}_n\\rangle = \\tfrac{1}{\\sqrt{2}}\\bigl(|0\\rangle^{\\otimes n} + |1\\rangle^{\\otimes n}\\bigr)" />
+          <Math display tex="|\\mathrm{GHZ}_n\\rangle = \\tfrac{1}{\\sqrt{2}}\\bigl(|0\\rangle^{\\otimes n} + |1\\rangle^{\\otimes n}\\bigr) \\quad\\text{and}\\quad |\\mathrm{W}_n\\rangle = \\tfrac{1}{\\sqrt{n}}\\bigl(|10\\dots 0\\rangle + |01\\dots 0\\rangle + \\dots + |0\\dots 01\\rangle\\bigr)." />
           <p>
-            For <Math tex="n = 3" />, that is
-            <Math tex="\\tfrac{1}{\\sqrt{2}}(|000\\rangle + |111\\rangle)" />. GHZ states and
-            other multipartite resources (W states, cluster states, graph states) underpin
-            anonymous transmission, conference-key agreement, and measurement-based
-            distributed computing. This page sticks to the bipartite Bell pair — it is the
-            primitive every fielded quantum-network architecture builds on, and the
-            multipartite resources can themselves be assembled from Bell pairs and local
-            operations. Multipartite entanglement is out of scope for this series.
+            GHZ is the <em>all-or-nothing</em> correlation — every qubit measures the same
+            in the computational basis. W is the <em>one-excitation-shared-symmetrically</em>
+            state: exactly one qubit is in <Math tex="|1\\rangle" />, but which one is in
+            a uniform superposition across all parties.
+          </p>
+          <p>
+            <strong>Networks deliver GHZ, not W</strong>, for two structural reasons.
+          </p>
+          <ul>
+            <li>
+              <strong>GHZ composes from Bell pairs.</strong> Holding one half of a Bell
+              pair plus a fresh ancilla and applying a CNOT extends the pair into a 3-qubit
+              GHZ; iterate and you have <Math tex="\\mathrm{GHZ}_n" /> from
+              <Math tex="n-1" /> Bell pairs and <Math tex="n-2" /> local CNOTs. The same
+              entanglement-distribution stack (repeaters, swapping, distillation) that
+              delivers Bell pairs delivers GHZ at no architectural cost. W states have
+              <em>no</em> Bell-pair-plus-Clifford recipe — they require coherent
+              interference between <Math tex="n" /> single-photon sources with carefully
+              tuned amplitudes, and demonstrated preparations remain modest in
+              <Math tex="n" /> <SourceNote id="bugu-pra-2013" />.
+            </li>
+            <li>
+              <strong>No W-analog of entanglement swapping.</strong> The repeater chain
+              that grows a Bell pair across a country generalises directly to GHZ but not
+              to W — there is no local two-party measurement that fuses two short W states
+              into one longer W. W states are built in one place and shipped whole; once
+              one party is lost (a photon dropped in fibre), the survivors collapse out
+              of the W class entirely. Useful asymmetry — losing one of three W qubits
+              leaves a Bell pair on the other two, whereas losing one of three GHZ qubits
+              leaves a classical mixture — but the same lack of structure that makes W
+              loss-robust is what makes it non-composable across hops.
+            </li>
+          </ul>
+          <p>
+            W states earn their keep in <strong>specific protocols</strong> where the
+            symmetric "exactly one of you holds the excitation" pattern is exactly the
+            right resource — leader election, anonymous broadcast, fault-tolerant
+            subroutines in distributed computing. The fielded quantum-network
+            architectures (memory-based 1G repeaters, all-photonic 3G repeaters built on
+            graph / cluster states) are all GHZ-flavoured. This page sticks to bipartite
+            Bell pairs — the universal primitive — and treats GHZ and W as out of scope
+            for the series.
           </p>
         </Callout>
       </section>
