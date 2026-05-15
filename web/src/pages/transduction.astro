@@ -211,6 +211,38 @@ const sections = [
           replaces it with a local two-qubit gate inside the same trap, as in
           Oxford 2025 <SourceNote id="main-nature-2025" />.
         </p>
+
+        <Callout label="For readers used to classical networking: this is the deep structural difference">
+          <p>
+            Classical networking is one stack. A packet is built at the sender,
+            travels down the stack into a wire (an electrical or optical signal),
+            comes back up the stack at the receiver. Every message uses the wire.
+            Up-and-over, every time.
+          </p>
+          <p>
+            Quantum networking is not one stack. It is <strong>two regimes used in
+            series</strong>. The first regime — entanglement generation — uses the
+            quantum channel (fibre, QFC, midpoint pBSM) to create a resource: a Bell
+            pair shared between two nodes. The second regime — everything that
+            consumes that Bell pair — runs over
+            <a href={url("/entanglement#locc")}>LOCC</a>: local operations at each
+            node plus an ordinary classical channel between them. The fibre is not
+            used again for the same pair. Teleporting a qubit between two computers
+            does not, at the moment of teleportation, send a photon between them; the
+            photon flew earlier, during EG, to establish the pair that is now being
+            consumed.
+          </p>
+          <p>
+            For an infrastructure planner the implication is sharp. The
+            <em>quantum-channel</em> piece of the stack — fibre at the right
+            wavelength, QFC, photonic BSM apparatus, single-photon detectors,
+            timing/phase synchronisation between nodes — is where every new piece
+            of capital and every new piece of standards work is needed. Everything
+            after Bell-pair delivery, in protocol terms, looks like classical
+            distributed computing: local CPU at each node and bits over an ordinary
+            link. That part of the stack is already present in any data centre.
+          </p>
+        </Callout>
       </section>
 
       <section id="qfc" data-nav-section>

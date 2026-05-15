@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" role="img" aria-labelledby="td-title td-desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-labelledby="td-title td-desc">
   <title id="td-title">End-to-end pipeline for moving a qubit between two quantum computers</title>
   <desc id="td-desc">Two nodes A and B, each with compute qubits (transmons), an M-O transducer, a communication qubit (SiV at 737 nm), and a quantum frequency converter (QFC, 737 to 1550 nm). The QFCs connect to telecom fibre that meets at a midpoint photonic Bell-state measurement (pBSM). Phase 1 entangles the two communication qubits via photons that converge at the pBSM. Phase 2 teleports a transmon state by performing a local Bell measurement between transmon and communication qubit at A, sending two classical bits to B, and applying a correction at B. The quantum channel is used only in Phase 1.</desc>
 
@@ -22,7 +22,7 @@
       .conn       { stroke: #888; stroke-width: 1.4; fill: none; }
       .q-arrow    { stroke: #2272dd; stroke-width: 3; fill: none; }
       .c-arrow    { stroke: #e88135; stroke-width: 2.2; stroke-dasharray: 6,4; fill: none; }
-      .bell       { stroke: #c14a8f; stroke-width: 2.2; stroke-dasharray: 7,4; fill: none; }
+      .bell       { stroke: #c14a8f; stroke-width: 2.2; fill: none; stroke-linecap: round; }
       .bell-lbl   { font: 600 12px sans-serif; fill: #c14a8f; text-anchor: middle; }
       .phase-tag  { font: 700 11px sans-serif; fill: #ffffff; text-anchor: middle; }
     </style>
@@ -37,15 +37,15 @@
   <!-- Figure title -->
   <text x="550" y="26" class="lbl" font-size="15" font-weight="600">Two quantum computers, one fibre — what actually crosses between them</text>
 
-  <!-- Legend (top-right) -->
-  <g transform="translate(820,42)">
-    <rect x="0" y="0" width="270" height="74" rx="4" fill="#ffffff" stroke="#dadde3" stroke-width="1"/>
-    <line x1="10" y1="18" x2="38" y2="18" class="q-arrow" marker-end="url(#qhead)"/>
-    <text x="46" y="22" class="leg">Phase 1 — photon in fibre (quantum)</text>
-    <line x1="10" y1="38" x2="38" y2="38" class="c-arrow" marker-end="url(#chead)"/>
-    <text x="46" y="42" class="leg">Phase 2 — classical bits</text>
-    <line x1="10" y1="58" x2="38" y2="58" class="bell"/>
-    <text x="46" y="62" class="leg">Bell pair after Phase 1</text>
+  <!-- Legend (top-center, between the two nodes) -->
+  <g transform="translate(370,40)">
+    <rect x="0" y="0" width="360" height="68" rx="4" fill="#ffffff" stroke="#dadde3" stroke-width="1"/>
+    <line x1="14" y1="18" x2="42" y2="18" class="q-arrow" marker-end="url(#qhead)"/>
+    <text x="50" y="22" class="leg">Phase 1 — photon in fibre (quantum channel)</text>
+    <line x1="14" y1="38" x2="42" y2="38" class="c-arrow" marker-end="url(#chead)"/>
+    <text x="50" y="42" class="leg">Phase 2 — classical bits over classical channel</text>
+    <line x1="14" y1="58" x2="42" y2="58" class="bell"/>
+    <text x="50" y="62" class="leg">Bell pair (result of Phase 1)</text>
   </g>
 
   <!-- ════════════════════════════════ NODE A ════════════════════════════════ -->
@@ -80,7 +80,7 @@
 
   <!-- QFC block -->
   <rect class="qfc-blk" x="115" y="388" width="170" height="48" rx="6"/>
-  <text class="blk-lbl" x="200" y="410">QFC  (PPLN)</text>
+  <text class="blk-lbl" x="200" y="410">QFC (PPLN)</text>
   <text class="blk-sub" x="200" y="427">737 nm → 1550 nm</text>
   <text class="iface" x="293" y="416" text-anchor="start">interface 1</text>
 
@@ -112,7 +112,7 @@
 
   <line class="conn" x1="900" y1="367" x2="900" y2="388"/>
   <rect class="qfc-blk" x="815" y="388" width="170" height="48" rx="6"/>
-  <text class="blk-lbl" x="900" y="410">QFC  (PPLN)</text>
+  <text class="blk-lbl" x="900" y="410">QFC (PPLN)</text>
   <text class="blk-sub" x="900" y="427">737 nm → 1550 nm</text>
   <text class="iface" x="807" y="416" text-anchor="end">interface 1</text>
 
@@ -145,9 +145,10 @@
     <text class="phase-tag" x="688" y="474">1</text>
   </g>
 
-  <!-- ════════════════════════════════ BELL-PAIR LINE (result of Phase 1) ════════════════════════════════ -->
-  <path class="bell" d="M 220 293 Q 550 220 880 293"/>
-  <text class="bell-lbl" x="550" y="210">comm-A ↔ comm-B entangled  (Phase 1 succeeded)</text>
+  <!-- ════════════════════════════════ BELL PAIR (wavy line — workspace convention) ════════════════════════════════ -->
+  <!-- 20 quadratic segments × 33 px = 660 px span, from right edge of comm-A (220,293) to left edge of comm-B (880,293) -->
+  <path class="bell" d="M 220,293 q 16.5,-9 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0 t 33,0"/>
+  <text class="bell-lbl" x="550" y="270">comm-A ↔ comm-B entangled  (after Phase 1)</text>
 
   <!-- ════════════════════════════════ CLASSICAL CHANNEL BUS ════════════════════════════════ -->
   <!-- Horizontal classical bus at the bottom; branches up to each node and up to the pBSM -->
@@ -177,9 +178,11 @@
   <line class="c-arrow" x1="930" y1="270" x2="930" y2="245" marker-end="url(#chead)"/>
   <line class="c-arrow" x1="930" y1="190" x2="930" y2="135" marker-end="url(#chead)"/>
 
-  <!-- Phase descriptions at the very bottom -->
-  <text class="lbl" x="550" y="678" font-size="12">
-    <tspan font-weight="600" fill="#2272dd">Phase 1:</tspan> photons fly inward, meet at pBSM, herald says comm-A ↔ comm-B is a Bell pair.
+  <!-- Phase descriptions at the very bottom (two lines so they fit at viewBox width 1100) -->
+  <text class="lbl" x="550" y="680" font-size="12">
+    <tspan font-weight="600" fill="#2272dd">Phase 1:</tspan> photons fly inward, meet at the pBSM, the herald says comm-A ↔ comm-B is a Bell pair.
+  </text>
+  <text class="lbl" x="550" y="700" font-size="12">
     <tspan font-weight="600" fill="#e88135">Phase 2:</tspan> local BSM at A consumes the pair, two bits cross the classical channel, B applies the correction. Fibre is silent.
   </text>
 </svg>
