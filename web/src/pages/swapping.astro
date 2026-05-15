@@ -280,7 +280,7 @@ const sections = [
             <button type="button" data-1g-ctl="play" aria-label="Pause" title="Play / pause">⏸</button>
             <button type="button" data-1g-ctl="fwd" aria-label="Step forward" title="Step forward">⏭</button>
           </div>
-          <svg viewBox="0 0 1100 700" role="img"
+          <svg viewBox="0 -30 1100 730" role="img"
                aria-label="Canonical 1G repeater across A — R₁ — R₂ — R₃ — B. EG: each adjacent pair emits matter–photon Bell pairs whose photons meet at a midpoint photonic Bell-state analyser; a successful herald collapses the two distant matter qubits into a Bell pair. 1st ES: parallel local Bell measurements at R₁ and R₃ extend the entanglement to A↔R₂ and R₂↔B. 2nd ES: a final Bell measurement at R₂ delivers one long A↔B Bell pair. Each row is a 'repeat until success' loop."
                data-1g-svg>
             <defs>
@@ -521,8 +521,12 @@ const sections = [
               <circle class="g1-matter" cx="938" cy="585" r="11"/>
               <text class="g1-lbl" x="938" y="589" text-anchor="middle">B</text>
               <text class="g1-lbl-stage" x="534" y="638" text-anchor="middle">One long A↔B Bell pair — ready for teleportation or QKD</text>
-              <text class="g1-lbl-ann-sm" x="1090" y="680" text-anchor="end" font-style="italic">after Azuma et al., Rev. Mod. Phys. 95, 045006 (2023)</text>
             </g>
+
+            {/* Source attribution — sits outside all row groups so it
+                never picks up row dimming. Top-left, italic, leaves a
+                ~25 px gap before the EG row starts at y=50. */}
+            <text class="g1-lbl-ann-sm" x="20" y="-12" font-style="italic">As illustrated in Azuma et al., Rev. Mod. Phys. 95, 045006 (2023)</text>
 
             {/* Classical-bit travelling pulses (drawn at SVG root so they sit
                 above their row backgrounds during the active phase). */}
