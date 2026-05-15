@@ -136,18 +136,24 @@ import { url } from "../lib/url";
     text-decoration: none;
     color: inherit;
     transition: border-color 140ms ease, transform 140ms ease;
-    /* Subtle tier hint — a 3px accent strip on the inline-start edge.
-       Default to the rule colour; tier-specific selectors below
-       override it. Sits inside the existing 1px border so the card
-       still has its full outline. */
-    border-inline-start: 3px solid var(--tier-color, var(--color-rule));
+    /* Tier hint — a chunky 7px accent strip on the inline-start edge
+       plus a tier-tinted top border so the colour reads at a glance. */
+    border-inline-start: 7px solid var(--tier-color, var(--color-rule));
+    border-block-start: 2px solid var(--tier-color, var(--color-rule));
   }
   .subject-card[data-tier="A"] { --tier-color: var(--tier-a); }
   .subject-card[data-tier="B"] { --tier-color: var(--tier-b); }
   .subject-card[data-tier="C"] { --tier-color: var(--tier-c); }
   .subject-card[data-tier="D"] { --tier-color: var(--tier-d); }
   .subject-card[data-tier="E"] { --tier-color: var(--tier-e); }
-  .subject-card[data-tier] .subject-card__tier { color: var(--tier-color); }
+  .subject-card[data-tier] .subject-card__tier {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--tier-color);
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 700;
+  }
   .subject-card:hover,
   .subject-card:focus-visible {
     border-color: var(--color-accent);

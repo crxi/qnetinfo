@@ -188,32 +188,32 @@ const groupedTiers = TIER_ORDER
     margin: 0;
     padding-inline-start: var(--space-3);
     padding-block-start: var(--space-2);
-    border-block-start: 1px solid var(--color-rule);
-    font-size: 0.7rem;
+    border-block-start: 2px solid var(--tier-color, var(--color-rule));
+    font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
-    color: var(--color-text-mute);
-    font-weight: 600;
+    color: var(--tier-color, var(--color-text-mute));
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.55em;
   }
-  /* Small tier-colour swatch next to the group label. 6px square,
-     subtle — colour-codes the tier without dominating the rail. */
+  /* Tier colour swatch — chunky pill next to the group label. */
   .site-nav__group-swatch {
     display: inline-block;
-    inline-size: 6px;
-    block-size: 6px;
-    border-radius: 1px;
+    inline-size: 14px;
+    block-size: 14px;
+    border-radius: 3px;
     background: var(--tier-color, var(--color-rule));
     flex-shrink: 0;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.06) inset;
   }
 
   .site-nav__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    border-inline-start: 1px solid var(--color-rule);
+    border-inline-start: 2px solid var(--tier-color, var(--color-rule));
   }
   .site-nav__list li { margin: 0; }
   .site-nav__list a {

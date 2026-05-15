@@ -353,11 +353,16 @@ const currentTier = currentIdx >= 0 ? SHIPPED_SUBJECTS[currentIdx].tier : null;
       .page-main[data-tier="E"] { --tier-color: var(--tier-e); }
       .page-main[data-tier] .hero h1 {
         padding-block-end: var(--space-2);
-        border-block-end: 3px solid var(--tier-color);
-        /* Underline only spans the text, not the full container —
-           keeps the accent visually tied to the title. */
+        border-block-end: 6px solid var(--tier-color);
         display: inline-block;
         max-inline-size: 100%;
+      }
+      /* Tier accent strip running down the inline-start edge of the
+         whole subject body so the colour is visible the entire scroll,
+         not just at the hero. */
+      .page-main[data-tier] {
+        border-inline-start: 4px solid var(--tier-color);
+        padding-inline-start: var(--space-4);
       }
       h2 { font-size: var(--text-2xl); margin-block-start: var(--space-7); }
       h3 { font-size: var(--text-xl); margin-block-start: var(--space-5); }
