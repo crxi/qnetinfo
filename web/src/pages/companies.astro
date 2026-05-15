@@ -33,9 +33,7 @@ import {
 const sections = [
   { id: "overview",   label: "Overview" },
   { id: "dossiers",   label: "Vendor dossiers" },
-  { id: "computers",  label: "Computer vendors" },
-  { id: "networking", label: "Networking & QKD" },
-  { id: "components", label: "Components" },
+  { id: "watching",   label: "Other vendors we're watching" },
   { id: "notes",      label: "Notes on this page" },
 ];
 
@@ -46,6 +44,45 @@ const grouped: { category: typeof CATEGORY_ORDER[number]; companies: Company[] }
     .filter((g) => g.companies.length > 0);
 
 const haveDossiers = COMPANIES.length > 0;
+
+// Chip counts: how many dossiers fall under each primary category.
+const dossierCategoryCounts: Partial<Record<typeof CATEGORY_ORDER[number], number>> =
+  Object.fromEntries(grouped.map((g) => [g.category, g.companies.length]));
+
+// Vendors named in surveys but not yet in our dossier set — flat list grouped by family.
+const watchList: { family: string; companies: { name: string; note: string }[] }[] = [
+  {
+    family: "Computer vendors",
+    companies: [
+      { name: "Google",              note: "transmon; Sycamore lineage." },
+      { name: "IQM",                 note: "transmon; multi-chip systems." },
+      { name: "USTC",                note: "transmon; Jiuzhang and Zuchongzhi families (research org, not a vendor)." },
+      { name: "AQT",                 note: "Ca⁺ / Yb⁺ trapped-ion; rack-mounted systems." },
+      { name: "Universal Quantum",   note: "Yb⁺ networked-ion modules." },
+      { name: "Infleqtion (ColdQuanta)", note: "Rb neutral-atom compute + sensing." },
+      { name: "ORCA Computing",      note: "photonic memory-based; squeezed-light approach." },
+      { name: "QuiX Quantum",        note: "photonic linear-optical processors." },
+      { name: "Lightsynq",           note: "SiV-centre memory nodes for the quantum internet." },
+      { name: "Quantum Brilliance",  note: "NV-centre room-temperature appliances." },
+      { name: "Microsoft",           note: "Majorana-zero-mode qubits; long-running topological programme." },
+    ],
+  },
+  {
+    family: "Networking & QKD",
+    companies: [
+      { name: "MagiQ Technologies",     note: "QKD endpoints." },
+      { name: "Quantum Bridge Tech",    note: "quantum-network infrastructure for QKD and entanglement distribution." },
+    ],
+  },
+  {
+    family: "Components",
+    companies: [
+      { name: "memQ",            note: "Er³⁺-doped telecom-band quantum memories (Argonne / Awschalom-group spinout)." },
+      { name: "Sparrow Quantum", note: "quantum-dot single-photon source devices." },
+      { name: "Element Six",     note: "synthetic-diamond foundry; substrates for NV / SiV memory nodes." },
+    ],
+  },
+];
 ---
 
 <Infographic
@@ -85,141 +122,81 @@ const haveDossiers = COMPANIES.length > 0;
           <p>
             Each dossier below links to a per-vendor page with milestones, roadmap, and
             modality-specific capability details. Compiled from primary sources (papers,
-            vendor technology pages); see each page for source links.
+            vendor technology pages); see each page for source links. Use the search
+            box and category chips to narrow the grid.
           </p>
         ) : (
           <p class="empty">No dossiers compiled yet.</p>
         )}
-        {grouped.map((group) => (
-          <div class="dossier-group">
-            <h3 class="dossier-group-title">{CATEGORY_LABEL[group.category]}</h3>
-            <ul class="dossier-grid">
+
+        {haveDossiers && (
+          <div class="filter-bar" id="co-filter-bar">
+            <input type="search" id="co-search" placeholder="Search name, positioning, location…" class="co-search" />
+            <div class="filter-chips" data-filter-group="category">
+              {CATEGORY_ORDER.filter((c) => (dossierCategoryCounts[c] ?? 0) > 0).map((c) => (
+                <button class="chip cat-chip" data-filter-value={c} aria-pressed="false" type="button">
+                  {CATEGORY_LABEL[c]}
+                  <span class="chip-count">{dossierCategoryCounts[c]}</span>
+                </button>
+              ))}
+            </div>
+            <button id="co-reset" class="co-reset" type="button">Reset</button>
+          </div>
+        )}
+
+        <div id="co-dossiers">
+          {grouped.map((group) => (
+            <div class="dossier-group" data-group-cat={group.category}>
+              <h3 class="dossier-group-title">{CATEGORY_LABEL[group.category]}</h3>
+              <ul class="dossier-grid">
+                {group.companies.map((c) => (
+                  <li
+                    class="dossier-card"
+                    data-categories={c.categories.join(" ")}
+                    data-search={`${c.name} ${c.positioning ?? ""} ${c.hq ?? ""} ${c.categories.map((cc) => CATEGORY_LABEL[cc]).join(" ")}`.toLowerCase()}
+                  >
+                    <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/companies/${c.slug}`}>
+                      <div class="dossier-head">
+                        <CompanyLogo name={c.name} logo={c.logo} size={32} />
+                        <div class="dossier-name">{c.name}</div>
+                      </div>
+                      <div class="dossier-positioning">{c.positioning}</div>
+                      <div class="dossier-meta">
+                        {c.categories.length > 1 && (
+                          <span class="dossier-extra-cats">
+                            also: {c.categories.slice(1).map((cc) => CATEGORY_LABEL[cc]).join(", ")}
+                          </span>
+                        )}
+                        <span class="dossier-hq">{c.hq}</span>
+                      </div>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p id="co-empty" class="co-empty" hidden>No dossiers match the current filters.</p>
+      </section>
+
+      <section id="watching" data-nav-section>
+        <h2>Other vendors we're watching</h2>
+        <p>
+          Vendors named in the survey literature that don't have a dossier yet. Each
+          is a candidate to promote once we've sourced the milestones and capability
+          metrics. The dossier grid above is the long-term tracking surface; this
+          list is the queue.
+        </p>
+        {watchList.map((group) => (
+          <div class="watch-group">
+            <h3 class="watch-group-title">{group.family}</h3>
+            <ul class="watch-list">
               {group.companies.map((c) => (
-                <li class="dossier-card">
-                  <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/companies/${c.slug}`}>
-                    <div class="dossier-head">
-                      <CompanyLogo name={c.name} logo={c.logo} size={32} />
-                      <div class="dossier-name">{c.name}</div>
-                    </div>
-                    <div class="dossier-positioning">{c.positioning}</div>
-                    <div class="dossier-meta">
-                      {c.categories.length > 1 && (
-                        <span class="dossier-extra-cats">
-                          also: {c.categories.slice(1).map((cc) => CATEGORY_LABEL[cc]).join(", ")}
-                        </span>
-                      )}
-                      <span class="dossier-hq">{c.hq}</span>
-                    </div>
-                  </a>
-                </li>
+                <li><strong>{c.name}</strong> — {c.note}</li>
               ))}
             </ul>
           </div>
         ))}
-      </section>
-
-      <section id="computers" data-nav-section>
-        <h2>Computer vendors (landscape snapshot)</h2>
-        <p>
-          Vendors building quantum processors. The platform column maps onto the
-          stationary-qubit encodings covered in the qubits subject. Names without
-          a dossier yet appear as plain text.
-        </p>
-
-        <h3 class="vendor-platform">Superconducting</h3>
-        <ul class="vendor-list">
-          <li><strong>Google</strong> — transmon; Sycamore lineage.</li>
-          <li><strong>IBM</strong> — transmon; large public roadmap (Heron, Nighthawk, Starling, Blue Jay).</li>
-          <li><strong>IQM</strong> — transmon; multi-chip systems.</li>
-          <li><strong>Rigetti</strong> — transmon; Ankaa series.</li>
-          <li><strong>USTC</strong> — transmon; Jiuzhang and Zuchongzhi families.</li>
-        </ul>
-
-        <h3 class="vendor-platform">Trapped ion</h3>
-        <ul class="vendor-list">
-          <li><strong>AQT (Alpine Quantum Technologies)</strong> — Ca⁺ / Yb⁺; rack-mounted ion-trap systems.</li>
-          <li><strong>IonQ</strong> — Yb⁺ / Ba⁺; commercial cloud access.</li>
-          <li><strong>Oxford Ionics</strong> — Sr⁺; on-chip integration.</li>
-          <li><strong>Quantinuum</strong> — Yb⁺ / Ba⁺; H1/H2 racetrack QCCD systems.</li>
-          <li><strong>Universal Quantum</strong> — Yb⁺ networked-ion modules.</li>
-        </ul>
-
-        <h3 class="vendor-platform">Neutral atom</h3>
-        <ul class="vendor-list">
-          <li><strong>Atom Computing</strong> — Sr; large-array room-temperature systems.</li>
-          <li><strong>ColdQuanta / Infleqtion</strong> — Rb; computing + sensing.</li>
-          <li><strong>Pasqal</strong> — Rb; Orion line, analog and digital modes.</li>
-          <li><strong>QuEra</strong> — Rb-87; Rydberg gates on optical tweezer arrays.</li>
-        </ul>
-
-        <h3 class="vendor-platform">Photonic</h3>
-        <ul class="vendor-list">
-          <li><strong>ORCA Computing</strong> — photonic memory-based; squeezed-light approach.</li>
-          <li><strong>PsiQuantum</strong> — photonic fault-tolerant; silicon-photonic chips.</li>
-          <li><strong>Quandela</strong> — quantum-dot single-photon sources + photonic chips.</li>
-          <li><strong>QuiX Quantum</strong> — photonic linear-optical processors.</li>
-          <li><strong>Xanadu</strong> — photonic, continuous-variable + Gaussian boson sampling.</li>
-        </ul>
-
-        <h3 class="vendor-platform">NV / SiV (diamond)</h3>
-        <ul class="vendor-list">
-          <li><strong>Lightsynq</strong> — SiV-centre memory nodes for the quantum internet.</li>
-          <li><strong>Quantum Brilliance</strong> — NV-centre room-temperature compute appliances.</li>
-        </ul>
-
-        <h3 class="vendor-platform">Topological (Majorana)</h3>
-        <ul class="vendor-list">
-          <li><strong>Microsoft</strong> — Majorana-zero-mode qubits in InAs / Al hybrid devices; long-running topological-qubit programme.</li>
-        </ul>
-      </section>
-
-      <section id="networking" data-nav-section>
-        <h2>Networking and QKD vendors</h2>
-        <p>
-          Vendors building the network fabric or the QKD endpoint systems that consume it.
-        </p>
-
-        <ul class="vendor-list">
-          <li><strong>Aliro Quantum</strong> — quantum-network orchestration and simulation; AliroNet stack.</li>
-          <li><strong>ID Quantique</strong> — QKD systems; long-running commercial deployment.</li>
-          <li><strong>MagiQ Technologies</strong> — QKD endpoints.</li>
-          <li><strong>Quantum Bridge Tech</strong> — quantum-network infrastructure for QKD and entanglement distribution.</li>
-          <li><strong>Qunnect</strong> — quantum-networking testbed hardware; Rb-vapour memories.</li>
-          <li><strong>Toshiba</strong> — QKD systems; Twin-Field demonstrations.</li>
-        </ul>
-      </section>
-
-      <section id="components" data-nav-section>
-        <h2>Components</h2>
-        <p>
-          Vendors building memories, photon sources, transducers, and other components
-          that the computer and networking layers consume.
-        </p>
-
-        <h3 class="vendor-platform">Quantum memory</h3>
-        <ul class="vendor-list">
-          <li><strong>Lightsynq</strong> — SiV-centre quantum-memory modules.</li>
-          <li><strong>memQ</strong> — Er³⁺-doped telecom-band quantum memories (Argonne / Awschalom-group spin-out).</li>
-          <li><strong>Qunnect</strong> — Rb-vapour quantum memories (also networking, above).</li>
-          <li><strong>Welinq</strong> — QDrive Rb cold-atom memory module.</li>
-        </ul>
-
-        <h3 class="vendor-platform">Single-photon sources</h3>
-        <ul class="vendor-list">
-          <li><strong>Aegiq</strong> — quantum-dot single-photon source components.</li>
-          <li><strong>Quandela</strong> — quantum-dot single-photon sources + photonic chips (also photonic computers, above).</li>
-          <li><strong>Sparrow Quantum</strong> — quantum-dot single-photon source devices.</li>
-        </ul>
-
-        <h3 class="vendor-platform">Photonic processors and integration</h3>
-        <ul class="vendor-list">
-          <li><strong>QuiX Quantum</strong> — photonic processors and integrated circuits (also photonic computers, above).</li>
-        </ul>
-
-        <h3 class="vendor-platform">Materials and foundry</h3>
-        <ul class="vendor-list">
-          <li><strong>Element Six</strong> — synthetic-diamond foundry; substrates for NV / SiV memory nodes.</li>
-        </ul>
       </section>
 
       <section id="notes" data-nav-section>
@@ -257,6 +234,70 @@ const haveDossiers = COMPANIES.length > 0;
     </Stack>
   </Center>
 </Infographic>
+
+<script is:inline>
+  (function () {
+    const bar = document.getElementById("co-filter-bar");
+    if (!bar) return;
+    const search = /** @type {HTMLInputElement} */ (document.getElementById("co-search"));
+    const reset  = document.getElementById("co-reset");
+    const empty  = document.getElementById("co-empty");
+    const chips  = Array.from(bar.querySelectorAll(".cat-chip"));
+    const cards  = Array.from(document.querySelectorAll("#co-dossiers .dossier-card"));
+    const groups = Array.from(document.querySelectorAll("#co-dossiers .dossier-group"));
+
+    const activeCats = new Set();
+    let query = "";
+
+    function apply() {
+      let visibleTotal = 0;
+      for (const card of cards) {
+        const cats = (card.getAttribute("data-categories") || "").split(/\s+/).filter(Boolean);
+        const searchText = card.getAttribute("data-search") || "";
+        const matchesCat = activeCats.size === 0 || cats.some((c) => activeCats.has(c));
+        const matchesQuery = query === "" || searchText.indexOf(query) !== -1;
+        const visible = matchesCat && matchesQuery;
+        card.hidden = !visible;
+        if (visible) visibleTotal++;
+      }
+      // Hide whole group when all its cards are hidden.
+      for (const group of groups) {
+        const anyVisible = Array.from(group.querySelectorAll(".dossier-card"))
+          .some((el) => !el.hidden);
+        group.hidden = !anyVisible;
+      }
+      if (empty) empty.hidden = visibleTotal !== 0;
+    }
+
+    search.addEventListener("input", () => {
+      query = search.value.trim().toLowerCase();
+      apply();
+    });
+
+    for (const chip of chips) {
+      chip.addEventListener("click", () => {
+        const v = chip.getAttribute("data-filter-value");
+        if (!v) return;
+        if (activeCats.has(v)) {
+          activeCats.delete(v);
+          chip.setAttribute("aria-pressed", "false");
+        } else {
+          activeCats.add(v);
+          chip.setAttribute("aria-pressed", "true");
+        }
+        apply();
+      });
+    }
+
+    reset?.addEventListener("click", () => {
+      activeCats.clear();
+      query = "";
+      search.value = "";
+      for (const c of chips) c.setAttribute("aria-pressed", "false");
+      apply();
+    });
+  })();
+</script>
 
 <style>
   .hero {
@@ -339,6 +380,91 @@ const haveDossiers = COMPANIES.length > 0;
   }
   .dossier-extra-cats { color: var(--color-accent); }
   .empty { color: var(--color-text-mute); }
+
+  /* ─── Filter bar ─────────────────────────────────────────── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-block: var(--space-3) var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-sm);
+  }
+  .co-search {
+    flex: 1 1 16rem;
+    min-width: 12rem;
+    font-size: var(--text-sm);
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    color: var(--color-text);
+  }
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font: inherit;
+    font-size: var(--text-xs);
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--color-rule);
+    background: var(--card-bg);
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: background 120ms, border-color 120ms;
+  }
+  .chip:hover { border-color: var(--color-accent); }
+  .chip[aria-pressed="true"] {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+  .chip-count {
+    font-size: 0.85em;
+    opacity: 0.7;
+  }
+  .co-reset {
+    font: inherit;
+    font-size: var(--text-xs);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--color-rule);
+    background: transparent;
+    color: var(--color-text-mute);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .co-reset:hover { color: var(--color-text); border-color: var(--color-accent); }
+  .co-empty {
+    color: var(--color-text-mute);
+    font-style: italic;
+    margin-block-start: var(--space-3);
+  }
+
+  /* ─── Watch list ─────────────────────────────────────────── */
+  .watch-group + .watch-group { margin-block-start: var(--space-3); }
+  .watch-group-title {
+    font-size: var(--text-base);
+    color: var(--color-text-mute);
+    margin-block-end: var(--space-1);
+  }
+  .watch-list {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: 0.25rem;
+    color: var(--color-text-mute);
+    font-size: var(--text-sm);
+  }
+  .watch-list strong { color: var(--color-text); }
 
   code {
     font-family: var(--font-mono);
