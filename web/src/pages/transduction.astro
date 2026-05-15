@@ -578,18 +578,21 @@ const sections = [
         </p>
         <figure class="demo-card q1-stack-figure">
           <img src={url("/images/q1-stack.svg")}
-               alt="Phase 1 row: Node A (superconducting transmon, far left) with an M-O badge labelled '5 GHz → 1350 nm', three SiV repeater nodes R₁ R₂ R₃ (centre) each with a pair of green matter qubits and blue photons, and Node B (Diamond-SiV, far right) with a QFC badge labelled '737 nm → 1350 nm'. Four photonic Bell-state-measurement apparatuses sit between adjacent nodes, with dashed blue photon paths converging into each. Phase 1 result row: four magenta wavy lines link adjacent matter qubits, marking the four elementary Bell pairs heralded across the chain. Caption notes that entanglement swapping at the relays joins these into one end-to-end A↔B Bell pair. Phase 2 row: a local Bell-state measurement at A (data qubit plus comm-A in a dashed box, A drawn spent-grey) sends two classical bits via an orange dashed arrow to Node B, which applies the Pauli correction onto its data qubit. Footnote cites Knaut et al. Nature 629, 573 (2024) and the IBM × Cisco × Fermilab transducer roadmap (Nov 2025)." />
+               alt="A seven-layer vertical stack diagram with two endpoint columns. Top: title and column headers — Node A (superconducting transmon, microwave-native) on the left, Node B (Diamond-SiV, visible-native) on the right, with a shared network/control plane between them. Each horizontal band is one layer of the stack, labelled on the far left. L7 Application: orange ψ data qubits at A and B with a 'share / teleport |ψ⟩' arrow between them. L6 Logical/QEC: small surface-code patches (4×4 grids) at each endpoint, with a middle note that EC lives at the endpoints, not the channel. L5 Network service: a wide pink box spanning A to B labelled '|Φ⁺⟩_AB delivered on request', with a magenta wavy entanglement line, and an RFC 9340 note. L4 Distillation: three small raw Bell pairs above one larger high-fidelity pair at each endpoint, with a 'trade rate for fidelity' arrow across the middle. L3 Link/swap: a 1G repeater chain — A, three SiV relays R₁ R₂ R₃, and B, with four small photonic-BSM symbols between adjacent matter qubits and short magenta entanglement arcs. L2 Encoding/bridges: a peach M-O block on A's side (5 GHz → 1350 nm, η < 1%), a blue QFC block on B's side (737 → 1350 nm, η ≈ 5.4%, PPLN pump 1623 nm), and a middle fibre segment carrying telecom photons with a 'time-bin encoding (Knaut 2024)' note. L1 Physical: a dilution-fridge box on A's side, a diamond-chip box on B's side, and a telecom fibre line carrying photon dots between them, annotated 'Knaut 35 km deployed Boston-metro, 17 dB loss, SNSPDs at receivers'. Footer cites Knaut Nature 629.573 (2024) and Awschalom PRX Quantum 2.017002 (2021)." />
           <figcaption>
-            <strong>Q1 end-to-end, grounded in Knaut 2024.</strong> Node&nbsp;A is a
-            superconducting transmon with an M-O transducer (5&nbsp;GHz → 1,350&nbsp;nm);
-            Node&nbsp;B and the three intermediate relays are Diamond-SiV
-            nanophotonic nodes with ²⁹Si nuclear-spin memory and per-node QFC
-            (737&nbsp;nm SiV ZPL → 1,350&nbsp;nm telecom O-band via PPLN pumped at
-            1,623&nbsp;nm). All photons meet at <em>1,350&nbsp;nm</em> (Knaut's
-            wavelength choice, not 1,550&nbsp;nm). Phase&nbsp;1 produces four
-            elementary Bell pairs along the chain; the relays' swap protocol
-            joins them into one end-to-end A↔B Bell pair (see swapping page). Phase&nbsp;2
-            consumes that Bell pair via LOCC — fibre silent.
+            <strong>Q1 stack, layer by layer.</strong> The stack reads top-down:
+            the user owns L7 (the data qubit |ψ⟩); L6 protects it with QEC at
+            the endpoints; L5 is the network service abstraction (a Bell pair
+            on request); L4 is distillation if the raw pairs are below
+            threshold; L3 is the repeater chain that extends reach past fibre
+            loss; L2 is where the heterogeneity bites — M-O transduction on
+            A's side (5&nbsp;GHz → 1,350&nbsp;nm, η&nbsp;&lt;&nbsp;1%) versus QFC on
+            B's side and at every SiV relay (737 → 1,350&nbsp;nm, η&nbsp;≈&nbsp;5.4%,
+            PPLN pumped at 1,623&nbsp;nm); L1 is the telecom-O-band fibre
+            itself. The asymmetry between A's bridge and B's bridge is the
+            point — they sit in the same row but solve different mismatches.
+            Wavelengths and the 35&nbsp;km deployed demo from Knaut et&nbsp;al.
+            Nature 629.573 (2024).
           </figcaption>
         </figure>
         <p>
