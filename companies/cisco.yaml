@@ -67,19 +67,19 @@ shareholders:
     stake_percent: 9.8
     stake_class: minority
     as_of: 2024-12
-    source_url: https://www.cisco.com/c/dam/en_us/about/annual-report/2024/cisco-proxy-statement-2024.pdf
+    source_url: https://www.cisco.com/c/dam/en_us/about/annual-report/2024-cisco-proxy.pdf
     note: Largest institutional holder per the 2024 DEF 14A proxy statement; passive index aggregator
   - holder: BlackRock, Inc.
     stake_percent: 7.5
     stake_class: minority
     as_of: 2024-12
-    source_url: https://www.cisco.com/c/dam/en_us/about/annual-report/2024/cisco-proxy-statement-2024.pdf
+    source_url: https://www.cisco.com/c/dam/en_us/about/annual-report/2024-cisco-proxy.pdf
     note: Second-largest institutional holder per the 2024 DEF 14A; passive index aggregator
   - holder: State Street Corporation
     stake_percent: 4.1
     stake_class: minority
     as_of: 2024-12
-    source_url: https://www.cisco.com/c/dam/en_us/about/annual-report/2024/cisco-proxy-statement-2024.pdf
+    source_url: https://www.cisco.com/c/dam/en_us/about/annual-report/2024-cisco-proxy.pdf
     note: Third-largest institutional holder per the 2024 DEF 14A; passive index aggregator
   - holder: Public float (NASDAQ:CSCO)
     stake_percent: null
@@ -92,7 +92,7 @@ key_personnel:
   - role: Chair & CEO (Cisco Systems Inc.)
     name: Chuck Robbins
     since: 2015-07
-    source_url: https://www.cisco.com/c/en/us/about/management.html
+    source_url: https://investor.cisco.com/governance/executive-management/default.aspx
   - role: SVP, Outshift by Cisco / Office of the CTO (head of Cisco Quantum Labs)
     name: Vijoy Pandey
     since: 2022
@@ -101,7 +101,7 @@ key_personnel:
   - role: EVP & CFO
     name: Scott Herren
     since: 2020-12
-    source_url: https://www.cisco.com/c/en/us/about/management.html
+    source_url: https://investor.cisco.com/governance/executive-management/default.aspx
 
 roadmap:
   - target: 2026-2027

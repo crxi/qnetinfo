@@ -40,12 +40,12 @@ milestones:
   - date: 2023-09
     tag: qc
     headline: IonQ Forte initial release, barium hyperfine qubit demonstrations
-    source_url: https://investors.ionq.com/news/news-details/2023/IonQ-Forte-Quantum-Computer-Now-Available-to-Select-Customers-Globally/default.aspx
+    source_url: https://ionq.com/news/ionqs-most-powerful-quantum-system-ionq-forte-now-available-through-the
     source_type: press
   - date: 2021-10
     tag: qc
     headline: NYSE listing via SPAC merger
-    source_url: https://investors.ionq.com/news/news-details/2021/IonQ-Completes-Business-Combination-with-dMY-Technology-Group-Inc-III-Becoming-First-Publicly-Traded-Pure-Play-Quantum-Computing-Company/default.aspx
+    source_url: https://www.ionq.com/news/october-01-2021-ionq-listed-on-nyse
     source_type: filing
 
 shareholders:
