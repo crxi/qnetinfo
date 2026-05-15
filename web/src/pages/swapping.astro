@@ -112,7 +112,7 @@ const sections = [
         </ol>
 
         <figure class="sw" id="sw-fig" data-sw>
-          <svg viewBox="0 0 800 355" role="img"
+          <svg viewBox="0 0 800 260" role="img"
                aria-label="Entanglement-swapping animation. Top row: two short Bell pairs A↔A′ and B′↔B. The relay performs a BSM on A′ and B′; two classical bits travel to Bob; Bob applies a Pauli correction. Bottom row: the resulting long Bell pair A↔B."
                data-sw-svg>
             <defs>
@@ -225,18 +225,6 @@ const sections = [
                   stroke-dasharray="1 1" stroke-dashoffset="1" opacity="0"
                   d="M 68,60 q 17.5,-10 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0 t 35,0"/>
 
-            {/* Status lines — one per phase, stack below the BSM
-                apparatus; the result line follows them. */}
-            <text data-sw-msg1 x="400" y="258" text-anchor="middle"
-                  class="sw-statement" opacity="0">Two Bell pairs: A–A′ and B′–B</text>
-            <text data-sw-msg2 x="400" y="276" text-anchor="middle"
-                  class="sw-statement" opacity="0">R measures A′ and B′ jointly (BSM)</text>
-            <text data-sw-msg3 x="400" y="294" text-anchor="middle"
-                  class="sw-statement" opacity="0">2 classical bits travel to Bob</text>
-            <text data-sw-msg4 x="400" y="312" text-anchor="middle"
-                  class="sw-statement" opacity="0">Bob applies the matching Pauli correction</text>
-            <text data-sw-msg5 x="400" y="340" text-anchor="middle"
-                  class="sw-result" opacity="0">⇒ A and B are now entangled</text>
           </svg>
 
           <ol class="sw-step-list" data-sw-steps>
@@ -680,11 +668,6 @@ const sections = [
     const lock    = svg.querySelector("[data-sw-lock]");
     const lockTx  = svg.querySelector("[data-sw-lock-letter]");
     const relayBox = svg.querySelector("[data-sw-relay-box]");
-    const msg1    = svg.querySelector("[data-sw-msg1]");
-    const msg2    = svg.querySelector("[data-sw-msg2]");
-    const msg3    = svg.querySelector("[data-sw-msg3]");
-    const msg4    = svg.querySelector("[data-sw-msg4]");
-    const msg5    = svg.querySelector("[data-sw-msg5]");
     const stepEls = Array.from(fig.querySelectorAll("[data-sw-step]"));
 
     const AP_HOME = { x: 359, y: 60 };
@@ -759,16 +742,14 @@ const sections = [
       setOpacity(relayBox, 0);
       setOpacity(pairAB, 1);
       pairAB.setAttribute("stroke-dashoffset", "0");
-      setOpacity(msg1, 1); setOpacity(msg2, 1);
-      setOpacity(msg3, 1); setOpacity(msg4, 1);
-      setOpacity(msg5, 1);
       highlightStep(5);
     } else {
       const T_SETUP   = 1400;
       const T_DROP    = 1300;
       const T_MEASURE =  900;
       const T_SEND    = 1700;
-      const T_UNLOCK  = 1100;
+      const T_UNLOCK  = 2400;   // Pauli badge dropping onto B (step 4
+                                // in the list) — was 1100 ms, too fast.
       const T_TRACE   = 1100;
       const T_HOLD    = 2600;
       const T_PAUSE   =  400;
@@ -799,9 +780,6 @@ const sections = [
           setOpacity(pairAB, 0);
           pairAB.setAttribute("stroke-dashoffset", "1");
           const t = elapsed / T_SETUP;
-          setOpacity(msg1, Math.min(1, t * 2));
-          setOpacity(msg2, 0); setOpacity(msg3, 0);
-          setOpacity(msg4, 0); setOpacity(msg5, 0);
         } else if (elapsed < (t0 += T_DROP)) {
           // Phase 2a — A′ and B′ drop into BSM apparatus
           highlightStep(2);
@@ -822,8 +800,6 @@ const sections = [
             aCloud.setAttribute("fill", "url(#sw-cloud-spent)");
             bCloud.setAttribute("fill", "url(#sw-cloud-spent)");
           }
-          setOpacity(msg1, 1);
-          setOpacity(msg2, Math.min(1, e * 2));
         } else if (elapsed < (t0 += T_MEASURE)) {
           // Phase 2b — measurement clicks
           highlightStep(2);
@@ -835,7 +811,6 @@ const sections = [
           setOpacity(bsm, 1);
           setOpacity(bits, Math.min(1, (e - 0.2) * 2));
           setBitsX(BIT_X_START);
-          setOpacity(msg2, 1);
         } else if (elapsed < (t0 += T_SEND)) {
           // Phase 3 — bits slide along classical channel
           highlightStep(3);
@@ -844,7 +819,6 @@ const sections = [
           setOpacity(bsm, 0.5);
           setOpacity(bits, 1);
           setBitsX(BIT_X_START + (BIT_X_END - BIT_X_START) * t);
-          setOpacity(msg3, Math.min(1, t * 2));
         } else if (elapsed < (t0 += T_UNLOCK)) {
           // Phase 4a — Pauli badge drops onto B
           highlightStep(4);
@@ -858,7 +832,6 @@ const sections = [
           const iy = iy_start + (iy_end - iy_start) * e;
           setPos(lock, ix, iy);
           setOpacity(lock, Math.min(1, e * 2));
-          setOpacity(msg4, Math.min(1, e * 2));
         } else if (elapsed < (t0 += T_TRACE)) {
           // Phase 4b — long A↔B Bell pair traces in on the SAME row
           // as A and B. The dashed relay-R box dissolves at the same
@@ -870,7 +843,6 @@ const sections = [
           setOpacity(pairAB, 1);
           pairAB.setAttribute("stroke-dashoffset", String(1 - e));
           setOpacity(lock, Math.max(0, 1 - e * 1.6));
-          setOpacity(msg5, Math.min(1, (e - 0.3) * 2));
           setOpacity(bsm, 0.5 - 0.28 * e);
           setOpacity(relayBox, 0.55 * (1 - e));
         } else if (elapsed < T_TOTAL - T_PAUSE) {
@@ -881,15 +853,9 @@ const sections = [
           setOpacity(lock, 0);
           setOpacity(bsm, 0.22);
           setOpacity(relayBox, 0);
-          setOpacity(msg1, 1); setOpacity(msg2, 1);
-          setOpacity(msg3, 1); setOpacity(msg4, 1);
-          setOpacity(msg5, 1);
         } else if (elapsed < T_TOTAL) {
           const t = (elapsed - (T_TOTAL - T_PAUSE)) / T_PAUSE;
           const a = Math.max(0, 1 - t);
-          setOpacity(msg1, a); setOpacity(msg2, a);
-          setOpacity(msg3, a); setOpacity(msg4, a);
-          setOpacity(msg5, a);
         } else {
           cycleStart = now;
           pickCycleParams();
