@@ -98,6 +98,8 @@ CSS = """
   .m2o-blk    { fill: #fdeacf; stroke: #b8783c; stroke-width: 1.3; }
   .qfc-blk    { fill: #e2eef9; stroke: #5a83b3; stroke-width: 1.3; }
   .viewport   { fill: #f3f8fd; stroke: #5a83b3; stroke-width: 1.2; }
+  .cold-zone  { fill: #d6e8f6; fill-opacity: 0.55; stroke: #2c5d8f; stroke-width: 1.0; stroke-dasharray: 4 2; }
+  .cold-tag   { font: 700 7.5px sans-serif; fill: #2c5d8f; text-anchor: middle; }
   .plate      { stroke: #b8783c; stroke-width: 0.7; opacity: 0.55; }
 
   .data       { fill: #f29453; stroke: #8a3f0e; stroke-width: 1; }
@@ -220,15 +222,17 @@ def _node_A(cv: Canvas) -> None:
     cv.text(NODE_A_CX, 38, "Node A", cls="node-ttl", font_size=13, name="A-title")
     cv.text(NODE_A_CX, 52, "transmon QPU + M2O", cls="node-sub", font_size=9.5, name="A-sub")
 
-    # Qubit column (right-side labels)
+    # Qubit column. Side labels go to the LEFT of Node A's column (anchor=end),
+    # leaving the inner-facing side free for a future "entanglement wriggly
+    # line" between MQ-A and MQ-B that should not be obscured by labels.
     C.qubit_column(
         cv,
         cx=NODE_A_CX,
-        side_anchor="start",
+        side_anchor="end",
         qubits=[
             (Y_DQ, "data", "ψ", "DQ-A"),
-            (Y_MQ, "memory", 'M<tspan baseline-shift="sub" font-size="70%">A</tspan>', "MQ-A"),
-            (Y_CQ, "comm", 'C<tspan baseline-shift="sub" font-size="70%">A</tspan>', "CQ-A"),
+            (Y_MQ, "memory", "M", "MQ-A"),
+            (Y_CQ, "comm", "C", "CQ-A"),
         ],
     )
 
@@ -250,7 +254,7 @@ def _node_A(cv: Canvas) -> None:
         width=TRANSDUCER_W,
         height=TRANSDUCER_H,
         title="M2O",
-        line_in="5 GHz · 60 mm",
+        line_in="60 mm · 5 GHz",         # wavelength · frequency (matches QFC convention)
         line_out="1550 nm · 193 THz",
         cls="m2o-blk",
     )
@@ -291,6 +295,26 @@ def _node_B(cv: Canvas) -> None:
         width=CHAMBER_W,
         viewport_rows=(78, 186),
     )
+    # Cold region — wraps just the qubit cluster *tightly* (3-px buffer
+    # each side of the radius-11 circles). The temperature tag lives
+    # OUTSIDE the zone on the inner-facing side, rotated vertically, so
+    # the zone itself can be narrow.
+    cold_x = NODE_B_CX - 14   # 906 — just outside qubit right edge (931 minus circle, wait)
+    cold_y = 64               # 3 px above DQ-B top (67)
+    cold_w = 28               # right edge at 934 — 3 px outside qubit right edge (931)
+    cold_h = 115              # bottom at y=179 — 3 px below CQ-B bottom (176)
+    cv.rect(cold_x, cold_y, cold_w, cold_h, cls="cold-zone", rx=8, name="B-cold-zone")
+    # Temperature tag — rotated 90° CCW, placed on the LEFT side of the
+    # cold zone (outside it). Side labels are on Node B's right, so the
+    # left side is free for the vertical tag. Reads bottom-to-top.
+    tag_x, tag_y = cold_x - 8, (cold_y + cold_y + cold_h) / 2  # 898, 121.5
+    cv.add(
+        f'<text x="{tag_x}" y="{tag_y}" class="cold-tag" '
+        f'transform="rotate(-90 {tag_x} {tag_y})" '
+        f'style="text-anchor:middle">~mK · Yb⁺ ions</text>',
+        kind="text",
+        name="B-cold-tag",
+    )
     # UHV · 300 K — flush against the LEFT wall of the Node B outline, in the
     # band between the chamber and the QFC bench. Kept off the central x-axis
     # so the dashed UV photon link from CQ-B down to the QFC stays unblocked.
@@ -305,15 +329,17 @@ def _node_B(cv: Canvas) -> None:
         name="B-uhv-tag",
     )
 
-    # Qubit column (left-side labels)
+    # Qubit column. Side labels go to the RIGHT of Node B's column
+    # (anchor=start) — mirror of Node A. Inner-facing sides of both nodes
+    # are kept free for a future entanglement wriggly-line between MQs.
     C.qubit_column(
         cv,
         cx=NODE_B_CX,
-        side_anchor="end",
+        side_anchor="start",
         qubits=[
             (Y_DQ, "data", "ψ", "DQ-B"),
-            (Y_MQ, "memory", 'M<tspan baseline-shift="sub" font-size="70%">B</tspan>', "MQ-B"),
-            (Y_CQ, "comm", 'C<tspan baseline-shift="sub" font-size="70%">B</tspan>', "CQ-B"),
+            (Y_MQ, "memory", "M", "MQ-B"),
+            (Y_CQ, "comm", "C", "CQ-B"),
         ],
     )
     C.swap_arrow(cv, NODE_B_CX, Y_MQ + 11, Y_CQ - 11)
@@ -391,11 +417,24 @@ def _midpoints(cv: Canvas) -> None:
     # M2 between QR-1 R₁ and QR-2 L₂
     r1 = QR_CENTRES[0] + QBIT_GAP
     l2 = QR_CENTRES[1] - QBIT_GAP
-    C.midpoint_bsm(cv, (r1 + l2) / 2, AXIS_Y, size=24, label="M2", label_pos="above")
+    m2_x = (r1 + l2) / 2
+    C.midpoint_bsm(cv, m2_x, AXIS_Y, size=24, label="M2", label_pos="above")
     # M3 between QR-2 R₂ and QR-3 L₃
     r2 = QR_CENTRES[1] + QBIT_GAP
     l3 = QR_CENTRES[2] - QBIT_GAP
-    C.midpoint_bsm(cv, (r2 + l3) / 2, AXIS_Y, size=24, label="M3", label_pos="above")
+    m3_x = (r2 + l3) / 2
+    C.midpoint_bsm(cv, m3_x, AXIS_Y, size=24, label="M3", label_pos="above")
+
+    # SNSPD temperature tags — every BSM station is shorthand for "fibre
+    # bench at 300 K + SNSPD chip in a He cryostat at ~2 K". Knaut Nature
+    # 629.573 uses Photon Spot SNSPDs; ETSI GR QKD 003 §5 lists 0.12–2.3 K
+    # sensor temps for NbN/WSi nanowires at 1550 nm.
+    for x, y in [(NODE_A_CX, Y_M1_M4 + 22),
+                 (NODE_B_CX, Y_M1_M4 + 22),
+                 (m2_x, AXIS_Y + 20),
+                 (m3_x, AXIS_Y + 20)]:
+        cv.text(x, y, "SNSPDs ~2 K", cls="cold-tag", anchor="middle", font_size=6.5,
+                name=f"bsm-temp@{x},{y}")
 
 
 # Kept around in case a future revision wants per-segment distance tags,
@@ -469,9 +508,18 @@ def main(out: Path | None = None, preview_png: Path | None = None) -> None:
     repo_root = Path(__file__).resolve().parents[2]
     out = out or (repo_root / "images" / "4hop-topology.svg")
     cv = build()
+    svg = cv.to_svg()
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(cv.to_svg())
+    out.write_text(svg)
     print(f"wrote {out}")
+
+    # Mirror to web/public/images/ so the Astro app picks it up. Keeping the
+    # canonical output at repo-root/images/ (matches the workspace convention)
+    # and the web copy in sync avoids manual copy steps.
+    web_out = repo_root / "web" / "public" / "images" / out.name
+    if web_out.parent.exists():
+        web_out.write_text(svg)
+        print(f"wrote {web_out}")
 
     overlaps = cv.check_text_overlaps(pad=0.5)
     if overlaps:

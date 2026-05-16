@@ -14,10 +14,44 @@ Conventions
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Iterable
 
 from .svglib import Canvas
+
+
+_TSPAN_SUBSCRIPT_RE = re.compile(r"^(.+?)<tspan[^>]*>(.+?)</tspan>$")
+
+
+def _draw_glyph(canvas: Canvas, cx: float, cy: float, glyph: str, *, name: str = "") -> None:
+    """Render a qubit-in-circle glyph, splitting any subscript into its own
+    text element so the main letter centres cleanly.
+
+    The previous approach baked the subscript into a `<tspan>` and let
+    `text-anchor: middle` centre the whole "Mₐ" composite — but that pulled
+    the main letter visually left of the circle centre. Here, the main
+    letter renders at (cx, cy) with anchor middle (so it sits exactly at
+    the circle's centre), and the subscript renders as a separate, smaller
+    text element hanging off to the lower right.
+    """
+    m = _TSPAN_SUBSCRIPT_RE.match(glyph)
+    if m:
+        main, sub = m.group(1), m.group(2)
+        canvas.text(
+            cx, cy, main, cls="qbit-in",
+            font_size=9, anchor="middle", name=name,
+        )
+        canvas.text(
+            cx + 4, cy + 3, sub, cls="qbit-in",
+            font_size=6.3, anchor="start",
+            name=f"{name}-sub" if name else "",
+        )
+    else:
+        canvas.text(
+            cx, cy, glyph, cls="qbit-in",
+            font_size=9, anchor="middle", raw=True, name=name,
+        )
 
 
 # ===========================================================================
@@ -207,20 +241,7 @@ def qubit_column(
     """
     for y, role_cls, glyph, side_label in qubits:
         canvas.circle(cx, y, radius, cls=role_cls, name=f"qubit@{cx},{y}")
-        # text-anchor:middle centres the *whole* glyph including any
-        # subscript tspan, which leaves the main letter biased to the left.
-        # Nudge x rightwards so the main letter sits over the circle centre.
-        tx = cx + 2.5 if "<tspan" in glyph else cx
-        canvas.text(
-            tx,
-            y + 2,
-            glyph,
-            cls="qbit-in",
-            font_size=9,
-            anchor="middle",
-            raw=True,
-            name=f"qbit-in@{cx},{y}",
-        )
+        _draw_glyph(canvas, cx, y + 2, glyph, name=f"qbit-in@{cx},{y}")
         if side_label:
             lx = cx + side_offset if side_anchor == "start" else cx - side_offset
             canvas.text(
@@ -302,64 +323,105 @@ def qr_node(
     *,
     label: str,
     width: float = 140,
-    height: float = 36,
+    height: float = 50,
     qbit_gap: float = 22,
+    c_above: float = 24,
+    pair_gap: float = 22,
 ) -> dict[str, float]:
-    """Repeater node with two comm qubits flanking a central memory.
+    """Repeater node with two comm electrons on the photonic axis and two
+    nuclear-memory qubits lifted *above* them (Knaut 2-emitter / Azuma
+    SWAP-store architecture).
 
-    Returns a dict of anchor positions:
-        left_edge, right_edge, l_x, c_x, r_x
+    Layout — symmetric about cx::
+
+              M_L         M_R         ← nuclear memory (purple), ABOVE
+              ↕           ↕           ← SWAP arrows
+        [QFC]—(γ)—C_L   C_R—(γ)—[QFC]  ← comm electrons (green), on axis
+                  └─── BSM-able pair ───┘
+
+    The two comm qubits sit symmetrically about `cx` separated by
+    `pair_gap` (centre-to-centre), so a midpoint BSM at `cx` between them
+    is implicit. Each memory M_n sits directly above its comm C_n and is
+    linked by a vertical SWAP arrow (Azuma).
+
+    Returns a dict of anchor positions: left_edge, right_edge, c_l_x, c_r_x,
+    m_l_x, m_r_x, m_l_y, m_r_y. For backward compatibility the legacy keys
+    l_x / c_x / r_x are also populated (l_x = c_l_x, r_x = c_r_x, c_x = cx).
     """
-    rect_top = axis_y - height / 2
-    canvas.rect(cx - width / 2, rect_top, width, height, cls="repeater", rx=4, name=label)
+    # Comm electrons sit symmetrically about cx, separated by pair_gap.
+    c_l_x = cx - pair_gap / 2
+    c_r_x = cx + pair_gap / 2
+    # Nuclear memories sit directly above their comm partner.
+    m_l_x = c_l_x
+    m_r_x = c_r_x
+    m_y = axis_y - c_above
+
+    # Outer geometry: QFC outer face must remain at cx ± qbit_gap ± 39 so the
+    # external fibres (which terminate at QR_QFC_FACE from cx) still meet the
+    # outer face. We keep that contract by anchoring the left/right QFC and
+    # photon stubs off l_anchor / r_anchor below.
+    l_anchor = cx - qbit_gap   # anchor for left QFC group (preserves QR_QFC_FACE)
+    r_anchor = cx + qbit_gap   # anchor for right QFC group
+
+    # Rect must clear the memory row at top (m_y - 9 - pad) and the comm row
+    # at bottom (axis_y + 9 + pad).
+    rect_top = m_y - 9 - 5
+    rect_bot = axis_y + 14
+    rect_h = rect_bot - rect_top
+    canvas.rect(cx - width / 2, rect_top, width, rect_h, cls="repeater", rx=4, name=label)
     canvas.text(cx, rect_top - 4, label, cls="lbl", font_size=10, name=f"{label}-title")
 
-    l_x = cx - qbit_gap
-    r_x = cx + qbit_gap
+    # Left QFC + photon stub + C_L
+    canvas.rect(l_anchor - 39, axis_y - 9, 18, 18, cls="qfc-blk", rx=2, name=f"{label}-qfc-L")
+    canvas.text(l_anchor - 30, axis_y + 4, "QFC", cls="mini", font_size=8.5, name=f"{label}-qfc-L-txt")
+    # Photon glyph touches the C qubit's outer edge — the photon and its
+    # parent comm electron are drawn as one visual unit, since they're
+    # entangled. (Photon r=4, C r=9, so photon centre at c_l_x - 13 puts
+    # the photon's right edge flush with C_L's left edge.)
+    gamma_l_x = c_l_x - 13
+    canvas.circle(gamma_l_x, axis_y, 4, cls="photon", name=f"{label}-γ-L")
+    canvas.circle(c_l_x, axis_y, 9, cls="comm", name=f"{label}-C-L")
+    _draw_glyph(canvas, c_l_x, axis_y + 1, "C", name=f"{label}-C-L-in")
 
-    n = label.split("-")[-1]
-    # Layout left → right inside the QR rectangle:
-    #   [ QFC ] —— (photon) | L (comm) | C (memory) | R (comm) | (photon) —— [ QFC ]
-    # Left half — QFC then photon-then-L
-    canvas.rect(l_x - 39, axis_y - 9, 18, 18, cls="qfc-blk", rx=2, name=f"{label}-qfc-L")
-    canvas.text(l_x - 30, axis_y + 4, "QFC", cls="mini", font_size=8.5, name=f"{label}-qfc-L-txt")
-    canvas.circle(l_x - 14, axis_y, 4, cls="photon", name=f"{label}-γ-L")
-    canvas.circle(l_x, axis_y, 9, cls="comm", name=f"{label}-L")
-    canvas.text(
-        l_x + 1.5, axis_y + 1, f'L<tspan baseline-shift="sub" font-size="70%">{n}</tspan>',
-        cls="qbit-in", font_size=9, raw=True, name=f"{label}-L-in",
-    )
-    # Centre memory
-    canvas.circle(cx, axis_y, 9, cls="memory", name=f"{label}-C")
-    canvas.text(
-        cx + 1.5, axis_y + 1, f'C<tspan baseline-shift="sub" font-size="70%">{n}</tspan>',
-        cls="qbit-in", font_size=9, raw=True, name=f"{label}-C-in",
-    )
-    # Right half — R-then-photon then QFC
-    canvas.circle(r_x, axis_y, 9, cls="comm", name=f"{label}-R")
-    canvas.text(
-        r_x + 1.5, axis_y + 1, f'R<tspan baseline-shift="sub" font-size="70%">{n}</tspan>',
-        cls="qbit-in", font_size=9, raw=True, name=f"{label}-R-in",
-    )
-    canvas.circle(r_x + 14, axis_y, 4, cls="photon", name=f"{label}-γ-R")
-    canvas.rect(r_x + 21, axis_y - 9, 18, 18, cls="qfc-blk", rx=2, name=f"{label}-qfc-R")
-    canvas.text(r_x + 30, axis_y + 4, "QFC", cls="mini", font_size=8.5, name=f"{label}-qfc-R-txt")
+    # Right QFC + photon stub + C_R (photon touches C_R right edge)
+    canvas.circle(c_r_x, axis_y, 9, cls="comm", name=f"{label}-C-R")
+    _draw_glyph(canvas, c_r_x, axis_y + 1, "C", name=f"{label}-C-R-in")
+    gamma_r_x = c_r_x + 13
+    canvas.circle(gamma_r_x, axis_y, 4, cls="photon", name=f"{label}-γ-R")
+    canvas.rect(r_anchor + 21, axis_y - 9, 18, 18, cls="qfc-blk", rx=2, name=f"{label}-qfc-R")
+    canvas.text(r_anchor + 30, axis_y + 4, "QFC", cls="mini", font_size=8.5, name=f"{label}-qfc-R-txt")
 
-    # Internal fibre stubs: drawn LAST so they paint over the QFC's inner
-    # border stroke. The stub starts exactly at the QFC's outer face (no
-    # overlap into the QFC body) and ends at the comm qubit's outer edge.
-    # Uses `fiber--stub` (full opacity, thicker) so the short ~12 px segment
-    # stays visible — the main axis fibre is at 55 % opacity for distance
-    # cueing, but that washes out the small internal stub.
-    canvas.line(l_x - 21, axis_y, l_x - 9, axis_y, cls="fiber--stub", name=f"{label}-stub-L")
-    canvas.line(r_x + 9, axis_y, r_x + 21, axis_y, cls="fiber--stub", name=f"{label}-stub-R")
+    # Nuclear memories — one above each comm.
+    canvas.circle(m_l_x, m_y, 9, cls="memory", name=f"{label}-M-L")
+    _draw_glyph(canvas, m_l_x, m_y + 1, "M", name=f"{label}-M-L-in")
+    canvas.circle(m_r_x, m_y, 9, cls="memory", name=f"{label}-M-R")
+    _draw_glyph(canvas, m_r_x, m_y + 1, "M", name=f"{label}-M-R-in")
+
+    # SWAP arrows linking each M ↔ C pair (Azuma SWAP-store path).
+    swap_arrow(canvas, m_l_x, m_y + 9, axis_y - 9)
+    swap_arrow(canvas, m_r_x, m_y + 9, axis_y - 9)
+
+    # Internal stubs: from QFC inner face to C outer edge, on axis_y.
+    canvas.line(l_anchor - 21, axis_y, c_l_x - 9, axis_y, cls="fiber--stub", name=f"{label}-stub-L")
+    canvas.line(c_r_x + 9, axis_y, r_anchor + 21, axis_y, cls="fiber--stub", name=f"{label}-stub-R")
+    # Short internal axis segment between the two comm qubits — visually
+    # marks the BSM-able pair (the QR's internal BSM target).
+    canvas.line(c_l_x + 9, axis_y, c_r_x - 9, axis_y, cls="fiber--stub", name=f"{label}-pair")
 
     return dict(
         left_edge=cx - width / 2,
         right_edge=cx + width / 2,
-        l_x=l_x,
+        c_l_x=c_l_x,
+        c_r_x=c_r_x,
+        m_l_x=m_l_x,
+        m_r_x=m_r_x,
+        m_l_y=m_y,
+        m_r_y=m_y,
+        # legacy aliases (nothing in-tree reads these, but kept for safety)
+        l_x=c_l_x,
+        r_x=c_r_x,
         c_x=cx,
-        r_x=r_x,
+        c_y=m_y,
     )
 
 

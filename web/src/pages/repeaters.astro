@@ -33,6 +33,7 @@ import Math from "../components/Math.astro";
 const sections = [
   { id: "overview",   label: "Overview" },
   { id: "core",       label: "The shared core" },
+  { id: "node-architecture", label: "Node architecture: comm and memory qubits" },
   { id: "gen1",       label: "1G — heralded + distilled" },
   { id: "gen2",       label: "2G — encoded memories" },
   { id: "gen3",       label: "3G — block-encoded transport" },
@@ -130,6 +131,156 @@ const sections = [
           generation-and-swap pattern altogether and instead transmits a block-encoded
           quantum state directly through the chain, repairing loss at each station with
           QEC.
+        </p>
+      </section>
+
+      <section id="node-architecture" data-nav-section>
+        <h2>Node architecture: comm and memory qubits</h2>
+        <p>
+          The shared core above is protocol-level — heralded generation, memory, swap,
+          distillation — and is silent on what a "qubit" inside a repeater node
+          physically is. At the hardware-substrate level, every memory-based repeater
+          demonstrated to date splits its qubits into two roles per side of the node: a
+          <strong>communication qubit</strong> that couples to the photon on the fibre,
+          and a <strong>memory qubit</strong> that stores the heralded state between
+          attempts. In the leading colour-centre platforms the comm qubit is an
+          <em>electron spin</em> — fast, optically active, reset every attempt — and the
+          memory qubit is a nearby <em>nuclear spin</em> — long-lived, decoupled from
+          the photonic transition, untouched while the electron retries.
+        </p>
+        <p>
+          Knaut et al. state the split definitionally for the SiV
+          platform <SourceNote id="knaut-nature-2024" />:
+        </p>
+        <Callout label="The two-qubit emitter (Knaut et al. 2024)" tone="muted">
+          <p>
+            "…each SiV deterministically contains two addressable spin qubits: one
+            electron spin used as a communication qubit, which couples strongly to
+            itinerant photons, and one long-lived <sup>29</sup>Si nuclear spin, used as
+            a memory qubit to store entanglement."
+          </p>
+        </Callout>
+        <p>
+          The same split appears in the NV implementation (Pompili et al., Delft), in
+          rare-earth-ion systems, and is the hardware model assumed by the SIGCOMM 2019
+          link-layer protocol <SourceNote id="dahlberg-sigcomm-2019" />. It is the
+          field-wide convention, not a platform-specific quirk.
+        </p>
+
+        <h3 class="rp-h3">Reuse while storing</h3>
+        <p>
+          The two roles matter because heralded entanglement generation is
+          probabilistic: each attempt either heralds or fails, and the failures vastly
+          outnumber the successes. If the qubit that just heralded had to wait — idle
+          and decohering — for the <em>other</em> side of the node to also herald, the
+          per-hop success rate would collapse. The fix is to SWAP the heralded state
+          off the comm qubit and onto the memory the moment a herald arrives, freeing
+          the comm qubit to keep retrying. Azuma's review describes the primitive as
+          demonstrated by Pompili et al. <SourceNote id="azuma-rmp-95" />:
+        </p>
+        <Callout label="Reuse-while-storing (Azuma et al. 2023, §III.B)" tone="muted">
+          <p>
+            "After the generation of heralded entanglement between an NV electron spin
+            at Alice's node and the electron spin at Charlie's node, the information
+            encoded in Charlie's electron spin qubit was swapped to a <sup>13</sup>C
+            nuclear spin so that the electron spin could be used again to generate
+            entanglement with Bob's NV center."
+          </p>
+        </Callout>
+        <p>
+          This is what the memory qubit is <em>for</em> in a 1G repeater. It is not the
+          qubit that talks to the photon; it is the qubit that holds the state while
+          the comm qubit goes back to the photon-emission loop.
+        </p>
+
+        <h3 class="rp-h3">One emitter per node vs two</h3>
+        <p>
+          A repeater node sits between two neighbours and has to herald with each
+          independently. Two real architectures fall out of that requirement, and
+          current experimental practice has picked the first while the roadmap points
+          to the second.
+        </p>
+        <figure class="rp-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Axis</th>
+                <th>1-emitter sequential</th>
+                <th>2-emitter parallel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Colour centres per node</td>
+                <td>One (one electron + one nucleus)</td>
+                <td>Two (each with its own electron + nucleus)</td>
+              </tr>
+              <tr>
+                <td>Optical cavities per node</td>
+                <td>One</td>
+                <td>Two</td>
+              </tr>
+              <tr>
+                <td>Left-side / right-side attempts</td>
+                <td>Time-multiplexed on the same emitter</td>
+                <td>Run in parallel on separate emitters</td>
+              </tr>
+              <tr>
+                <td>Local BSM (the swap)</td>
+                <td>Between the electron and its nucleus</td>
+                <td>Between the two nuclei (or two electrons after SWAP-back)</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>Demonstrated (Pompili et al., 3-node NV chain) <SourceNote id="pompili-science-2021" /></td>
+                <td>Scale-up direction (Knaut et al. Fig. 1b, SiV) <SourceNote id="knaut-nature-2024" /></td>
+              </tr>
+              <tr>
+                <td>Bottleneck</td>
+                <td>Throughput — attempts can't overlap in time</td>
+                <td>Hardware — twice the cavities, twice the fabrication yield risk</td>
+              </tr>
+            </tbody>
+          </table>
+          <figcaption>
+            The two node architectures that fall out of the comm/memory split. The
+            1-emitter sequential design is what has been built end-to-end; the
+            2-emitter parallel design is what the roadmap papers depict as the
+            throughput-scaled successor.
+          </figcaption>
+        </figure>
+        <p>
+          The <strong>1-emitter sequential</strong> design runs one side of the node to
+          completion — herald on the left, SWAP the state from electron to nucleus —
+          then runs the right side with the same emitter, and finally performs a local
+          Bell-state measurement on the electron–nucleus pair to swap the entanglement
+          across the hop. Only one optical cavity per node; only one colour-centre.
+          This is the architecture demonstrated in the Delft 3-node NV
+          chain <SourceNote id="pompili-science-2021" />, and it is the smallest
+          configuration that supports the full repeater protocol.
+        </p>
+        <p>
+          The <strong>2-emitter parallel</strong> design gives each side of the node
+          its own colour-centre and its own cavity. The left attempt and the right
+          attempt run concurrently, each storing its heralded state on its own nucleus.
+          The local BSM is now between the two nuclei (or between the two electrons
+          after SWAP-back from the nuclei), and the per-hop time is no longer
+          dominated by the time-multiplexing of one emitter against two
+          neighbours <SourceNote id="knaut-nature-2024" />. Knaut et al. depict this
+          configuration in Fig. 1b as the design that scales the SiV platform up from a
+          two-node testbed to a multi-hop network.
+        </p>
+        <p>
+          The forward-looking figures on this site lean on the 2-emitter parallel
+          design because throughput, not minimum viable hardware, is the constraint
+          that matters at network scale. The Knaut case study — what was actually
+          built end-to-end with that hardware on a deployed Boston fibre loop — is
+          treated on the <a href="/qnetinfo/transduction#progress">transduction
+          progress page</a>; this page treats only the architectural rationale.
+        </p>
+        <p>
+          See <a href="/qnetinfo/transduction#pipeline">the 4-hop pipeline figure</a>
+          for the 2-emitter parallel architecture in context.
         </p>
       </section>
 

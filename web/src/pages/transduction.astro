@@ -177,50 +177,60 @@ const sections = [
         <h3>Sometimes one device does both jobs</h3>
         <p>
           A subtlety the "two interconnects" picture has to flag: in many repeater
-          designs there is no <em>separate</em> memory qubit and photon-interface
-          qubit. An SiV centre is simultaneously the thing that emits the heralding
-          photon (its electron spin) and the thing that stores the entanglement after
-          the herald (its nuclear spin). The spin-photon and compute–network
-          interconnects collapse onto the same device. The only question left is
-          whether <em>that device</em> matches the computer's modality — if it doesn't,
-          transduction or QFC is the bridge, and if it does, neither is needed.
+          designs there is no <em>separate</em> memory device and photon-interface
+          device — a single SiV or NV centre carries both the comm qubit and the
+          memory qubit (see <a href={url("/repeaters#node-architecture")}>repeaters §
+          node architecture</a> for the comm/memory split). The spin-photon and
+          compute–network interconnects collapse onto the same physical defect. The
+          only question left is whether <em>that device</em> matches the computer's
+          modality — if it doesn't, transduction or QFC is the bridge, and if it does,
+          neither is needed.
         </p>
       </section>
 
       <section id="pipeline" data-nav-section>
         <h2>The whole pipeline in one figure</h2>
         <p>
-          Putting the two interfaces in one diagram with the rest of the network makes
-          a quiet but important fact visible: the fibre, the QFCs, and the midpoint
-          photonic Bell-state measurement (pBSM) are used <em>only</em> in Phase 1, when
-          comm-A and comm-B are being entangled. Once they are, everything that follows
-          — the local BSM at A that consumes the Bell pair, the two classical bits sent
-          to B, the Pauli correction at B — happens over <a href={url("/entanglement#locc")}>LOCC</a>.
-          The quantum channel goes quiet. The compute–network QuIC (the M-O
-          transducer in the cross-modality case) fires only at this second stage,
-          not before.
+          The figure stretches a heterogeneous Q1 link out across four fibre hops to
+          make the <em>interface chain</em> visible end-to-end: transmon → M-O
+          transducer → SiV-QFC → telecom fibre → repeater chain → Yb-QFC → trapped-ion
+          endpoint. Read it left to right as one pipeline, ignoring for the moment the
+          internal architecture of any individual repeater — that part is treated
+          separately on <a href={url("/repeaters#node-architecture")}>repeaters §
+          node architecture</a>.
         </p>
         <figure class="pipeline-figure">
-          <img src={url("/images/transduction.svg")}
-               alt="End-to-end pipeline between two quantum computers. Each node has a transmon stack at the top, an M-O transducer (compute–network QuIC), a communication qubit at 737 nm, and a QFC (spin–photon QuIC) at the bottom that drops the photon into 1550 nm telecom fibre. Both fibres converge at a midpoint photonic Bell-state measurement. Phase-1 arrows trace photons inward to the pBSM. The classical channel runs along the bottom of the figure and carries the herald in Phase 1 and the BSM outcome bits in Phase 2." />
+          <img src={url("/images/4hop-topology.svg")}
+               alt="A four-hop topology figure. On the left, Node A is a superconducting quantum computer: a dilution-fridge silhouette with 50 K / 4 K / 15 mK stages, a transmon data qubit (DQ-A), and an M-O transducer (M2O) that converts 5 GHz microwave to telecom optical. Three SiV-diamond repeater nodes QR-1, QR-2, QR-3 sit on the photonic axis between A and B; each carries two comm qubits (electron spins, on the axis) and two memory qubits (nuclear spins, above each comm, with SWAP arrows between them), flanked by a QFC block on either side that converts 737 nm to 1550 nm. On the right, Node B is a trapped-ion quantum computer: a UHV chamber at 300 K housing a small dashed cold zone around the laser-cooled 171-Yb-plus ion cluster, with a 369 nm → 1550 nm QFC on the bench at 300 K. Telecom fibre links each hop." />
           <figcaption>
-            For an infrastructure planner this is the headline: the only piece of the
-            picture that requires <em>quantum-channel</em> infrastructure — fibre at the
-            right wavelength, QFC, pBSM — is the bit that sets up the Bell pair. Every
-            subsequent use of that pair runs over a normal classical link. Reference
-            architecture in <SourceNote id="awschalom-prxquantum-2021" />.
+            Left to right: <strong>Node A</strong> — dilution fridge (50 K / 4 K /
+            15 mK stages), transmon QPU (DQ-A), and the M-O transducer (M2O) that
+            lifts a 5 GHz microwave excitation to a telecom-band photon.
+            <strong>Each repeater (QR-1…3)</strong> — two comm qubits (C, electron
+            spin, photon-facing) on the photonic axis with two memory qubits (M,
+            nuclear spin, long-lived storage) above them; the SWAP arrow between each
+            C and its M is the store/retrieve primitive. Per-side QFC blocks convert
+            the SiV's native 737 nm down to 1550 nm for the fibre hops.
+            <strong>Node B</strong> — UHV chamber wall at 300 K, with a small dashed
+            cold zone inside marking the laser-cooled (~mK) <sup>171</sup>Yb⁺ ion
+            cluster; a room-temperature QFC bench converts 369 nm to 1550 nm. The
+            <em>why</em> of the two-comm / two-memory layout inside each repeater is
+            on <a href={url("/repeaters#node-architecture")}>repeaters § node
+            architecture</a>; this section is about the interface chain between
+            heterogeneous endpoints. Reference architecture in
+            <SourceNote id="awschalom-prxquantum-2021" />.
           </figcaption>
         </figure>
         <p>
-          Two simplifications in the figure to keep it readable. First, real nodes have
-          many comm qubits per node (a multiplexed memory bank), not just one — they
-          fire EG attempts in parallel and the first to herald wins; the picture shows
-          one for clarity. Second, the diagram assumes the cross-modality case
-          (transmon compute + SiV memory), which is the case that most clearly shows
-          both the transducer and the QFC. A same-modality node — say, trapped-ion
-          compute and trapped-ion comm — drops the M-O transducer block entirely and
-          replaces it with a local two-qubit gate inside the same trap, as in
-          Oxford 2025 <SourceNote id="main-nature-2025" />.
+          The infrastructure point to read off the figure: the only places that need
+          new <em>quantum-channel</em> hardware are the interface blocks (M2O at
+          Node A, QFCs flanking every SiV repeater, QFC at Node B) and the
+          telecom-band fibre between them. The classical channel along the bottom
+          carries heralds and BSM outcome bits in the usual way. Once a Bell pair has
+          been delivered across the chain, consuming it for teleportation or a remote
+          gate runs over <a href={url("/entanglement#locc")}>LOCC</a> — the fibre
+          goes quiet, and the M-O transducer fires only at the moment the transmon
+          state is being moved into (or out of) the matter memory.
         </p>
 
         <Callout label="For readers used to classical networking: this is the deep structural difference">
@@ -458,18 +468,18 @@ const sections = [
           + telecom-fibre</strong> half of the picture. Two SiV-in-diamond nodes
           sit in Cambridge and Boston laboratories, connected by 35&nbsp;km of
           deployed telecom fibre at 1350&nbsp;nm (PPLN QFC from the SiV's native
-          737&nbsp;nm). Each node carries two qubits inside the <em>same</em> SiV
-          centre — an electron spin (communication, couples to the photon) and a
-          ²⁹Si nuclear spin (memory, stores the entanglement after the herald).
-          The protocol runs end-to-end: each node emits a matter-photon entangled
-          pair, the photons fly to a midpoint photonic BSM, the herald fires, the
-          two nodes are left with comm-A ↔ comm-B Bell-paired, and the entanglement
-          is then mapped into the nuclear-spin memory for storage. This is the
-          experiment that actually exists for memory + entanglement; the catch is
-          that it is <strong>same-modality</strong> end-to-end, so there is no
-          transmon and no M-O transducer in the picture — the compute–network
-          QuIC collapses onto operations inside the SiV itself
-          <SourceNote id="knaut-nature-2024" />.
+          737&nbsp;nm). Each node uses one SiV centre as both comm qubit and memory
+          (see <a href={url("/repeaters#node-architecture")}>repeaters § node
+          architecture</a>). The protocol runs end-to-end: each node emits a
+          matter-photon entangled pair, the photons fly to a midpoint photonic BSM,
+          the herald fires, the two nodes are left with comm-A ↔ comm-B Bell-paired,
+          and the entanglement is mapped into the nuclear-spin memory for storage.
+          QFC ran at 33% (DFG) / 30% (SFG), the heralded entanglement fidelity stayed
+          above the classical bound after fibre transit, and the nuclear-spin memory
+          held the state for the herald round-trip. The catch is that the link is
+          <strong>same-modality</strong> end-to-end, so there is no transmon and no
+          M-O transducer in the picture — the compute–network QuIC collapses onto
+          operations inside the SiV itself <SourceNote id="knaut-nature-2024" />.
         </p>
 
         <h3>Closing the M-O transducer box on a real transmon — Warner <em>et&nbsp;al.</em>, Nature Physics 21, 831 (2025)</h3>
