@@ -832,6 +832,70 @@
   url: "https://news.uchicago.edu/story/chicago-quantum-network-argonne-pritzker-molecular-engineering-toshiba"
   marker: "CQE 2024 (124-mile loop press)"
 
+- id: chandran-siamjc-43-1
+  title: "Position-Based Cryptography"
+  authors: ["Nishanth Chandran", "Vipul Goyal", "Ryan Moriarty", "Rafail Ostrovsky"]
+  publisher: "SIAM Journal on Computing"
+  year: 2014
+  type: paper
+  doi: "10.1137/100805005"
+  note: "Classical position-based cryptography is impossible against colluding adversaries."
+
+- id: buhrman-siamjc-43-150
+  title: "Position-Based Quantum Cryptography: Impossibility and Constructions"
+  authors: ["Harry Buhrman", "Nishanth Chandran", "Serge Fehr", "Ran Gelles", "Vipul Goyal", "Rafail Ostrovsky", "Christian Schaffner"]
+  publisher: "SIAM Journal on Computing"
+  year: 2014
+  volume: "43"
+  pages: "150-178"
+  type: paper
+  doi: "10.1137/130913687"
+  note: "General QPV is broken by adversaries holding unbounded pre-shared entanglement; secure constructions exist against bounded-entanglement attackers."
+
+- id: kent-pra-84-012326
+  title: "Quantum tagging: Authenticating location via quantum information and relativistic signaling constraints"
+  authors: ["Adrian Kent", "William J. Munro", "Timothy P. Spiller"]
+  publisher: "Physical Review A"
+  year: 2011
+  volume: "84"
+  pages: "012326"
+  type: paper
+  doi: "10.1103/PhysRevA.84.012326"
+  note: "Coined 'quantum tagging'; gave early QPV protocol proposals and identified teleportation-based attacks."
+
+- id: bluhm-natphys-18-623
+  title: "A single-qubit position verification protocol that is secure against multi-qubit attacks"
+  authors: ["Andreas Bluhm", "Matthias Christandl", "Florian Speelman"]
+  publisher: "Nature Physics"
+  year: 2022
+  volume: "18"
+  pages: "623-626"
+  type: paper
+  doi: "10.1038/s41567-022-01577-0"
+  note: "Interleaved-product QPV: single-qubit prepare-and-measure with classical bits; best known attack uses entanglement exponential in the classical bit count."
+
+- id: allerstorfer-prl-135-260801
+  title: "Making Existing Quantum Position Verification Protocols Secure Against Arbitrary Transmission Loss"
+  authors: ["Rene Allerstorfer", "Andreas Bluhm", "Harry Buhrman", "Matthias Christandl", "Llorenç Escolà-Farràs", "Florian Speelman", "Philip Verduyn Lunel"]
+  publisher: "Physical Review Letters"
+  year: 2025
+  volume: "135"
+  pages: "260801"
+  type: paper
+  doi: "10.1103/PhysRevLett.135.260801"
+  note: "Photon-presence pre-commitment makes BB84-style QPV tolerant to arbitrary verifier-to-prover loss, restoring security with the same bounds as the lossless protocol."
+
+- id: kanneworff-qst-10-045004
+  title: "Towards experimental demonstration of quantum position verification using single photons"
+  authors: ["Kirsten Kanneworff", "Mio Poortvliet", "Dirk Bouwmeester", "Rene Allerstorfer", "Philip Verduyn Lunel", "Florian Speelman", "Harry Buhrman", "Petr Steindl", "Wolfgang Löffler"]
+  publisher: "Quantum Science and Technology"
+  year: 2025
+  volume: "10"
+  pages: "045004"
+  type: paper
+  doi: "10.1088/2058-9565/adf2da"
+  note: "First photonic steps toward QPV: Hong-Ou-Mandel-based loss-tolerant scheme on a true single-photon source."
+
 - id: ornl-epb-press-2024
   title: "EPB Quantum Network powered by Qubitekk hosts ORNL's first run on commercial quantum network"
   publisher: "Oak Ridge National Laboratory"

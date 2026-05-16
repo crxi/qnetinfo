@@ -23,15 +23,22 @@ const sections = [
   { id: "dqc",        label: "Distributed quantum computing" },
   { id: "bqc",        label: "Blind quantum computing" },
   { id: "sensing",    label: "Networked sensing & clocks" },
+  { id: "qpv",        label: "Quantum position verification" },
   { id: "demands",    label: "Cross-application demands" },
 ];
 ---
 
 <Infographic
   title="Applications of the quantum internet"
-  description="The applications that consume Bell pairs as a network resource: QKD, distributed quantum computing, blind quantum computing, networked sensing, and clock synchronisation. Each places different demands on the network's entanglement-delivery rate, fidelity, and reach."
+  description="The applications that consume Bell pairs as a network resource: QKD, distributed quantum computing, blind quantum computing, networked sensing, clock synchronisation, and quantum position verification. Each places different demands on the network's entanglement-delivery rate, fidelity, and reach."
   references={[
+    "allerstorfer-prl-135-260801",
+    "bluhm-natphys-18-623",
+    "buhrman-siamjc-43-150",
     "cacciapuoti-ieeetc-2020",
+    "chandran-siamjc-43-1",
+    "kanneworff-qst-10-045004",
+    "kent-pra-84-012326",
     "kozlowski-rfc9340",
     "kumar-ijndc-2025",
     "wehner-science-2018",
@@ -50,7 +57,8 @@ const sections = [
           delegation, distributed sensing, and synchronised clocks. Different applications
           place different demands on the network's entanglement-delivery rate, fidelity,
           and reach — and the maturity ladder is steep. Today's deployed application is
-          QKD; the rest are in research or pilot
+          QKD; distributed and blind quantum computing, networked sensing, and
+          quantum position verification are in research or pilot
           stages <SourceNote id="kumar-ijndc-2025" />.
         </p>
         <p>
@@ -149,6 +157,63 @@ const sections = [
         </p>
       </section>
 
+      <section id="qpv" data-nav-section>
+        <h2>Quantum position verification</h2>
+        <p>
+          A verifier wants to confirm that a prover is physically located at a claimed
+          point in space — not impersonated by a relay, not co-located with an attacker,
+          not anywhere else on the network. The classical construction is to send a
+          challenge from several reference stations and check that the response arrives
+          with the round-trip timing consistent with the speed of light from the claimed
+          position. Chandran, Goyal, Moriarty and Ostrovsky showed in 2009 that this
+          classical scheme is insecure against colluding adversaries who can record and
+          forward each challenge in parallel <SourceNote id="chandran-siamjc-43-1" />.
+          Replacing the classical challenge with a quantum state forces a different
+          attack model: the no-cloning theorem prevents simple copy-and-forward, so
+          quantum position verification (QPV) is a primitive native to a network that
+          delivers quantum states, not just keys.
+        </p>
+        <p>
+          The catch came quickly. Buhrman, Chandran, Fehr, Gelles, Goyal, Ostrovsky and
+          Schaffner proved that for <em>any</em> QPV protocol, a coalition of adversaries
+          surrounding the claimed position can fake the prover if they share enough
+          pre-distributed entanglement — the attack reduces to instantaneous non-local
+          quantum computation, which is unconditionally possible given unbounded
+          entanglement <SourceNote id="buhrman-siamjc-43-150" />. Earlier teleportation-based
+          attacks on specific proposals were already known from Kent, Munro and
+          Spiller <SourceNote id="kent-pra-84-012326" />. The line of research that survives
+          is protocols where the attackers' entanglement cost grows with the security
+          parameter, so a bounded adversary is provably defeated.
+        </p>
+        <p>
+          Two protocol families dominate the constructive direction. <strong>f-routing</strong>
+          asks the prover to route a quantum state to one of two verifiers depending on
+          a classical bit. <strong>BB84-style QPV</strong> sends a single BB84 qubit
+          alongside a classical basis announcement and requires the prover to measure
+          and return the outcome to both verifiers. Bluhm, Christandl and Speelman
+          constructed an interleaved-product variant whose best known attack consumes
+          entanglement exponential in the number of classical bits exchanged, using only
+          a single qubit on the prover's side <SourceNote id="bluhm-natphys-18-623" />.
+          Loss in the verifier-to-prover channel was a security loophole until
+          Allerstorfer et al. (2025) showed that adding a photon-presence pre-commitment
+          step reduces the security-relevant loss to that of the prover's local
+          apparatus, restoring the original attack bounds for BB84-style
+          QPV <SourceNote id="allerstorfer-prl-135-260801" />. Experimental work is
+          early: Kanneworff et al. (2025) demonstrated the optical building blocks of a
+          loss-tolerant scheme with a true single-photon source, but a full end-to-end
+          QPV deployment with spatially separated verifiers has not been
+          reported <SourceNote id="kanneworff-qst-10-045004" />.
+        </p>
+        <p>
+          QPV binds an identity claim to a physical location in a way no purely classical
+          or PQC primitive can. The use cases are geo-locking of compute resources to
+          named data centres, defence against man-in-the-middle relays where the
+          classical control plane is untrusted, and verifiable delivery of quantum state
+          to a known endpoint. It sits beyond stage 2 of the Wehner roadmap — it needs
+          the channel to carry quantum states, not just to extract keys from them.
+        </p>
+      </section>
+
       <section id="demands" data-nav-section>
         <h2>Cross-application demands</h2>
         <p>
@@ -195,6 +260,13 @@ const sections = [
               <td>Protocol-specific</td>
               <td>City to global</td>
               <td>Research</td>
+            </tr>
+            <tr>
+              <th scope="row">Position verification</th>
+              <td>Per-challenge single qubits</td>
+              <td>Loss-tolerant constructions exist</td>
+              <td>Light-time bounded geometry</td>
+              <td>Theory + early photonic experiments</td>
             </tr>
           </tbody>
         </table>
