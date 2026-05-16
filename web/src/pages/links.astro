@@ -12,6 +12,10 @@
  *   - yin-science-2017 — Micius 1200 km satellite entanglement.
  *   - huang-prl-2024 — vacuum beam guide proposal.
  *   - kumar-ijndc-2025 — survey-level reference.
+ *   - magnard-prl-2020 — 5 m cryogenic microwave link, two-fridge transmon entanglement.
+ *   - storz-nature-2023 — 30 m cryogenic link, loophole-free Bell test with SC qubits.
+ *   - yam-npjqi-2025 — 6.6 m microwave QLAN link, CV entanglement distribution.
+ *   - mollenhauer-natelec-2025 — detachable plug-and-play microwave interconnect.
  */
 import Infographic from "../layouts/Infographic.astro";
 import Center from "../components/Center.astro";
@@ -21,6 +25,7 @@ import SourceNote from "../components/SourceNote.astro";
 
 const sections = [
   { id: "overview",  label: "Overview" },
+  { id: "microwave", label: "Microwave links" },
   { id: "fibre",     label: "Standard fibre" },
   { id: "hcf",       label: "Hollow-core fibre" },
   { id: "fso",       label: "Free-space optical" },
@@ -32,8 +37,8 @@ const sections = [
 ---
 
 <Infographic
-  title="Links — fibre, hollow-core, free-space, satellite"
-  description="Four physical-layer link types for quantum networks: standard single-mode fibre, hollow-core fibre, free-space optical, and satellite. Per-channel loss, reach, latency, and operational profile, grounded in ITU-T standards and the canonical experimental demonstrations."
+  title="Links — microwave, fibre, hollow-core, free-space, satellite"
+  description="Physical-layer link types for quantum networks: cryogenic microwave for superconducting QPUs, standard single-mode fibre, hollow-core fibre, free-space optical, vacuum beam guide, high-altitude platforms, and satellite. Per-channel loss, reach, latency, and operational profile, grounded in ITU-T standards and the canonical experimental demonstrations."
   references={[
     "itu-g-652-d",
     "jasion-ofc-2022",
@@ -45,6 +50,10 @@ const sections = [
     "liu-nsr-2020",
     "liu-prl-2021",
     "yin-science-2017",
+    "magnard-prl-2020",
+    "storz-nature-2023",
+    "yam-npjqi-2025",
+    "mollenhauer-natelec-2025",
   ]}
 >
   <SiteNav slot="nav" currentSubject="links" sections={sections} />
@@ -53,14 +62,15 @@ const sections = [
     <Stack space="var(--space-6)">
 
       <header class="hero" id="overview" data-nav-section>
-        <h1>Links — fibre, hollow-core, free-space, satellite</h1>
+        <h1>Links — microwave, fibre, hollow-core, free-space, satellite</h1>
         <p>
-          A quantum network's physical layer has four practical choices today — standard
-          single-mode fibre (SMF), hollow-core fibre (HCF), free-space optical (FSO), and
-          satellite — plus two airborne / on-paper additions: high-altitude platforms
-          (HAPs — drones and stratospheric balloons), and the vacuum beam guide (VBG), an
-          evacuated tube with relay lenses at multi-kilometre spacing. Each has a
-          different loss profile, reach, latency, and operational envelope. Because no-cloning rules out the optical amplifiers that classical
+          A quantum network's physical layer has seven choices in play today — cryogenic
+          microwave links between superconducting fridges, standard single-mode fibre
+          (SMF), hollow-core fibre (HCF), free-space optical (FSO), satellite, plus two
+          airborne / on-paper additions: high-altitude platforms (HAPs — drones and
+          stratospheric balloons), and the vacuum beam guide (VBG), an evacuated tube
+          with relay lenses at multi-kilometre spacing. Each has a different loss
+          profile, reach, latency, and operational envelope. Because no-cloning rules out the optical amplifiers that classical
           fibre relies on, the unaided reach of a quantum link is a pure attenuation
           budget — every dB of loss eats directly into the photon-survival
           probability <SourceNote id="kumar-ijndc-2025" />.
@@ -73,6 +83,53 @@ const sections = [
           mature.
         </p>
       </header>
+
+      <section id="microwave" data-nav-section>
+        <h2>Cryogenic microwave links</h2>
+        <p>
+          A cryogenic microwave link is a superconducting coaxial cable or waveguide
+          running at millikelvin temperatures between two dilution refrigerators, each
+          housing a superconducting QPU. Superconducting qubits emit and absorb microwave
+          photons natively, so a transmon at one end can hand a quantum state to a
+          transmon at the other end with no frequency conversion in between. The price is
+          that the entire channel is part of the fridge plant: the inner conductor is
+          typically NbTi or aluminium, the line is shielded against stray fields, and the
+          centre of the link sits below ~100 mK so that thermal blackbody photons from a
+          4 K stage do not swamp the quantum signal. Bending the cable through room
+          temperature is not an option; the link is rack-to-rack inside a quantum
+          computing facility, with a practical reach of tens of metres.
+        </p>
+        <p>
+          The benchmark demonstration is Magnard et al. (PRL 125, 260502, 2020), a 5 m
+          cryogenic waveguide connecting two transmons in separate fridges with
+          deterministic state transfer at 85.8 % fidelity and on-demand remote
+          entanglement <SourceNote id="magnard-prl-2020" />. Storz et al. (Nature 617,
+          265, 2023) extended this to a 30 m link and used it to close the locality
+          loophole in a Bell test between two superconducting qubits — the first
+          loophole-free Bell violation with a macroscopic, microwave-controlled platform,
+          rejecting the local-hidden-variable null at P &lt; 10<sup>−108</sup>
+          <SourceNote id="storz-nature-2023" />. Two 2025 results sharpen the engineering
+          envelope: Yam et al. (npj Quantum Information 11, 87, 2025) demonstrated
+          continuous-variable entanglement distribution over a 6.6 m link held below
+          52 mK at its centre <SourceNote id="yam-npjqi-2025" />, and Mollenhauer et al.
+          (Nature Electronics, 2025) showed a detachable plug-and-play interconnect with
+          inter-module SWAP efficiency above 99 % in under 100 ns, easing the path to
+          modular multi-fridge systems <SourceNote id="mollenhauer-natelec-2025" />.
+        </p>
+        <p>
+          The strategic position is narrow but important. For two superconducting QPUs
+          inside one facility, a microwave link is the only option that avoids the
+          microwave-to-optical transducer — currently the lowest-efficiency element in
+          any inter-QPU optical link (see the <a href="/transduction">transduction</a>
+          subject). Below ~100 m, microwave wins on fidelity and rate; beyond that, the
+          cryogenic plant cost and thermal load make further extension impractical, and
+          transduction-equipped optical fibre takes over. Treat microwave as the
+          rack-to-rack and fridge-to-fridge tier of a layered network: the protocols
+          built on top — entanglement generation, swapping, distillation — are the same
+          as on optical links (see <a href="/entanglement">entanglement</a> and
+          <a href="/swapping">swapping</a>); only the physical medium changes.
+        </p>
+      </section>
 
       <section id="fibre" data-nav-section>
         <h2>Standard single-mode fibre (SMF)</h2>
@@ -242,6 +299,13 @@ const sections = [
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <th scope="row">Cryogenic microwave</th>
+              <td>Superconducting line at mK; thermal-photon limited</td>
+              <td>5 m (Magnard 2020) to 30 m (Storz 2023)</td>
+              <td>~3.3 ns/m</td>
+              <td>Rack-to-rack between SC fridges; no transducer; entire link at millikelvin</td>
+            </tr>
             <tr>
               <th scope="row">SMF (ITU G.652.D)</th>
               <td>0.20 dB/km @ 1550 nm</td>

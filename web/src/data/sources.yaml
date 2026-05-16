@@ -693,3 +693,45 @@
   year: 2019
   type: paper
   doi: "10.1038/s41566-019-0377-7"
+
+- id: magnard-prl-2020
+  title: "Microwave Quantum Link between Superconducting Circuits Housed in Spatially Separated Cryogenic Systems"
+  authors: ["P. Magnard", "S. Storz", "P. Kurpiers", "J. Schär", "F. Marxer", "J. Lütolf", "T. Walter", "J.-C. Besse", "M. Gabureac", "K. Reuer", "A. Akin", "B. Royer", "A. Blais", "A. Wallraff"]
+  publisher: "Physical Review Letters"
+  year: 2020
+  volume: "125"
+  pages: "260502"
+  type: paper
+  doi: "10.1103/PhysRevLett.125.260502"
+  note: "5 m cryogenic aluminium waveguide linking two transmons in separate dilution refrigerators; deterministic state transfer at 85.8 % fidelity, on-demand remote entanglement."
+
+- id: storz-nature-2023
+  title: "Loophole-free Bell inequality violation with superconducting circuits"
+  authors: ["Simon Storz", "Josua Schär", "Anatoly Kulikov", "Paul Magnard", "Philipp Kurpiers", "Janis Lütolf", "Theo Walter", "Adrian Copetudo", "Kevin Reuer", "Abdulkadir Akin", "Jean-Claude Besse", "Mihai Gabureac", "Graham J. Norris", "Andrés Rosario", "Ferran Martin", "José Martinez", "Waldimar Amaya", "Morgan W. Mitchell", "Carlos Abellan", "Jean-Daniel Bancal", "Nicolas Sangouard", "Baptiste Royer", "Alexandre Blais", "Andreas Wallraff"]
+  publisher: "Nature"
+  year: 2023
+  volume: "617"
+  pages: "265"
+  type: paper
+  doi: "10.1038/s41586-023-05885-0"
+  note: "Loophole-free Bell test between two superconducting qubits over a 30 m cryogenic microwave link."
+
+- id: yam-npjqi-2025
+  title: "Cryogenic microwave link for quantum local area networks"
+  authors: ["W. K. Yam", "M. Renger", "S. Gandorfer", "F. Fesquet", "M. Handschuh", "K. G. Fedorov", "A. Marx", "F. Deppe", "R. Gross"]
+  publisher: "npj Quantum Information"
+  year: 2025
+  volume: "11"
+  pages: "87"
+  type: paper
+  doi: "10.1038/s41534-025-01046-5"
+  note: "6.6 m cryogenic microwave link between two dilution cryostats at 52 mK; continuous-variable entanglement distribution with squeezing 2.10 dB and negativity 0.501."
+
+- id: mollenhauer-natelec-2025
+  title: "A high-efficiency elementary network of interchangeable superconducting qubit devices"
+  authors: ["Michael Mollenhauer", "Abdullah Irfan", "Xi Cao", "Supriya Mandal", "Wolfgang Pfaff"]
+  publisher: "Nature Electronics"
+  year: 2025
+  type: paper
+  doi: "10.1038/s41928-025-01404-3"
+  note: "Detachable low-loss cable interconnect between two superconducting qubit modules; intermodule SWAP at >99 % efficiency in under 100 ns."
