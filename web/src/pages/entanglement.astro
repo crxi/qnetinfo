@@ -1307,41 +1307,58 @@ const sections = [
           </article>
         </Grid>
 
-        <Callout label="LOCC — local operations and classical communication" id="locc">
+        <Callout label="What is LOCC?" id="locc">
           <p>
-            The three primitives above share a structural feature worth naming.
-            <strong>LOCC</strong> stands for <strong>local operations and classical
-            communication</strong>: each node may do anything it wants to the qubits in its
-            own lab (gates, measurements, adding ancillas) and the nodes may exchange as
-            much classical information as they like over an ordinary channel. No quantum
-            channel between them. Almost everything that happens at the network nodes
-            <em>after</em> a Bell pair has been delivered is an LOCC protocol.
+            <strong>LOCC</strong> — <strong>local operations and classical
+            communication</strong> — is the toolbox each node has by default. Locally, do
+            anything quantum: gates, measurements, ancilla preparation. Between nodes,
+            send anything classical: bits, packets, phone calls. What LOCC does not
+            include is a quantum channel between the nodes — no qubits crossing the wire.
           </p>
           <p>
-            What makes LOCC interesting is what it <em>cannot</em> do. You cannot create
-            entanglement between two distant qubits by LOCC alone — no amount of local
-            measurement plus phoning each other will produce a shared Bell pair from
-            scratch. Entanglement has to be carried in by a quantum channel (a photon down
-            a fibre, a satellite link) or by physically bringing the qubits together. This
-            is why the network exists in the first place: <em>generating</em> entanglement
-            is the part LOCC can't do, so the network does it, once, and hands the result to
-            applications that thereafter run by LOCC.
+            That single restriction is what makes LOCC a useful category. It splits the
+            quantum-internet stack cleanly into one thing the network has to mint and a
+            family of things applications then spend it on:
           </p>
-          <ul>
+          <ul class="locc-list">
             <li>
-              <strong>Cannot:</strong> create entanglement between distant nodes from
-              nothing.
+              <span class="locc-mark locc-mark--no" aria-label="cannot">❌</span>
+              <strong>Mint entanglement at a distance.</strong> No sequence of local
+              measurements plus classical messages will produce a shared Bell pair where
+              none existed. Entanglement between distant qubits has to be physically
+              carried in — a photon down a fibre, a satellite link, or two qubits brought
+              together and then separated. This is the part the network exists to do.
             </li>
             <li>
-              <strong>Can:</strong> consume a delivered Bell pair to teleport an unknown
-              state (above, "Teleportation").
+              <span class="locc-mark locc-mark--yes" aria-label="can">✅</span>
+              <strong>Teleport an unknown quantum state.</strong> Consume one delivered
+              Bell pair plus 2 classical bits to move an arbitrary qubit from one node to
+              another — no quantum channel needed at the moment of transmission. The
+              quantum channel was used earlier, to set up the Bell pair.
             </li>
             <li>
-              <strong>Can:</strong> distil many noisy Bell pairs into fewer high-fidelity
-              ones (above, "Distillation"; see <a href={url("/distillation")}>distillation</a>
-              for the protocols).
+              <span class="locc-mark locc-mark--yes" aria-label="can">✅</span>
+              <strong>Distil noisy entanglement.</strong> Sacrifice many low-fidelity
+              Bell pairs to extract fewer high-fidelity ones, using only local CNOTs,
+              local measurements, and a classical comparison of outcomes (see
+              <a href={url("/distillation")}>distillation</a> for the protocols).
+            </li>
+            <li>
+              <span class="locc-mark locc-mark--yes" aria-label="can">✅</span>
+              <strong>Run every quantum-internet application.</strong> QKD, distributed
+              quantum computing, blind quantum computing, anonymous voting, clock
+              synchronisation — all of them assume "deliver Bell pairs on demand" as the
+              network service and run on top of LOCC. See
+              <a href={url("/applications")}>applications</a>.
             </li>
           </ul>
+          <p>
+            Think of it as <strong>mint versus spend</strong>. Bell pairs are the
+            currency. The photonic chain mints them — slowly, probabilistically, over a
+            quantum channel that is expensive and lossy. Everything downstream spends
+            them — fast, deterministically, over an ordinary classical link. The reason
+            the network exists at all is that LOCC alone cannot do the minting.
+          </p>
         </Callout>
 
       </section>
@@ -2574,5 +2591,17 @@ const sections = [
   :global(.hf-caption--mute) {
     fill: var(--color-text-mute);
     font-style: italic;
+  }
+
+  .locc-list {
+    list-style: none;
+    padding-left: 0;
+    margin: var(--space-2) 0 0;
+  }
+  .locc-list li + li {
+    margin-top: var(--space-1);
+  }
+  .locc-mark {
+    margin-right: 0.4em;
   }
 </style>

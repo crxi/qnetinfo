@@ -30,6 +30,11 @@
   .midline    { stroke: #aab0ba; stroke-width: 1; fill: none; stroke-dasharray: 3 2; }
   .swap-link  { stroke: #9b87c4; stroke-width: 1.2; fill: none; stroke-dasharray: 3 2; }
 
+  .plane-matter    { fill: #f7f4fb; }
+  .plane-photonic  { fill: #eff5fc; }
+  .interface-line  { stroke: #6a7280; stroke-width: 0.9; fill: none; stroke-dasharray: 4 3; opacity: 0.55; }
+  .plane-tag       { font: 700 9px sans-serif; fill: #6a7280; opacity: 0.75; }
+
   .fiber           { stroke: #5a6472; stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .fiber--quantum  { stroke: #2f6fd6; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
   .fiber--stub     { stroke: #2f6fd6; stroke-width: 1.8; fill: none; stroke-linecap: butt; }
@@ -96,6 +101,11 @@
     </g>
   </g></g></symbol>
   </defs>
+  <rect x="0" y="0" width="1000" height="142" class="plane-matter"/>
+  <rect x="0" y="142" width="1000" height="344" class="plane-photonic"/>
+  <line x1="0" y1="142" x2="1000" y2="142" class="interface-line"/>
+  <text x="500.0" y="134" class="plane-tag" style="text-anchor:middle">matter qubits (compute + memory)</text>
+  <text x="500.0" y="156" class="plane-tag" style="text-anchor:middle">photonic interface + network</text>
   <path d="M 10.0,20 L 150.0,20 L 150.0,84.5 L 145.0,87.5 L 145.0,152.0 L 140.0,155.0 L 140.0,219.5 L 135.0,222.5 L 135.0,290 L 25.0,290 L 25.0,225.5 L 20.0,222.5 L 20.0,158.0 L 15.0,155.0 L 15.0,90.5 L 10.0,87.5 L 10.0,20 Z" class="vessel-A"/>
   <line x1="14.222222222222229" y1="60" x2="145.77777777777777" y2="60" class="plate"/>
   <text x="17.22222222222223" y="68" class="plate-tag" style="text-anchor:start">50 K</text>

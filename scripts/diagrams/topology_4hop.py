@@ -68,6 +68,17 @@ QR_QFC_FACE = QBIT_GAP + 39  # = 61
 # M1/M4 sit at the visual midpoint between each node's fibre exit and the axis
 Y_M1_M4 = 360
 
+# Matter-photon interface — y where the conceptual line between the matter
+# qubits (DQ, MQ, repeater memory C) and the photonic / network subsystem
+# (CQ, transducers, photonic axis, repeater comm L/R, BSMs) sits. Midway
+# between MQ (y=118) and CQ (y=165). Above this line: long-lived matter
+# qubits holding compute state and stored entanglement. Below: the
+# short-coherence photon-facing layer that gets reset every entanglement
+# attempt, plus everything optical. NOT to be confused with an LOCC
+# boundary — LOCC is a protocol class, not a spatial region. See the LOCC
+# callout on /entanglement for that distinction.
+INTERFACE_Y = 142
+
 # Hop bracket strip
 HOP_BRACKET_Y = 498
 
@@ -108,6 +119,11 @@ CSS = """
   .midline    { stroke: #aab0ba; stroke-width: 1; fill: none; stroke-dasharray: 3 2; }
   .swap-link  { stroke: #9b87c4; stroke-width: 1.2; fill: none; stroke-dasharray: 3 2; }
 
+  .plane-matter    { fill: #f7f4fb; }
+  .plane-photonic  { fill: #eff5fc; }
+  .interface-line  { stroke: #6a7280; stroke-width: 0.9; fill: none; stroke-dasharray: 4 3; opacity: 0.55; }
+  .plane-tag       { font: 700 9px sans-serif; fill: #6a7280; opacity: 0.75; }
+
   .fiber           { stroke: #5a6472; stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
   .fiber--quantum  { stroke: #2f6fd6; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
   .fiber--stub     { stroke: #2f6fd6; stroke-width: 1.8; fill: none; stroke-linecap: butt; }
@@ -134,6 +150,7 @@ def build() -> Canvas:
     )
     Q.register(cv, "quisp-bsa-white")
 
+    _background(cv)  # MUST come first — paints behind everything else
     _node_A(cv)
     _node_B(cv)
     _photonic_chain(cv)
@@ -141,6 +158,48 @@ def build() -> Canvas:
     _hop_brackets(cv)
     _legend(cv)
     return cv
+
+
+# -- Background: two-tone shading + LOCC line ------------------------------
+
+
+def _background(cv: Canvas) -> None:
+    """Two-tone background marking the matter-photon interface.
+
+    Upper band (matter qubits — DQ + MQ at the nodes, C inside each QR) is
+    pale lavender. Lower band (photonic / network subsystem — CQ, the
+    transducers, the photonic axis, the comm qubits in each QR, BSMs) is
+    pale azure. The dashed line at INTERFACE_Y marks where matter qubits
+    hand entanglement off to flying photons.
+
+    This is NOT an LOCC boundary — LOCC is a protocol class (not a region),
+    and both bands run LOCC at various points (CQ during entanglement
+    generation, DQ+MQ during teleportation). See /entanglement#locc.
+
+    Inside each QR the central memory C sits geometrically in the lower
+    band but conceptually belongs with the matter plane — that's a quirk
+    of collapsing the QR's L-C-R triple onto a horizontal axis; the split
+    is fundamentally a *qubit-role* one, not a y-coordinate one.
+    """
+    # Stop the lower band just above the hop-bracket strip, so the bracket
+    # ticks read cleanly against white.
+    bottom_y = HOP_BRACKET_Y - 12
+    cv.rect(0, 0, W, INTERFACE_Y, cls="plane-matter", name="bg-matter")
+    cv.rect(0, INTERFACE_Y, W, bottom_y - INTERFACE_Y, cls="plane-photonic", name="bg-photonic")
+    # Dashed boundary, full-width, behind the foreground elements.
+    cv.line(0, INTERFACE_Y, W, INTERFACE_Y, cls="interface-line", name="interface-line")
+    # Plane labels — centred horizontally, straddling the interface line in
+    # the clear band between Node A and Node B so they don't fight either node.
+    cv.text(
+        W / 2, INTERFACE_Y - 8, "matter qubits (compute + memory)",
+        cls="plane-tag", anchor="middle", font_size=9,
+        name="plane-tag-matter",
+    )
+    cv.text(
+        W / 2, INTERFACE_Y + 14, "photonic interface + network",
+        cls="plane-tag", anchor="middle", font_size=9,
+        name="plane-tag-photonic",
+    )
 
 
 # -- Node A -----------------------------------------------------------------
