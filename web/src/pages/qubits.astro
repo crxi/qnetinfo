@@ -40,6 +40,7 @@ const sections = [
   title="What is a qubit"
   description="A qubit is a two-level quantum system whose state is α|0⟩+β|1⟩ with |α|²+|β|²=1. This page covers the definition, the Bloch sphere as the geometric representation of pure single-qubit states, the photonic encodings used to carry qubits across a network, the matter encodings used to store and process them, and DiVincenzo's criteria."
   references={[
+    "bradley-prx-2019",
     "bravyi-nature-2024",
     "divincenzo-2000",
     "ezratty-uqt-2025-p2",
@@ -364,6 +365,18 @@ const sections = [
               the wrong wavelength (637 nm) for direct telecom use — quantum-network
               applications need wavelength conversion.
             </p>
+            <p>
+              The defect electron is only half the story. Nearby <strong>¹³C nuclear
+              spins</strong> in the diamond lattice couple weakly to the electron via the
+              hyperfine interaction and act as long-lived <em>register</em> qubits —
+              T₂ in the seconds range, ten or more individually addressable nuclei per
+              defect. Bradley et&nbsp;al. demonstrated a 10-qubit register around a single
+              NV (one ¹⁵N, nine ¹³C) with electron-mediated gates
+              <SourceNote id="bradley-prx-2019" />. The electron is the
+              <em>comm</em> qubit (talks to photons, short coherence); the nuclei are the
+              <em>memory</em> qubits (no optical interface, long coherence). Without that
+              split, an NV node would have one qubit, not ten.
+            </p>
           </article>
 
           <article class="enc-card">
@@ -378,6 +391,15 @@ const sections = [
               for quantum-network nodes — Knaut et al. demonstrated SiV-based entanglement
               between two nodes over a 35 km fibre loop
               <SourceNote id="knaut-nature-2024" />.
+            </p>
+            <p>
+              SiV uses the same comm/memory split as NV but with a different isotope.
+              Knaut's nodes pair the SiV electron spin (comm) with an adjacent
+              <strong>²⁹Si nuclear spin</strong> (memory) — T₂ &ge; 1&nbsp;s with dynamical
+              decoupling. Nuclear-spin registers are not a standalone qubit modality —
+              they have no direct optical interface, so a defect electron has to mediate
+              every gate and every herald — but they are why defect platforms scale past a
+              single qubit per node.
             </p>
           </article>
 
