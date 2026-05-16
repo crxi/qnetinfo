@@ -232,6 +232,39 @@
   type: paper
   doi: "10.1103/PhysRevLett.98.010504"
 
+- id: wang-nphoton-2013
+  title: "Direct and full-scale experimental verifications towards ground–satellite quantum key distribution"
+  authors: ["Jian-Yu Wang", "Bin Yang", "Sheng-Kai Liao", "Liang Zhang", "Qi Shen", "Xiao-Fang Hu", "Jin-Cai Wu", "Shi-Ji Yang", "Hao Jiang", "Yan-Lin Tang", "Bo Zhong", "Hao Liang", "Wei-Yue Liu", "Yi-Hua Hu", "Yong-Mei Huang", "Bo Qi", "Ji-Gang Ren", "Ge-Sheng Pan", "Juan Yin", "Jian-Jun Jia", "Yu-Ao Chen", "Kai Chen", "Cheng-Zhi Peng", "Jian-Wei Pan"]
+  publisher: "Nature Photonics"
+  year: 2013
+  volume: "7"
+  pages: "387"
+  type: paper
+  doi: "10.1038/nphoton.2013.89"
+  note: "Hot-air balloon platform simulating satellite mobility; 40 km moving-platform and 96 km high-loss QKD demonstrations."
+
+- id: liu-nsr-2020
+  title: "Drone-based entanglement distribution towards mobile quantum networks"
+  authors: ["Hua-Ying Liu", "Xiao-Hui Tian", "Changsheng Gu", "Pengfei Fan", "Xin Ni", "Ran Yang", "Ji-Ning Zhang", "Mingzhe Hu", "Jian Guo", "Xun Cao", "Xiaopeng Hu", "Gang Zhao", "Yan-Qing Lu", "Yan-Xiao Gong", "Zhenda Xie", "Shi-Ning Zhu"]
+  publisher: "National Science Review"
+  year: 2020
+  volume: "7"
+  pages: "921"
+  type: paper
+  doi: "10.1093/nsr/nwz227"
+  note: "Octocopter-borne entangled-photon source, 200 m drone-to-ground distribution, day/night/rain operation."
+
+- id: liu-prl-2021
+  title: "Optical-Relayed Entanglement Distribution Using Drones as Mobile Nodes"
+  authors: ["Hua-Ying Liu", "Xiao-Hui Tian", "Changsheng Gu", "Pengfei Fan", "Xin Ni", "Ran Yang", "Ji-Ning Zhang", "Mingzhe Hu", "Jian Guo", "Xun Cao", "Xiaopeng Hu", "Gang Zhao", "Yan-Qing Lu", "Yan-Xiao Gong", "Zhenda Xie", "Shi-Ning Zhu"]
+  publisher: "Physical Review Letters"
+  year: 2021
+  volume: "126"
+  pages: "020503"
+  type: paper
+  doi: "10.1103/PhysRevLett.126.020503"
+  note: "Two-drone optical relay extending entanglement distribution to 1 km between ground sites."
+
 # ---- For subject 1 (`qubits`) ----
 
 - id: divincenzo-2000
