@@ -1,0 +1,250 @@
+---
+/**
+ * /case-studies — landing page for tier F.
+ *
+ * Profiles of real, operating (or recently-operating) quantum networks —
+ * not lab demos behind closed doors. Each case-study sub-page lives at
+ * /case-studies/{slug}. The cards below are the index.
+ *
+ * Adding a case study: drop a new <slug>.astro under pages/case-studies/
+ * and add a row to CASE_STUDIES below.
+ */
+import Infographic from "../layouts/Infographic.astro";
+import Center from "../components/Center.astro";
+import Stack from "../components/Stack.astro";
+import Grid from "../components/Grid.astro";
+import SiteNav from "../components/SiteNav.astro";
+import { url } from "../lib/url";
+
+interface CaseStudy {
+  slug: string;
+  title: string;
+  operator: string;
+  location: string;
+  year: string;
+  technology: string;     // entanglement-based / QKD prepare-and-measure / hybrid
+  scale: string;          // metro / inter-city / national / international
+  status: string;         // operational / paid testbed / research / decommissioned
+  model: string;          // commercial service / paid testbed / research consortium
+  blurb: string;
+}
+
+const CASE_STUDIES: CaseStudy[] = [
+  {
+    slug: "epb",
+    title: "EPB Quantum Network (Chattanooga)",
+    operator: "EPB · Qubitekk · Aliro · (IonQ from 2025)",
+    location: "Chattanooga, Tennessee, USA",
+    year: "2022",
+    technology: "Entanglement-based",
+    scale: "Metro (~8 km loop)",
+    status: "Operational paid testbed",
+    model: "Quantum-as-a-service subscription",
+    blurb: "First commercially-available quantum network in the US. Customer-configurable entangled-photon testbed on EPB dark fibre, with Aliro AliroNet as controller. IonQ trapped-ion system added under a $22 M deal in April 2025.",
+  },
+  {
+    slug: "china-backbone",
+    title: "Beijing–Shanghai QKD backbone",
+    operator: "USTC / QuantumCTek / state operators",
+    location: "Beijing ↔ Jinan ↔ Hefei ↔ Shanghai, China",
+    year: "2017",
+    technology: "Prepare-and-measure QKD (decoy-state BB84)",
+    scale: "National trunk (~2,032 km, 32 trusted nodes)",
+    status: "Operational",
+    model: "Government / financial-sector service",
+    blurb: "The longest deployed terrestrial QKD trunk. Trusted-node relay between four cities, integrated with the Micius satellite for a 4,600 km space–ground link. Not entanglement-based — keys are reconstructed at each trusted relay.",
+  },
+  {
+    slug: "knaut-boston",
+    title: "Harvard SiV two-node Boston-metro loop",
+    operator: "Harvard (Lukin / Lončar / Park) on Verizon fibre",
+    location: "Boston-Cambridge, Massachusetts, USA",
+    year: "2024",
+    technology: "Entanglement-based (silicon-vacancy memory nodes)",
+    scale: "Metro (35 km deployed loop)",
+    status: "Research demonstration",
+    model: "Academic / sponsored research",
+    blurb: "Heralded entanglement between two silicon-vacancy quantum-memory nodes through 35 km of installed telecom fibre under a Boston urban environment. Published as Knaut et al., Nature 629.573 (2024).",
+  },
+  {
+    slug: "delft-three-node",
+    title: "Delft three-node NV-centre network",
+    operator: "QuTech / TU Delft (Hanson group)",
+    location: "Delft, Netherlands",
+    year: "2021",
+    technology: "Entanglement-based (NV-centre memory nodes)",
+    scale: "Lab-scale three-node chain",
+    status: "Research demonstration",
+    model: "Academic / EU Quantum Internet Alliance",
+    blurb: "First entanglement-based three-node network with two non-neighbouring endpoints linked by a midpoint repeater node. Demonstrated entanglement distribution and entanglement swapping (Pompili et al., Science 372.259, 2021); a 2022 follow-up added qubit teleportation between non-neighbours.",
+  },
+  {
+    slug: "madqci",
+    title: "MadQCI — Madrid Quantum Communications Infrastructure",
+    operator: "UPM / Telefónica / Huawei / partners",
+    location: "Madrid metro, Spain",
+    year: "2021–",
+    technology: "Heterogeneous QKD on production fibre (SDN-managed)",
+    scale: "Metro (9 nodes, 28 QKD modules)",
+    status: "Operational testbed on production network",
+    model: "Telco-led research consortium",
+    blurb: "Europe's largest and longest-running QKD testbed. Nine SDN-managed nodes co-existing with commercial Telefónica traffic; supports multiple QKD vendors and ETSI-aligned key management. Documented in Martin et al., npj QI 10.80 (2024).",
+  },
+  {
+    slug: "bt-london",
+    title: "BT–Toshiba London commercial QKD metro",
+    operator: "BT · Toshiba (first customer: EY)",
+    location: "London, UK",
+    year: "2022",
+    technology: "Prepare-and-measure QKD on dark fibre",
+    scale: "Metro (London ring)",
+    status: "Operational commercial service trial",
+    model: "Paid commercial trial (initial 3-year term)",
+    blurb: "First commercial QKD-secured metro network sold as a service in the UK. Toshiba supplies the QKD hardware; BT operates the fibre and managed service. EY connected its Canary Wharf and London Bridge offices as the launch customer.",
+  },
+];
+---
+
+<Infographic
+  title="Case studies — real-world quantum networks"
+  description="Profiles of operating and recently-operating quantum networks: operator, location, technology family, scale, status, and commercial model. Covers commercial QKD trunks, entanglement-based research testbeds, and the new commercial QNaaS model."
+>
+  <SiteNav slot="nav" currentSubject="case-studies" />
+
+  <Center max="var(--wide-width)" gutter="var(--space-3)">
+    <Stack space="var(--space-6)">
+
+      <header class="hero">
+        <h1>Case studies — real-world quantum networks</h1>
+        <p>
+          Profiles of quantum networks that exist outside a single lab — built on
+          deployed fibre, connecting more than one building or city, and either
+          carrying real traffic or open to outside users. Each entry records who
+          operates it, where it runs, the technology family (entanglement-based,
+          prepare-and-measure QKD, or a mix), the scale, the operating status,
+          and the commercial model.
+        </p>
+        <p>
+          Two axes do most of the sorting work. The first is
+          <strong>technology</strong>: prepare-and-measure QKD networks (China
+          backbone, Madrid, London) deliver keys through trusted relays;
+          entanglement-based networks (Delft, the Knaut Boston-metro
+          demonstration, EPB) distribute Bell pairs and reach the protocols that
+          QKD alone cannot — entanglement swapping, distributed sensing,
+          blind compute. The second is <strong>commercial model</strong>:
+          government trunks, telco-led testbeds, research demonstrations, and
+          the new quantum-as-a-service subscription that EPB pioneered.
+        </p>
+      </header>
+
+      <section aria-labelledby="cases-heading">
+        <h2 id="cases-heading" class="group-heading">All case studies</h2>
+        <Grid min="24rem" gap="var(--space-3)">
+          {CASE_STUDIES.map((c) => (
+            <a class="cs-card" href={url(`/case-studies/${c.slug}`)} data-tier="F">
+              <p class="cs-card__tier">{c.year} · {c.scale}</p>
+              <h3>{c.title}</h3>
+              <p class="cs-card__operator">{c.operator}</p>
+              <p class="cs-card__location">{c.location}</p>
+              <dl class="cs-card__meta">
+                <div><dt>Technology</dt><dd>{c.technology}</dd></div>
+                <div><dt>Status</dt><dd>{c.status}</dd></div>
+                <div><dt>Model</dt><dd>{c.model}</dd></div>
+              </dl>
+              <p class="cs-card__blurb">{c.blurb}</p>
+              <span class="cs-card__cta">Open →</span>
+            </a>
+          ))}
+        </Grid>
+      </section>
+
+    </Stack>
+  </Center>
+</Infographic>
+
+<style>
+  .hero {
+    padding-block: var(--space-6) var(--space-4);
+    border-block-end: 1px solid var(--color-rule);
+    display: grid;
+    gap: var(--space-3);
+  }
+  .hero h1 { margin: 0; }
+  .hero p  { margin: 0; }
+
+  .group-heading {
+    font-size: var(--text-2xl);
+    margin-block-end: var(--space-3);
+  }
+
+  .cs-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 140ms ease, transform 140ms ease;
+    border-inline-start: 3px solid var(--tier-f);
+  }
+  .cs-card:hover,
+  .cs-card:focus-visible {
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+  .cs-card h3 {
+    margin: 0;
+    font-size: var(--text-xl);
+    line-height: var(--leading-tight);
+    color: var(--color-text);
+  }
+  .cs-card p { margin: 0; font-size: var(--text-sm); }
+  .cs-card__tier {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--tier-f);
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    justify-self: start;
+  }
+  .cs-card__operator {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .cs-card__location {
+    color: var(--color-text-mute);
+  }
+  .cs-card__meta {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    padding-block: var(--space-1);
+    border-block: 1px dashed var(--color-rule);
+    font-size: var(--text-xs);
+  }
+  .cs-card__meta div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--space-2); }
+  .cs-card__meta dt {
+    color: var(--color-text-mute);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+  .cs-card__meta dd { margin: 0; color: var(--color-text); }
+  .cs-card__blurb {
+    color: var(--color-text-mute);
+    line-height: var(--leading-snug);
+  }
+  .cs-card__cta {
+    margin-block-start: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+</style>

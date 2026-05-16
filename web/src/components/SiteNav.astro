@@ -39,9 +39,9 @@ interface Props {
 
 const { currentSubject, sections } = Astro.props;
 
-// Group subjects by tier in a stable A → E order. Tiers without
+// Group subjects by tier in a stable A → F order. Tiers without
 // any subjects are skipped (none today, but defensive).
-const TIER_ORDER: SubjectTier[] = ["A", "B", "C", "D", "E"];
+const TIER_ORDER: SubjectTier[] = ["A", "B", "C", "D", "E", "F"];
 const groupedTiers = TIER_ORDER
   .map((tier) => ({
     tier,
@@ -181,6 +181,7 @@ const groupedTiers = TIER_ORDER
   .site-nav__group[data-tier="C"] { --tier-color: var(--tier-c); }
   .site-nav__group[data-tier="D"] { --tier-color: var(--tier-d); }
   .site-nav__group[data-tier="E"] { --tier-color: var(--tier-e); }
+  .site-nav__group[data-tier="F"] { --tier-color: var(--tier-f); }
   .site-nav__group-label {
     margin: 0;
     margin-inline-end: var(--space-2);

@@ -24,8 +24,9 @@ export type SubjectStatus = "shipped" | "planned";
  *   C — Mechanisms (distillation, distribution, repeaters)
  *   D — Infrastructure (links, protocols)
  *   E — Applications & market
+ *   F — Case studies (real-world deployments)
  */
-export type SubjectTier = "A" | "B" | "C" | "D" | "E";
+export type SubjectTier = "A" | "B" | "C" | "D" | "E" | "F";
 
 export const TIER_LABEL: Record<SubjectTier, string> = {
   A: "Foundations",
@@ -33,6 +34,7 @@ export const TIER_LABEL: Record<SubjectTier, string> = {
   C: "Mechanisms",
   D: "Infrastructure",
   E: "Applications & market",
+  F: "Case studies",
 };
 
 export interface Subject {
@@ -198,6 +200,14 @@ export const SUBJECTS: Subject[] = [
     blurb: "A live catalogue of quantum-tech standards and standardisation work across ITU-T, ETSI, IETF, IEEE, ISO/IEC, GSMA, and national bodies. Filterable by topic (QKD protocol, QKD network, entanglement-based quantum network, security, sensing, QRNG, crypto, policy) and status.",
     status: "shipped",
     tier: "E",
+  },
+  {
+    slug: "case-studies",
+    title: "Case studies — real-world quantum networks",
+    navLabel: "Case studies",
+    blurb: "Operational and recently-operating quantum networks profiled with operator, location, technology family, scale, status, and commercial model. Covers commercial QKD trunks, entanglement-based testbeds, and the new commercial QNaaS model.",
+    status: "shipped",
+    tier: "F",
   },
 ];
 

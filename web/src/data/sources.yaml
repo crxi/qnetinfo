@@ -735,3 +735,107 @@
   type: paper
   doi: "10.1038/s41928-025-01404-3"
   note: "Detachable low-loss cable interconnect between two superconducting qubit modules; intermodule SWAP at >99 % efficiency in under 100 ns."
+
+# ---- Case-study primary sources (vendor press, project pages, peer-reviewed deployments) ----
+
+- id: epb-quantum-press-2022
+  title: "EPB Quantum Network powered by Qubitekk lowers barriers to commercialization with the only customer-centered quantum-as-a-service network"
+  publisher: "EPB"
+  year: 2022
+  type: press
+  url: "https://epb.com/newsroom/press-releases/epb-quantum-networksm-powered-by-qubitekk-lowers-barriers-to-commercialization-with-the-only-customer-centered-quantum-as-a-service-network/"
+  marker: "EPB 2022 (launch press)"
+
+- id: epb-aliro-press-2023
+  title: "Aliro Quantum's AliroNet chosen as the network controller for EPB Quantum Network powered by Qubitekk"
+  publisher: "EPB"
+  year: 2023
+  type: press
+  url: "https://epb.com/newsroom/press-releases/aironet-chosen-as-the-network-controller-for-epb-quantum-network/"
+  marker: "EPB/Aliro 2023 (controller press)"
+
+- id: epb-qunnect-press-2023
+  title: "Quantum Technology Pioneers Qubitekk and Qunnect Achieve First Equipment Interoperability on EPB Quantum Network powered by Qubitekk"
+  publisher: "EPB"
+  year: 2023
+  type: press
+  url: "https://epb.com/newsroom/press-releases/qubitekk-and-qunnect-achieve-first-equipment-interoperability-on-epb-quantum-network/"
+  marker: "EPB/Qunnect 2023 (interop press)"
+
+- id: epb-ionq-press-2025
+  title: "EPB and IonQ Partner to Establish Chattanooga as the First Quantum Computing and Networking Hub in the U.S."
+  publisher: "EPB"
+  year: 2025
+  type: press
+  url: "https://epb.com/newsroom/press-releases/epb-quantum-center/"
+  marker: "EPB/IonQ 2025 (Quantum Center press)"
+
+- id: ionq-epb-press-2025
+  title: "IonQ Announces $22M Deal with EPB Establishing Chattanooga, Tennessee as the first Quantum Computing & Networking Hub in the U.S."
+  publisher: "IonQ"
+  year: 2025
+  type: press
+  url: "https://investors.ionq.com/news/news-details/2025/IonQ-Announces-22M-Deal-with-EPB-Establishing-Chattanooga-Tennessee-as-the-First-Quantum-Computing--Networking-Hub-in-the-U-S-/default.aspx"
+  marker: "IonQ 2025 (EPB deal press)"
+
+- id: epb-quantum-about
+  title: "EPB Quantum — About Our Network"
+  publisher: "EPB Quantum"
+  year: 2025
+  type: web
+  url: "https://quantum.epb.com/about-our-network/"
+  marker: "EPB Quantum (project page)"
+
+- id: aliro-deployments-whitepaper
+  title: "Real World Quantum Network Deployments — white paper"
+  publisher: "Aliro Quantum"
+  year: 2024
+  type: web
+  url: "https://www.aliroquantum.com/real-world-quantum-network-deployments-white-paper"
+  marker: "Aliro 2024 (deployments WP)"
+
+- id: chen-natphoton-2021-jingu
+  title: "An integrated space-to-ground quantum communication network over 4,600 kilometres"
+  authors: ["Yu-Ao Chen", "Qiang Zhang", "Teng-Yun Chen", "Wen-Qi Cai", "Sheng-Kai Liao", "Jun Zhang", "Kai Chen", "Juan Yin", "Ji-Gang Ren", "Zhu Chen", "Sheng-Long Han", "Qing Yu", "Ken Liang", "Fei Zhou", "Xiao Yuan", "Mei-Sheng Zhao", "Tian-Yin Wang", "Xiao Jiang", "Liang Zhang", "Wei-Yue Liu", "Yang Li", "Qi Shen", "Yuan Cao", "Chao-Yang Lu", "Rong Shu", "Jian-Yu Wang", "Li Li", "Nai-Le Liu", "Feihu Xu", "Xiang-Bin Wang", "Cheng-Zhi Peng", "Jian-Wei Pan"]
+  publisher: "Nature"
+  year: 2021
+  volume: "589"
+  pages: "214"
+  type: paper
+  doi: "10.1038/s41586-020-03093-8"
+  note: "Beijing–Shanghai 2,032 km fibre backbone (32 trusted nodes, decoy-state BB84 with QuantumCTek devices) integrated with Micius satellite to span 4,600 km."
+
+- id: madqci-npjqi-2024
+  title: "MadQCI: a heterogeneous and scalable SDN-QKD network deployed in production facilities"
+  authors: ["V. Martin", "J. P. Brito", "L. Ortiz", "R. B. Méndez", "J. S. Buruaga", "R. J. Vicente", "A. Sebastián-Lombraña", "D. Rincón", "F. Pérez", "C. Sánchez", "M. Peev", "et al."]
+  publisher: "npj Quantum Information"
+  year: 2024
+  volume: "10"
+  pages: "80"
+  type: paper
+  doi: "10.1038/s41534-024-00873-2"
+  note: "MadQCI — 28 QKD modules across 9 nodes on production Telefónica fibre, SDN-managed, three years of continuous operation."
+
+- id: bt-toshiba-press-2022
+  title: "BT and Toshiba launch first commercial trial of quantum secured communication services"
+  publisher: "Toshiba"
+  year: 2022
+  type: press
+  url: "https://www.global.toshiba/ww/news/corporate/2022/04/news-20220427-01.html"
+  marker: "BT/Toshiba 2022 (London QKD launch)"
+
+- id: cqe-chicago-loop-press-2024
+  title: "Chicago expands and activates quantum network, taking steps toward a secure quantum internet"
+  publisher: "University of Chicago / Chicago Quantum Exchange"
+  year: 2024
+  type: press
+  url: "https://news.uchicago.edu/story/chicago-quantum-network-argonne-pritzker-molecular-engineering-toshiba"
+  marker: "CQE 2024 (124-mile loop press)"
+
+- id: ornl-epb-press-2024
+  title: "EPB Quantum Network powered by Qubitekk hosts ORNL's first run on commercial quantum network"
+  publisher: "Oak Ridge National Laboratory"
+  year: 2024
+  type: press
+  url: "https://www.ornl.gov/news/epb-quantum-network-powered-qubitekk-hosts-ornls-first-run-commercial-quantum-network"
+  marker: "ORNL/EPB 2024 (first ORNL run)"

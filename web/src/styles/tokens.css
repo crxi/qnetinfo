@@ -39,6 +39,7 @@
   --tier-c: #9b87c4;  /* Mechanisms           — soft violet     */
   --tier-d: #7fa987;  /* Infrastructure       — sage green      */
   --tier-e: #c98370;  /* Applications/Market  — muted coral     */
+  --tier-f: #6b8eb3;  /* Case studies         — slate blue      */
 
   /* Platform colors (verbatim from data.yaml) */
   --platform-superconducting: #5b8def;
