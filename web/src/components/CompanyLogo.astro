@@ -1,46 +1,49 @@
 ---
 /**
- * Company logo with a fallback chain:
- *   1. logo.local (self-hosted under /public)
- *   2. logo.domain → Clearbit's free logo API
- *   3. Letter-monogram (first character of the company name in a coloured circle)
+ * Company logo. Resolves to `/logos/<slug>.<ext>` if a file is present in
+ * `web/public/logos/` (sourced once per vendor at build time and kept in
+ * the repo). Falls back to a letter-monogram in the company's accent
+ * colour if the file is missing.
  *
- * The Clearbit case renders both the <img> and a hidden monogram <span>;
- * an inline onerror handler hides the img and shows the monogram if
- * Clearbit returns no image. No JS framework needed.
+ * Files can be SVG, PNG, or WebP — extension is discovered at build time
+ * via a filesystem read, so vendors that only publish PNG don't need any
+ * per-vendor metadata.
  */
+import fs from "node:fs";
+import path from "node:path";
 import type { CompanyLogoSpec } from "../lib/companies.ts";
+
+// Build-time lookup: slug → "/logos/slug.ext". Runs once at SSG build.
+const LOGO_DIR = path.resolve(import.meta.dirname, "../../public/logos");
+const LOGO_BY_SLUG: Record<string, string> = {};
+const BASE = (import.meta.env.BASE_URL ?? "/").replace(/\/$/, "");
+try {
+  for (const file of fs.readdirSync(LOGO_DIR)) {
+    const m = file.match(/^(.+)\.(svg|png|webp|jpg|jpeg|gif)$/i);
+    if (m) LOGO_BY_SLUG[m[1]] = `${BASE}/logos/${file}`;
+  }
+} catch {
+  // /public/logos missing — every render falls through to the monogram.
+}
 
 interface Props {
   name: string;
+  slug?: string;
+  /** Kept for backward compatibility with existing YAML; not consulted any more. */
   logo?: CompanyLogoSpec;
   /** Pixel size for the rendered element (square). */
   size: number;
 }
 
-const { name, logo, size } = Astro.props;
+const { name, slug, size } = Astro.props;
 const initial = name.trim().charAt(0).toUpperCase();
-const local = logo?.local;
-const clearbit = logo?.domain ? `https://logo.clearbit.com/${logo.domain}?size=${size * 2}` : null;
+const local = slug ? LOGO_BY_SLUG[slug] : null;
 const fontSize = Math.round(size * 0.5);
 const monogramStyle = `width:${size}px;height:${size}px;font-size:${fontSize}px;`;
 ---
 
 {local ? (
   <img class="cl-logo" src={local} alt={`${name} logo`} width={size} height={size} loading="lazy" />
-) : clearbit ? (
-  <span class="cl-logo-wrap" style={`width:${size}px;height:${size}px;`}>
-    <img
-      class="cl-logo"
-      src={clearbit}
-      alt={`${name} logo`}
-      width={size}
-      height={size}
-      loading="lazy"
-      onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex';"
-    />
-    <span class="cl-monogram cl-monogram--fallback" style={monogramStyle}>{initial}</span>
-  </span>
 ) : (
   <span class="cl-monogram" style={monogramStyle}>{initial}</span>
 )}

@@ -33,17 +33,17 @@ milestones:
   - date: 2023
     tag: enabling
     headline: Joins UK-led project to develop a prototype hBN (hexagonal boron nitride) single-photon source for room-temperature operation
-    source_url: https://www.aegiq.com/post/aegiq-joins-project-to-develop-prototype-hbn-single-photon-source
+    source_url: https://www.quantumcommshub.net/news/hub-funds-project-to-develop-prototype-single-photon-source/?site=industry-government-media
     source_type: press
   - date: 2022-11
     tag: source-detect
     headline: Launch of iSPS — fibre-coupled quantum-dot single-photon source (cryogenic) operating at GHz-class repetition rates, marketed as the first compact commercial deterministic single-photon generator
-    source_url: https://aegiq.com/2022/11/11/aegiq-launches-the-worlds-first-compact-true-single-photon-generator/
+    source_url: https://web.archive.org/web/20231004233855/https://aegiq.com/2022/11/11/aegiq-launches-the-worlds-first-compact-true-single-photon-generator/
     source_type: press
   - date: 2022-05
     tag: enabling
     headline: Closes oversubscribed seed round (~£4M / $4.9M) led by High-Tech Gründerfonds with Deepbridge Capital, NPIF
-    source_url: https://aegiq.com/2022/05/12/aegiq-closes-oversubscribed-investment-round-to-bring-quantum-photonics-platform-to-market/
+    source_url: https://thequantuminsider.com/2022/05/17/aegiq-closes-oversubscribed-investment-round-brings-total-funding-to-nearly-4-million/
     source_type: press
   - date: 2022-01
     tag: enabling
@@ -66,7 +66,7 @@ shareholders:
     stake_percent: null
     stake_class: strategic
     as_of: 2022-05
-    source_url: https://aegiq.com/2022/05/12/aegiq-closes-oversubscribed-investment-round-to-bring-quantum-photonics-platform-to-market/
+    source_url: https://thequantuminsider.com/2022/05/17/aegiq-closes-oversubscribed-investment-round-brings-total-funding-to-nearly-4-million/
     note: Led the 2022 ~£4M seed round
   - holder: Deepbridge Capital
     stake_percent: null
@@ -120,7 +120,7 @@ roadmap:
     tag: enabling
   - target: 2026
     item: Room-temperature single-photon source prototype based on hBN colour centres
-    source_url: https://www.aegiq.com/post/aegiq-joins-project-to-develop-prototype-hbn-single-photon-source
+    source_url: https://www.quantumcommshub.net/news/hub-funds-project-to-develop-prototype-single-photon-source/?site=industry-government-media
     tag: source-detect
 
 current_flagship:
@@ -134,7 +134,7 @@ references:
     note: Scalable integrated single-photon source (Science Advances) — foundational Sheffield quantum-dot work underlying Aegiq's iSPS
   - kind: press
     citation_key: null
-    url: https://aegiq.com/2022/11/11/aegiq-launches-the-worlds-first-compact-true-single-photon-generator/
+    url: https://web.archive.org/web/20231004233855/https://aegiq.com/2022/11/11/aegiq-launches-the-worlds-first-compact-true-single-photon-generator/
     note: iSPS product launch (Nov 2022)
   - kind: press
     citation_key: null

@@ -28,12 +28,12 @@ milestones:
   - date: 2024
     tag: source-detect
     headline: "Artemis II laser-comm SNSPD systems delivered in collaboration with NASA JPL; supports lunar-mission optical downlink"
-    source_url: https://www.photonspot.com/solutions
+    source_url: https://www.photonspot.com/pages/solutions.html
     source_type: blog
   - date: 2023
     tag: source-detect
     headline: 8x8 imaging SNSPD array (with JPL) delivered to Heriot-Watt University in a compact rack-based cryogenic system
-    source_url: https://www.photonspot.com/solutions
+    source_url: https://www.photonspot.com/pages/solutions.html
     source_type: blog
   - date: 2022-12
     tag: source-detect
@@ -43,7 +43,7 @@ milestones:
   - date: 2020
     tag: source-detect
     headline: "NASA Deep Space Optical Communications — 80 Mb/s downlink demonstrated by JPL using Photon Spot SNSPDs"
-    source_url: https://www.photonspot.com/solutions
+    source_url: https://www.photonspot.com/pages/solutions.html
     source_type: blog
   - date: 2009
     tag: source-detect
@@ -63,7 +63,7 @@ key_personnel:
   - role: Founder & CEO
     name: Vikas Anant
     since: 2009
-    source_url: https://www.photonspot.com/about
+    source_url: https://www.photonspot.com/pages/about.html
 
 roadmap:
   - target: 2026
@@ -82,11 +82,11 @@ references:
     note: NIST 98% SDE SNSPD paper — broader SNSPD field benchmark; Photon Spot independently reports 95.5% SDE
   - kind: blog
     citation_key: null
-    url: https://www.photonspot.com/detectors
+    url: https://www.photonspot.com/pages/detectors.html
     note: Vendor detector product page — wavelength options and SDE figures
   - kind: blog
     citation_key: null
-    url: https://www.photonspot.com/solutions
+    url: https://www.photonspot.com/pages/solutions.html
     note: Customer wins — JPL Artemis II, Heriot-Watt, Stuttgart, NASA DSOC
   - kind: press
     citation_key: null

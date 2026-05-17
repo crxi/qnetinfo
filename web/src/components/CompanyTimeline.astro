@@ -25,15 +25,54 @@ interface Props {
 const { milestones, roadmap, foundedYear } = Astro.props;
 
 // --- Date parsing ----------------------------------------------------------
+// Must never return NaN — a single NaN poisons Math.min/max and collapses
+// the whole axis. Unparseable strings fall through to NaN here and get
+// filtered out of the placements list below.
 function parseFracYear(input: string | number | Date): number {
   if (input instanceof Date) {
     return input.getUTCFullYear() + input.getUTCMonth() / 12;
   }
+  if (typeof input === "number" && Number.isFinite(input)) {
+    return input + 0.5; // bare year → mid-year
+  }
   const s = String(input).trim();
-  const q = s.match(/^Q([1-4])\s+(\d{4})$/i);
-  if (q) return parseInt(q[2], 10) + (parseInt(q[1], 10) - 1) * 0.25;
-  const parts = s.split("-").map((n) => parseInt(n, 10));
-  return parts[0] + ((parts[1] ?? 6) - 1) / 12;
+  if (!s) return NaN;
+
+  // "Q1 2025" / "Q1-2025"
+  const qLate = s.match(/^Q([1-4])[\s-](\d{4})$/i);
+  if (qLate) return parseInt(qLate[2], 10) + (parseInt(qLate[1], 10) - 1) * 0.25;
+
+  // "2025-Q1" / "2025 Q1"
+  const qEarly = s.match(/^(\d{4})[\s-]Q([1-4])$/i);
+  if (qEarly) return parseInt(qEarly[1], 10) + (parseInt(qEarly[2], 10) - 1) * 0.25;
+
+  // "YYYY-MM" or "YYYY-MM-DD"
+  const iso = s.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?$/);
+  if (iso) return parseInt(iso[1], 10) + (parseInt(iso[2], 10) - 1) / 12;
+
+  // Bare "YYYY"
+  const yr = s.match(/^(\d{4})$/);
+  if (yr) return parseInt(yr[1], 10) + 0.5;
+
+  // Decade-qualified: "early-2030s", "mid 2030s", "late 2030s"
+  const decade = s.match(/(\d{4})s/);
+  if (decade) {
+    const base = parseInt(decade[1], 10);
+    if (/early/i.test(s)) return base + 2;
+    if (/late/i.test(s)) return base + 8;
+    return base + 5; // mid- or unqualified
+  }
+
+  // "post-2033" / "pre-2030"
+  const yearAnywhere = s.match(/(\d{4})/);
+  if (yearAnywhere) {
+    const base = parseInt(yearAnywhere[1], 10);
+    if (/^post/i.test(s)) return base + 1;
+    if (/^pre/i.test(s)) return base - 1;
+    return base + 0.5;
+  }
+
+  return NaN;
 }
 
 const nowFrac = (() => {
@@ -61,7 +100,9 @@ const points: Point[] = [
     label: r.item,
     kind: "roadmap" as const,
   })),
-].sort((a, b) => a.fracYear - b.fracYear);
+]
+  .filter((p) => Number.isFinite(p.fracYear))
+  .sort((a, b) => a.fracYear - b.fracYear);
 
 const hasContent = points.length > 0;
 
@@ -87,11 +128,18 @@ const BOX_H_OUTER = 150;           // foreignObject height — gives the card
 const HOVER_SLACK = BOX_H_OUTER - BOX_H;
 const STACK_GAP = 8;
 // Base vertical placement of card *top edge* (depth 0) for each level.
+// The far slots are exactly one depth-step (BOX_H + STACK_GAP) beyond the
+// near slots, so when the algorithm falls through to deeper stacks the
+// rhythm stays uniform. Without this, sparse vendors sit at ±60 px and
+// dense clusters jump to ±180 px, leaving an unsightly gap (visible on
+// IBM, whose late-2025 cluster forces far slots while 2019–2024 stays
+// near).
+const FAR_STEP = BOX_H + STACK_GAP;       // 86
 const LEVEL_Y = [
-  AXIS_Y - 60 - BOX_H,  // above-near
-  AXIS_Y + 60,          // below-near
-  AXIS_Y - 180 - BOX_H, // above-far
-  AXIS_Y + 180,         // below-far
+  AXIS_Y - 60 - BOX_H,                    // above-near
+  AXIS_Y + 60,                            // below-near
+  AXIS_Y - 60 - BOX_H - FAR_STEP,         // above-far (one step beyond near)
+  AXIS_Y + 60 + FAR_STEP,                 // below-far
 ];
 
 // foreignObject Y per card. Above-axis cards anchor to the foreignObject
@@ -239,48 +287,86 @@ const H = SVG_BOTTOM - SVG_TOP;
           class="ct-today-label"
         >today</text>
 
-        {/* Events: connector + dot + card */}
-        {placements.map((p) => {
-          const connTop = p.above ? p.boxTop + BOX_H : AXIS_Y;
-          const connBot = p.above ? AXIS_Y : p.boxTop;
-          return (
-            <g class={`ct-event ct-event--${p.kind}`}>
-              <line
-                x1={p.x}
-                y1={connTop}
-                x2={p.x}
-                y2={connBot}
-                class="ct-connector"
-              />
-              {p.kind === "milestone" ? (
-                <circle cx={p.x} cy={AXIS_Y} r="5.5" class="ct-dot ct-dot--past" />
-              ) : (
-                <circle cx={p.x} cy={AXIS_Y} r="5.5" class="ct-dot ct-dot--future" />
-              )}
-              <foreignObject
-                x={p.boxLeft}
-                y={foreignObjectY(p.boxTop, p.above)}
-                width={BOX_W}
-                height={BOX_H_OUTER}
-                overflow="visible"
+        {/*
+          Render in four z-ordered passes so a connector never crosses an
+          unrelated card's text:
+            (1) all back connectors  — behind everything
+            (2) all axis dots
+            (3) all cards            — text always on top by default
+            (4) all front connectors — hidden; one fades in on hover/focus
+                                       of its matching card, lifting that
+                                       event's line above the other cards
+        */}
+
+        {/* Pass 1: back connectors */}
+        <g class="ct-connectors-back" aria-hidden="true">
+          {placements.map((p, i) => (
+            <line
+              x1={p.x}
+              y1={p.above ? p.boxTop + BOX_H : AXIS_Y}
+              x2={p.x}
+              y2={p.above ? AXIS_Y : p.boxTop}
+              class={`ct-connector ct-connector--${p.kind}`}
+              data-event-idx={i}
+            />
+          ))}
+        </g>
+
+        {/* Pass 2: axis dots */}
+        <g class="ct-dots">
+          {placements.map((p, i) => (
+            <circle
+              cx={p.x}
+              cy={AXIS_Y}
+              r="5.5"
+              class={`ct-dot ct-dot--${p.kind === "milestone" ? "past" : "future"}`}
+              data-event-idx={i}
+            />
+          ))}
+        </g>
+
+        {/* Pass 3: cards */}
+        <g class="ct-cards">
+          {placements.map((p, i) => (
+            <foreignObject
+              x={p.boxLeft}
+              y={foreignObjectY(p.boxTop, p.above)}
+              width={BOX_W}
+              height={BOX_H_OUTER}
+              overflow="visible"
+            >
+              <div
+                xmlns="http://www.w3.org/1999/xhtml"
+                class={`ct-card-frame ct-card-frame--${p.above ? "above" : "below"}`}
+                data-event-idx={i}
               >
                 <div
-                  xmlns="http://www.w3.org/1999/xhtml"
-                  class={`ct-card-frame ct-card-frame--${p.above ? "above" : "below"}`}
+                  class={`ct-card ct-card--${p.kind} ct-card--${p.above ? "above" : "below"}`}
+                  tabindex="0"
+                  title={`${p.dateLabel} — ${p.label}`}
+                  data-event-idx={i}
                 >
-                  <div
-                    class={`ct-card ct-card--${p.kind} ct-card--${p.above ? "above" : "below"}`}
-                    tabindex="0"
-                    title={`${p.dateLabel} — ${p.label}`}
-                  >
-                    <div class="ct-card-date">{p.dateLabel}</div>
-                    <div class="ct-card-headline">{p.label}</div>
-                  </div>
+                  <div class="ct-card-date">{p.dateLabel}</div>
+                  <div class="ct-card-headline">{p.label}</div>
                 </div>
-              </foreignObject>
-            </g>
-          );
-        })}
+              </div>
+            </foreignObject>
+          ))}
+        </g>
+
+        {/* Pass 4: on-hover front connectors */}
+        <g class="ct-connectors-front" aria-hidden="true">
+          {placements.map((p, i) => (
+            <line
+              x1={p.x}
+              y1={p.above ? p.boxTop + BOX_H : AXIS_Y}
+              x2={p.x}
+              y2={p.above ? AXIS_Y : p.boxTop}
+              class={`ct-connector ct-connector-front ct-connector--${p.kind}`}
+              data-event-idx={i}
+            />
+          ))}
+        </g>
       </svg>
     </div>
     <figcaption>
@@ -364,17 +450,31 @@ const H = SVG_BOTTOM - SVG_TOP;
     stroke-width: 2;
   }
 
-  /* Connectors (arrows) */
+  /* Connectors */
   :global(.ct-connector) {
     stroke: var(--color-text-soft);
     stroke-width: 1;
   }
-  :global(.ct-event--milestone .ct-connector) {
+  :global(.ct-connector--milestone) {
     stroke: color-mix(in srgb, var(--color-accent) 60%, var(--color-text-soft));
   }
-  :global(.ct-event--roadmap .ct-connector) {
+  :global(.ct-connector--roadmap) {
     stroke: color-mix(in srgb, var(--color-accent) 50%, var(--color-text-soft));
     stroke-dasharray: 3 2;
+  }
+  /* Front-pass connectors sit on top of the cards group. Hidden by
+     default; a small script below adds .is-active to the one whose
+     card is currently hovered or focused. */
+  :global(.ct-connector-front) {
+    opacity: 0;
+    transition: opacity 120ms ease, stroke-width 120ms ease;
+    pointer-events: none;
+    stroke-width: 1.4;
+  }
+  :global(.ct-connector-front.is-active) {
+    opacity: 1;
+    stroke: var(--color-accent);
+    stroke-width: 1.8;
   }
 
   /* Cards (foreignObject content) */
@@ -507,3 +607,26 @@ const H = SVG_BOTTOM - SVG_TOP;
   }
   .empty { color: var(--color-text-mute); }
 </style>
+
+<script>
+  // Lift each event's connector above the cards layer while its matching
+  // card is hovered or focused. The connector lives in a separate <g>
+  // pass at the end of the SVG (z-top); we just toggle .is-active.
+  for (const frame of document.querySelectorAll<HTMLElement>(".ct-card-frame")) {
+    const idx = frame.dataset.eventIdx;
+    if (!idx) continue;
+    const svg = frame.closest("svg");
+    if (!svg) continue;
+    const front = svg.querySelector(`.ct-connector-front[data-event-idx="${idx}"]`);
+    if (!front) continue;
+    const on = () => front.classList.add("is-active");
+    const off = () => front.classList.remove("is-active");
+    frame.addEventListener("pointerenter", on);
+    frame.addEventListener("pointerleave", off);
+    const card = frame.querySelector(".ct-card");
+    if (card) {
+      card.addEventListener("focus", on);
+      card.addEventListener("blur", off);
+    }
+  }
+</script>

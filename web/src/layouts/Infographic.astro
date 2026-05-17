@@ -169,6 +169,36 @@ const currentTier = currentIdx >= 0 ? SHIPPED_SUBJECTS[currentIdx].tier : null;
         align-self: start;
         max-block-size: calc(100vh - var(--space-7));
         overflow-y: auto;
+        /* Auto-hide the scrollbar when the rail isn't being used. Without
+           this the rail keeps a permanent scrollbar whenever its content
+           overflows the viewport (e.g. once the Case Studies tier was
+           added), regardless of the OS scrollbar-style setting. */
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        transition: scrollbar-color 120ms ease;
+      }
+      .page-main--with-nav .page-nav-rail:hover,
+      .page-main--with-nav .page-nav-rail:focus-within {
+        scrollbar-color: color-mix(in srgb, var(--color-text-soft) 55%, transparent) transparent;
+      }
+      /* WebKit / Blink — the scrollbar-color property is Firefox-only. */
+      .page-main--with-nav .page-nav-rail::-webkit-scrollbar {
+        inline-size: 6px;
+      }
+      .page-main--with-nav .page-nav-rail::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .page-main--with-nav .page-nav-rail::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 3px;
+        transition: background 120ms ease;
+      }
+      .page-main--with-nav .page-nav-rail:hover::-webkit-scrollbar-thumb,
+      .page-main--with-nav .page-nav-rail:focus-within::-webkit-scrollbar-thumb {
+        background: color-mix(in srgb, var(--color-text-soft) 55%, transparent);
+      }
+      .page-main--with-nav .page-nav-rail::-webkit-scrollbar-thumb:hover {
+        background: color-mix(in srgb, var(--color-text-soft) 80%, transparent);
       }
       /* Mobile topbar — only visible below 60rem. Holds the
          hamburger that opens the nav drawer, plus the current page

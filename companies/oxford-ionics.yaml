@@ -79,7 +79,7 @@ milestones:
   - date: 2019
     tag: qc
     headline: Company founded by Chris Ballance and Tom Harty as an Oxford spinout from the trapped-ion quantum computing group (David Lucas / Andrew Steane)
-    source_url: https://www.oxionics.com/team
+    source_url: https://www.oxionics.com/about-us/
     source_type: blog
 
 shareholders:
@@ -99,7 +99,7 @@ key_personnel:
   - role: Co-founder & CTO
     name: Tom Harty
     since: 2019
-    source_url: https://www.oxionics.com/team
+    source_url: https://www.oxionics.com/about-us/
   - role: Principal Investigator (parent academic group)
     name: David Lucas
     since: 2019

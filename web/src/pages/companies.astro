@@ -211,7 +211,7 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
                   >
                     <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/companies/${c.slug}`}>
                       <div class="dossier-head">
-                        <CompanyLogo name={c.name} logo={c.logo} size={32} />
+                        <CompanyLogo name={c.name} slug={c.slug} size={32} />
                         <div class="dossier-name">{c.name}</div>
                       </div>
                       <div class="dossier-positioning">{c.positioning}</div>
