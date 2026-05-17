@@ -81,8 +81,16 @@ const sections = [
           link <SourceNote id="jones-njp-2016" />.
         </p>
 
-        <Grid min="18rem" gap="var(--space-3)">
-          <article class="arch-card">
+        <p class="arch-prelude">
+          The three architectures, after Jones et al. <em>New J. Phys.</em> 18 083015
+          (2016) <SourceNote id="jones-njp-2016" />. Each card pairs the description
+          on the left with a schematic on the right; both reuse the workspace
+          vocabulary — green C comm qubits, purple M memories, blue photons, light-blue
+          QFC / EPPS blocks, dashed BSM glyph, magenta entanglement wavy line.
+        </p>
+
+        <article class="arch-card">
+          <div class="arch-card__text">
             <h3>MeetInTheMiddle (MM)</h3>
             <p>
               Each of the two repeater nodes generates a matter-photon entangled pair
@@ -92,10 +100,18 @@ const sections = [
               information and heralds an entangled pair between the two matter qubits.
               The arrangement behind most current solid-state and ion-trap
               remote-entanglement experiments <SourceNote id="pompili-science-2021" />.
+              Heralding requires two-photon interference; rate scales with full-link
+              transmission.
             </p>
-          </article>
+          </div>
+          <div class="arch-card__fig">
+            <img src={url("/images/distribution-mm.svg")}
+                 alt="MeetInTheMiddle: Alice and Bob each hold a comm qubit (green C) and a memory qubit (purple M). Each endpoint emits a photon entangled with its own C; both photons travel L/2 along telecom fibre to meet at a midpoint Bell-state analyser. A coincidence click heralds an entangled Bell pair between A.C and B.C, shown as a magenta sinusoid; the classical herald is returned to both endpoints over a dashed grey channel." />
+          </div>
+        </article>
 
-          <article class="arch-card">
+        <article class="arch-card">
+          <div class="arch-card__text">
             <h3>SenderReceiver (SR)</h3>
             <p>
               The sender (Alice) generates a matter-photon pair and sends its photon
@@ -106,9 +122,15 @@ const sections = [
               round-trip loss because the photon traverses the full link rather than
               half <SourceNote id="jones-njp-2016" />.
             </p>
-          </article>
+          </div>
+          <div class="arch-card__fig">
+            <img src={url("/images/distribution-sr.svg")}
+                 alt="SenderReceiver: Alice (sender) emits a photon entangled with her comm qubit C and sends it across the full link. Bob (receiver) holds his own comm qubit and a local Bell-state analyser; he interferes Alice's arriving photon with his local C. A successful BSM heralds an entangled pair between A.C and B.C, shown as a magenta sinusoid." />
+          </div>
+        </article>
 
-          <article class="arch-card">
+        <article class="arch-card">
+          <div class="arch-card__text">
             <h3>MidpointSource (MS)</h3>
             <p>
               An entangled-pair source sits at the midpoint and emits one photon
@@ -119,37 +141,12 @@ const sections = [
               SPDC is the natural device choice for the midpoint
               source <SourceNote id="jones-njp-2016" />.
             </p>
-          </article>
-        </Grid>
-
-        <p>
-          Schematic comparison of the three architectures, after Jones et al.
-          <em>New J. Phys.</em> 18 083015 (2016) <SourceNote id="jones-njp-2016" />.
-          Filled circles are matter qubits (memories); the dashed accent box is the
-          Bell-state analyser; the accent-bordered diamond is an entangled-pair source.
-          MM and MS both place equipment at the link midpoint but use it differently:
-          MM measures (heralds on two-photon interference); MS emits (heralds on a
-          single source-side detection). SR runs no midpoint equipment and places the
-          BSA at the receiver.
-        </p>
-
-        <figure class="arch-fig">
-          <img src={url("/images/distribution-mm.svg")}
-               alt="MeetInTheMiddle: Alice and Bob each hold a comm qubit (green C) and a memory qubit (purple M). Each endpoint emits a photon entangled with its own C; both photons travel L/2 along telecom fibre to meet at a midpoint Bell-state analyser. A coincidence click heralds an entangled Bell pair between A.C and B.C, shown as a magenta sinusoid; the classical herald is returned to both endpoints over a dashed grey channel." />
-          <figcaption><strong>MeetInTheMiddle.</strong> Both endpoints emit photons toward a midpoint BSA. Heralding requires two-photon interference; rate scales with full-link transmission.</figcaption>
-        </figure>
-
-        <figure class="arch-fig">
-          <img src={url("/images/distribution-sr.svg")}
-               alt="SenderReceiver: Alice (sender) emits a photon entangled with her comm qubit C and sends it across the full link. Bob (receiver) holds his own comm qubit and a local Bell-state analyser; he interferes Alice's arriving photon with his local C. A successful BSM heralds an entangled pair between A.C and B.C, shown as a magenta sinusoid." />
-          <figcaption><strong>SenderReceiver.</strong> Sender's photon traverses the full link; receiver runs the BSA. Single-photon transmission, but the photon travels the entire distance.</figcaption>
-        </figure>
-
-        <figure class="arch-fig">
-          <img src={url("/images/distribution-ms.svg")}
-               alt="MidpointSource: an entangled-photon-pair source (EPPS, typically SPDC) at the link midpoint emits two entangled photons outward. Each photon travels L/2 to one of the endpoints, where it is interfered with a photon from the local comm qubit C by a local Bell-state analyser. When both endpoint BSMs herald, A.C and B.C are entangled, shown as a magenta sinusoid." />
-          <figcaption><strong>MidpointSource.</strong> A pair source at the midpoint emits one photon to each endpoint. Heralding fires on the source-side partner; no two-photon interference required.</figcaption>
-        </figure>
+          </div>
+          <div class="arch-card__fig">
+            <img src={url("/images/distribution-ms.svg")}
+                 alt="MidpointSource: an entangled-photon-pair source (EPPS, typically SPDC) at the link midpoint emits two entangled photons outward. Each photon travels L/2 to one of the endpoints, where it is interfered with a photon from the local comm qubit C by a local Bell-state analyser. When both endpoint BSMs herald, A.C and B.C are entangled, shown as a magenta sinusoid." />
+          </div>
+        </article>
       </section>
 
       <section id="tradeoff" data-nav-section>
@@ -342,26 +339,42 @@ const sections = [
     color: var(--color-text-mute);
   }
 
-  /* Schematic figure: the three-row architecture comparison. */
-  .arch-fig {
-    margin: 0;
+  /* One card per architecture: text on the left (~1/3), schematic on
+     the right (~2/3). Falls back to a single column when the viewport
+     can't fit both side by side. */
+  .arch-prelude {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
+  }
+  .arch-card {
+    margin: 0 0 var(--space-3);
     padding: var(--space-3) var(--space-4);
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
     display: grid;
-    gap: var(--space-3);
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-4);
+    align-items: center;
   }
-  .arch-fig img {
-    inline-size: 100%;
-    block-size: auto;
-    display: block;
-    margin: 0 auto;
-  }
-  .arch-fig figcaption {
+  .arch-card__text { display: grid; gap: var(--space-2); }
+  .arch-card__text h3 { margin: 0; }
+  .arch-card__text p {
     margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
-    color: var(--color-text-mute);
+  }
+  .arch-card__fig {
+    display: block;
+  }
+  .arch-card__fig img {
+    inline-size: 100%;
+    block-size: auto;
+    display: block;
+  }
+  @media (max-width: 50rem) {
+    .arch-card { grid-template-columns: 1fr; }
   }
 </style>
