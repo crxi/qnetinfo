@@ -552,11 +552,11 @@ def _protocol_steps(cv: Canvas) -> None:
     # Numbers are left-aligned in a single column; the whole block (badge
     # column + longest line of text) is horizontally centred on the figure.
     captions = [
-        "Generate Bell pairs across each hop — repeat each attempt until the midpoint heralds a click.",
-        "Purify each hop's pair, then swap into one end-to-end Bell pair held in MQ-A ↔ MQ-B.",
-        "Load the payload state |ψ⟩ onto DQ-A when the local QPU is ready to send it.",
-        "Local BSM at DC-A on (DQ-A, MQ-A) destroys |ψ⟩ and produces 2 classical bits.",
-        "Bits travel to DC-B; apply Pauli correction to MQ-B — |ψ⟩ is now at B.",
+        "Generate Bell pairs per hop — thousands of heralded attempts per delivered pair.",
+        "Distil per hop, swap into one end-to-end pair — each swap is 50%-BSM-ceiling-bound.",
+        "Load |ψ⟩ onto DQ-A — must beat MQ-A's coherence budget or the chain restarts.",
+        "Local matter-matter BSM on (DQ-A, MQ-A) destroys |ψ⟩, yields 2 classical bits.",
+        "Bits travel to DC-B; apply Pauli to MQ-B — |ψ⟩ at B (classical-channel latency only).",
     ]
     badge_r = 7
     gap = 6
