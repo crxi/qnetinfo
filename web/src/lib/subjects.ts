@@ -204,7 +204,7 @@ export const SUBJECTS: Subject[] = [
   {
     slug: "case-studies",
     title: "Case studies — real-world quantum networks",
-    navLabel: "Case studies",
+    navLabel: "Overview",
     blurb: "Operational and recently-operating quantum networks profiled with operator, location, technology family, scale, status, and commercial model. Covers commercial QKD trunks, entanglement-based testbeds, and the new commercial QNaaS model.",
     status: "shipped",
     tier: "F",

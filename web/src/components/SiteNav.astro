@@ -62,14 +62,7 @@ const groupedTiers = TIER_ORDER
 
   {groupedTiers.map((group) => (
     <section class="site-nav__group" aria-label={group.label} data-tier={group.tier}>
-      {/* Hide the tier eyebrow when the tier has exactly one subject and that
-          subject's label is the same as the tier label (currently tier F /
-          Case studies). A "group of one" with a duplicate label reads as the
-          word printed twice, not as a hierarchy. */}
-      {!(group.subjects.length === 1
-         && (group.subjects[0].navLabel ?? group.subjects[0].title) === group.label) && (
-        <p class="site-nav__group-label">{group.label}</p>
-      )}
+      <p class="site-nav__group-label">{group.label}</p>
       <ul class="site-nav__list site-nav__list--subjects">
         {group.subjects.map((s) => (
           <li>
