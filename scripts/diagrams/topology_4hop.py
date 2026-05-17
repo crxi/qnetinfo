@@ -255,12 +255,11 @@ def _node_A(cv: Canvas) -> None:
     # SWAP between MQ and CQ
     C.swap_arrow(cv, NODE_A_CX, Y_MQ + 11, Y_CQ - 11)
 
-    # T₂ tags under each Node A qubit's side label — same style as the
-    # cold-zone temperature tags so they read as 'small operating-spec
-    # annotations'. End-anchored, matching the side labels' anchor.
-    for y, t2 in ((Y_DQ, "T₂ ≈ 100 µs"), (Y_MQ, "T₂ ≈ 100 µs"), (Y_CQ, "T₂ ≈ 100 µs")):
-        cv.text(NODE_A_CX - 20, y + 14, t2, cls="t2-tag", font_size=7.5,
-                anchor="end", name=f"A-t2@{y}")
+    # Per-qubit lifetime tag — bare value, no 'T₂ ≈' prefix (the panel
+    # title already establishes that the dimension being shown is T₂).
+    for y in (Y_DQ, Y_MQ, Y_CQ):
+        cv.text(NODE_A_CX - 20, y + 14, "100 µs", cls="t2-tag",
+                font_size=7.5, anchor="end", name=f"A-t2@{y}")
 
     # CQ-A microwave link to M-O
     cv.line(
@@ -374,13 +373,10 @@ def _node_B(cv: Canvas) -> None:
     )
     C.swap_arrow(cv, NODE_B_CX, Y_MQ + 11, Y_CQ - 11)
 
-    # T₂ tags under each Node B qubit's side label — start-anchored to
-    # match. Yb⁺ hyperfine coherence is platform-uniform across DQ/MQ/CQ
-    # (all the same ion); the contrast a reader takes away is across
-    # nodes, not within Node B.
-    for y, t2 in ((Y_DQ, "T₂ ≈ 10 s"), (Y_MQ, "T₂ ≈ 10 s"), (Y_CQ, "T₂ ≈ 10 s")):
-        cv.text(NODE_B_CX + 20, y + 14, t2, cls="t2-tag", font_size=7.5,
-                anchor="start", name=f"B-t2@{y}")
+    # Per-qubit lifetime tag — bare value, same convention as Node A.
+    for y in (Y_DQ, Y_MQ, Y_CQ):
+        cv.text(NODE_B_CX + 20, y + 14, "10 s", cls="t2-tag",
+                font_size=7.5, anchor="start", name=f"B-t2@{y}")
 
     # UV link from CQ-B (via chamber viewport) to the QFC bench below
     cv.line(
@@ -566,7 +562,7 @@ def _protocol_steps(cv: Canvas) -> None:
     # inset panel can sit to its left without overlap. centre_y picks the
     # vertical band a bit higher to leave breathing room below the dashed
     # matter-photon interface line.
-    centre_x = 660
+    centre_x = 580
     centre_y = 250
     # Width heuristic — the rendered prose is narrower than the svglib
     # collision-bbox default (0.55), so an over-estimated width pulls the
@@ -603,7 +599,9 @@ def _lifetime_panel(cv: Canvas) -> None:
     typical operating numbers that fit a procurement-grade conversation."""
     # Start past Node A's chandelier outline (which extends to ~x=150)
     # with a small breathing margin so the panel doesn't impinge on it.
-    px, py, pw, ph = 160, 213, 235, 88
+    # Width is sized for the post-prefix-drop content (bare values, no
+    # 'T₂ ≈' prefix on each row).
+    px, py, pw, ph = 160, 213, 200, 88
     cv.rect(
         px, py, pw, ph, rx=6,
         style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3",
@@ -624,14 +622,17 @@ def _lifetime_panel(cv: Canvas) -> None:
     y0, dy = py + 32, 14
     for i, (role, label, value) in enumerate(rows):
         y = y0 + i * dy
-        cv.circle(px + 14, y - 3, 5, cls=role, name=f"lt-sw-{i}")
+        # Dot centred on the text baseline (the text is drawn at y with
+        # dominant-baseline central from .step-txt CSS, so the dot's
+        # geometric centre should also be at y).
+        cv.circle(px + 14, y, 5, cls=role, name=f"lt-sw-{i}")
         cv.text(
             px + 26, y, label,
             cls="step-txt", font_size=9.5, anchor="start",
             name=f"lt-lbl-{i}",
         )
         cv.text(
-            px + pw - 10, y, f"T₂ ≈ {value}",
+            px + pw - 10, y, value,
             cls="step-txt", font_size=9.5, anchor="end",
             style="font-style: italic",
             name=f"lt-val-{i}",
