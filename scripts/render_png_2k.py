@@ -36,6 +36,9 @@ TARGETS = [
     "images/swapping-chain.svg",
     "images/swapping-chain-narrow.svg",
     "images/swapping-chain-4hop.svg",
+    "images/distribution-mm.svg",
+    "images/distribution-sr.svg",
+    "images/distribution-ms.svg",
     "spectrum/output/spectrum.svg",
 ]
 

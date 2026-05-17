@@ -22,6 +22,7 @@ import SiteNav from "../components/SiteNav.astro";
 import SourceNote from "../components/SourceNote.astro";
 import Grid from "../components/Grid.astro";
 import Callout from "../components/Callout.astro";
+import { url } from "../lib/url";
 
 const sections = [
   { id: "overview",     label: "Overview" },
@@ -133,93 +134,20 @@ const sections = [
         </p>
 
         <figure class="arch-fig">
-          <div class="arch-fig-scroll">
-          <svg viewBox="0 0 720 100" role="img"
-               aria-label="MeetInTheMiddle: photons from each endpoint travel to a midpoint Bell-state analyser">
-            <text x="20" y="30" class="arch-row-label">MM</text>
-            <rect x="60" y="10" width="80" height="50" rx="4"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
-            <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
-            <line x1="145" y1="35" x2="295" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                  marker-end="url(#arrow-mm)"/>
-            <rect x="300" y="10" width="120" height="50" rx="4"
-                  fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <text x="360" y="40" text-anchor="middle" class="arch-bsa-label">BSA</text>
-            <text x="360" y="76" text-anchor="middle" class="arch-node-label">midpoint analyser</text>
-            <line x1="575" y1="35" x2="425" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                  marker-end="url(#arrow-mm)"/>
-            <rect x="580" y="10" width="80" height="50" rx="4"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <circle cx="635" cy="35" r="8" fill="var(--color-text)"/>
-            <text x="635" y="76" text-anchor="middle" class="arch-node-label">Bob memory</text>
-            <defs>
-              <marker id="arrow-mm" viewBox="0 0 10 10" refX="9" refY="5"
-                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text)"/>
-              </marker>
-            </defs>
-          </svg>
-          </div>
+          <img src={url("/images/distribution-mm.svg")}
+               alt="MeetInTheMiddle: Alice and Bob each hold a comm qubit (green C) and a memory qubit (purple M). Each endpoint emits a photon entangled with its own C; both photons travel L/2 along telecom fibre to meet at a midpoint Bell-state analyser. A coincidence click heralds an entangled Bell pair between A.C and B.C, shown as a magenta sinusoid; the classical herald is returned to both endpoints over a dashed grey channel." />
           <figcaption><strong>MeetInTheMiddle.</strong> Both endpoints emit photons toward a midpoint BSA. Heralding requires two-photon interference; rate scales with full-link transmission.</figcaption>
         </figure>
 
         <figure class="arch-fig">
-          <div class="arch-fig-scroll">
-          <svg viewBox="0 0 720 100" role="img"
-               aria-label="SenderReceiver: photon travels the full link from sender to receiver who runs the analyser">
-            <text x="20" y="30" class="arch-row-label">SR</text>
-            <rect x="60" y="10" width="80" height="50" rx="4"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
-            <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
-            <line x1="145" y1="35" x2="555" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                  marker-end="url(#arrow-sr)"/>
-            <rect x="560" y="10" width="100" height="50" rx="4"
-                  fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="4,3"/>
-            <circle cx="585" cy="35" r="8" fill="var(--color-text)"/>
-            <text x="625" y="40" class="arch-bsa-label">BSA</text>
-            <text x="610" y="76" text-anchor="middle" class="arch-node-label">Bob memory + analyser</text>
-            <defs>
-              <marker id="arrow-sr" viewBox="0 0 10 10" refX="9" refY="5"
-                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text)"/>
-              </marker>
-            </defs>
-          </svg>
-          </div>
+          <img src={url("/images/distribution-sr.svg")}
+               alt="SenderReceiver: Alice (sender) emits a photon entangled with her comm qubit C and sends it across the full link. Bob (receiver) holds his own comm qubit and a local Bell-state analyser; he interferes Alice's arriving photon with his local C. A successful BSM heralds an entangled pair between A.C and B.C, shown as a magenta sinusoid." />
           <figcaption><strong>SenderReceiver.</strong> Sender's photon traverses the full link; receiver runs the BSA. Single-photon transmission, but the photon travels the entire distance.</figcaption>
         </figure>
 
         <figure class="arch-fig">
-          <div class="arch-fig-scroll">
-          <svg viewBox="0 0 720 100" role="img"
-               aria-label="MidpointSource: an entangled pair source at the midpoint emits one photon to each endpoint">
-            <text x="20" y="30" class="arch-row-label">MS</text>
-            <rect x="60" y="10" width="80" height="50" rx="4"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <circle cx="85" cy="35" r="8" fill="var(--color-text)"/>
-            <text x="85" y="76" text-anchor="middle" class="arch-node-label">Alice memory</text>
-            <polygon points="360,10 420,35 360,60 300,35"
-                     fill="var(--color-surface-2)" stroke="var(--color-accent)" stroke-width="1.5"/>
-            <text x="360" y="40" text-anchor="middle" class="arch-bsa-label">SPDC</text>
-            <text x="360" y="76" text-anchor="middle" class="arch-node-label">midpoint pair source</text>
-            <line x1="300" y1="35" x2="145" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                  marker-end="url(#arrow-ms)"/>
-            <line x1="420" y1="35" x2="575" y2="35" stroke="var(--color-text)" stroke-width="1.2"
-                  marker-end="url(#arrow-ms)"/>
-            <rect x="580" y="10" width="80" height="50" rx="4"
-                  fill="var(--color-surface-2)" stroke="var(--color-rule)" stroke-width="1"/>
-            <circle cx="635" cy="35" r="8" fill="var(--color-text)"/>
-            <text x="635" y="76" text-anchor="middle" class="arch-node-label">Bob memory</text>
-            <defs>
-              <marker id="arrow-ms" viewBox="0 0 10 10" refX="9" refY="5"
-                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-text)"/>
-              </marker>
-            </defs>
-          </svg>
-          </div>
+          <img src={url("/images/distribution-ms.svg")}
+               alt="MidpointSource: an entangled-photon-pair source (EPPS, typically SPDC) at the link midpoint emits two entangled photons outward. Each photon travels L/2 to one of the endpoints, where it is interfered with a photon from the local comm qubit C by a local Bell-state analyser. When both endpoint BSMs herald, A.C and B.C are entangled, shown as a magenta sinusoid." />
           <figcaption><strong>MidpointSource.</strong> A pair source at the midpoint emits one photon to each endpoint. Heralding fires on the source-side partner; no two-photon interference required.</figcaption>
         </figure>
       </section>
@@ -424,48 +352,16 @@ const sections = [
     display: grid;
     gap: var(--space-3);
   }
-  .arch-fig svg {
+  .arch-fig img {
     inline-size: 100%;
     block-size: auto;
     display: block;
-  }
-  /* Below 36rem the row is too wide for legibility at 360px viewport.
-     The SVG sits in a scroll wrapper with min-width so labels stay
-     readable; the figcaption stays in normal flow. */
-  .arch-fig-scroll { inline-size: 100%; }
-  @media (max-width: 36rem) {
-    .arch-fig-scroll {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .arch-fig svg {
-      min-inline-size: 600px;
-    }
+    margin: 0 auto;
   }
   .arch-fig figcaption {
     margin: 0;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
     color: var(--color-text-mute);
-  }
-
-  /* :global() because Astro scoped CSS doesn't propagate to <text>
-     children in inline SVG. */
-  :global(.arch-row-label) {
-    font-size: 13px;
-    font-weight: 700;
-    fill: var(--color-text);
-    font-family: var(--font-mono);
-  }
-  :global(.arch-node-label) {
-    font-size: 10px;
-    fill: var(--color-text-mute);
-    font-style: italic;
-  }
-  :global(.arch-bsa-label) {
-    font-size: 11px;
-    font-weight: 700;
-    fill: var(--color-accent);
-    letter-spacing: 0.05em;
   }
 </style>

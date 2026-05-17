@@ -1212,36 +1212,120 @@ const sections = [
         </Callout>
 
         <p>
-          Different platforms produce entangled pairs in different ways, all of them
-          probabilistic and heralded:
+          Four families of generation scheme cover the literature, and they split along
+          two axes that the rest of this workspace relies on: <em>what</em> the
+          entanglement is between (two photons, photon and ensemble, photon and single
+          matter qubit, two distant matter qubits) and, for the matter-matter case,
+          <em>which protocol</em> brings the two distant qubits into a shared Bell state.
+          The Forbes 2025 framing — heralded versus postselected, with ancilla photons as
+          the resource consumed — is the consistency anchor across the four
+          <SourceNote id="forbes-rpp-2025" />.
+        </p>
+
+        <h3>1. Two-photon sources (photon-photon entanglement)</h3>
+        <p>
+          <strong>Spontaneous parametric down-conversion (SPDC)</strong> in a
+          <Math tex="\chi^{(2)}" /> non-linear crystal — PPKTP, BBO, or PPLN — converts a
+          pump photon into a pair of lower-energy photons whose polarisation, time-energy,
+          and momentum are correlated by the conservation laws of the conversion. Pair
+          rates reach the megahertz, bandwidths are broad, and the crystal runs at room
+          temperature, which is why SPDC is the workhorse for BBM92/Ekert91 QKD field
+          deployments and the Micius satellite link
+          <SourceNote id="kwiat-prl-1995" /><SourceNote id="yin-science-2017" />. Both
+          photons are fragile: any loss between source and detector destroys the pair,
+          so the scheme tolerates moderate fibre attenuation but cannot store the
+          entanglement while a classical message catches up. The chip-integrated variant
+          is <strong>spontaneous four-wave mixing (SFWM)</strong> in silicon-photonic
+          waveguides, which uses the <Math tex="\chi^{(3)}" /> non-linearity to do the
+          same job on a CMOS-compatible platform.
+        </p>
+
+        <h3>2. Atomic-ensemble emission (DLCZ-style)</h3>
+        <p>
+          The <strong>Duan-Lukin-Cirac-Zoller (DLCZ) protocol</strong> uses a cold-atom
+          cloud as both source and memory <SourceNote id="duan-nature-414" />. A weak
+          write pulse drives a Raman transition that emits a Stokes photon entangled with
+          a delocalised collective spin-wave excitation in the ensemble; the spin wave
+          stays put until a read pulse converts it back into an idler photon entangled
+          with whatever Bell pair the surrounding network has built. The Sangouard 2011
+          review is the standard reference for the protocol family and its variants
+          <SourceNote id="sangouard-rmp-83" />. Rare-earth-doped solids — Er³⁺ in silicon
+          photonics, Pr/Eu/Yb in YSO — are the present-day solid-state analogues, packaging
+          the same ensemble physics into a chip-scale memory.
+        </p>
+
+        <h3>3. Single-emitter matter-photon entanglement</h3>
+        <p>
+          A single quantum emitter — trapped ion, neutral atom, NV or SiV colour centre
+          in diamond, or semiconductor quantum dot — emits one photon entangled with its
+          own electron spin or hyperfine level. The matter qubit then <em>holds</em> the
+          entanglement while the photon flies, which is what every memory-equipped
+          repeater architecture in the series builds on. Demonstrations exist across all
+          four platforms: SiV in nanophotonic cavities over a 35-km Boston-area fibre
+          loop <SourceNote id="knaut-nature-2024" />, NV centres across three QuTech nodes
+          <SourceNote id="pompili-science-2021" />, trapped ions separated by 230 m
+          <SourceNote id="krutyanskiy-prl-2023" /> and across an optical link supporting
+          distributed quantum computation <SourceNote id="main-nature-2025" />, and
+          neutral-atom nodes 33 km apart <SourceNote id="vanleent-nature-2022" />. This
+          is the generation mechanism the workspace's 4-hop topology figure depicts: each
+          SiV repeater node emits a 737-nm photon entangled with the diamond spin, a
+          quantum frequency converter shifts the photon to 1550 nm for fibre transport,
+          and the photon flies to a midpoint Bell-state analyser where it interferes with
+          a partner emitted by the adjacent node.
+        </p>
+
+        <h3>4. Two-node matter-matter entanglement schemes</h3>
+        <p>
+          The three protocols below all sit <em>on top</em> of single-emitter spin-photon
+          entanglement: they specify how two distant nodes use their emitted photons to
+          herald a matter-matter Bell pair. The literature names and counts them
+          explicitly, so this taxonomy is taken from the source papers rather than
+          synthesised here.
         </p>
         <ul>
           <li>
-            <strong>Spontaneous parametric down-conversion (SPDC)</strong> in a non-linear
-            crystal (PPKTP, BBO, PPLN). A pump photon spontaneously splits into two
-            lower-energy photons whose polarisation, time-energy, and momentum are
-            correlated by the conservation laws of the conversion. Megahertz pair rates,
-            broad bandwidth, room temperature; the workhorse for QKD field deployments and
-            Micius-style satellite experiments
-            <SourceNote id="kwiat-prl-1995" /><SourceNote id="yin-science-2017" />. The
-            chip-integrated variant, <strong>spontaneous four-wave mixing (SFWM)</strong>
-            in silicon-photonic waveguides, puts the same physics on a chip.
+            <strong>Barrett-Kok (two-photon scheme).</strong> Each node emits one photon
+            entangled with its own qubit; the two photons interfere at a midpoint
+            beam-splitter; a single-photon coincidence in either output port heralds
+            <Math tex="|\Psi^-\rangle" /> or <Math tex="|\Psi^+\rangle" /> between the
+            two distant matter qubits <SourceNote id="barrett-kok-pra-2005" />. Two-photon
+            detection makes the heralding robust to optical-path phase fluctuations, at
+            the cost of a 50% ceiling on success probability set by the linear-optics
+            Bell-state-measurement bound. This is the architecture used by the SiV fibre
+            demonstration <SourceNote id="knaut-nature-2024" /> and corresponds to
+            <strong>MeetInTheMiddle</strong> on the
+            <a href={url("/distribution")}>distribution</a> page.
           </li>
           <li>
-            <strong>Atomic-ensemble emission (DLCZ-style)</strong>. A cloud of cold atoms
-            emits a Stokes photon entangled with a delocalised collective spin-wave
-            excitation in the ensemble. The ensemble doubles as a memory; reading it out
-            later releases an idler photon entangled with whatever Bell pair was generated
-            <SourceNote id="sangouard-rmp-83" /><SourceNote id="duan-nature-414" />.
+            <strong>Cabrillo (single-photon scheme).</strong> Each node has a low
+            excitation probability and emits at most one photon; a single click at a
+            single midpoint detector heralds entanglement by erasing which-path
+            information <SourceNote id="cabrillo-pra-1999" />. At low channel
+            transmission the rate is higher than Barrett-Kok — one photon loss is
+            tolerated instead of two — but the success amplitude depends on the relative
+            optical phase between the two arms, so the interferometer needs sub-wavelength
+            stability over the full link.
           </li>
           <li>
-            <strong>Single-emitter matter-photon entanglement</strong>. A trapped ion,
-            neutral atom, NV or SiV centre in diamond, or semiconductor quantum dot emits
-            a photon entangled with its own internal spin or hyperfine level. The matter
-            qubit then holds the entanglement while the photon travels
-            <SourceNote id="knaut-nature-2024" />.
+            <strong>Duan-Kimble (cavity-mediated scheme).</strong> A single photon
+            reflects off a cavity-coupled emitter; the photon polarisation acquires a
+            <Math tex="\pi" /> phase shift conditional on the qubit state, entangling
+            photon and qubit deterministically without any postselection
+            <SourceNote id="duan-kimble-prl-2003" />. The route is less common in field
+            deployments because it requires extreme cavity-emitter cooperativity, but it
+            is the canonical reference for cavity-mediated QND readout and for the
+            deterministic gates that Generation-2 and Generation-3 repeaters assume.
           </li>
         </ul>
+
+        <p>
+          Every hop of the 4-hop topology figure (<code>images/4hop-topology.svg</code>)
+          runs scheme 3 at each end and scheme 4-Barrett-Kok in the middle: two SiV nodes
+          emit spin-entangled photons, the photons meet at a midpoint Bell-state analyser,
+          and the two-photon click projects the two distant spins into a Bell pair. Four
+          such hops chained by entanglement swapping at the three intermediate nodes
+          deliver one end-to-end Bell pair across the line.
+        </p>
 
       </section>
 
