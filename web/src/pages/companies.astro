@@ -88,6 +88,32 @@ const COUNTRY_ORDER: string[] = Object.keys(countryCounts).sort((a, b) => {
   return d !== 0 ? d : a.localeCompare(b);
 });
 
+// Map country name → unicode flag emoji (regional-indicator pairs). Covers
+// the countries currently in dossier HQs; extend as new dossiers land.
+const COUNTRY_FLAGS: Record<string, string> = {
+  USA: "🇺🇸",
+  UK: "🇬🇧",
+  Germany: "🇩🇪",
+  France: "🇫🇷",
+  Netherlands: "🇳🇱",
+  Switzerland: "🇨🇭",
+  Canada: "🇨🇦",
+  Japan: "🇯🇵",
+  Singapore: "🇸🇬",
+  Israel: "🇮🇱",
+  Luxembourg: "🇱🇺",
+  China: "🇨🇳",
+  Austria: "🇦🇹",
+  Finland: "🇫🇮",
+  Australia: "🇦🇺",
+  Spain: "🇪🇸",
+  Denmark: "🇩🇰",
+  Italy: "🇮🇹",
+  Sweden: "🇸🇪",
+  "South Korea": "🇰🇷",
+};
+const flagFor = (c: string): string => COUNTRY_FLAGS[c] ?? "🏳";
+
 // Vendors named in surveys but not yet in our dossier set — flat list grouped by family.
 const watchList: { family: string; companies: { name: string; note: string }[] }[] = [
   {
@@ -170,30 +196,35 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
 
         {haveDossiers && (
           <div class="filter-bar" id="co-filter-bar">
-            <input type="search" id="co-search" placeholder="Search name, positioning, location…" class="co-search" />
-            <div class="filter-row">
-              <span class="filter-row-label">Category</span>
-              <div class="filter-chips" data-filter-group="category">
-                {CATEGORY_ORDER.filter((c) => (dossierCategoryCounts[c] ?? 0) > 0).map((c) => (
-                  <button class={`chip cat-pill cat-${c}`} data-filter-value={c} aria-pressed="false" type="button">
-                    {CATEGORY_LABEL[c]}
-                    <span class="chip-count">{dossierCategoryCounts[c]}</span>
-                  </button>
-                ))}
+            <div class="filter-top">
+              <input type="search" id="co-search" placeholder="Search name, positioning, location…" class="co-search" />
+              <button id="co-reset" class="co-reset" type="button">Reset</button>
+            </div>
+            <div class="filter-cols">
+              <div class="filter-col">
+                <span class="filter-row-label">Category</span>
+                <div class="filter-chips" data-filter-group="category">
+                  {CATEGORY_ORDER.filter((c) => (dossierCategoryCounts[c] ?? 0) > 0).map((c) => (
+                    <button class={`chip cat-pill cat-${c}`} data-filter-value={c} aria-pressed="false" type="button">
+                      {CATEGORY_LABEL[c]}
+                      <span class="chip-count">{dossierCategoryCounts[c]}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div class="filter-col">
+                <span class="filter-row-label">Country</span>
+                <div class="filter-chips" data-filter-group="country">
+                  {COUNTRY_ORDER.map((country) => (
+                    <button class="chip country-chip" data-filter-value={country} aria-pressed="false" type="button">
+                      <span class="country-flag" aria-hidden="true">{flagFor(country)}</span>
+                      <span class="country-name">{country}</span>
+                      <span class="chip-count">{countryCounts[country]}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-            <div class="filter-row">
-              <span class="filter-row-label">Country</span>
-              <div class="filter-chips" data-filter-group="country">
-                {COUNTRY_ORDER.map((country) => (
-                  <button class="chip country-chip" data-filter-value={country} aria-pressed="false" type="button">
-                    {country}
-                    <span class="chip-count">{countryCounts[country]}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <button id="co-reset" class="co-reset" type="button">Reset</button>
           </div>
         )}
 
@@ -490,17 +521,29 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
   /* ─── Filter bar ─────────────────────────────────────────── */
   .filter-bar {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-3);
     margin-block: var(--space-3) var(--space-3);
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-3);
     background: var(--color-surface-2);
     border: 1px solid var(--color-rule);
     border-radius: var(--radius-sm);
   }
-  .filter-row {
+  .filter-top {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    gap: var(--space-2);
+  }
+  .filter-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    align-items: start;
+  }
+  @media (max-width: 48rem) {
+    .filter-cols { grid-template-columns: 1fr; }
+  }
+  .filter-col {
+    display: grid;
     gap: 0.4rem;
   }
   .filter-row-label {
@@ -508,11 +551,14 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
     color: var(--color-text-mute);
-    min-width: 5rem;
   }
   .country-chip {
     font: inherit;
     font-size: var(--text-xs);
+  }
+  .country-flag {
+    font-size: 0.95em;
+    line-height: 1;
   }
   .co-search {
     flex: 1 1 16rem;
@@ -543,6 +589,17 @@ const watchList: { family: string; companies: { name: string; note: string }[] }
     color: var(--color-text);
     transition: background 120ms, border-color 120ms;
   }
+  /* Category filter chips reuse `.cat-pill` colours from the card pills —
+     restate them at a more specific selector (button.chip.cat-*) so the
+     generic .chip background above doesn't win the cascade. */
+  button.chip.cat-qc            { background: color-mix(in srgb, #3b82f6 18%, transparent); color: #2353c7; border-color: color-mix(in srgb, #3b82f6 40%, transparent); }
+  button.chip.cat-qkd           { background: color-mix(in srgb, #8b5cf6 18%, transparent); color: #6c40d9; border-color: color-mix(in srgb, #8b5cf6 40%, transparent); }
+  button.chip.cat-memory        { background: color-mix(in srgb, #10b981 18%, transparent); color: #0c8a64; border-color: color-mix(in srgb, #10b981 40%, transparent); }
+  button.chip.cat-network       { background: color-mix(in srgb, #06b6d4 18%, transparent); color: #0289a2; border-color: color-mix(in srgb, #06b6d4 40%, transparent); }
+  button.chip.cat-source-detect { background: color-mix(in srgb, #f59e0b 18%, transparent); color: #b16e00; border-color: color-mix(in srgb, #f59e0b 40%, transparent); }
+  button.chip.cat-sensing       { background: color-mix(in srgb, #ef4444 18%, transparent); color: #c53030; border-color: color-mix(in srgb, #ef4444 40%, transparent); }
+  button.chip.cat-software      { background: color-mix(in srgb, #6b7280 18%, transparent); color: #4b5563; border-color: color-mix(in srgb, #6b7280 40%, transparent); }
+  button.chip.cat-enabling      { background: color-mix(in srgb, #ec4899 18%, transparent); color: #be1f7a; border-color: color-mix(in srgb, #ec4899 40%, transparent); }
   .chip:hover { border-color: var(--color-accent); }
   .chip[aria-pressed="true"] {
     background: var(--color-accent);
