@@ -63,7 +63,13 @@ function extractCountry(hq: string | undefined | null): string {
   if (!hq) return "Unknown";
   const parts = hq.split(",").map((s) => s.trim()).filter(Boolean);
   if (parts.length === 0) return "Unknown";
-  let last = parts[parts.length - 1];
+  // Strip trailing parentheticals from the last segment — a dossier
+  // like "Shanghai, China (China (Shanghai) Pilot Free Trade Zone)"
+  // would otherwise land in a singleton bucket because the whole
+  // parenthesised qualifier becomes the "country" string. Apply
+  // before the alias lookup so the canonical form is what gets
+  // normalised.
+  let last = parts[parts.length - 1].replace(/\s*\(.*\)\s*$/, "").trim();
   // Normalise common variants.
   const aliases: Record<string, string> = {
     "US": "USA",
