@@ -340,15 +340,22 @@ const sections = [
         </Callout>
 
         <p>
-          The infrastructure point to read off the figure: the only places that need
-          new <em>quantum-channel</em> hardware are the interface blocks (M-O at
-          Node A, QFCs flanking every SiV repeater, QFC at Node B) and the
-          telecom-band fibre between them. The classical channel along the bottom
-          carries heralds and BSM outcome bits in the usual way. Once a Bell pair has
-          been delivered across the chain, consuming it for teleportation or a remote
-          gate runs over <a href={url("/entanglement#locc")}>LOCC</a> — the fibre
-          goes quiet, and the M-O transducer fires only at the moment the transmon
-          state is being moved into (or out of) the matter memory.
+          The new <em>quantum-channel</em> hardware is concentrated at the interface
+          blocks — M-O at Node A, QFCs flanking every SiV repeater, QFC at Node B —
+          plus the telecom-band fibre between them. The classical channel along the
+          bottom carries heralds and BSM outcome bits in the usual way. The protocol
+          splits into two phases that run independently of each other.
+          <strong>Entanglement generation</strong> (steps 1–2) runs continuously to
+          maintain a stock of end-to-end Bell pairs the same way a power grid
+          maintains spinning reserve — the M-O transducer, the QFCs, the fibre, and
+          every midpoint BSA fire throughout. <strong>Consumption</strong> (steps
+          3–5) draws one stored pair on demand and runs over
+          <a href={url("/entanglement#locc")}>LOCC</a>: a local matter-matter BSM at
+          DC-A on (DQ-A, MQ-A) using on-chip microwave gates, the two classical
+          bits sent across the classical channel, then a local Pauli correction at
+          DC-B. The M-O transducer is not involved in the consumption phase — it
+          did its job earlier, helping to generate the Bell pair that is now being
+          spent.
         </p>
 
         <Callout label="For readers used to classical networking: this is the deep structural difference">
