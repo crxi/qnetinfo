@@ -299,21 +299,21 @@
   <line x1="89" y1="118" x2="90.0" y2="118" class="entanglement"/>
   <path d="M 90.0 118 q 5.0 -4 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0" class="entanglement"/>
   <line x1="910.0" y1="118" x2="911" y2="118" class="entanglement"/>
-  <circle cx="409.76" cy="290.0" r="7" class="step-num-bg"/>
-  <text x="409.76" y="290.0" class="step-num" style="text-anchor:middle">1</text>
-  <text x="422.76" y="290.0" class="step-txt" style="text-anchor:start">Generate Bell pairs per hop — 10⁴-class retries per pair (fibre loss + 50% photonic BSM).</text>
-  <circle cx="409.76" cy="270.0" r="7" class="step-num-bg"/>
-  <text x="409.76" y="270.0" class="step-num" style="text-anchor:middle">2</text>
-  <text x="422.76" y="270.0" class="step-txt" style="text-anchor:start">Distil per hop, then matter-matter swap end-to-end — gated by memory T₂ in the wait.</text>
-  <circle cx="409.76" cy="250.0" r="7" class="step-num-bg"/>
-  <text x="409.76" y="250.0" class="step-num" style="text-anchor:middle">3</text>
-  <text x="422.76" y="250.0" class="step-txt" style="text-anchor:start">Load |ψ⟩ onto DQ-A — must beat MQ-A's coherence budget or the chain restarts.</text>
-  <circle cx="409.76" cy="230.0" r="7" class="step-num-bg"/>
-  <text x="409.76" y="230.0" class="step-num" style="text-anchor:middle">4</text>
-  <text x="422.76" y="230.0" class="step-txt" style="text-anchor:start">Local matter-matter BSM on (DQ-A, MQ-A) destroys |ψ⟩, yields 2 classical bits.</text>
-  <circle cx="409.76" cy="210.0" r="7" class="step-num-bg"/>
-  <text x="409.76" y="210.0" class="step-num" style="text-anchor:middle">5</text>
-  <text x="422.76" y="210.0" class="step-txt" style="text-anchor:start">Bits travel to DC-B; apply Pauli to MQ-B — |ψ⟩ at B (classical-channel latency only).</text>
+  <circle cx="394.64" cy="290.0" r="7" class="step-num-bg"/>
+  <text x="394.64" y="290.0" class="step-num" style="text-anchor:middle">1</text>
+  <text x="407.64" y="290.0" class="step-txt" style="text-anchor:start">Generate Bell pairs per hop — 10³–10⁵ heralded retries per pair (fibre loss + 50% photonic BSM).</text>
+  <circle cx="394.64" cy="270.0" r="7" class="step-num-bg"/>
+  <text x="394.64" y="270.0" class="step-num" style="text-anchor:middle">2</text>
+  <text x="407.64" y="270.0" class="step-txt" style="text-anchor:start">Distil per hop, then matter-matter swap end-to-end — gated by memory T₂ in the wait.</text>
+  <circle cx="394.64" cy="250.0" r="7" class="step-num-bg"/>
+  <text x="394.64" y="250.0" class="step-num" style="text-anchor:middle">3</text>
+  <text x="407.64" y="250.0" class="step-txt" style="text-anchor:start">Load |ψ⟩ onto DQ-A — must beat MQ-A's coherence budget or the chain restarts.</text>
+  <circle cx="394.64" cy="230.0" r="7" class="step-num-bg"/>
+  <text x="394.64" y="230.0" class="step-num" style="text-anchor:middle">4</text>
+  <text x="407.64" y="230.0" class="step-txt" style="text-anchor:start">Local matter-matter BSM on (DQ-A, MQ-A) destroys |ψ⟩, yields 2 classical bits.</text>
+  <circle cx="394.64" cy="210.0" r="7" class="step-num-bg"/>
+  <text x="394.64" y="210.0" class="step-num" style="text-anchor:middle">5</text>
+  <text x="407.64" y="210.0" class="step-txt" style="text-anchor:start">Bits travel to DC-B; apply Pauli to MQ-B — |ψ⟩ at B (classical-channel latency only).</text>
   <rect x="160" y="182" width="200" height="118" rx="6" style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3"/>
   <text x="260.0" y="196" class="step-txt" style="text-anchor:middle;font-weight: 700">T₂ coherence budget</text>
   <circle cx="174" cy="210" r="5" class="data"/>
