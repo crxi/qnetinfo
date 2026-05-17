@@ -257,8 +257,12 @@ def _node_A(cv: Canvas) -> None:
 
     # Per-qubit lifetime tag — bare value, no 'T₂ ≈' prefix (the panel
     # title already establishes that the dimension being shown is T₂).
-    for y in (Y_DQ, Y_MQ, Y_CQ):
-        cv.text(NODE_A_CX - 20, y + 14, "100 µs", cls="t2-tag",
+    # MQ-A is a *different* qubit hardware than DQ/CQ — typically a 3D
+    # bosonic cavity coupled to a transmon ancilla, giving ~10 ms vs the
+    # bare-transmon ~100 µs. That role distinction is the reason MQ
+    # exists separately from DQ at all.
+    for y, val in ((Y_DQ, "100 µs"), (Y_MQ, "10 ms"), (Y_CQ, "100 µs")):
+        cv.text(NODE_A_CX - 20, y + 14, val, cls="t2-tag",
                 font_size=7.5, anchor="end", name=f"A-t2@{y}")
 
     # CQ-A microwave link to M-O
@@ -600,8 +604,10 @@ def _lifetime_panel(cv: Canvas) -> None:
     # Start past Node A's chandelier outline (which extends to ~x=150)
     # with a small breathing margin so the panel doesn't impinge on it.
     # Width is sized for the post-prefix-drop content (bare values, no
-    # 'T₂ ≈' prefix on each row).
-    px, py, pw, ph = 160, 213, 200, 88
+    # 'T₂ ≈' prefix on each row). Height fits 5 rows: the per-platform
+    # split at Node A (bare transmon vs cavity-coupled memory) is what
+    # makes the M-vs-C role distinction non-trivial there.
+    px, py, pw, ph = 160, 206, 200, 102
     cv.rect(
         px, py, pw, ph, rx=6,
         style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3",
@@ -614,10 +620,11 @@ def _lifetime_panel(cv: Canvas) -> None:
         name="lifetime-panel-ttl",
     )
     rows = [
-        ("data",   "transmon (Node A)",   "100 µs"),
-        ("comm",   "SiV electron (C)",    "1 ms"),
-        ("memory", "¹³C nuclear (M)",     "1 s"),
-        ("data",   "¹⁷¹Yb⁺ (Node B)",     "10 s"),
+        ("data",   "transmon (DQ-A, CQ-A)", "100 µs"),
+        ("memory", "cavity memory (MQ-A)",  "10 ms"),
+        ("comm",   "SiV electron (C)",      "1 ms"),
+        ("memory", "¹³C nuclear (M)",       "1 s"),
+        ("data",   "¹⁷¹Yb⁺ (Node B)",       "10 s"),
     ]
     y0, dy = py + 32, 14
     for i, (role, label, value) in enumerate(rows):
