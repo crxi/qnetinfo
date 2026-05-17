@@ -241,7 +241,7 @@ def qubit_column(
     """
     for y, role_cls, glyph, side_label in qubits:
         canvas.circle(cx, y, radius, cls=role_cls, name=f"qubit@{cx},{y}")
-        _draw_glyph(canvas, cx, y + 2, glyph, name=f"qbit-in@{cx},{y}")
+        _draw_glyph(canvas, cx, y, glyph, name=f"qbit-in@{cx},{y}")
         if side_label:
             lx = cx + side_offset if side_anchor == "start" else cx - side_offset
             canvas.text(
@@ -363,13 +363,40 @@ def qr_node(
     l_anchor = cx - qbit_gap   # anchor for left QFC group (preserves QR_QFC_FACE)
     r_anchor = cx + qbit_gap   # anchor for right QFC group
 
-    # Rect must clear the memory row at top (m_y - 9 - pad) and the comm row
-    # at bottom (axis_y + 9 + pad).
-    rect_top = m_y - 9 - 5
-    rect_bot = axis_y + 14
+    # Cold zone wraps just the M+C cluster (NOT the QFC blocks). SiV⁻
+    # centres need sub-500 mK to suppress phonon-induced spin mixing
+    # (Harvard/Lukin SiV-cavity demos run at ~100 mK); the QFCs are
+    # PPLN-on-bench devices at room temperature. Same dashed-blue style
+    # as Node B's Yb⁺-ion cold zone.
+    cz_pad = 3
+    cz_left = (cx - qbit_gap / 2) - 9 - cz_pad
+    cz_right = (cx + qbit_gap / 2) + 9 + cz_pad
+    cz_top = m_y - 9 - cz_pad
+    cz_bot = axis_y + 9 + cz_pad
+    # QR rect sized tight to the cold zone (2-px clearance).
+    rect_top = cz_top - 2
+    rect_bot = cz_bot + 2
     rect_h = rect_bot - rect_top
     canvas.rect(cx - width / 2, rect_top, width, rect_h, cls="repeater", rx=4, name=label)
+    canvas.rect(
+        cz_left, cz_top, cz_right - cz_left, cz_bot - cz_top,
+        cls="cold-zone", rx=4, name=f"{label}-cold-zone",
+    )
+    # QR-n title centred above the rect.
     canvas.text(cx, rect_top - 4, label, cls="lbl", font_size=10, name=f"{label}-title")
+    # SiV⁻ / ~100 mK tag — outside the dotted cold zone, in the top-right
+    # strip of the QR rect (above the right QFC block). Two stacked lines,
+    # material over temperature.
+    _tag_x = cz_right + 3
+    canvas.add(
+        f'<text x="{_tag_x}" y="{rect_top + 4}" class="cold-tag" '
+        f'style="text-anchor:start;font-size:6.5px">'
+        f'<tspan x="{_tag_x}" dy="0.6em">SiV⁻</tspan>'
+        f'<tspan x="{_tag_x}" dy="1.1em">~100 mK</tspan>'
+        f'</text>',
+        kind="text",
+        name=f"{label}-platform-tag",
+    )
 
     # Left QFC + photon stub + C_L
     canvas.rect(l_anchor - 39, axis_y - 9, 18, 18, cls="qfc-blk", rx=2, name=f"{label}-qfc-L")
@@ -381,11 +408,11 @@ def qr_node(
     gamma_l_x = c_l_x - 13
     canvas.circle(gamma_l_x, axis_y, 4, cls="photon", name=f"{label}-γ-L")
     canvas.circle(c_l_x, axis_y, 9, cls="comm", name=f"{label}-C-L")
-    _draw_glyph(canvas, c_l_x, axis_y + 1, "C", name=f"{label}-C-L-in")
+    _draw_glyph(canvas, c_l_x, axis_y, "C", name=f"{label}-C-L-in")
 
     # Right QFC + photon stub + C_R (photon touches C_R right edge)
     canvas.circle(c_r_x, axis_y, 9, cls="comm", name=f"{label}-C-R")
-    _draw_glyph(canvas, c_r_x, axis_y + 1, "C", name=f"{label}-C-R-in")
+    _draw_glyph(canvas, c_r_x, axis_y, "C", name=f"{label}-C-R-in")
     gamma_r_x = c_r_x + 13
     canvas.circle(gamma_r_x, axis_y, 4, cls="photon", name=f"{label}-γ-R")
     canvas.rect(r_anchor + 21, axis_y - 9, 18, 18, cls="qfc-blk", rx=2, name=f"{label}-qfc-R")
@@ -393,9 +420,9 @@ def qr_node(
 
     # Nuclear memories — one above each comm.
     canvas.circle(m_l_x, m_y, 9, cls="memory", name=f"{label}-M-L")
-    _draw_glyph(canvas, m_l_x, m_y + 1, "M", name=f"{label}-M-L-in")
+    _draw_glyph(canvas, m_l_x, m_y, "M", name=f"{label}-M-L-in")
     canvas.circle(m_r_x, m_y, 9, cls="memory", name=f"{label}-M-R")
-    _draw_glyph(canvas, m_r_x, m_y + 1, "M", name=f"{label}-M-R-in")
+    _draw_glyph(canvas, m_r_x, m_y, "M", name=f"{label}-M-R-in")
 
     # SWAP arrows linking each M ↔ C pair (Azuma SWAP-store path).
     swap_arrow(canvas, m_l_x, m_y + 9, axis_y - 9)
@@ -562,13 +589,9 @@ def legend_row(
     gap: float = 12,  # retained for API compatibility, unused
     font_size: float = 8.5,
 ) -> None:
-    """Lay out legend items in equal-width slots between `start_x` and `end_x`.
-
-    The old auto-spacing tried to estimate text width from the label length —
-    which kept under-counting and letting labels eat into the next icon. This
-    version assigns each item a fixed slot and draws icon+label flush-left in
-    its slot, so the only constraint is that the slot is wide enough for the
-    longest label. Pick `start_x` / `end_x` accordingly.
+    """Lay out legend items as a tight row centred between `start_x` and
+    `end_x`. Each item is `icon` + 6 px gap + `label`; items are separated
+    by an inter-item gap. The whole row is centred on (start_x+end_x)/2.
 
     Each item is one of:
         {"kind": "rect",    "cls": "...", "label": "..."}
@@ -576,17 +599,37 @@ def legend_row(
         {"kind": "photons", "sizes": [7,4,2], "label": "..."}
     """
     del gap  # legacy
-    n = len(items)
-    slot_w = (end_x - start_x) / n
-    for i, it in enumerate(items):
-        slot_x = start_x + slot_w * i
+    icon_text_gap = 6
+    inter_item_gap = 22
+    text_char_w = 0.55 * font_size  # heuristic, matches svglib bbox
+
+    def icon_width(it: dict) -> float:
+        if it["kind"] == "rect":
+            return 18
+        if it["kind"] == "circle":
+            return 2 * it.get("r", 6)
+        if it["kind"] == "photons":
+            sizes = it["sizes"]
+            return sum(2 * r for r in sizes) + max(len(sizes) - 1, 0)
+        return 0
+
+    def item_width(it: dict) -> float:
+        return icon_width(it) + icon_text_gap + text_char_w * len(it["label"])
+
+    widths = [item_width(it) for it in items]
+    total = sum(widths) + inter_item_gap * (len(items) - 1)
+    centre_x = (start_x + end_x) / 2
+    cursor = centre_x - total / 2
+
+    for it, w in zip(items, widths):
+        slot_x = cursor
         if it["kind"] == "rect":
             canvas.rect(
                 slot_x, base_y - 6, 18, 11, cls=it["cls"], rx=2,
                 name=f"legend-{it['label']}",
             )
             canvas.text(
-                slot_x + 24, base_y + 3, it["label"],
+                slot_x + 18 + icon_text_gap, base_y + 3, it["label"],
                 cls="mini", font_size=font_size, anchor="start",
                 name=f"legend-txt-{it['label']}",
             )
@@ -594,7 +637,7 @@ def legend_row(
             r = it.get("r", 6)
             canvas.circle(slot_x + r, base_y, r, cls=it["cls"], name=f"legend-{it['label']}")
             canvas.text(
-                slot_x + r * 2 + 6, base_y + 3, it["label"],
+                slot_x + 2 * r + icon_text_gap, base_y + 3, it["label"],
                 cls="mini", font_size=font_size, anchor="start",
                 name=f"legend-txt-{it['label']}",
             )
@@ -604,7 +647,8 @@ def legend_row(
                 canvas.circle(cur + r, base_y, r, cls="photon")
                 cur += r * 2 + 1
             canvas.text(
-                cur + 6, base_y + 3, it["label"],
+                cur - 1 + icon_text_gap, base_y + 3, it["label"],
                 cls="mini", font_size=font_size, anchor="start",
                 name=f"legend-txt-{it['label']}",
             )
+        cursor += w + inter_item_gap

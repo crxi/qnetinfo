@@ -130,6 +130,20 @@ CSS = """
   .fiber--quantum  { stroke: #2f6fd6; stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
   .fiber--stub     { stroke: #2f6fd6; stroke-width: 1.8; fill: none; stroke-linecap: butt; }
   .fiber--uv       { stroke: #8c6ad6; stroke-width: 1.3; fill: none; stroke-linecap: round; stroke-dasharray: 4 2; opacity: 0.7; }
+
+  /* End-to-end entanglement wavy line between MQ-A and MQ-B (workspace
+     convention — magenta sinusoid; see /entanglement, /swapping). */
+  .entanglement    { stroke: #c84a9b; stroke-width: 1.6; fill: none; stroke-linecap: round; }
+  .entanglement-lbl{ font: 600 9px sans-serif; fill: #c84a9b; text-anchor: middle; }
+
+  /* Numbered teleportation-protocol steps overlaid on the figure.
+     dominant-baseline: central on BOTH the badge number and the caption
+     text — otherwise the caption defaults to baseline-aligned (visual
+     centre above y) while the badge number is geometrically centred at y,
+     leaving the digits sitting visibly lower than the words. */
+  .step-num   { font: 700 11px sans-serif; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+  .step-num-bg{ fill: #1a3458; stroke: none; }
+  .step-txt   { font: 600 10px sans-serif; fill: #1a3458; text-anchor: start; dominant-baseline: central; }
 """
 
 
@@ -158,6 +172,8 @@ def build() -> Canvas:
     _photonic_chain(cv)
     _midpoints(cv)
     _hop_brackets(cv)
+    _entanglement_overlay(cv)
+    _protocol_steps(cv)
     _legend(cv)
     return cv
 
@@ -190,17 +206,15 @@ def _background(cv: Canvas) -> None:
     cv.rect(0, INTERFACE_Y, W, bottom_y - INTERFACE_Y, cls="plane-photonic", name="bg-photonic")
     # Dashed boundary, full-width, behind the foreground elements.
     cv.line(0, INTERFACE_Y, W, INTERFACE_Y, cls="interface-line", name="interface-line")
-    # Plane labels — centred horizontally, straddling the interface line in
-    # the clear band between Node A and Node B so they don't fight either node.
+    # One-liner explainer for the dashed boundary, placed below the line.
+    # The split is fundamentally a *qubit-role* one (matter vs flying) — the
+    # line marks the matter–photon handoff that every quantum-network link
+    # has to cross.
     cv.text(
-        W / 2, INTERFACE_Y - 8, "matter qubits (compute + memory)",
+        W / 2, INTERFACE_Y + 14,
+        "above: qubits hold the entanglement at the nodes.   below: photons fly between nodes to establish it.",
         cls="plane-tag", anchor="middle", font_size=9,
-        name="plane-tag-matter",
-    )
-    cv.text(
-        W / 2, INTERFACE_Y + 14, "photonic interface + network",
-        cls="plane-tag", anchor="middle", font_size=9,
-        name="plane-tag-photonic",
+        name="plane-tag-interface",
     )
 
 
@@ -297,35 +311,42 @@ def _node_B(cv: Canvas) -> None:
     )
     # Cold region — wraps just the qubit cluster *tightly* (3-px buffer
     # each side of the radius-11 circles). The temperature tag lives
-    # OUTSIDE the zone on the inner-facing side, rotated vertically, so
-    # the zone itself can be narrow.
+    # OUTSIDE the zone on the inner-facing side, as a horizontal two-line
+    # label placed low (near CQ-B) so the MQ row stays clear for the
+    # MQ-A ↔ MQ-B entanglement wavy line above.
     cold_x = NODE_B_CX - 14   # 906 — just outside qubit right edge (931 minus circle, wait)
     cold_y = 64               # 3 px above DQ-B top (67)
     cold_w = 28               # right edge at 934 — 3 px outside qubit right edge (931)
     cold_h = 115              # bottom at y=179 — 3 px below CQ-B bottom (176)
     cv.rect(cold_x, cold_y, cold_w, cold_h, cls="cold-zone", rx=8, name="B-cold-zone")
-    # Temperature tag — rotated 90° CCW, placed on the LEFT side of the
-    # cold zone (outside it). Side labels are on Node B's right, so the
-    # left side is free for the vertical tag. Reads bottom-to-top.
-    tag_x, tag_y = cold_x - 8, (cold_y + cold_y + cold_h) / 2  # 898, 121.5
+    # Two-line tag, right-anchored against the cold-zone left edge, vertical
+    # midpoint at CQ-B height. Reads as a normal horizontal label.
+    tag_x = cold_x - 4
+    tag_y = Y_CQ
     cv.add(
         f'<text x="{tag_x}" y="{tag_y}" class="cold-tag" '
-        f'transform="rotate(-90 {tag_x} {tag_y})" '
-        f'style="text-anchor:middle">~mK · Yb⁺ ions</text>',
+        f'style="text-anchor:end">'
+        f'<tspan x="{tag_x}" dy="-0.5em">Yb⁺ ions</tspan>'
+        f'<tspan x="{tag_x}" dy="1.1em">~mK</tspan>'
+        f'</text>',
         kind="text",
         name="B-cold-tag",
     )
-    # UHV · 300 K — flush against the LEFT wall of the Node B outline, in the
-    # band between the chamber and the QFC bench. Kept off the central x-axis
-    # so the dashed UV photon link from CQ-B down to the QFC stays unblocked.
-    cv.text(
-        NODE_B_CX - 62 + 4,  # node-outline width is 124, so left wall = cx-62
-        (CHAMBER_BOT + Y_TRANSDUCER_TOP) / 2 + 3,
-        "UHV · 300 K",
-        cls="plate-tag",
-        anchor="start",
-        font_size=7.5,
-        style="fill:#2a5288",
+    # Ultra-High Vacuum · 300 K — flush against the LEFT wall of the Node B
+    # outline, in the band between the chamber and the QFC bench. Kept off the
+    # central x-axis so the dashed UV photon link from CQ-B down to the QFC
+    # stays unblocked. Two stacked lines: expanded acronym on top, temperature
+    # below.
+    _uhv_x = NODE_B_CX - 62 + 4  # node-outline width is 124, so left wall = cx-62
+    _uhv_y = (CHAMBER_BOT + Y_TRANSDUCER_TOP) / 2 + 3
+    cv.add(
+        f'<text x="{_uhv_x}" y="{_uhv_y}" class="plate-tag" '
+        f'style="text-anchor:start;fill:#2a5288;font-size:7.5px">'
+        f'<tspan x="{_uhv_x}" dy="-1.1em">Ultra-High</tspan>'
+        f'<tspan x="{_uhv_x}" dy="1.1em">Vacuum</tspan>'
+        f'<tspan x="{_uhv_x}" dy="1.1em">300 K</tspan>'
+        f'</text>',
+        kind="text",
         name="B-uhv-tag",
     )
 
@@ -429,13 +450,32 @@ def _midpoints(cv: Canvas) -> None:
     # SNSPD temperature tags — every BSM station is shorthand for "fibre
     # bench at 300 K + SNSPD chip in a He cryostat at ~2 K". Knaut Nature
     # 629.573 uses Photon Spot SNSPDs; ETSI GR QKD 003 §5 lists 0.12–2.3 K
-    # sensor temps for NbN/WSi nanowires at 1550 nm.
-    for x, y in [(NODE_A_CX, Y_M1_M4 + 22),
-                 (NODE_B_CX, Y_M1_M4 + 22),
-                 (m2_x, AXIS_Y + 20),
-                 (m3_x, AXIS_Y + 20)]:
-        cv.text(x, y, "SNSPDs ~2 K", cls="cold-tag", anchor="middle", font_size=6.5,
-                name=f"bsm-temp@{x},{y}")
+    # sensor temps for NbN/WSi nanowires at 1550 nm. Two lines: name on top,
+    # temperature below.
+    #
+    # Placement:
+    #   * M1 (Node-A side, label="M1" on the left) → tag on the RIGHT
+    #   * M4 (Node-B side, label="M4" on the right) → tag on the LEFT
+    #   * M2 / M3 (on axis, label above) → tag centred below
+    bsm_half = 12  # BSM_SIZE / 2
+    side_gap = 4
+    tag_specs = [
+        # (cx, cy, anchor, name)
+        (NODE_A_CX + bsm_half + side_gap, Y_M1_M4, "start",  "bsm-temp-M1"),
+        (NODE_B_CX - bsm_half - side_gap, Y_M1_M4, "end",    "bsm-temp-M4"),
+        (m2_x,                            AXIS_Y + 24, "middle", "bsm-temp-M2"),
+        (m3_x,                            AXIS_Y + 24, "middle", "bsm-temp-M3"),
+    ]
+    for x, y, anchor, name in tag_specs:
+        cv.add(
+            f'<text x="{x}" y="{y}" class="cold-tag" '
+            f'style="text-anchor:{anchor};font-size:6.5px">'
+            f'<tspan x="{x}" dy="-0.15em">SNSPDs</tspan>'
+            f'<tspan x="{x}" dy="1.1em">~2 K</tspan>'
+            f'</text>',
+            kind="text",
+            name=name,
+        )
 
 
 # Kept around in case a future revision wants per-segment distance tags,
@@ -481,6 +521,80 @@ def _hop_brackets(cv: Canvas) -> None:
     bounds = [NODE_A_CX, QR_CENTRES[0], QR_CENTRES[1], QR_CENTRES[2], NODE_B_CX]
     labels = [f"Hop {i+1} — 100 km" for i in range(4)]
     C.hop_brackets(cv, HOP_BRACKET_Y, bounds, labels)
+
+
+def _protocol_steps(cv: Canvas) -> None:
+    """Overlay the five teleportation steps. Reads bottom-up (1 lowest,
+    5 highest). Steps 1-2 sit just below the matter–photon interface
+    explainer line; steps 3-5 sit above the entanglement wavy line in
+    the matter band. All numbers are left-aligned in a single column;
+    the column is positioned so the whole block (badge + longest text)
+    is horizontally centred in the figure."""
+    # All five steps stacked, bottom-up (step 1 lowest, step 5 highest),
+    # in the open photonic-band strip below the interface explainer line.
+    # Numbers are left-aligned in a single column; the whole block (badge
+    # column + longest line of text) is horizontally centred on the figure.
+    captions = [
+        "Generate Bell pairs across each hop — repeat each attempt until the midpoint heralds a click.",
+        "Purify each hop's pair, then swap into one end-to-end Bell pair held in MQ-A ↔ MQ-B.",
+        "Load the payload state |ψ⟩ onto DQ-A when the local QPU is ready to send it.",
+        "Local BSM at DC-A on (DQ-A, MQ-A) destroys |ψ⟩ and produces 2 classical bits.",
+        "Bits travel to DC-B; apply Pauli correction to MQ-B — |ψ⟩ is now at B.",
+    ]
+    badge_r = 8
+    gap = 6
+    font_size = 10
+    row_gap = 22
+    # Width heuristic — the rendered prose is narrower than the svglib
+    # collision-bbox default (0.55), so an over-estimated width pulls the
+    # badge column too far LEFT and the block looks left-lopsided.
+    # 0.48 matches the actual render of the longest line (step 1) so the
+    # block visually centres on x=W/2.
+    text_w = lambda s: 0.48 * font_size * len(s)
+    block_w = badge_r * 2 + gap + max(text_w(c) for c in captions)
+    badge_x = (W - block_w) / 2 + badge_r        # left-aligned column
+    text_x = badge_x + badge_r + gap
+    # Shift the block up — centre vertically a bit higher in the band so
+    # there's more breathing room below the dashed interface line.
+    centre_y = 250
+    n = len(captions)
+    block_h = row_gap * (n - 1)
+    top_y = centre_y - block_h / 2
+    for i, txt in enumerate(captions, start=1):
+        y = top_y + (n - i) * row_gap   # step 1 at bottom, step 5 at top
+        cv.circle(badge_x, y, badge_r, cls="step-num-bg", name=f"step{i}-badge")
+        cv.text(badge_x, y, str(i), cls="step-num", font_size=11, name=f"step{i}-num")
+        cv.text(text_x, y, txt,
+                cls="step-txt", font_size=font_size, anchor="start",
+                name=f"step{i}-txt")
+
+
+def _entanglement_overlay(cv: Canvas) -> None:
+    """Magenta wavy line from MQ-A (Node A) to MQ-B (Node B) — depicts the
+    delivered end-to-end Bell pair held in the two endpoint memories. The
+    network plumbing below (QRs + BSMs) produced this pair via four
+    heralded hops and two levels of swapping; the line is the resource it
+    delivered, ready to be consumed by teleportation."""
+    x0 = NODE_A_CX + 9   # MQ-A inner edge
+    x1 = NODE_B_CX - 9   # MQ-B inner edge
+    y = Y_MQ
+    half_wl = 10  # px between alternating crests
+    amp = 4
+    n_half = int((x1 - x0) / half_wl)
+    span = n_half * half_wl  # snap to integer half-wavelengths
+    # Centre the wave between the two endpoints
+    pad = (x1 - x0 - span) / 2
+    sx = x0 + pad
+    parts = [f"M {sx} {y} q {half_wl/2} {-amp} {half_wl} 0"]
+    parts.extend("t {} 0".format(half_wl) for _ in range(n_half - 1))
+    # Lead-in / lead-out straight segments to meet the qubit edges flush
+    cv.line(x0, y, sx, y, cls="entanglement", name="entg-lead-in")
+    cv.add(
+        f'<path d="{" ".join(parts)}" class="entanglement"/>',
+        kind="path",
+        name="entg-wave",
+    )
+    cv.line(sx + span, y, x1, y, cls="entanglement", name="entg-lead-out")
 
 
 def _legend(cv: Canvas) -> None:
