@@ -293,31 +293,41 @@ const sections = [
             loss budget. The calculation, for a 50 km MeetInTheMiddle hop
             (both photons travelling L/2 = 25 km to the midpoint):
           </p>
+          <p>
+            Each row below is the survival probability for one attempt of
+            the whole hop — both photons travelling, both detectors firing,
+            the BSM resolving. Where a stage acts on each photon
+            independently (fibre, emission, QFC, SNSPD), the row already
+            squares the per-photon number, so the rightmost column is the
+            joint factor for the pair.
+          </p>
           <table class="loss-budget">
             <thead>
-              <tr><th>Factor</th><th>Survival per attempt</th><th>Reference</th></tr>
+              <tr><th>Factor</th><th>Survival per attempt (both photons)</th><th>Reference</th></tr>
             </thead>
             <tbody>
-              <tr><td>Fibre loss, 25 km @ 0.18 dB/km</td><td>−4.5 dB → 35 %</td><td>SMF-28 datasheet</td></tr>
-              <tr><td>Two photons must both arrive</td><td>35 % × 35 % = 12 %</td><td>independent losses</td></tr>
-              <tr><td>Photon emission at source qubit (SiV)</td><td>~30 %</td><td><SourceNote id="knaut-nature-2024" /></td></tr>
-              <tr><td>QFC (737 nm → 1550 nm) at each end</td><td>30–80 % (33 %/30 % bidirectional)</td><td><SourceNote id="knaut-nature-2024" /></td></tr>
-              <tr><td>SNSPD detector efficiency, both fired</td><td>~90 % × 90 % = 81 %</td><td>commercial</td></tr>
+              <tr><td>Fibre, 25 km @ 0.18 dB/km, each photon</td><td>0.35 × 0.35 ≈ 12 %</td><td>SMF-28 datasheet</td></tr>
+              <tr><td>SiV photon emission, both sides</td><td>0.30 × 0.30 ≈ 9 %</td><td><SourceNote id="knaut-nature-2024" /></td></tr>
+              <tr><td>QFC (737 nm → 1550 nm), both sides (conservative)</td><td>0.30 × 0.30 ≈ 9 %</td><td><SourceNote id="knaut-nature-2024" /></td></tr>
+              <tr><td>SNSPDs, both fired</td><td>0.90 × 0.90 ≈ 81 %</td><td>commercial</td></tr>
               <tr><td>Linear-optics BSM identification ceiling</td><td>50 %</td><td>well-known</td></tr>
-              <tr><th>Per-attempt success (product)</th><th>~10⁻² to 10⁻³</th><th></th></tr>
+              <tr><th>Per-attempt success (product of the column)</th><th>≈ 4 × 10⁻⁴</th><th></th></tr>
             </tbody>
           </table>
           <p>
-            So a delivered Bell pair takes <strong>10² to 10⁵ heralded
-            attempts</strong> per hop, depending on which end of each
-            efficiency range the implementation hits. The
-            <SourceNote id="knaut-nature-2024" /> 35 km Boston-metro demo
-            measured the conservative end (~10⁵ at 35 km); at 50 km the
-            loss budget gets worse by another factor of ~3. The "10⁴" on
-            the figure is the middle of the credible band — useful for
-            sizing rate budgets, but the implementation-specific number can
-            swing 2–3 orders of magnitude depending on QFC tuning, photon
-            mode-match, polarisation drift, and detector duty cycle.
+            So a delivered Bell pair takes <strong>~2,500 heralded attempts
+            per hop</strong> at the conservative end — i.e. 10⁴-class. The
+            band widens if you swing the QFC and emission efficiencies to
+            their optimistic ends (50 % per side gives ~10⁻², or ~100
+            attempts per pair), so the credible range is
+            <strong>10² to 10⁴ attempts</strong>. The Knaut 2024 35 km
+            Boston-metro demo measured ~10⁵ attempts per pair — even more
+            conservative than the budget here, because real systems pay
+            additional tax in mode-mismatch, polarisation drift, and
+            detector dead time. The "10⁴" on the figure is therefore the
+            conservative-but-plausible middle of the band; the
+            implementation-specific number can be 2–3 orders of magnitude
+            either way.
           </p>
         </Callout>
 
