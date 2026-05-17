@@ -314,23 +314,23 @@
   <circle cx="376.12" cy="210.0" r="7" class="step-num-bg"/>
   <text x="376.12" y="210.0" class="step-num" style="text-anchor:middle">5</text>
   <text x="389.12" y="210.0" class="step-txt" style="text-anchor:start">Bits travel to DC-B; apply Pauli correction to MQ-B — |ψ⟩ is now at B.</text>
-  <rect x="160" y="206" width="200" height="102" rx="6" style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3"/>
-  <text x="260.0" y="220" class="step-txt" style="text-anchor:middle;font-weight: 700">T₂ coherence budget</text>
-  <circle cx="174" cy="238" r="5" class="data"/>
-  <text x="186" y="238" class="step-txt" style="text-anchor:start">transmon (DQ-A, CQ-A)</text>
-  <text x="350" y="238" class="step-txt" style="text-anchor:end;font-style: italic">100 µs</text>
-  <circle cx="174" cy="252" r="5" class="memory"/>
-  <text x="186" y="252" class="step-txt" style="text-anchor:start">cavity memory (MQ-A)</text>
-  <text x="350" y="252" class="step-txt" style="text-anchor:end;font-style: italic">10 ms</text>
-  <circle cx="174" cy="266" r="5" class="comm"/>
-  <text x="186" y="266" class="step-txt" style="text-anchor:start">SiV electron (C)</text>
-  <text x="350" y="266" class="step-txt" style="text-anchor:end;font-style: italic">1 ms</text>
-  <circle cx="174" cy="280" r="5" class="memory"/>
-  <text x="186" y="280" class="step-txt" style="text-anchor:start">¹³C nuclear (M)</text>
-  <text x="350" y="280" class="step-txt" style="text-anchor:end;font-style: italic">1 s</text>
-  <circle cx="174" cy="294" r="5" class="data"/>
-  <text x="186" y="294" class="step-txt" style="text-anchor:start">¹⁷¹Yb⁺ (Node B)</text>
-  <text x="350" y="294" class="step-txt" style="text-anchor:end;font-style: italic">10 s</text>
+  <rect x="160" y="182" width="200" height="118" rx="6" style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3"/>
+  <text x="260.0" y="196" class="step-txt" style="text-anchor:middle;font-weight: 700">T₂ coherence budget</text>
+  <circle cx="174" cy="210" r="5" class="data"/>
+  <text x="186" y="210" class="step-txt" style="text-anchor:start">transmon (DQ-A, CQ-A)</text>
+  <text x="350" y="210" class="step-txt" style="text-anchor:end;font-style: italic">100 µs</text>
+  <circle cx="174" cy="230" r="5" class="memory"/>
+  <text x="186" y="230" class="step-txt" style="text-anchor:start">cavity memory (MQ-A)</text>
+  <text x="350" y="230" class="step-txt" style="text-anchor:end;font-style: italic">10 ms</text>
+  <circle cx="174" cy="250" r="5" class="comm"/>
+  <text x="186" y="250" class="step-txt" style="text-anchor:start">SiV electron (C)</text>
+  <text x="350" y="250" class="step-txt" style="text-anchor:end;font-style: italic">1 ms</text>
+  <circle cx="174" cy="270" r="5" class="memory"/>
+  <text x="186" y="270" class="step-txt" style="text-anchor:start">¹³C nuclear (M)</text>
+  <text x="350" y="270" class="step-txt" style="text-anchor:end;font-style: italic">1 s</text>
+  <circle cx="174" cy="290" r="5" class="data"/>
+  <text x="186" y="290" class="step-txt" style="text-anchor:start">¹⁷¹Yb⁺ (Node B)</text>
+  <text x="350" y="290" class="step-txt" style="text-anchor:end;font-style: italic">10 s</text>
   <rect x="208.325" y="544" width="18" height="11" rx="2" class="repeater"/>
   <text x="232.325" y="553" class="mini" style="text-anchor:start">SiV⁻ Repeater (QR)</text>
   <circle cx="344.475" cy="550" r="6" class="data"/>

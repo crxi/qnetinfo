@@ -603,11 +603,10 @@ def _lifetime_panel(cv: Canvas) -> None:
     typical operating numbers that fit a procurement-grade conversation."""
     # Start past Node A's chandelier outline (which extends to ~x=150)
     # with a small breathing margin so the panel doesn't impinge on it.
-    # Width is sized for the post-prefix-drop content (bare values, no
-    # 'T₂ ≈' prefix on each row). Height fits 5 rows: the per-platform
-    # split at Node A (bare transmon vs cavity-coupled memory) is what
-    # makes the M-vs-C role distinction non-trivial there.
-    px, py, pw, ph = 160, 206, 200, 102
+    # py is chosen so the row stride (20 px, matching the step block's
+    # row_gap) places each panel row at exactly the same y as the
+    # corresponding step in the 5-step block — the two read as a pair.
+    px, py, pw, ph = 160, 182, 200, 118
     cv.rect(
         px, py, pw, ph, rx=6,
         style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3",
@@ -626,7 +625,10 @@ def _lifetime_panel(cv: Canvas) -> None:
         ("memory", "¹³C nuclear (M)",       "1 s"),
         ("data",   "¹⁷¹Yb⁺ (Node B)",       "10 s"),
     ]
-    y0, dy = py + 32, 14
+    # Row stride matches the step block's row_gap (20) so panel rows
+    # land at the same y values as the steps. With py=182, y0=210
+    # equals the top step's y; subsequent rows land on step4, step3, …
+    y0, dy = py + 28, 20
     for i, (role, label, value) in enumerate(rows):
         y = y0 + i * dy
         # Dot centred on the text baseline (the text is drawn at y with
