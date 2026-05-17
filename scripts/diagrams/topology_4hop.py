@@ -100,6 +100,7 @@ CSS = """
   .viewport   { fill: #f3f8fd; stroke: #5a83b3; stroke-width: 1.2; }
   .cold-zone  { fill: #d6e8f6; fill-opacity: 0.55; stroke: #2c5d8f; stroke-width: 1.0; stroke-dasharray: 4 2; }
   .cold-tag   { font: 700 7.5px sans-serif; fill: #2c5d8f; text-anchor: middle; }
+  .t2-tag     { font: italic 7.5px sans-serif; fill: #5a6472; }
   .plate      { stroke: #b8783c; stroke-width: 0.7; opacity: 0.55; }
 
   .data       { fill: #f29453; stroke: #8a3f0e; stroke-width: 1; }
@@ -254,16 +255,12 @@ def _node_A(cv: Canvas) -> None:
     # SWAP between MQ and CQ
     C.swap_arrow(cv, NODE_A_CX, Y_MQ + 11, Y_CQ - 11)
 
-    # T₂ chip beside DQ-A — Node A side labels are anchored end at
-    # x = cx - 20, so the chip sits at the same x, italic 8 pt, one line
-    # below the side label. Tells the reader the *endpoint* coherence
-    # without sending them to the panel.
-    cv.text(
-        NODE_A_CX - 20, Y_DQ + 14, "T₂ ≈ 100 µs",
-        cls="qbit-side", font_size=8, anchor="end",
-        style="font-style: italic; fill: #4a4f57",
-        name="DQ-A-t2",
-    )
+    # T₂ tags under each Node A qubit's side label — same style as the
+    # cold-zone temperature tags so they read as 'small operating-spec
+    # annotations'. End-anchored, matching the side labels' anchor.
+    for y, t2 in ((Y_DQ, "T₂ ≈ 100 µs"), (Y_MQ, "T₂ ≈ 100 µs"), (Y_CQ, "T₂ ≈ 100 µs")):
+        cv.text(NODE_A_CX - 20, y + 14, t2, cls="t2-tag", font_size=7.5,
+                anchor="end", name=f"A-t2@{y}")
 
     # CQ-A microwave link to M-O
     cv.line(
@@ -377,14 +374,13 @@ def _node_B(cv: Canvas) -> None:
     )
     C.swap_arrow(cv, NODE_B_CX, Y_MQ + 11, Y_CQ - 11)
 
-    # T₂ chip beside DQ-B — Node B side labels anchored start at
-    # x = cx + 20, so chip sits at same x, italic 8 pt, below the label.
-    cv.text(
-        NODE_B_CX + 20, Y_DQ + 14, "T₂ ≈ 10 s",
-        cls="qbit-side", font_size=8, anchor="start",
-        style="font-style: italic; fill: #4a4f57",
-        name="DQ-B-t2",
-    )
+    # T₂ tags under each Node B qubit's side label — start-anchored to
+    # match. Yb⁺ hyperfine coherence is platform-uniform across DQ/MQ/CQ
+    # (all the same ion); the contrast a reader takes away is across
+    # nodes, not within Node B.
+    for y, t2 in ((Y_DQ, "T₂ ≈ 10 s"), (Y_MQ, "T₂ ≈ 10 s"), (Y_CQ, "T₂ ≈ 10 s")):
+        cv.text(NODE_B_CX + 20, y + 14, t2, cls="t2-tag", font_size=7.5,
+                anchor="start", name=f"B-t2@{y}")
 
     # UV link from CQ-B (via chamber viewport) to the QFC bench below
     cv.line(
@@ -605,7 +601,9 @@ def _lifetime_panel(cv: Canvas) -> None:
     PRX 2019 (¹³C nuclear memory), Knaut Nature 2024 (SiV electron), and
     Brown PRA 2018 (¹⁷¹Yb⁺ hyperfine). Not platform-leading records — the
     typical operating numbers that fit a procurement-grade conversation."""
-    px, py, pw, ph = 95, 213, 305, 88
+    # Start past Node A's chandelier outline (which extends to ~x=150)
+    # with a small breathing margin so the panel doesn't impinge on it.
+    px, py, pw, ph = 160, 213, 235, 88
     cv.rect(
         px, py, pw, ph, rx=6,
         style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3",
@@ -618,10 +616,10 @@ def _lifetime_panel(cv: Canvas) -> None:
         name="lifetime-panel-ttl",
     )
     rows = [
-        ("data",   "transmon (DQ-A)",         "100 µs"),
-        ("comm",   "SiV electron (C, in QR)", "1 ms"),
-        ("memory", "¹³C nuclear (M, in QR)",  "1 s"),
-        ("data",   "¹⁷¹Yb⁺ hyperfine (DQ-B)", "10 s"),
+        ("data",   "transmon (Node A)",   "100 µs"),
+        ("comm",   "SiV electron (C)",    "1 ms"),
+        ("memory", "¹³C nuclear (M)",     "1 s"),
+        ("data",   "¹⁷¹Yb⁺ (Node B)",     "10 s"),
     ]
     y0, dy = py + 32, 14
     for i, (role, label, value) in enumerate(rows):
