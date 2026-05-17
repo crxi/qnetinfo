@@ -936,3 +936,100 @@
   type: press
   url: "https://www.ornl.gov/news/epb-quantum-network-powered-qubitekk-hosts-ornls-first-run-commercial-quantum-network"
   marker: "ORNL/EPB 2024 (first ORNL run)"
+
+# ─── Industrial signals & programme announcements (2022-2026) ──────────────
+# Vendor / government / agency press, programme pages, and standard PDFs
+# that the LOI brief cites for "what's happening commercially right now".
+# Looked up online during the LOI footnoting pass on 2026-05-17.
+
+- id: caltech-mo-arxiv-2024
+  title: "Quantum-enabled microwave-to-optical transduction via silicon nanomechanics"
+  authors: ["Mohammad Mirhosseini group (Caltech)"]
+  publisher: "arXiv"
+  year: 2024
+  type: preprint
+  url: "https://arxiv.org/abs/2406.02704"
+  note: "Caltech 2024 demonstration of continuous quantum-enabled M-O transduction in crystalline silicon — 2.2% external efficiency at <1 added noise photon. The state of the art for end-to-end M-O at quantum-noise levels as of the 4hop-topology workspace pass."
+
+- id: ibm-cisco-qnu-press-2025
+  title: "IBM and Cisco announce plans to build a network of large-scale, fault-tolerant quantum computers"
+  publisher: "IBM Newsroom"
+  year: 2025
+  type: press
+  url: "https://newsroom.ibm.com/2025-11-20-ibm-and-cisco-announce-plans-to-build-a-network-of-large-scale,-fault-tolerant-quantum-computers"
+  marker: "IBM × Cisco × Fermilab/SQMS Quantum Networking Units, 20 Nov 2025"
+  note: "Joint programme to build modular fault-tolerant QCs linked into a network — the explicit commercial validation that M-O transduction + quantum-network operating systems are 10-year build targets."
+
+- id: qunnect-cisco-brooklyn-press-2026
+  title: "Cisco and Qunnect deploy first commercial-grade entanglement-swap network on Brooklyn–Manhattan metro fibre"
+  publisher: "Qunnect"
+  year: 2026
+  type: press
+  url: "https://www.qunnect.inc/press-releases/2026-02-18"
+  marker: "Cisco × Qunnect Brooklyn–Manhattan, 18 Feb 2026"
+  note: "First commercial-grade metro entanglement-swap demo on deployed urban fibre. The operational precedent for entanglement-distribution-as-a-service on existing carrier infrastructure."
+
+- id: cisco-uqs-press-2026
+  title: "Cisco introduces Universal Quantum Switch, advancing the path to a quantum network"
+  publisher: "Cisco Newsroom"
+  year: 2026
+  type: press
+  url: "https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2026/m04/cisco-introduces-universal-quantum-switch-advancing-the-path-to-a-quantum-network.html"
+  marker: "Cisco Universal Quantum Switch (UQS), 23 Apr 2026"
+  note: "Cisco's heterogeneous-encoding-translator product framing. The industrial response to the Q2 heterogeneity problem — one switch that connects different qubit modalities over a shared telecom-band fibre layer."
+
+- id: esa-eagle1-mission
+  title: "Eagle-1 — Europe's first sovereign space-based quantum key distribution system"
+  publisher: "European Space Agency"
+  year: 2026
+  type: web
+  url: "https://www.esa.int/Applications/Connectivity_and_Secure_Communications/Eagle-1"
+  marker: "EAGLE-1 (SES / Tesat-Spacecom / ESA)"
+  note: "European trusted-node satellite QKD mission led by SES with Tesat-Spacecom optical terminals; launch ~2026. See also arXiv:2505.20838 for the system paper."
+
+- id: csa-qeyssat-mission
+  title: "QEYSSat — Quantum Encryption and Science Satellite"
+  publisher: "Canadian Space Agency"
+  year: 2025
+  type: web
+  url: "https://www.asc-csa.gc.ca/eng/satellites/qeyssat.asp"
+  marker: "QEYSSat (CSA mission page)"
+  note: "Canadian Space Agency quantum-key-distribution satellite mission, microsatellite class, downlink QKD; launch expected mid-decade."
+
+- id: cqt-spooqy1-2020
+  title: "SpooQy-1 demonstrates quantum entanglement in space"
+  publisher: "Centre for Quantum Technologies, NUS"
+  year: 2020
+  type: web
+  url: "https://www.cqt.sg/highlight/2020-06-spooqy-quantum-satellite/"
+  marker: "SpooQy-1 (Singapore CQT / SpeQtral)"
+  note: "First CubeSat-class in-orbit entangled-photon-pair generation. Singapore CQT mission; commercial follow-on via SpeQtral. Underlying paper: Villar et al., Optica 7(7) 734 (2020)."
+
+- id: microsoft-lumenisity-press-2022
+  title: "Microsoft acquires Lumenisity, an innovator in hollow-core fibre (HCF) cable"
+  publisher: "Microsoft"
+  year: 2022
+  type: press
+  url: "https://blogs.microsoft.com/blog/2022/12/09/microsoft-acquires-lumenisity-an-innovator-in-hollow-core-fiber-hcf-cable/"
+  marker: "Microsoft / Lumenisity HCF acquisition, 9 Dec 2022"
+  note: "Hyperscaler validation that hollow-core fibre is a deployable datacentre + long-haul fibre alternative. Anchor for the workspace's HCF working hypothesis."
+
+- id: imda-rs-qkdn-2022
+  title: "IMDA Reference Specification — Quantum Key Distribution Network (RS QKDN), Issue 1"
+  authors: ["Infocomm Media Development Authority (Singapore)"]
+  publisher: "IMDA"
+  year: 2022
+  type: standard
+  url: "https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/ict-standards/telecommunication-standards/reference-spec/imda-rs-qkdn-final.pdf"
+  marker: "IMDA RS QKDN (Issue 1, 2022)"
+  note: "Singapore's first national QKDN regulatory specification — operational requirements for QKD networks deployed on telco infrastructure. Template-relevant for any national QKDN rollout."
+
+- id: imda-rs-secqkdn-draft-2026
+  title: "IMDA Reference Specification — Security Requirements for QKD Networks (RS SecQKDN), Draft Issue 1"
+  authors: ["Infocomm Media Development Authority (Singapore)"]
+  publisher: "IMDA"
+  year: 2026
+  type: standard
+  url: "https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/ict-standards/telecommunication-standards/imda-technical/2026/imda-rs-secqkdn-draft-public-comment.pdf"
+  marker: "IMDA RS SecQKDN (Draft Issue 1, Feb 2026)"
+  note: "Draft tightening of IMDA RS QKDN with operational security requirements; public comment period Feb 2026. First national-regulator framing of QKDN security obligations."
