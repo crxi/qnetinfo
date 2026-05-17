@@ -552,8 +552,8 @@ def _protocol_steps(cv: Canvas) -> None:
     # Numbers are left-aligned in a single column; the whole block (badge
     # column + longest line of text) is horizontally centred on the figure.
     captions = [
-        "Generate Bell pairs per hop — 10⁴-class heralded retries per pair (fibre loss + 50% photonic BSM).",
-        "Distil per hop, then matter-matter swap into one end-to-end pair — gated by memory T₂ during the wait.",
+        "Generate Bell pairs per hop — 10⁴-class retries per pair (fibre loss + 50% photonic BSM).",
+        "Distil per hop, then matter-matter swap end-to-end — gated by memory T₂ in the wait.",
         "Load |ψ⟩ onto DQ-A — must beat MQ-A's coherence budget or the chain restarts.",
         "Local matter-matter BSM on (DQ-A, MQ-A) destroys |ψ⟩, yields 2 classical bits.",
         "Bits travel to DC-B; apply Pauli to MQ-B — |ψ⟩ at B (classical-channel latency only).",
@@ -566,7 +566,7 @@ def _protocol_steps(cv: Canvas) -> None:
     # inset panel can sit to its left without overlap. centre_y picks the
     # vertical band a bit higher to leave breathing room below the dashed
     # matter-photon interface line.
-    centre_x = 580
+    centre_x = 605
     centre_y = 250
     # Width heuristic — the rendered prose is narrower than the svglib
     # collision-bbox default (0.55), so an over-estimated width pulls the
