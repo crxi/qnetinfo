@@ -180,11 +180,13 @@
   <circle cx="266.5" cy="140" r="6" class="photon"/>
   <circle cx="453.5" cy="140" r="6" class="photon"/>
   <use href="#quisp-bsa-white" x="161.0" y="126.0" width="28" height="28"/>
-  <text x="175.0" y="122.0" class="lbl" style="text-anchor:middle">BSM</text>
+  <text x="175.0" y="122.0" class="lbl" style="text-anchor:middle">BSA</text>
   <use href="#quisp-bsa-white" x="531.0" y="126.0" width="28" height="28"/>
-  <text x="545.0" y="122.0" class="lbl" style="text-anchor:middle">BSM</text>
+  <text x="545.0" y="122.0" class="lbl" style="text-anchor:middle">BSA</text>
   <line x1="161.0" y1="140" x2="121" y2="140" style="stroke:#2f6fd6;stroke-width:1.8;fill:none;stroke-linecap:butt"/>
   <line x1="559.0" y1="140" x2="599" y2="140" style="stroke:#2f6fd6;stroke-width:1.8;fill:none;stroke-linecap:butt"/>
+  <circle cx="141.0" cy="140" r="6" class="photon"/>
+  <circle cx="579.0" cy="140" r="6" class="photon"/>
   <line x1="110" y1="242" x2="360.0" y2="242" class="midline"/>
   <line x1="110" y1="238" x2="110" y2="246" style="stroke:#aab0ba;stroke-width:1"/>
   <line x1="360.0" y1="238" x2="360.0" y2="246" style="stroke:#aab0ba;stroke-width:1"/>
@@ -197,5 +199,5 @@
   <path d="M 125.0 210 q 5.0 -4 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0 t 10 0" class="entanglement"/>
   <line x1="595.0" y1="210" x2="599" y2="210" class="entanglement"/>
   <text x="360.0" y="202" class="entanglement-lbl" style="text-anchor:middle">heralded Bell pair</text>
-  <text x="360.0" y="268" class="caption" style="text-anchor:middle">Source at the midpoint emits a pair outward; each endpoint runs a local BSM.</text>
+  <text x="360.0" y="268" class="caption" style="text-anchor:middle">Source at the midpoint emits a pair outward; each endpoint runs a local BSA.</text>
 </svg>

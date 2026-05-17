@@ -113,7 +113,9 @@ def _endpoint_card(cv: Canvas, cx: float, name: str, sub: str = "") -> None:
     )
     cv.text(cx, Y_NAME + 28, name, cls="node-ttl", font_size=12, name=f"{name}-ttl")
     if sub:
-        cv.text(cx, Y_NAME + 40, sub, cls="node-sub", font_size=9.5, name=f"{name}-sub")
+        # Role tag sits ABOVE the card so it never collides with the M qubit.
+        cv.text(cx, CARD_TOP - 5, f"({sub})", cls="node-sub",
+                font_size=9.5, name=f"{name}-sub")
     # Memory qubit (purple, "M")
     cv.circle(cx, Y_M, R_QBIT, cls="memory", name=f"{name}-M")
     cv.text(cx, Y_M, "M", cls="qbit-in", font_size=9, name=f"{name}-M-in")
@@ -201,8 +203,8 @@ def build_mm() -> Canvas:
     _photon(cv, A_CX + 55, Y_AXIS, "photon-A")
     _photon(cv, B_CX - 55, Y_AXIS, "photon-B")
 
-    # Midpoint BSM (QuISP BSA glyph) sits on the axis
-    C.midpoint_bsm(cv, MID_X, Y_AXIS, size=BSM_SIZE, label="BSM", label_pos="above")
+    # Midpoint BSA (QuISP BSA glyph) sits on the axis
+    C.midpoint_bsm(cv, MID_X, Y_AXIS, size=BSM_SIZE, label="BSA", label_pos="above")
 
     # Hop brackets — both halves labelled "L/2" to make the symmetry explicit
     _hop_bracket(cv, A_CX, MID_X, "L/2")
@@ -286,14 +288,19 @@ def build_sr() -> Canvas:
     # One photon in flight, midway along the link
     _photon(cv, (A_CX + bsm_x) / 2, Y_AXIS, "photon-A")
 
-    # Local BSM glyph at Bob
-    C.midpoint_bsm(cv, bsm_x, Y_AXIS, size=BSM_SIZE, label="BSM", label_pos="above")
+    # Local BSA glyph at Bob
+    C.midpoint_bsm(cv, bsm_x, Y_AXIS, size=BSM_SIZE, label="BSA", label_pos="above")
 
-    # Short stub from BSM into Bob's C — local link, drawn as a thick blue
+    # Short stub from BSA into Bob's C — local link, drawn as a thick blue
     # butt-cap segment (same convention as the QR internal stubs in 4hop).
     cv.line(bsm_x + BSM_SIZE / 2, Y_AXIS, B_CX - R_QBIT, Y_AXIS,
             style="stroke:#2f6fd6;stroke-width:1.8;fill:none;stroke-linecap:butt",
             name="fibre-bsm-local")
+
+    # Bob's own photon — emitted from his C, on the local stub, heading INTO
+    # the BSA where it interferes with Alice's incoming photon. Without it
+    # there is nothing for the BSA to measure against.
+    _photon(cv, (bsm_x + BSM_SIZE / 2 + B_CX - R_QBIT) / 2, Y_AXIS, "photon-B")
 
     # One full-link hop bracket
     _hop_bracket(cv, A_CX, B_CX, "L (full link)")
@@ -303,7 +310,7 @@ def build_sr() -> Canvas:
     cv.text(MID_X, Y_ENT - 8, "heralded Bell pair", cls="entanglement-lbl",
             font_size=9, anchor="middle", name="ent-lbl")
 
-    _caption(cv, "One photon, full-link transmission, BSM is local at the receiver.")
+    _caption(cv, "One photon traverses the link; the BSA is local at the receiver.")
     return cv
 
 
@@ -374,17 +381,23 @@ def build_ms() -> Canvas:
     _photon(cv, (epps_x - EPPS_SIZE / 2 + bsm_a_x + BSM_SIZE / 2) / 2, Y_AXIS, "photon-L")
     _photon(cv, (epps_x + EPPS_SIZE / 2 + bsm_b_x - BSM_SIZE / 2) / 2, Y_AXIS, "photon-R")
 
-    # Endpoint BSMs (local, one per side)
-    C.midpoint_bsm(cv, bsm_a_x, Y_AXIS, size=BSM_SIZE, label="BSM", label_pos="above")
-    C.midpoint_bsm(cv, bsm_b_x, Y_AXIS, size=BSM_SIZE, label="BSM", label_pos="above")
+    # Endpoint BSAs (local, one per side)
+    C.midpoint_bsm(cv, bsm_a_x, Y_AXIS, size=BSM_SIZE, label="BSA", label_pos="above")
+    C.midpoint_bsm(cv, bsm_b_x, Y_AXIS, size=BSM_SIZE, label="BSA", label_pos="above")
 
-    # Short local stubs from each BSM to its endpoint C
+    # Short local stubs from each BSA to its endpoint C
     cv.line(bsm_a_x - BSM_SIZE / 2, Y_AXIS, A_CX + R_QBIT, Y_AXIS,
             style="stroke:#2f6fd6;stroke-width:1.8;fill:none;stroke-linecap:butt",
             name="stub-A")
     cv.line(bsm_b_x + BSM_SIZE / 2, Y_AXIS, B_CX - R_QBIT, Y_AXIS,
             style="stroke:#2f6fd6;stroke-width:1.8;fill:none;stroke-linecap:butt",
             name="stub-B")
+
+    # Local photons emitted from each endpoint C, heading INTO the local BSA
+    # to interfere with the arriving EPPS photon. Two photons per BSA — one
+    # from EPPS (drawn above) and one from local C (drawn here).
+    _photon(cv, (bsm_a_x - BSM_SIZE / 2 + A_CX + R_QBIT) / 2, Y_AXIS, "photon-A-local")
+    _photon(cv, (bsm_b_x + BSM_SIZE / 2 + B_CX - R_QBIT) / 2, Y_AXIS, "photon-B-local")
 
     # Hop brackets — two half-link segments
     _hop_bracket(cv, A_CX, MID_X, "L/2")
@@ -395,7 +408,7 @@ def build_ms() -> Canvas:
     cv.text(MID_X, Y_ENT - 8, "heralded Bell pair",
             cls="entanglement-lbl", font_size=9, anchor="middle", name="ent-lbl")
 
-    _caption(cv, "Source at the midpoint emits a pair outward; each endpoint runs a local BSM.")
+    _caption(cv, "Source at the midpoint emits a pair outward; each endpoint runs a local BSA.")
     return cv
 
 

@@ -109,7 +109,7 @@
   <circle cx="165" cy="140" r="6" class="photon"/>
   <circle cx="555" cy="140" r="6" class="photon"/>
   <use href="#quisp-bsa-white" x="346.0" y="126.0" width="28" height="28"/>
-  <text x="360.0" y="122.0" class="lbl" style="text-anchor:middle">BSM</text>
+  <text x="360.0" y="122.0" class="lbl" style="text-anchor:middle">BSA</text>
   <line x1="110" y1="242" x2="360.0" y2="242" class="midline"/>
   <line x1="110" y1="238" x2="110" y2="246" style="stroke:#aab0ba;stroke-width:1"/>
   <line x1="360.0" y1="238" x2="360.0" y2="246" style="stroke:#aab0ba;stroke-width:1"/>
