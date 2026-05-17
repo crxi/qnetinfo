@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 580" role="img">
-  <title>4-hop heterogeneous quantum network — transmon QPU + M2O at Node A (in a dilution fridge), 171-Yb+ trap + QFC bench at Node B, three SiV repeaters with internal QFCs along the photonic chain, midpoint BSM at M1-M4 using the QuISP BSA glyph.</title>
+  <title>4-hop heterogeneous quantum network — transmon QPU + M-O at Node A (in a dilution fridge), 171-Yb+ trap + QFC bench at Node B, three SiV repeaters with internal QFCs along the photonic chain, midpoint BSM at M1-M4 using the QuISP BSA glyph.</title>
   <defs>
   <style>
   .vessel-A   { fill: #fff8ef; stroke: #b8783c; stroke-width: 1.4; }
@@ -129,7 +129,7 @@
   <line x1="22.555555555555557" y1="210" x2="137.44444444444446" y2="210" class="plate"/>
   <text x="25.555555555555557" y="218" class="plate-tag" style="text-anchor:start">15 mK</text>
   <text x="80" y="38" class="node-ttl" style="text-anchor:middle">Node A</text>
-  <text x="80" y="52" class="node-sub" style="text-anchor:middle">transmon QPU + M2O</text>
+  <text x="80" y="52" class="node-sub" style="text-anchor:middle">transmon QPU + M-O</text>
   <circle cx="80" cy="78" r="11" class="data"/>
   <text x="80" y="78" class="qbit-in" style="text-anchor:middle">ψ</text>
   <text x="60" y="81" class="qbit-side" style="text-anchor:end">DQ-A</text>
@@ -145,7 +145,7 @@
   <line x1="80" y1="176" x2="80" y2="229" class="fiber"/>
   <circle cx="80" cy="184" r="7" class="photon"/>
   <rect x="40.0" y="229" width="80" height="55" rx="3" class="m2o-blk"/>
-  <text x="80" y="241" class="blk-ttl" style="text-anchor:middle">M2O</text>
+  <text x="80" y="241" class="blk-ttl" style="text-anchor:middle">M-O</text>
   <text x="80" y="253" class="blk-line" style="text-anchor:middle">60 mm · 5 GHz</text>
   <path d="M 80 257 L 82.5 264 L 80 271 L 77.5 264 Z" style="fill:#6a7280"/>
   <text x="80" y="278" class="blk-line" style="text-anchor:middle">1550 nm · 193 THz</text>

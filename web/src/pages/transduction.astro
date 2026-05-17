@@ -225,11 +225,11 @@ const sections = [
           <div class="pipeline-img-wrap">
             <img src={url("/images/4hop-topology.svg")}
                  data-zoomable-src={url("/images/4hop-topology.svg")}
-                 alt="A four-hop topology figure. On the left, Node A is a superconducting quantum computer: a dilution-fridge silhouette with 50 K / 4 K / 15 mK stages, a transmon data qubit (DQ-A), and an M-O transducer (M2O) that converts 5 GHz microwave to telecom optical. Three SiV-diamond repeater nodes QR-1, QR-2, QR-3 sit on the photonic axis between A and B; each carries two comm qubits (electron spins, on the axis) and two memory qubits (nuclear spins, above each comm, with SWAP arrows between them), flanked by a QFC block on either side that converts 737 nm to 1550 nm. On the right, Node B is a trapped-ion quantum computer: a UHV chamber at 300 K housing a small dashed cold zone around the laser-cooled 171-Yb-plus ion cluster, with a 369 nm → 1550 nm QFC on the bench at 300 K. Telecom fibre links each hop." />
+                 alt="A four-hop topology figure. On the left, Node A is a superconducting quantum computer: a dilution-fridge silhouette with 50 K / 4 K / 15 mK stages, a transmon data qubit (DQ-A), and an M-O transducer (M-O) that converts 5 GHz microwave to telecom optical. Three SiV-diamond repeater nodes QR-1, QR-2, QR-3 sit on the photonic axis between A and B; each carries two comm qubits (electron spins, on the axis) and two memory qubits (nuclear spins, above each comm, with SWAP arrows between them), flanked by a QFC block on either side that converts 737 nm to 1550 nm. On the right, Node B is a trapped-ion quantum computer: a UHV chamber at 300 K housing a small dashed cold zone around the laser-cooled 171-Yb-plus ion cluster, with a 369 nm → 1550 nm QFC on the bench at 300 K. Telecom fibre links each hop." />
           </div>
           <figcaption>
             Left to right: <strong>Node A</strong> — dilution fridge (50 K / 4 K /
-            15 mK stages), transmon QPU (DQ-A), and the M-O transducer (M2O) that
+            15 mK stages), transmon QPU (DQ-A), and the M-O transducer (M-O) that
             lifts a 5 GHz microwave excitation to a telecom-band photon.
             <strong>Each repeater (QR-1…3)</strong> — two comm qubits (C, electron
             spin, photon-facing) on the photonic axis with two memory qubits (M,
@@ -248,7 +248,7 @@ const sections = [
         </figure>
         <p>
           The infrastructure point to read off the figure: the only places that need
-          new <em>quantum-channel</em> hardware are the interface blocks (M2O at
+          new <em>quantum-channel</em> hardware are the interface blocks (M-O at
           Node A, QFCs flanking every SiV repeater, QFC at Node B) and the
           telecom-band fibre between them. The classical channel along the bottom
           carries heralds and BSM outcome bits in the usual way. Once a Bell pair has
@@ -474,18 +474,18 @@ const sections = [
       </section>
 
       <section id="sota" data-nav-section>
-        <h2>State-of-the-art performance — M2O vs QFC, side by side</h2>
+        <h2>State-of-the-art performance — M-O vs QFC, side by side</h2>
         <p>
           Best peer-reviewed single-device numbers as of 2024–2025. Commercial /
           deployable values are typically 1–2× worse than the lab-best figures
           quoted here. The split between the two interface families is stark:
           QFC is mature enough that link-level demonstrations preserve qubit
-          fidelity end-to-end; M2O is still 1–2 orders of magnitude short of
+          fidelity end-to-end; M-O is still 1–2 orders of magnitude short of
           fault-tolerant linking thresholds.
         </p>
 
         <figure class="perf-table">
-          <figcaption><strong>Microwave-to-optical (M2O) — Node A's diamond.</strong> Photon-conversion efficiency <Math tex="\\eta" />, added noise <Math tex="\\bar{n}_{\\text{add}}" />, conversion bandwidth, and end-to-end state fidelity.</figcaption>
+          <figcaption><strong>Microwave-to-optical (M-O) — Node A's diamond.</strong> Photon-conversion efficiency <Math tex="\\eta" />, added noise <Math tex="\\bar{n}_{\\text{add}}" />, conversion bandwidth, and end-to-end state fidelity.</figcaption>
           <table>
             <thead>
               <tr>
@@ -582,7 +582,7 @@ const sections = [
         </figure>
 
         <figure class="perf-table">
-          <figcaption><strong>Where each component sits in the figure.</strong> Why the diagram draws M2O as the heavy chandelier and QFC as small in-line blocks.</figcaption>
+          <figcaption><strong>Where each component sits in the figure.</strong> Why the diagram draws M-O as the heavy chandelier and QFC as small in-line blocks.</figcaption>
           <table>
             <thead>
               <tr>
@@ -595,7 +595,7 @@ const sections = [
             </thead>
             <tbody>
               <tr>
-                <td>M2O</td>
+                <td>M-O</td>
                 <td>Node A diamond</td>
                 <td>~15 % (with <Math tex="\\bar{n} \\gtrsim 0.5" />)</td>
                 <td>Not yet entanglement-grade</td>

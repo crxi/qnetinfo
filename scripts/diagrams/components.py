@@ -276,7 +276,7 @@ def swap_arrow(canvas: Canvas, cx: float, y_top: float, y_bottom: float) -> None
 
 
 # ===========================================================================
-# Transducer block (M2O / QFC) with stacked frequency-conversion text
+# Transducer block (M-O / QFC) with stacked frequency-conversion text
 # ===========================================================================
 
 

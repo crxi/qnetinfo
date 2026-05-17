@@ -157,7 +157,7 @@ def build() -> Canvas:
         width=W,
         height=H,
         title=(
-            "4-hop heterogeneous quantum network — transmon QPU + M2O at Node A "
+            "4-hop heterogeneous quantum network — transmon QPU + M-O at Node A "
             "(in a dilution fridge), 171-Yb+ trap + QFC bench at Node B, three SiV "
             "repeaters with internal QFCs along the photonic chain, midpoint BSM at "
             "M1-M4 using the QuISP BSA glyph."
@@ -234,7 +234,7 @@ def _node_A(cv: Canvas) -> None:
     )
     # Title
     cv.text(NODE_A_CX, 38, "Node A", cls="node-ttl", font_size=13, name="A-title")
-    cv.text(NODE_A_CX, 52, "transmon QPU + M2O", cls="node-sub", font_size=9.5, name="A-sub")
+    cv.text(NODE_A_CX, 52, "transmon QPU + M-O", cls="node-sub", font_size=9.5, name="A-sub")
 
     # Qubit column. Side labels go to the LEFT of Node A's column (anchor=end),
     # leaving the inner-facing side free for a future "entanglement wriggly
@@ -253,21 +253,21 @@ def _node_A(cv: Canvas) -> None:
     # SWAP between MQ and CQ
     C.swap_arrow(cv, NODE_A_CX, Y_MQ + 11, Y_CQ - 11)
 
-    # CQ-A microwave link to M2O
+    # CQ-A microwave link to M-O
     cv.line(
         NODE_A_CX, Y_FIBER_LINK_FROM, NODE_A_CX, Y_TRANSDUCER_TOP,
         cls="fiber", name="A-mw-link",
     )
     cv.circle(NODE_A_CX, Y_PHOTON_NEAR_CQ, 7, cls="photon", name="A-mw-photon")
 
-    # M2O block
+    # M-O block
     C.transducer_block(
         cv,
         cx=NODE_A_CX,
         top_y=Y_TRANSDUCER_TOP,
         width=TRANSDUCER_W,
         height=TRANSDUCER_H,
-        title="M2O",
+        title="M-O",
         line_in="60 mm · 5 GHz",         # wavelength · frequency (matches QFC convention)
         line_out="1550 nm · 193 THz",
         cls="m2o-blk",
