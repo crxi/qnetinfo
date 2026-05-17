@@ -841,6 +841,28 @@ const sections = [
       else if (e.key === "-") { slider.value = Math.max(50, parseFloat(slider.value) - 10); setZoom(parseFloat(slider.value)); }
     });
 
+    // Wheel-to-zoom centred on the cursor. Keep the pixel under the mouse
+    // pointer fixed as the image scales — that's what makes "zoom into what
+    // I'm looking at" feel right. preventDefault suppresses the browser's
+    // default scroll behaviour on the overflow:auto container.
+    scroll.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const oldPct = parseFloat(slider.value);
+      const step = e.deltaY < 0 ? +5 : -5;
+      const newPct = Math.min(200, Math.max(50, oldPct + step));
+      if (newPct === oldPct) return;
+      const rect = scroll.getBoundingClientRect();
+      // Position of the cursor relative to the image's top-left, in image px.
+      const ix = scroll.scrollLeft + (e.clientX - rect.left);
+      const iy = scroll.scrollTop  + (e.clientY - rect.top);
+      const ratio = newPct / oldPct;
+      slider.value = String(newPct);
+      setZoom(newPct);
+      // After resize, put the same image-px back under the cursor.
+      scroll.scrollLeft = ix * ratio - (e.clientX - rect.left);
+      scroll.scrollTop  = iy * ratio - (e.clientY - rect.top);
+    }, { passive: false });
+
     // Click-and-drag pan inside the scroll area.
     let dragging = false, startX = 0, startY = 0, startSL = 0, startST = 0;
     scroll.addEventListener("pointerdown", (e) => {

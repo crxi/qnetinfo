@@ -174,6 +174,7 @@ def build() -> Canvas:
     _hop_brackets(cv)
     _entanglement_overlay(cv)
     _protocol_steps(cv)
+    _lifetime_panel(cv)
     _legend(cv)
     return cv
 
@@ -252,6 +253,17 @@ def _node_A(cv: Canvas) -> None:
 
     # SWAP between MQ and CQ
     C.swap_arrow(cv, NODE_A_CX, Y_MQ + 11, Y_CQ - 11)
+
+    # T₂ chip beside DQ-A — Node A side labels are anchored end at
+    # x = cx - 20, so the chip sits at the same x, italic 8 pt, one line
+    # below the side label. Tells the reader the *endpoint* coherence
+    # without sending them to the panel.
+    cv.text(
+        NODE_A_CX - 20, Y_DQ + 14, "T₂ ≈ 100 µs",
+        cls="qbit-side", font_size=8, anchor="end",
+        style="font-style: italic; fill: #4a4f57",
+        name="DQ-A-t2",
+    )
 
     # CQ-A microwave link to M-O
     cv.line(
@@ -364,6 +376,15 @@ def _node_B(cv: Canvas) -> None:
         ],
     )
     C.swap_arrow(cv, NODE_B_CX, Y_MQ + 11, Y_CQ - 11)
+
+    # T₂ chip beside DQ-B — Node B side labels anchored start at
+    # x = cx + 20, so chip sits at same x, italic 8 pt, below the label.
+    cv.text(
+        NODE_B_CX + 20, Y_DQ + 14, "T₂ ≈ 10 s",
+        cls="qbit-side", font_size=8, anchor="start",
+        style="font-style: italic; fill: #4a4f57",
+        name="DQ-B-t2",
+    )
 
     # UV link from CQ-B (via chamber viewport) to the QFC bench below
     cv.line(
@@ -541,32 +562,82 @@ def _protocol_steps(cv: Canvas) -> None:
         "Local BSM at DC-A on (DQ-A, MQ-A) destroys |ψ⟩ and produces 2 classical bits.",
         "Bits travel to DC-B; apply Pauli correction to MQ-B — |ψ⟩ is now at B.",
     ]
-    badge_r = 8
+    badge_r = 7
     gap = 6
-    font_size = 10
-    row_gap = 22
+    font_size = 9
+    row_gap = 20
+    # Shift the block RIGHT of canvas centre so the T₂ coherence-budget
+    # inset panel can sit to its left without overlap. centre_y picks the
+    # vertical band a bit higher to leave breathing room below the dashed
+    # matter-photon interface line.
+    centre_x = 660
+    centre_y = 250
     # Width heuristic — the rendered prose is narrower than the svglib
     # collision-bbox default (0.55), so an over-estimated width pulls the
     # badge column too far LEFT and the block looks left-lopsided.
     # 0.48 matches the actual render of the longest line (step 1) so the
-    # block visually centres on x=W/2.
+    # block visually centres on centre_x.
     text_w = lambda s: 0.48 * font_size * len(s)
     block_w = badge_r * 2 + gap + max(text_w(c) for c in captions)
-    badge_x = (W - block_w) / 2 + badge_r        # left-aligned column
+    badge_x = centre_x - block_w / 2 + badge_r   # left-aligned column
     text_x = badge_x + badge_r + gap
-    # Shift the block up — centre vertically a bit higher in the band so
-    # there's more breathing room below the dashed interface line.
-    centre_y = 250
     n = len(captions)
     block_h = row_gap * (n - 1)
     top_y = centre_y - block_h / 2
     for i, txt in enumerate(captions, start=1):
         y = top_y + (n - i) * row_gap   # step 1 at bottom, step 5 at top
         cv.circle(badge_x, y, badge_r, cls="step-num-bg", name=f"step{i}-badge")
-        cv.text(badge_x, y, str(i), cls="step-num", font_size=11, name=f"step{i}-num")
+        cv.text(badge_x, y, str(i), cls="step-num", font_size=10, name=f"step{i}-num")
         cv.text(text_x, y, txt,
                 cls="step-txt", font_size=font_size, anchor="start",
                 name=f"step{i}-txt")
+
+
+def _lifetime_panel(cv: Canvas) -> None:
+    """T₂ coherence-budget inset. Sits to the LEFT of the 5-step block in
+    the matter-band, telling the orders-of-magnitude story (µs → 10 s) for
+    the four qubit roles in the figure. Same span as the step block so the
+    two sit as a balanced pair, with the steps on the right answering
+    "what happens" and the panel on the left answering "how much time
+    each qubit has to do its job".
+
+    Numbers are representative ranges drawn from Lauk QST 2020, Bradley
+    PRX 2019 (¹³C nuclear memory), Knaut Nature 2024 (SiV electron), and
+    Brown PRA 2018 (¹⁷¹Yb⁺ hyperfine). Not platform-leading records — the
+    typical operating numbers that fit a procurement-grade conversation."""
+    px, py, pw, ph = 95, 213, 305, 88
+    cv.rect(
+        px, py, pw, ph, rx=6,
+        style="fill: #fafbfc; stroke: #c4cad3; stroke-width: 1; stroke-dasharray: 4 3",
+        name="lifetime-panel-bg",
+    )
+    cv.text(
+        px + pw / 2, py + 14, "T₂ coherence budget",
+        cls="step-txt", font_size=10.5, anchor="middle",
+        style="font-weight: 700",
+        name="lifetime-panel-ttl",
+    )
+    rows = [
+        ("data",   "transmon (DQ-A)",         "100 µs"),
+        ("comm",   "SiV electron (C, in QR)", "1 ms"),
+        ("memory", "¹³C nuclear (M, in QR)",  "1 s"),
+        ("data",   "¹⁷¹Yb⁺ hyperfine (DQ-B)", "10 s"),
+    ]
+    y0, dy = py + 32, 14
+    for i, (role, label, value) in enumerate(rows):
+        y = y0 + i * dy
+        cv.circle(px + 14, y - 3, 5, cls=role, name=f"lt-sw-{i}")
+        cv.text(
+            px + 26, y, label,
+            cls="step-txt", font_size=9.5, anchor="start",
+            name=f"lt-lbl-{i}",
+        )
+        cv.text(
+            px + pw - 10, y, f"T₂ ≈ {value}",
+            cls="step-txt", font_size=9.5, anchor="end",
+            style="font-style: italic",
+            name=f"lt-val-{i}",
+        )
 
 
 def _entanglement_overlay(cv: Canvas) -> None:
