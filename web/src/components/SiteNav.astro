@@ -62,7 +62,14 @@ const groupedTiers = TIER_ORDER
 
   {groupedTiers.map((group) => (
     <section class="site-nav__group" aria-label={group.label} data-tier={group.tier}>
-      <p class="site-nav__group-label">{group.label}</p>
+      {/* Hide the tier eyebrow when the tier has exactly one subject and that
+          subject's label is the same as the tier label (currently tier F /
+          Case studies). A "group of one" with a duplicate label reads as the
+          word printed twice, not as a hierarchy. */}
+      {!(group.subjects.length === 1
+         && (group.subjects[0].navLabel ?? group.subjects[0].title) === group.label) && (
+        <p class="site-nav__group-label">{group.label}</p>
+      )}
       <ul class="site-nav__list site-nav__list--subjects">
         {group.subjects.map((s) => (
           <li>
@@ -103,6 +110,17 @@ const groupedTiers = TIER_ORDER
   type LinkEl = HTMLAnchorElement;
 
   function init(): void {
+    // After a full page navigation, the rail re-renders at scrollTop=0.
+    // Pin the now-current subject as close to the TOP of the rail as
+    // possible so its expanded subtopic list has maximum room to breathe
+    // below it. `block: start` aligns the link with the rail's top edge,
+    // leaving everything below visible. Scrolling is confined to the
+    // rail's own overflow:auto box; the page scroll is untouched.
+    const current = document.querySelector<HTMLElement>(".site-nav .is-current");
+    if (current) {
+      current.scrollIntoView({ block: "start", inline: "nearest" });
+    }
+
     const links = Array.from(
       document.querySelectorAll<LinkEl>("[data-section-target]"),
     );
