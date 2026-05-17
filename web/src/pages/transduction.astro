@@ -190,13 +190,14 @@ const sections = [
       <section id="pipeline" data-nav-section>
         <h2>The whole pipeline in one figure</h2>
         <p>
-          The figure stretches a heterogeneous Q1 link out across four fibre hops to
-          make the <em>interface chain</em> visible end-to-end: transmon → M-O
-          transducer → SiV-QFC → telecom fibre → repeater chain → Yb-QFC → trapped-ion
-          endpoint. Read it left to right as one pipeline, ignoring for the moment the
-          internal architecture of any individual repeater — that part is treated
-          separately on <a href={url("/repeaters#node-architecture")}>repeaters §
-          node architecture</a>.
+          The figure depicts a <strong>hypothetical 4-hop heterogeneous link</strong>
+          — no one has built one end-to-end yet — stretched out to make the
+          <em>interface chain</em> visible from one end to the other: transmon →
+          M-O transducer → SiV-QFC → telecom fibre → repeater chain → Yb-QFC →
+          trapped-ion endpoint. Read it left to right as one pipeline; the
+          internal architecture of each repeater is covered on
+          <a href={url("/repeaters#node-architecture")}>repeaters § node
+          architecture</a>.
         </p>
         <figure class="pipeline-figure">
           <div class="pipeline-toolbar">
@@ -248,9 +249,9 @@ const sections = [
         </figure>
 
         <aside class="design-prov">
-          <strong>The chain is hypothetical;</strong> no one has built a
-          heterogeneous transmon → SiV → trapped-ion link end-to-end. Each
-          individual block, though, follows a published system:
+          <strong>Where each block comes from.</strong> The chain is
+          hypothetical, but every individual block in it follows a published
+          system:
           <ul>
             <li>
               <strong>Node A</strong> (transmon QPU + M-O transducer +
