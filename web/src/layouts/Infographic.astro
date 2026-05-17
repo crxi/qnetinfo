@@ -18,6 +18,21 @@ interface Props {
 }
 const { title, description, references = [] } = Astro.props;
 
+// Git build stamp — short hash + committer date of HEAD, read at build
+// time so every page carries a verifiable provenance marker. Falls back
+// gracefully when git is unavailable (e.g. a tarball deploy).
+import { execSync } from "node:child_process";
+let buildHash = "";
+let buildDate = "";
+try {
+  buildHash = execSync("git rev-parse --short HEAD", { encoding: "utf8" }).trim();
+  buildDate = execSync("git log -1 --format=%cI HEAD", { encoding: "utf8" }).trim();
+} catch { /* leave blank */ }
+const buildDateShort = buildDate ? buildDate.slice(0, 10) : "";
+const buildHref = buildHash
+  ? `https://github.com/crxi/qnetinfo/commit/${buildHash}`
+  : "";
+
 // Derive current subject slug from the URL path (first segment after
 // the base). Drives the prev / next pagination at the page foot so
 // readers can walk the subject sequence without returning to the rail.
@@ -110,6 +125,19 @@ const currentTier = currentIdx >= 0 ? SHIPPED_SUBJECTS[currentIdx].tier : null;
       )}
       <ReferencesList ids={references} />
     </footer>
+
+    {buildHash && (
+      <a
+        class="build-stamp"
+        href={buildHref}
+        target="_blank"
+        rel="noopener"
+        title={`Commit ${buildHash} · ${buildDate}`}
+      >
+        <span class="build-stamp__date">{buildDateShort}</span>
+        <span class="build-stamp__hash">{buildHash}</span>
+      </a>
+    )}
 
     <style is:global>
       /* Viewport-overflow safety net. Without these, a wide SVG /
@@ -321,6 +349,42 @@ const currentTier = currentIdx >= 0 ? SHIPPED_SUBJECTS[currentIdx].tier : null;
         max-inline-size: var(--wide-width);
         margin-inline: auto;
         padding: 0 var(--space-4) var(--space-7);
+      }
+
+      /* Floating git-build stamp — bottom-right, persists across scroll.
+         Shows the short HEAD hash and committer date of the build; links
+         to the commit on GitHub. Subtle by default, more legible on hover. */
+      .build-stamp {
+        position: fixed;
+        left: var(--space-3);
+        bottom: var(--space-3);
+        z-index: 80;
+        display: inline-flex;
+        gap: 0.5em;
+        align-items: baseline;
+        padding: 4px 8px;
+        font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+        font-size: 11px;
+        line-height: 1;
+        color: var(--color-text-mute);
+        background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+        border: 1px solid var(--color-rule);
+        border-radius: 999px;
+        text-decoration: none;
+        backdrop-filter: blur(4px);
+        opacity: 0.55;
+        transition: opacity 140ms ease, color 140ms ease, border-color 140ms ease;
+      }
+      .build-stamp:hover,
+      .build-stamp:focus-visible {
+        opacity: 1;
+        color: var(--color-text);
+        border-color: var(--color-accent);
+      }
+      .build-stamp__hash { font-weight: 600; }
+      @media print { .build-stamp { display: none; } }
+      @media (max-width: 30rem) {
+        .build-stamp { font-size: 10px; padding: 3px 6px; }
       }
       /* Prev / next pagination at the foot of every subject page.
          Two-column grid; if only one side exists (first/last subject),
