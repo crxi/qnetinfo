@@ -18,3 +18,7 @@ __pycache__/
 
 # Internal — workspace-private steering documents, fact-checks, etc.
 _private/
+
+# Link-check skill artifacts (cache + report regenerate on demand)
+link-check-cache.json
+link-check-report.md

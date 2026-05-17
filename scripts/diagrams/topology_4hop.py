@@ -410,20 +410,21 @@ def _midpoints(cv: Canvas) -> None:
     goes to the side, not above. On the horizontal axis the label goes
     above; the fibre passes through the icon centre without text collision.
     """
+    BSM_SIZE = 24
     # M1 — Node A side, label points outward (left, toward Node A)
-    C.midpoint_bsm(cv, NODE_A_CX, Y_M1_M4, size=28, label="M1", label_pos="left")
+    C.midpoint_bsm(cv, NODE_A_CX, Y_M1_M4, size=BSM_SIZE, label="M1", label_pos="left")
     # M4 — Node B side, label points outward (right, toward Node B)
-    C.midpoint_bsm(cv, NODE_B_CX, Y_M1_M4, size=28, label="M4", label_pos="right")
+    C.midpoint_bsm(cv, NODE_B_CX, Y_M1_M4, size=BSM_SIZE, label="M4", label_pos="right")
     # M2 between QR-1 R₁ and QR-2 L₂
     r1 = QR_CENTRES[0] + QBIT_GAP
     l2 = QR_CENTRES[1] - QBIT_GAP
     m2_x = (r1 + l2) / 2
-    C.midpoint_bsm(cv, m2_x, AXIS_Y, size=24, label="M2", label_pos="above")
+    C.midpoint_bsm(cv, m2_x, AXIS_Y, size=BSM_SIZE, label="M2", label_pos="above")
     # M3 between QR-2 R₂ and QR-3 L₃
     r2 = QR_CENTRES[1] + QBIT_GAP
     l3 = QR_CENTRES[2] - QBIT_GAP
     m3_x = (r2 + l3) / 2
-    C.midpoint_bsm(cv, m3_x, AXIS_Y, size=24, label="M3", label_pos="above")
+    C.midpoint_bsm(cv, m3_x, AXIS_Y, size=BSM_SIZE, label="M3", label_pos="above")
 
     # SNSPD temperature tags — every BSM station is shorthand for "fibre
     # bench at 300 K + SNSPD chip in a He cryostat at ~2 K". Knaut Nature

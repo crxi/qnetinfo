@@ -40,6 +40,7 @@ const sections = [
   { id: "qfc",          label: "QFC: visible to telecom" },
   { id: "mo",           label: "Microwave-to-optical" },
   { id: "bottleneck",   label: "Why M-O is the bottleneck" },
+  { id: "sota",         label: "State-of-the-art performance" },
   { id: "progress",     label: "Progress on the cross-modality pipeline" },
   { id: "encodings",    label: "Encoding translation" },
   { id: "q1-stack",     label: "End-to-end Q1: heterogeneous endpoints" },
@@ -448,6 +449,153 @@ const sections = [
         </p>
       </section>
 
+      <section id="sota" data-nav-section>
+        <h2>State-of-the-art performance — M2O vs QFC, side by side</h2>
+        <p>
+          Best peer-reviewed single-device numbers as of 2024–2025. Commercial /
+          deployable values are typically 1–2× worse than the lab-best figures
+          quoted here. The split between the two interface families is stark:
+          QFC is mature enough that link-level demonstrations preserve qubit
+          fidelity end-to-end; M2O is still 1–2 orders of magnitude short of
+          fault-tolerant linking thresholds.
+        </p>
+
+        <figure class="perf-table">
+          <figcaption><strong>Microwave-to-optical (M2O) — Node A's diamond.</strong> Photon-conversion efficiency <Math tex="\\eta" />, added noise <Math tex="\\bar{n}_{\\text{add}}" />, conversion bandwidth, and end-to-end state fidelity.</figcaption>
+          <table>
+            <thead>
+              <tr>
+                <th>Mechanism (group)</th>
+                <th><Math tex="\\eta" /></th>
+                <th><Math tex="\\bar{n}_{\\text{add}}" /></th>
+                <th>Bandwidth</th>
+                <th>Fidelity / status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Electro-optic (LN whispering-gallery; Caltech / JILA)</td>
+                <td>~15 % bidir.</td>
+                <td>~0.6 quanta</td>
+                <td>~MHz</td>
+                <td>Sub-teleportation-grade. Sahu <em>Science</em> 370.840 (2020).</td>
+              </tr>
+              <tr>
+                <td>Piezo-optomechanical (UCSB, Stanford)</td>
+                <td>~5 % end-to-end (47 % internal)</td>
+                <td>~0.5–1</td>
+                <td>~10 MHz</td>
+                <td>Transmon entanglement demonstrated at low rate. Mirhosseini <em>Nature</em> 588.599 (2020); Jiang <em>Nature</em> 619.260 (2023).</td>
+              </tr>
+              <tr>
+                <td>Magnon-optical / Rydberg-mediated</td>
+                <td>&lt;1 %</td>
+                <td>~1+</td>
+                <td>kHz–MHz</td>
+                <td>Proof-of-principle only.</td>
+              </tr>
+              <tr>
+                <td><strong>Threshold for fault-tolerant linking</strong></td>
+                <td>≳ 50 %</td>
+                <td>≪ 1</td>
+                <td>≳ MHz</td>
+                <td><Math tex="F \\gtrsim 0.99" /> logical. <SourceNote id="awschalom-prxquantum-2021" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+
+        <figure class="perf-table">
+          <figcaption><strong>Quantum frequency conversion (QFC) — flanking each repeater and at Node B.</strong> Visible / near-IR to telecom C-band.</figcaption>
+          <table>
+            <thead>
+              <tr>
+                <th>System (signal → telecom)</th>
+                <th><Math tex="\\eta" /> internal</th>
+                <th><Math tex="\\eta" /> fibre-coupled</th>
+                <th>Noise</th>
+                <th>Coherence preserved? / status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SiV 737 nm → 1350 nm (Harvard)</td>
+                <td>~57 %</td>
+                <td>~30 % device; ~5 % full link</td>
+                <td>~10 Hz dark</td>
+                <td>Yes — heralded entanglement across two-node link. <SourceNote id="knaut-nature-2024" /></td>
+              </tr>
+              <tr>
+                <td>NV 637 nm → 1588 nm (Delft / Stuttgart)</td>
+                <td>30–40 %</td>
+                <td>~15 %</td>
+                <td>&lt;100 Hz</td>
+                <td>Yes — Tchebotareva <em>PRL</em> 123.063601 (2019); Bersin <em>PRX Quantum</em> 5.010303.</td>
+              </tr>
+              <tr>
+                <td>Rb 780 nm → 1522 nm (PPLN DFG, Saarbrücken)</td>
+                <td>~70 %</td>
+                <td>~30 %</td>
+                <td>sub-Hz</td>
+                <td>Yes — single-atom HOM preserved. <SourceNote id="vanleent-nature-2022" /></td>
+              </tr>
+              <tr>
+                <td>Yb⁺ 369 nm → 1311 nm (two-stage; Innsbruck / MPQ)</td>
+                <td>~25 % / stage</td>
+                <td>~5–10 %</td>
+                <td>~kHz (UV harder)</td>
+                <td>Yes — Bock <em>NatComms</em> 9.1998 (2018); <SourceNote id="krutyanskiy-prl-2023" /></td>
+              </tr>
+              <tr>
+                <td><strong>Threshold for repeater-useful</strong></td>
+                <td>≳ 50 %</td>
+                <td>≳ 20 %</td>
+                <td>&lt; herald rate</td>
+                <td>Yes. <SourceNote id="azuma-rmp-95" /> §IV.C</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+
+        <figure class="perf-table">
+          <figcaption><strong>Where each component sits in the figure.</strong> Why the diagram draws M2O as the heavy chandelier and QFC as small in-line blocks.</figcaption>
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Where in 4-hop figure</th>
+                <th>Best demoed <Math tex="\\eta" /></th>
+                <th>Best demoed fidelity</th>
+                <th>Gap to “useful”</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>M2O</td>
+                <td>Node A diamond</td>
+                <td>~15 % (with <Math tex="\\bar{n} \\gtrsim 0.5" />)</td>
+                <td>Not yet entanglement-grade</td>
+                <td><strong>Large</strong> — 1–2 orders on <Math tex="\\eta \\cdot (1/\\bar{n}_{\\text{add}})" /></td>
+              </tr>
+              <tr>
+                <td>SiV QFC</td>
+                <td>Each repeater (QR-1, QR-2, QR-3)</td>
+                <td>~57 % internal</td>
+                <td>Entanglement preserved (Knaut)</td>
+                <td>Small — fibre coupling losses dominate</td>
+              </tr>
+              <tr>
+                <td>Yb⁺ QFC</td>
+                <td>Node B bench</td>
+                <td>~25 % / stage</td>
+                <td>Single-photon coherence preserved</td>
+                <td>Medium — UV starting wavelength makes it harder</td>
+              </tr>
+            </tbody>
+          </table>
+        </figure>
+      </section>
+
       <section id="progress" data-nav-section>
         <h2>Progress on the cross-modality pipeline — what has actually been built</h2>
         <p>
@@ -692,6 +840,47 @@ const sections = [
     font-size: var(--text-sm);
     color: var(--color-text-mute);
     line-height: var(--leading-snug);
+  }
+
+  .perf-table {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    display: grid;
+    gap: var(--space-3);
+    overflow-x: auto;
+  }
+  .perf-table table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+  .perf-table th,
+  .perf-table td {
+    padding: var(--space-2) var(--space-3);
+    text-align: start;
+    vertical-align: top;
+    border-block-end: 1px solid var(--color-rule);
+  }
+  .perf-table th {
+    font-weight: 700;
+    color: var(--color-text);
+    background: var(--color-surface-2);
+  }
+  .perf-table tbody tr:last-child td {
+    border-block-end: none;
+  }
+  .perf-table td:first-child {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .perf-table figcaption {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text-mute);
   }
 </style>
 </content>

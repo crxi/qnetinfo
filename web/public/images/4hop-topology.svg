@@ -245,10 +245,10 @@
   <line x1="757" y1="430" x2="780.0" y2="430" class="fiber--stub"/>
   <line x1="820.0" y1="430" x2="843" y2="430" class="fiber--stub"/>
   <line x1="798.0" y1="430" x2="802.0" y2="430" class="fiber--stub"/>
-  <use href="#quisp-bsa-white" x="66.0" y="346.0" width="28" height="28"/>
-  <text x="58.0" y="363" class="lbl" style="text-anchor:end">M1</text>
-  <use href="#quisp-bsa-white" x="906.0" y="346.0" width="28" height="28"/>
-  <text x="942.0" y="363" class="lbl" style="text-anchor:start">M4</text>
+  <use href="#quisp-bsa-white" x="68.0" y="348.0" width="24" height="24"/>
+  <text x="60.0" y="363" class="lbl" style="text-anchor:end">M1</text>
+  <use href="#quisp-bsa-white" x="908.0" y="348.0" width="24" height="24"/>
+  <text x="940.0" y="363" class="lbl" style="text-anchor:start">M4</text>
   <use href="#quisp-bsa-white" x="338.0" y="418.0" width="24" height="24"/>
   <text x="350.0" y="414.0" class="lbl" style="text-anchor:middle">M2</text>
   <use href="#quisp-bsa-white" x="638.0" y="418.0" width="24" height="24"/>
