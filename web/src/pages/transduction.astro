@@ -315,19 +315,28 @@ const sections = [
             </tbody>
           </table>
           <p>
-            So a delivered Bell pair takes <strong>~2,500 heralded attempts
-            per hop</strong> at the conservative end — i.e. 10⁴-class. The
-            band widens if you swing the QFC and emission efficiencies to
-            their optimistic ends (50 % per side gives ~10⁻², or ~100
-            attempts per pair), so the credible range is
-            <strong>10² to 10⁴ attempts</strong>. The Knaut 2024 35 km
-            Boston-metro demo measured ~10⁵ attempts per pair — even more
-            conservative than the budget here, because real systems pay
-            additional tax in mode-mismatch, polarisation drift, and
-            detector dead time. The "10⁴" on the figure is therefore the
-            conservative-but-plausible middle of the band; the
-            implementation-specific number can be 2–3 orders of magnitude
-            either way.
+            Inverting that gives <strong>~2,500 heralded attempts per
+            delivered pair</strong> at the conservative end — i.e. <strong>
+            ~10³</strong>, not 10⁴. If the QFC and emission efficiencies sit
+            at their optimistic ends instead (50 % per side gives per-
+            attempt ~10⁻², or ~100 attempts), the credible
+            <em>budget-only</em> band is <strong>10² to 10³</strong>. The
+            <SourceNote id="knaut-nature-2024" /> 35 km Boston-metro demo
+            measured ~10⁵ attempts per pair — about 40× worse than the
+            conservative budget here, the gap attributable to real-world
+            overheads the budget doesn't price in: photon-mode mismatch,
+            polarisation drift, detector dead time, optical-alignment drift
+            over a long run.
+          </p>
+          <p>
+            The "10⁴" labelled on the figure splits the difference between
+            the loss-budget theory (~10³) and the measured Knaut number
+            (~10⁵), as a rough middle-of-the-band figure to size rate
+            budgets against. It's not directly derivable from either alone.
+            For a procurement-grade rate-budget number, plan for
+            <strong>10³–10⁵ attempts per pair</strong> per 50 km hop
+            depending on whether the implementation is closer to the
+            loss-budget ideal or to Knaut's measured field demo.
           </p>
         </Callout>
 
