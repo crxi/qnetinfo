@@ -246,6 +246,46 @@ const sections = [
             <SourceNote id="awschalom-prxquantum-2021" />.
           </figcaption>
         </figure>
+
+        <aside class="design-prov">
+          <strong>Design provenance.</strong> Each zone of the figure tracks a
+          specific published system, not a hand-rolled composite.
+          <ul>
+            <li>
+              <strong>Node A</strong> (transmon QPU + M-O transducer +
+              cavity-coupled memory). Architecture: the QuIC building-block
+              account in <SourceNote id="awschalom-prxquantum-2021" />.
+              State-of-the-art M-O efficiency at quantum-noise levels (~2 %):
+              the Caltech silicon-nanomechanics transducer
+              <SourceNote id="caltech-mo-arxiv-2024" />. The cavity-coupled
+              memory transmon at MQ-A follows the Yale 3D-cavity lineage
+              (referenced in <SourceNote id="awschalom-prxquantum-2021" />,
+              §3.2).
+            </li>
+            <li>
+              <strong>QR-1 / QR-2 / QR-3</strong> (SiV diamond repeater,
+              two-emitter parallel design with ¹³C-nuclear memory).
+              Two-emitter SiV-on-chip nanophotonic node and the 35 km
+              Boston-metro entanglement demo: <SourceNote id="knaut-nature-2024" />.
+              Single-emitter alternative (one comm + one memory) is the
+              Delft NV-diamond architecture in <SourceNote id="pompili-science-2021" />.
+              Seconds-class ¹³C nuclear-spin memory in diamond:
+              <SourceNote id="bradley-prx-2019" />.
+            </li>
+            <li>
+              <strong>Node B</strong> (¹⁷¹Yb⁺ trapped-ion QPU + UV → telecom
+              QFC). The reference for two QCs linked by entanglement across
+              an optical-fibre link between trapped-ion modules is
+              <SourceNote id="main-nature-2025" /> (Oxford Ba⁺, 86 %-fidelity
+              teleported gate; Feb 2025). UV-to-telecom QFC from an ion's
+              native emission: <SourceNote id="krutyanskiy-prl-2023" />.
+            </li>
+          </ul>
+          The 4-hop diagram composes Node A, three SiV repeaters, and Node B
+          into a single chain. Each individual hardware element has a peer-
+          reviewed demonstration; what no one has built yet is the
+          <em>chain</em> end-to-end.
+        </aside>
         <p>
           The infrastructure point to read off the figure: the only places that need
           new <em>quantum-channel</em> hardware are the interface blocks (M-O at
@@ -1017,6 +1057,22 @@ const sections = [
     font-size: var(--text-sm);
     color: var(--color-text-mute);
     line-height: var(--leading-snug);
+  }
+  .design-prov {
+    margin-block-start: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-2);
+    border-inline-start: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: var(--color-text);
+  }
+  .design-prov ul {
+    margin: var(--space-2) 0 0;
+    padding-inline-start: var(--space-4);
+    display: grid;
+    gap: var(--space-2);
   }
 
   .perf-table {
