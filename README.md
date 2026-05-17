@@ -21,7 +21,10 @@ In reading order — each subject builds vocabulary the next leans on, but reade
 [links](/links) · [protocols](/protocols)
 
 **Applications & market**
-[applications](/applications) · [maturity](/maturity) · [companies](/companies)
+[applications](/applications) · [maturity](/maturity) · [companies](/companies) · [records](/records) · [standards](/standards)
+
+**Case studies**
+[case-studies](/case-studies) — operational and recently-operating quantum networks profiled with operator, location, technology family, scale, status, and commercial model.
 
 ## Running it locally
 
