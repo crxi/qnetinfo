@@ -43,8 +43,6 @@ const sections = [
   { id: "sota",         label: "State-of-the-art performance" },
   { id: "progress",     label: "Progress on the cross-modality pipeline" },
   { id: "encodings",    label: "Encoding translation" },
-  { id: "q1-stack",     label: "End-to-end Q1: heterogeneous endpoints" },
-  { id: "forward",      label: "Forward references" },
 ];
 ---
 
@@ -717,88 +715,6 @@ const sections = [
           gap. They sit alongside QFC and M-O transduction as the third axis of
           "make the photon match the next subsystem" the link layer has to handle.
         </p>
-      </section>
-
-      <section id="q1-stack" data-nav-section>
-        <h2>End-to-end Q1: heterogeneous endpoints in one figure</h2>
-        <p>
-          The cross-modality figure earlier on this page shows the transducer story
-          in isolation. To answer Question&nbsp;1 — <em>what's required, top-down,
-          to move a photon between two quantum computers</em> — the full system
-          needs to be visible at once: surface-code QEC at each endpoint, the role
-          decomposition into <em>data&nbsp;·&nbsp;memory&nbsp;·&nbsp;comm</em>
-          qubits, the appropriate transducer on each side, the fibre with classical
-          and sync co-channels, and the photonic Bell-state measurement at the
-          meeting point. The figure below deliberately picks a <em>heterogeneous</em>
-          pair to make the point: Node&nbsp;A is a superconducting transmon QC,
-          Node&nbsp;B is a Diamond-SiV nanophotonic QC. The asymmetry inside the
-          two node frames is the heterogeneity.
-        </p>
-        <figure class="demo-card q1-stack-figure">
-          <img src={url("/images/q1-stack.svg")}
-               alt="A seven-layer vertical stack diagram with two endpoint columns. Top: title and column headers — Node A (superconducting transmon, microwave-native) on the left, Node B (Diamond-SiV, visible-native) on the right, with a shared network/control plane between them. Each horizontal band is one layer of the stack, labelled on the far left. L7 Application: orange ψ data qubits at A and B with a 'share / teleport |ψ⟩' arrow between them. L6 Logical/QEC: small surface-code patches (4×4 grids) at each endpoint, with a middle note that EC lives at the endpoints, not the channel. L5 Network service: a wide pink box spanning A to B labelled '|Φ⁺⟩_AB delivered on request', with a magenta wavy entanglement line, and an RFC 9340 note. L4 Distillation: three small raw Bell pairs above one larger high-fidelity pair at each endpoint, with a 'trade rate for fidelity' arrow across the middle. L3 Link/swap: a 1G repeater chain — A, three SiV relays R₁ R₂ R₃, and B, with four small photonic-BSM symbols between adjacent matter qubits and short magenta entanglement arcs. L2 Encoding/bridges: a peach M-O block on A's side (5 GHz → 1350 nm, η < 1%), a blue QFC block on B's side (737 → 1350 nm, η ≈ 5.4%, PPLN pump 1623 nm), and a middle fibre segment carrying telecom photons with a 'time-bin encoding (Knaut 2024)' note. L1 Physical: a dilution-fridge box on A's side, a diamond-chip box on B's side, and a telecom fibre line carrying photon dots between them, annotated 'Knaut 35 km deployed Boston-metro, 17 dB loss, SNSPDs at receivers'. Footer cites Knaut Nature 629.573 (2024) and Awschalom PRX Quantum 2.017002 (2021)." />
-          <figcaption>
-            <strong>Q1 stack, layer by layer.</strong> The stack reads top-down:
-            the user owns L7 (the data qubit |ψ⟩); L6 protects it with QEC at
-            the endpoints; L5 is the network service abstraction (a Bell pair
-            on request); L4 is distillation if the raw pairs are below
-            threshold; L3 is the repeater chain that extends reach past fibre
-            loss; L2 is where the heterogeneity bites — M-O transduction on
-            A's side (5&nbsp;GHz → 1,350&nbsp;nm, η&nbsp;&lt;&nbsp;1%) versus QFC on
-            B's side and at every SiV relay (737 → 1,350&nbsp;nm, η&nbsp;≈&nbsp;5.4%,
-            PPLN pumped at 1,623&nbsp;nm); L1 is the telecom-O-band fibre
-            itself. The asymmetry between A's bridge and B's bridge is the
-            point — they sit in the same row but solve different mismatches.
-            Wavelengths and the 35&nbsp;km deployed demo from Knaut et&nbsp;al.
-            Nature 629.573 (2024).
-          </figcaption>
-        </figure>
-        <p>
-          Two infrastructure realities to read off this figure. <strong>First</strong>,
-          the M-O transducer on Node&nbsp;A is the only component without a deployable
-          device today — everything else either ships or works in the lab. The
-          IBM&nbsp;×&nbsp;Cisco&nbsp;×&nbsp;Fermilab programme announced
-          November&nbsp;2025 names this exact stage as a 10-year build, with
-          proof-of-concept targeted by 2030. <strong>Second</strong>, the fibre
-          stretch is only loss-budget-realistic for ≤50&nbsp;km in standard
-          single-mode fibre or ≤100&nbsp;km in hollow-core fibre; beyond that range
-          the figure becomes Q4 (repeaters), with the pBSM midpoint replaced by a
-          chain of memory-equipped repeater nodes performing entanglement
-          swapping. See the {" "}<a href={url("/swapping")}>swapping</a> page for
-          that primitive.
-        </p>
-      </section>
-
-      <section id="forward" data-nav-section>
-        <h2>Forward references</h2>
-        <p>
-          Three follow-on subjects pick up the threads:
-        </p>
-        <ul>
-          <li>
-            <strong>Memories</strong> — every M-O transducer pairs naturally with a
-            microwave-side or optical-side memory that buffers the conversion event
-            against the link's heralding latency. Memory wavelengths and bandwidths
-            constrain which transducer technologies pair with which.
-            <em>Covered in the</em> <strong>memories</strong> <em>subject.</em>
-          </li>
-          <li>
-            <strong>Links</strong> — the C-band fibre window, the O-band sub-window
-            (which Knaut et al. use), and free-space / satellite alternatives all sit
-            downstream of QFC. The choice of telecom band shapes which QFC pump and
-            which transducer output wavelength the link engineers prefer.
-            <em>Covered in the</em> <strong>links</strong> <em>subject.</em>
-          </li>
-          <li>
-            <strong>Distribution</strong> — heterogeneous links between different qubit
-            platforms (a superconducting node entangled with an ion-trap node) push the
-            work from "one transducer" to "transduction at every interface". Whether a
-            quantum internet can be built across platforms with different transition
-            frequencies is, in practice, a question answered by the transduction
-            technologies on this page.
-            <em>Covered in the</em> <strong>distribution</strong> <em>subject.</em>
-          </li>
-        </ul>
       </section>
 
     </Stack>
