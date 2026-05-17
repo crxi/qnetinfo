@@ -552,8 +552,8 @@ def _protocol_steps(cv: Canvas) -> None:
     # Numbers are left-aligned in a single column; the whole block (badge
     # column + longest line of text) is horizontally centred on the figure.
     captions = [
-        "Generate Bell pairs per hop — thousands of heralded attempts per delivered pair.",
-        "Distil per hop, swap into one end-to-end pair — each swap is 50%-BSM-ceiling-bound.",
+        "Generate Bell pairs per hop — 10⁴-class heralded retries per pair (fibre loss + 50% photonic BSM).",
+        "Distil per hop, then matter-matter swap into one end-to-end pair — gated by memory T₂ during the wait.",
         "Load |ψ⟩ onto DQ-A — must beat MQ-A's coherence budget or the chain restarts.",
         "Local matter-matter BSM on (DQ-A, MQ-A) destroys |ψ⟩, yields 2 classical bits.",
         "Bits travel to DC-B; apply Pauli to MQ-B — |ψ⟩ at B (classical-channel latency only).",
