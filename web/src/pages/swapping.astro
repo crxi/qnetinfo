@@ -554,6 +554,28 @@ const sections = [
           </figcaption>
         </figure>
 
+        <Callout label="Pauli frame tracking — one correction at the end, not one per swap">
+          <p>
+            Each BSM along the chain produces two classical bits that determine which
+            of the four Bell states the swap landed on. The naive thing to do is
+            apply the corresponding Pauli correction (one of <Math tex="\\{I, X, Z, XZ\\}" />)
+            physically at each step. The better thing is to <strong>not apply any
+            correction during the chain</strong> and instead XOR each new bit pair
+            into a 2-bit <em>Pauli frame</em> held classically at one endpoint —
+            metadata that travels alongside the Bell pair but never touches
+            the qubits.
+          </p>
+          <p>
+            For a 4-hop chain that means four heralding-BSM outcomes plus six swap-BSM
+            bits (two per relay across three relays) all accumulate into a single
+            2-bit frame at B. When the pair is finally consumed — at teleportation,
+            QKD, or a remote gate — the frame is XOR'd with the consuming
+            measurement's outcome bits and one Pauli correction is applied.
+            <strong>One physical gate at the end, not seven along the chain.</strong>
+            Each avoided physical correction is one less infidelity contribution.
+          </p>
+        </Callout>
+
         <Callout label="Why fidelity drops with chain length">
           <p>
             Each Bell pair starts at some fidelity below 1 — heralded entanglement is
