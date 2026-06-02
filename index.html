@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>We've moved — Quantum Network Infographics</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://qni.pages.dev/">
+  <!-- Fallback redirect if JS is disabled. -->
+  <meta http-equiv="refresh" content="8; url=https://qni.pages.dev/">
+  <style>
+    :root { color-scheme: dark; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: grid; place-items: center;
+      background: #0b0e14; color: #e6e9ef;
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 1.5rem;
+    }
+    main { max-width: 32rem; text-align: center; }
+    h1 { font-size: 1.6rem; margin: 0 0 0.75rem; font-weight: 650; }
+    p { margin: 0.5rem 0; color: #aeb4c2; }
+    a.cta {
+      display: inline-block; margin-top: 1.25rem; padding: 0.6rem 1.2rem;
+      background: #1a4a99; color: #fff; text-decoration: none;
+      border-radius: 8px; font-weight: 600;
+    }
+    a.cta:hover { background: #2159b8; }
+    code { color: #e6e9ef; background: #161b26; padding: 0.1em 0.4em; border-radius: 4px; }
+    .count { color: #6c7588; font-size: 0.9rem; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>We've moved</h1>
+    <p>Quantum Network Infographics now lives at <code>qni.pages.dev</code>.</p>
+    <p>Please update your bookmark.</p>
+    <a class="cta" href="https://qni.pages.dev/">Go to qni.pages.dev →</a>
+    <p class="count">Redirecting automatically in <span id="n">8</span>s…</p>
+  </main>
+  <script>
+    var n = 8, el = document.getElementById("n");
+    var t = setInterval(function () {
+      n -= 1;
+      if (el) el.textContent = n;
+      if (n <= 0) { clearInterval(t); location.replace("https://qni.pages.dev/"); }
+    }, 1000);
+  </script>
+</body>
+</html>
